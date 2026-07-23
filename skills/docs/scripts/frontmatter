@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Print YAML frontmatter from a Markdown file.
+# Usage: frontmatter <file.md>
+set -euo pipefail
+
+file="${1:-}"
+if [[ -z "$file" ]]; then
+  echo "Usage: frontmatter <file.md>" >&2
+  exit 1
+fi
+
+awk 'NR==1 && /^---/{fm=1; next} fm && /^---/{exit} fm{print}' "$file"

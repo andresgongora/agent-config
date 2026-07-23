@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+source "${BASH_SOURCE[0]%/*}/common.bash"
+require_commands find realpath stat sort
+
+top=10
+directory=.
+directory_set=false
+while (($#)); do
+  case $1 in
+    --top) shift; [[ ${1:-} =~ ^[1-9][0-9]?$ ]] || die '--top needs 1..99'; top=$1 ;;
+    --help) printf 'Usage: %s [--top N] [directory]\n' "$0"; exit 0 ;;
+    -*) die "Unknown option: $1" ;;
+    *) [[ $directory_set == false ]] || die "Only one directory allowed"; directory=$1; directory_set=true ;;
+  esac
+  shift
+done
+root=$(scope_root "$directory")
+
+declare -A directories extensions
+files=0 total=0
+while IFS= read -r -d '' path; do
+  size=$(stat -c '%s' -- "$path")
+  relative=${path#"$root"/}
+  first=${relative%%/*}
+  [[ $relative == */* ]] || first='[root files]'
+  name=${path##*/}
+  if [[ $name == *.* && $name != .* ]]; then extension=.${name##*.}; else extension='[no extension]'; fi
+  directories[$first]=$(( ${directories[$first]:-0} + size ))
+  extensions[$extension]=$(( ${extensions[$extension]:-0} + size ))
+  ((files += 1))
+  ((total += size)) || :
+done < <(find -P "$root" -type f -print0)
+
+printf 'SUMMARY\tfiles=%d\tbytes=%d\thuman=%s\n' "$files" "$total" "$(bytes_human "$total")"
+printf 'DIRECTORIES\n'
+for key in "${!directories[@]}"; do printf '%020d\t%s\n' "${directories[$key]}" "$key"; done | sort -rn | while IFS=$'\t' read -r size key; do printf '%s\t%s\n' "$(bytes_human "$((10#$size))")" "$key"; done | head -n "$top"
+printf 'EXTENSIONS\n'
+for key in "${!extensions[@]}"; do printf '%020d\t%s\n' "${extensions[$key]}" "$key"; done | sort -rn | while IFS=$'\t' read -r size key; do printf '%s\t%s\n' "$(bytes_human "$((10#$size))")" "$key"; done | head -n "$top"

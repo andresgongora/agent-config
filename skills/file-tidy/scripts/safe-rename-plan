@@ -1,0 +1,88 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+source "${BASH_SOURCE[0]%/*}/common.bash"
+require_commands find realpath
+
+apply=false
+show=false
+while (($#)); do
+  case $1 in
+    --apply) apply=true ;;
+    --show) show=true ;;
+    --help) printf 'Usage: %s [--show] [--apply] [directory]\n' "$0"; exit 0 ;;
+    -*) die "Unknown option: $1" ;;
+    *) [[ ${directory_set:-false} == false ]] || die "Only one directory allowed"; directory=$1; directory_set=true ;;
+  esac
+  shift
+done
+root=$(scope_root "${directory:-.}")
+
+tidy_stem() {
+  local stem=$1 match
+  shopt -s nocasematch
+  while [[ $stem =~ (\[[^][]*(kbps|kbit|fps|aac|h\.?26[45]|hevc|x26[45]|av1|[0-9]{3,4}p)[^][]*\]|\([^()]*(kbps|kbit|fps|aac|h\.?26[45]|hevc|x26[45]|av1|[0-9]{3,4}p)[^()]*\)) ]]; do
+    match=${BASH_REMATCH[0]}
+    stem=${stem/"$match"/}
+  done
+  while [[ $stem =~ (^|[[:space:]_.-])(hls|[0-9]{3,4}p)([[:space:]_.-]|$) ]]; do
+    stem=${stem/"${BASH_REMATCH[2]}"/}
+  done
+  stem=${stem//_/ }
+  while [[ $stem == *"  "* ]]; do stem=${stem//  / }; done
+  stem=${stem#"${stem%%[![:space:]]*}"}
+  stem=${stem%"${stem##*[![:space:]]}"}
+  while [[ $stem == *[[:space:]._-] ]]; do stem=${stem%[[:space:]._-]}; done
+  shopt -u nocasematch
+  printf '%s' "$stem"
+}
+
+tidy_name() {
+  local name=$1 stem extension=''
+  if [[ $name == *.* && $name != .* ]]; then
+    stem=${name%.*}
+    extension=.${name##*.}
+  else
+    stem=$name
+  fi
+  stem=$(tidy_stem "$stem")
+  [[ -n $stem ]] || return 1
+  printf '%s%s' "$stem" "$extension"
+}
+
+declare -a sources targets
+declare -A claimed
+changed=0 collision=0 invalid=0 shown=0
+while IFS= read -r -d '' source; do
+  name=${source##*/}
+  [[ $name != .* ]] || continue
+  target_name=$(tidy_name "$name") || { ((invalid += 1)); continue; }
+  target=${source%/*}/$target_name
+  [[ $source == "$target" ]] && continue
+  if [[ -e $target || -v "claimed[$target]" ]]; then
+    ((collision += 1))
+    continue
+  fi
+  claimed[$target]=1
+  sources+=("$source")
+  targets+=("$target")
+  ((changed += 1))
+  if [[ $show == true ]]; then
+    (( shown < 50 )) && printf 'PLAN\t%q\t=>\t%q\n' "$source" "$target"
+    ((shown += 1))
+  fi
+done < <(find -P "$root" -mindepth 1 -type d -name '.*' -prune -o -type f -print0)
+
+printf 'SUMMARY\tchanged=%d\tcollision=%d\tinvalid=%d\tmode=%s\n' "$changed" "$collision" "$invalid" "$([[ $apply == true ]] && printf apply || printf dry-run)"
+[[ $show == true && $shown -gt 50 ]] && printf 'SUMMARY\tshown=50\tomitted=%d\n' "$((shown - 50))"
+[[ $apply == true ]] || exit 0
+applied=0 failed=0
+for index in "${!sources[@]}"; do
+  source=${sources[$index]}
+  if [[ ! -f $source || -L $source ]] || ! mv --no-clobber -- "$source" "${targets[$index]}"; then
+    ((failed += 1))
+  else
+    ((applied += 1))
+  fi
+done
+printf 'SUMMARY\tapplied=%d\tfailed=%d\n' "$applied" "$failed"

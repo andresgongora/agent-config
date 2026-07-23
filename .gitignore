@@ -1,0 +1,15 @@
+# Skills
+# caveman, caveman-commit, caveman-review, cavecrew — tracked (upstream: JuliusBrussee/caveman, MIT)
+# no-ai-slop, rossmann-voice — upstream has no license yet; not redistributable until resolved
+# teach — tracked (upstream: mattpocock/skills, MIT)
+skills/no-ai-slop/
+skills/rossmann-voice/
+
+# Agents — all original, all tracked (none ignored)
+
+# Disabled skills (local experiments)
+disabled-skills/
+skills/opencode-local/
+
+# Local model aliases (machine-specific)
+model-aliases.json

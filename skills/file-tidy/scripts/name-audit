@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+source "${BASH_SOURCE[0]%/*}/common.bash"
+require_commands find realpath wc
+
+show=false
+directory=.
+directory_set=false
+while (($#)); do
+  case $1 in
+    --show) show=true ;;
+    --help) printf 'Usage: %s [--show] [directory]\n' "$0"; exit 0 ;;
+    -*) die "Unknown option: $1" ;;
+    *) [[ $directory_set == false ]] || die "Only one directory allowed"; directory=$1; directory_set=true ;;
+  esac
+  shift
+done
+root=$(scope_root "$directory")
+
+is_reserved() {
+  local base=${1%.*}
+  case ${base^^} in CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9]) return 0 ;; esac
+  return 1
+}
+
+files=0 invalid=0 reserved=0 long=0 dotty=0
+invalid_shown=0 reserved_shown=0 long_shown=0 dotty_shown=0
+while IFS= read -r -d '' path; do
+  ((files += 1))
+  name=${path##*/}
+  byte_length=$(LC_ALL=C printf '%s' "$name" | wc -c)
+  dots=${name//[^.]/}
+  if [[ $name =~ [[:cntrl:]] || $name == *'<'* || $name == *'>'* || $name == *':'* || $name == *'"'* || $name == *'\'* || $name == *'|'* || $name == *'?'* || $name == *'*'* || $name == *' ' || $name == *. ]]; then
+    ((invalid += 1))
+    [[ $show == true ]] && show_path "$invalid_shown" invalid "$path"
+    ((invalid_shown += 1))
+  fi
+  if is_reserved "$name"; then
+    ((reserved += 1))
+    [[ $show == true ]] && show_path "$reserved_shown" reserved "$path"
+    ((reserved_shown += 1))
+  fi
+  if (( byte_length > 240 )); then
+    ((long += 1))
+    [[ $show == true ]] && show_path "$long_shown" long "$path"
+    ((long_shown += 1))
+  fi
+  if (( byte_length >= 40 && ${#dots} >= 3 )) && [[ $name != *' '* ]]; then
+    ((dotty += 1))
+    [[ $show == true ]] && show_path "$dotty_shown" dotty "$path"
+    ((dotty_shown += 1))
+  fi
+done < <(find -P "$root" -mindepth 1 -type d -name '.*' -prune -o -type f -print0)
+
+printf 'SUMMARY\tfiles=%d\tinvalid=%d\treserved=%d\tlong=%d\tdotty=%d\n' "$files" "$invalid" "$reserved" "$long" "$dotty"

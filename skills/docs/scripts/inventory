@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+# List Markdown docs in a tree with frontmatter. Cheap discovery: one call, no full reads.
+# Sorted by `updated:` frontmatter desc (recent first), then path.
+# Usage: inventory [dir]   (default: .agent/)
+set -euo pipefail
+
+dir="${1:-.agent}"
+if [[ ! -d "$dir" ]]; then
+  echo "No directory: $dir" >&2
+  exit 1
+fi
+
+# Emit: "<updated>\t<path>\t<title>\t<status>\t<summary>" per file, tab-separated.
+while IFS= read -r -d '' f; do
+  awk -v path="$f" '
+    NR==1 && /^---[[:space:]]*$/ { fm=1; next }
+    fm && /^---[[:space:]]*$/ { exit }
+    fm {
+      if ($0 ~ /^[Tt]itle:/)   { sub(/^[^:]*:[[:space:]]*/,""); title=$0 }
+      if ($0 ~ /^[Ss]ummary:/) { sub(/^[^:]*:[[:space:]]*/,""); summary=$0 }
+      if ($0 ~ /^[Ss]tatus:/)  { sub(/^[^:]*:[[:space:]]*/,""); status=$0 }
+      if ($0 ~ /^[Uu]pdated:/) { sub(/^[^:]*:[[:space:]]*/,""); updated=$0 }
+    }
+    END {
+      if (title=="")   title="(no title)"
+      if (updated=="") updated="0000-00-00"
+      printf "%s\t%s\t%s\t%s\t%s\n", updated, path, title, status, summary
+    }
+  ' "$f"
+done < <(find "$dir" -type f -name '*.md' -print0) | sort -r | awk -F'\t' '
+  {
+    printf "%s\n", $2
+    printf "  title:   %s\n", $3
+    if ($1 != "0000-00-00") printf "  updated: %s\n", $1
+    if ($4 != "")           printf "  status:  %s\n", $4
+    if ($5 != "")           printf "  summary: %s\n", $5
+    printf "\n"
+  }
+'

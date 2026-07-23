@@ -1,0 +1,107 @@
+# AI agent config
+
+Personal AI-agent ecosystem: cross-project rules, skills, subagents, and docs. Designed for [OpenCode](https://opencode.ai) but structured to work with any AGENTS.md-aware client.
+
+The goal is a sharp, lean agent, not a yes-man. It pushes back on weak requests, plans before executing, protects context by delegating isolatable work, and keeps state in durable git-tracked memory so a fresh session picks up cold.
+
+## Setup
+
+### OpenCode
+
+1. Clone this repo somewhere permanent (e.g. `~/.config/opencode/` or a dotfiles path).
+2. Point OpenCode at the files by symlinking or copying:
+   - `deploy/AGENTS.md` → `~/.config/opencode/AGENTS.md` (cross-project user rules)
+   - `agents/` → `~/.config/opencode/agents/`
+   - `skills/` → `~/.config/opencode/skills/`
+   - `commands/` → `~/.config/opencode/commands/` (optional)
+   - `plugins/` → `~/.config/opencode/plugins/` (optional)
+3. Verify OpenCode picks up the skill list and subagents by checking the model selector and skill-load triggers.
+
+### Other clients
+
+- `deploy/AGENTS.md` is the single file to deploy. It references skills and subagents by name; those only matter if your client supports them.
+- Skills are loaded on demand via a `skill` tool call. If your client does not have that, the `SKILL.md` files can be copy-pasted as system-prompt sections.
+- Subagents need client support for spawning named agents. Without it, the main agent absorbs all work.
+
+## Instructions
+
+### Agent instructions (`deploy/AGENTS.md`)
+
+The main deployed file. Sets tone, workflow, guardrails, context-protection rules, parallelization rules, and the skill/subagent trigger table. Project-level `AGENTS.md` files narrow or override it.
+
+Key rules it enforces:
+
+| Rule | What it does |
+|---|---|
+| Caveman mode | Session-default compressed output to cut token use |
+| Plan before execute | Todo list for non-trivial work; auto-continue only on expected steps |
+| Hard claim needs hard proof | No plausible-sounding invention; omit what can't be sourced |
+| Delegate isolatable work | Subagents handle search, code-locate, review; main context keeps only the result |
+| Reject-first | Every new rule / skill / doc / subagent must earn its place |
+| Shell restrictions | `trash` instead of `rm`/`rmdir`; banned tools have no fallback |
+
+### Skills
+
+Skills are instruction sets loaded on demand when a task matches their trigger. They do not run automatically — the agent loads them when needed, then follows the workflow inside.
+
+| Skill | What it does | Load when | Source |
+|---|---|---|---|
+| `caveman` | Compressed output style, ~65% fewer tokens. Multiple intensity levels. | Every session (default) | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) (MIT) |
+| `caveman-commit` | Conventional Commits messages, subject ≤50 chars, body only when the why isn't obvious | Writing commit messages | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) (MIT) |
+| `caveman-review` | Code review: one line per finding, severity-tagged, no praise | Reviewing PRs or diffs | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) (MIT) |
+| `cavecrew` | Decides when to delegate to `@cavecrew-*` subagents | Surgical repo-local code work | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) (MIT) |
+| `planning` | Plan-first workflow: session todos or durable pre-implementation plan docs | Multi-step tasks, ambiguous scope, risky forks | |
+| `docs` | Doc discovery and discipline; cheap frontmatter inventory scripts | Non-trivial repo work, `.agent/` work, architecture notes | |
+| `code-frontier` | Repo-state snapshot: done / in-progress / next / deferred / risks | Session continuity, repo-level next steps | |
+| `agents-md` | Reject-first workflow for `AGENTS.md` edits | Adding or changing any `AGENTS.md` rule | |
+| `web-search` | Coordinates online research through a main agent and optional scout fanout | Multi-page online research | |
+| `git` | Git guardrails and fast workflows | Branch, commit, merge, rebase, push, undo | |
+| `nixos` | NixOS / Home Manager workflows and pitfall guide | Any NixOS or Home Manager config work | |
+| `unit-test` | Test framework and idiom discipline | Writing tests, TDD, coverage | |
+| `no-ai-slop` | Rules for prose that does not read like AI output | Writing human-facing docs, READMEs, copy | [realrossmanngroup/no_ai_slop_writing_rules](https://github.com/realrossmanngroup/no_ai_slop_writing_rules) (no license yet) |
+| `opencode-local` | Locate and edit this machine's deployed OpenCode config | Local OpenCode config work | |
+| `file-tidy` | Metadata-only file inventory, duplicates, cleanup plans | Messy downloads, media libraries, space reclaim | |
+| `rossmann-voice` | Louis Rossmann writing voice: claim-then-proof, high sentence-length variance | Explicit request only | [realrossmanngroup/no_ai_slop_writing_rules](https://github.com/realrossmanngroup/no_ai_slop_writing_rules) (no license yet) |
+| `teach` | Multi-session teaching workspace | Explicit request only | [mattpocock/skills](https://github.com/mattpocock/skills) (MIT) |
+
+### Subagents
+
+Named workers the main agent can delegate to. Each has a narrow tool set and a defined output shape, so their transcripts stay isolated from main context.
+
+| Subagent | What it does | Use when | Source |
+|---|---|---|---|
+| `@build-fast` | Fast, cheap single-task runner: tests, lint, format, install deps, one script | Noisy terminal output that would pollute main context | |
+| `@build` | Development agent: edit code, run linters/formatters/builds/tests | Repo-local code work needing judgment | |
+| `@cavecrew-builder` | Surgical 1-2 file edit; hard-refuses 3+ file scope | Bounded, obvious edits | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) (MIT) |
+| `@cavecrew-investigator` | Read-only code locator; returns `file:line` table | Finding where something is defined or used | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) (MIT) |
+| `@cavecrew-reviewer` | Diff/file review; one line per finding, severity-tagged | Reviewing PRs or specific files | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) (MIT) |
+| `@chat` | Cloud-only conversational agent; no local files or shell | Discussion, explanation, brainstorming without local context | |
+| `@cli` | Broad Linux/CLI access for system, service, network diagnostics | Commands outside the repo | |
+| `@fast` | Cheap one-shot common-knowledge answer or quick web search | Trivial facts, simple comparisons, definitions | |
+| `@files` | Filesystem navigation and metadata inspection; never reads file text | Duplicates, renames, moves, space usage | |
+| `@planning` | Dialogue and inspection; outputs one revisable plan in `.agent/plan/`; cannot implement | Decision-grade pre-implementation plans | |
+| `@web-search` | Multi-page online research coordinator; returns `## Findings` | Non-trivial research needing multiple sources | |
+| `@web-search-scout` | Single-query leaf for `@web-search` only; returns `## Scout Report` | One isolated query angle within a research task | |
+
+## License
+
+Original files in this repo are [MIT licensed](./LICENSE).
+
+Third-party files retain their upstream licenses. The source column in the tables above identifies which skills and subagents came from other repos; check those repos for their license terms before redistributing. Some upstream repos have not published a license yet or can not be shared; those files are not redistributed in this repo.
+
+## Details about this repo
+
+### Layout
+
+```
+deploy/AGENTS.md        Cross-project user-level rules (the main deployed file).
+AGENTS.md               Repo-local rules for agents maintaining this repo.
+agents/                 Subagent definitions, one file each.
+skills/                 Skills loadable on demand.
+  <name>/SKILL.md       LLM-facing instructions.
+  <name>/README.md      Human maintainer notes.
+.agent/                 AI working memory: plans, frontier, progress, bugs, notes.
+plugins/                Client-specific plugins (e.g. JS).
+commands/               Slash-commands.
+tools/                  Ad-hoc scripts.
+```
