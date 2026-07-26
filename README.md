@@ -46,23 +46,23 @@ Skills are instruction sets loaded on demand when a task matches their trigger. 
 
 | Skill | What it does | Load when | Source |
 |---|---|---|---|
-| `caveman` | Compressed output style, ~65% fewer tokens. Multiple intensity levels. | Every session (default) | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) (MIT) |
+| `agents-md` | Reject-first workflow for `AGENTS.md` edits | Adding or changing any `AGENTS.md` rule | |
+| `cavecrew` | Decides when to delegate to `@cavecrew-*` subagents | Surgical repo-local code work | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) (MIT) |
 | `caveman-commit` | Conventional Commits messages, subject ≤50 chars, body only when the why isn't obvious | Writing commit messages | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) (MIT) |
 | `caveman-review` | Code review: one line per finding, severity-tagged, no praise | Reviewing PRs or diffs | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) (MIT) |
-| `cavecrew` | Decides when to delegate to `@cavecrew-*` subagents | Surgical repo-local code work | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) (MIT) |
-| `planning` | Plan-first workflow: session todos or durable pre-implementation plan docs | Multi-step tasks, ambiguous scope, risky forks | |
-| `docs` | Doc discovery and discipline; cheap frontmatter inventory scripts | Non-trivial repo work, `.agent/` work, architecture notes | |
+| `caveman` | Compressed output style, ~65% fewer tokens. Multiple intensity levels. | Every session (default) | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) (MIT) |
 | `code-frontier` | Repo-state snapshot: done / in-progress / next / deferred / risks | Session continuity, repo-level next steps | |
-| `agents-md` | Reject-first workflow for `AGENTS.md` edits | Adding or changing any `AGENTS.md` rule | |
-| `web-search` | Coordinates online research through a main agent and optional scout fanout | Multi-page online research | |
+| `docs` | Doc discovery and discipline; cheap frontmatter inventory scripts | Non-trivial repo work, `.agent/` work, architecture notes | |
+| `file-tidy` | Metadata-only file inventory, duplicates, cleanup plans | Messy downloads, media libraries, space reclaim | |
 | `git` | Git guardrails and fast workflows | Branch, commit, merge, rebase, push, undo | |
 | `nixos` | NixOS / Home Manager workflows and pitfall guide | Any NixOS or Home Manager config work | |
-| `unit-test` | Test framework and idiom discipline | Writing tests, TDD, coverage | |
 | `no-ai-slop` | Rules for prose that does not read like AI output | Writing human-facing docs, READMEs, copy | [realrossmanngroup/no_ai_slop_writing_rules](https://github.com/realrossmanngroup/no_ai_slop_writing_rules) (no license yet) |
 | `opencode-local` | Locate and edit this machine's deployed OpenCode config | Local OpenCode config work | |
-| `file-tidy` | Metadata-only file inventory, duplicates, cleanup plans | Messy downloads, media libraries, space reclaim | |
-| `rossmann-voice` | Louis Rossmann writing voice: claim-then-proof, high sentence-length variance | Explicit request only | [realrossmanngroup/no_ai_slop_writing_rules](https://github.com/realrossmanngroup/no_ai_slop_writing_rules) (no license yet) |
+| `planning` | Plan-first workflow: session todos or durable pre-implementation plan docs | Multi-step tasks, ambiguous scope, risky forks | |
 | `teach` | Multi-session teaching workspace | Explicit request only | [mattpocock/skills](https://github.com/mattpocock/skills) (MIT) |
+| `unit-test` | Test framework and idiom discipline | Writing tests, TDD, coverage | |
+| `web-search` | Coordinates online research through a main agent and optional scout fanout | Multi-page online research | |
+| `writting` | Reader-facing prose: direct, evidence-led, peer-level, and structured for action | Emails, official correspondence, blog posts, proposals, public statements | |
 
 ### Subagents
 
@@ -80,14 +80,8 @@ Named workers the main agent can delegate to. Each has a narrow tool set and a d
 | `@fast` | Cheap one-shot common-knowledge answer or quick web search | Trivial facts, simple comparisons, definitions | |
 | `@files` | Filesystem navigation and metadata inspection; never reads file text | Duplicates, renames, moves, space usage | |
 | `@planning` | Dialogue and inspection; outputs one revisable plan in `.agent/plan/`; cannot implement | Decision-grade pre-implementation plans | |
-| `@web-search` | Multi-page online research coordinator; returns `## Findings` | Non-trivial research needing multiple sources | |
 | `@web-search-scout` | Single-query leaf for `@web-search` only; returns `## Scout Report` | One isolated query angle within a research task | |
-
-## License
-
-Original files in this repo are [MIT licensed](./LICENSE).
-
-Third-party files retain their upstream licenses. The source column in the tables above identifies which skills and subagents came from other repos; check those repos for their license terms before redistributing. Some upstream repos have not published a license yet or can not be shared; those files are not redistributed in this repo.
+| `@web-search` | Multi-page online research coordinator; returns `## Findings` | Non-trivial research needing multiple sources | |
 
 ## Details about this repo
 
@@ -105,3 +99,9 @@ plugins/                Client-specific plugins (e.g. JS).
 commands/               Slash-commands.
 tools/                  Ad-hoc scripts.
 ```
+
+## License
+
+Original files in this repo are [MIT licensed](./LICENSE).
+
+Third-party files, clearly indicated in the above tables, retain their upstream licenses. The source column in the tables above identifies which skills and subagents came from other repos; check those repos for their license terms before redistributing. Some upstream repos have not published a license yet or can not be shared; those files are not redistributed in this repo.

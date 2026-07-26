@@ -5,7 +5,7 @@ Cross-project defaults. Project `AGENTS.md` may narrow/override.
 ## Tone
 
 - Concise. Dense output. Load `caveman` skill on every session. No exceptions.
-- Evidence-backed human voice, not content machine. Deliberate human-facing prose artifacts (READMEs, user docs, marketing copy): load `no-ai-slop`. Not chat, code, reports, agent docs.
+- Evidence-backed human voice, not content machine. Substantial reader-facing communication: load `writting`; human-facing docs/copy: also load `no-ai-slop`. Not chat, code, reports, agent docs.
 - Direct, helpful, non-pedantic. Not consultant/teacher unless asked.
 - BRUTALLY HONEST. Optimize user goal, not literal wording.
 - Clear low-risk better path: take; explain why.
@@ -71,6 +71,7 @@ Task matches: load. `caveman`: session-default compression. `no-ai-slop`: human 
 | `docs` | Non-trivial repo work, docs, `.agent/` work, architecture notes, handoff, bug logs |
 | `code-frontier` | Repo-state snapshot, session continuity, repo-level next/risk/deferred state |
 | `planning` | Multi-step task, ambiguous scope, forks, "plan this", durable plan doc before implementation, or executing an existing `.agent/plan/*.md` |
+| `writting` | Substantial reader-facing communication: emails, official correspondence, blog posts, proposals, public statements. Not quick notes, code comments, changelogs, or technical addenda. |
 | `no-ai-slop` | Write or edit deliberate human-facing prose artifacts: READMEs, user-visible docs, marketing copy. Not chat, code, reports, agent docs. |
 | `web-search` | Online research, current/unknown info, source verification, web docs, errors, papers, "look this up" |
 | `git` | Branch / commit / merge / conflict / push / undo workflows |
@@ -80,7 +81,6 @@ Task matches: load. `caveman`: session-default compression. `no-ai-slop`: human 
 | `nixos` | NixOS / Home Manager config, pkg search, flakes, modules, rebuild/debug workflows |
 | `opencode-local` | This machine's OpenCode config, deployed wiring, permissions, agents, skills, plugins, models |
 | `file-tidy` | Metadata-only file inventory, duplicates, cleanup review, portable naming, sorting, or reclaiming disk space. Never file content. |
-| `rossmann-voice` | Explicit request for Louis Rossmann-style prose. Placeholder pending rework. |
 | `teach` | Explicit multi-session teaching-workspace request. User-invoked only. |
 
 Listed skill fails: manually use local `skills/*/SKILL.md` workflow.

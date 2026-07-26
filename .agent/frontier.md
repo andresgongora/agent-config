@@ -2,7 +2,7 @@
 title: AI Tools Frontier
 summary: Present-tense boundary — Shape / Done / In progress / Next / Boundary. Portable AI-agent rules, skills, subagents, and optional OpenCode integrations.
 status: active
-updated: 2026-07-23
+updated: 2026-07-26
 ---
 
 # Frontier
@@ -22,6 +22,7 @@ updated: 2026-07-23
 
 - Cross-project rules, repo-maintainer rules, skills, agents, commands, plugins, and validation script are present and documented.
 - Skills use paired runtime instructions and maintainer README files; agent definitions use explicit role, model strategy, temperature, tool, and permission boundaries.
+- `skills/writting/` provides reader-facing prose rules: evidence-led directness, peer-level tone, attention without clickbait, and three-part body paragraphs.
 - Web research uses coordinator plus bounded scout topology; compact evidence contracts separate source quality from answer confidence.
 - `.agent/` retains only durable design/authoring notes and present state. Historical plans, refactor records, and machine-specific deployment notes are removed.
 
@@ -32,7 +33,6 @@ updated: 2026-07-23
 
 - Test a fresh external clone with supported client wiring; correct onboarding gaps found there.
 - Validate web-search topology in real sessions before changing model tiers or guardrails.
-- Rework `rossmann-voice` before broadening its trigger.
 
 ## Boundary
 

@@ -1,11 +1,6 @@
 # Skills
-# caveman, caveman-commit, caveman-review, cavecrew — tracked (upstream: JuliusBrussee/caveman, MIT)
-# no-ai-slop, rossmann-voice — upstream has no license yet; not redistributable until resolved
-# teach — tracked (upstream: mattpocock/skills, MIT)
+# no-ai-slop — upstream has no license yet; not redistributable until resolved
 skills/no-ai-slop/
-skills/rossmann-voice/
-
-# Agents — all original, all tracked (none ignored)
 
 # Disabled skills (local experiments)
 disabled-skills/
