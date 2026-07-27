@@ -8,3 +8,6 @@ skills/opencode-local/
 
 # Local model aliases (machine-specific)
 model-aliases.json
+
+# Plans
+.agent/plan*
