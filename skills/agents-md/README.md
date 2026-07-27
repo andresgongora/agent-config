@@ -67,5 +67,5 @@ Rule of thumb for placement:
 
 - `SKILL.md` — the workflow
 - `AGENTS.template.md` — bootstrap template
-- `../../.agent/notes/authoring-skills-and-subagents.md` — meta-skill for adding new skills/subagents
+- `../authoring-agents/SKILL.md` — skill for creating/editing skill files, subagent files, agent definitions
 - `../docs/SKILL.md` — sister skill for `.agent/` maintenance

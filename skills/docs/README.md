@@ -178,4 +178,4 @@ If a future doc-related workflow does fit the subagent shape (e.g. "audit every 
 - `../plan/SKILL.md` — planning workflow; document mode follows doc conventions
 - `../../.agent/notes/design-principles.md` — cross-cutting agent philosophy, memory model, brutal-truth reminders
 - `../code-frontier/SKILL.md` — sister skill for repo-state snapshots (frontier concept + workflow)
-- `../../.agent/notes/authoring-skills-and-subagents.md` — how to add new skills/subagents
+- `../authoring-agents/SKILL.md` — how to add new skills/subagents

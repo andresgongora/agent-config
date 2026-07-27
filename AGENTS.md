@@ -20,13 +20,13 @@ Repo-local rules for agents authoring / editing skills, subagents, and docs in t
 - **Consumers**: AI coding agents. No specific client assumed.
 - **Language**: markdown (skills, docs, subagents) + YAML frontmatter. JS in `plugins/`. Bash in `tools/`. Deploy wiring is client-specific and lives outside this repo.
 - **Product entry point**: `deploy/AGENTS.md` — the deployed cross-project user-home rules.
-- **Repo entry points** (read first): `README.md`, `.agent/notes/design-principles.md`, `.agent/notes/authoring-skills-and-subagents.md`, `.agent/frontier.md`.
+- **Repo entry points** (read first): `README.md`, `.agent/notes/design-principles.md`, `.agent/frontier.md`.
 
 <!------------------------------------------------------------------------------------------------->
 ## Directives
 <!------------------------------------------------------------------------------------------------->
 
-- Before adding / changing a skill or subagent: read `.agent/notes/authoring-skills-and-subagents.md`. Non-negotiable.
+- Before adding / changing a skill or subagent: load the `authoring-agents` skill. Non-negotiable.
 - Before adding a rule to any `AGENTS.md`: load the `agents-md` skill. Reject-first.
 - Before adding / restructuring docs under `.agent/`: load the `docs` skill.
 - Before broad code scan: use cheap doc discovery (see `docs` skill) and check `.agent/frontier.md` for current repo state.
@@ -116,7 +116,7 @@ Reject when:
 ### Adding a New Skill
 
 1. Load `agents-md` skill (skills-authoring reuses the reject-first discipline).
-2. Read `.agent/notes/authoring-skills-and-subagents.md`.
+2. Load `authoring-agents` skill (file-form guidance, templates, workflow).
 3. Check for duplicates — grep `skills/` first.
 4. Create `skills/<name>/SKILL.md` (caveman, frontmatter routing) + `README.md` (design intent).
 5. Optionally register in `deploy/AGENTS.md` skill-triggers table if it's a first-class trigger.
@@ -125,7 +125,7 @@ Reject when:
 
 ### Adding a New Subagent
 
-1. Read `.agent/notes/authoring-skills-and-subagents.md` (subagent frontmatter section).
+1. Load `authoring-agents` skill (subagent frontmatter section, templates).
 2. Grep `agents/` for name collisions.
 3. Create `agents/<name>.md` with pinned model, narrow tool set, explicit `description`.
 4. If it should appear in the delegation table: register in `deploy/AGENTS.md`.

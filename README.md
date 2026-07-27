@@ -47,10 +47,12 @@ Skills are instruction sets loaded on demand when a task matches their trigger. 
 | Skill | What it does | Load when | Source |
 |---|---|---|---|
 | `agents-md` | Reject-first workflow for `AGENTS.md` edits | Adding or changing any `AGENTS.md` rule | |
+| `authoring-agents` | File-form guidance and workflow for creating/editing skill files, subagent files, and agent definitions | Authoring or auditing any `SKILL.md`, `agents/*.md`, or agent definition | |
 | `cavecrew` | Decides when to delegate to `@cavecrew-*` subagents | Surgical repo-local code work | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) (MIT) |
 | `caveman-commit` | Conventional Commits messages, subject ≤50 chars, body only when the why isn't obvious | Writing commit messages | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) (MIT) |
 | `caveman-review` | Code review: one line per finding, severity-tagged, no praise | Reviewing PRs or diffs | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) (MIT) |
 | `caveman` | Compressed output style, ~65% fewer tokens. Multiple intensity levels. | Every session (default) | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) (MIT) |
+| `coding-bash` | Conventions, templates, and workflow for writing bash scripts matching the maintainer's established style | Writing or extending any bash script | |
 | `code-frontier` | Repo-state snapshot: done / in-progress / next / deferred / risks | Session continuity, repo-level next steps | |
 | `docs` | Doc discovery and discipline; cheap frontmatter inventory scripts | Non-trivial repo work, `.agent/` work, architecture notes | |
 | `file-tidy` | Metadata-only file inventory, duplicates, cleanup plans | Messy downloads, media libraries, space reclaim | |

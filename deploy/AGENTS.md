@@ -67,7 +67,9 @@ Task matches: load. `caveman`: session-default compression. `no-ai-slop`: human 
 |---|---|
 | `caveman` | Session-default compression |
 | `cavecrew` | Surgical Repo-local code work: locate, edit, validate. |
+| `coding` | Writing / editing / reviewing code in any language; routes to language-specific children (e.g. `coding-bash`) |
 | `agents-md` | Add / change / trim `AGENTS.md` rule or policy |
+| `authoring-agents` | Create, edit, or review skill files, subagent files, or agent definitions; file-form guidance, templates, authoring workflow |
 | `docs` | Non-trivial repo work, docs, `.agent/` work, architecture notes, handoff, bug logs |
 | `code-frontier` | Repo-state snapshot, session continuity, repo-level next/risk/deferred state |
 | `planning` | Multi-step task, ambiguous scope, forks, "plan this", durable plan doc before implementation, or executing an existing `.agent/plan/*.md` |
