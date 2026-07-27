@@ -1,0 +1,15 @@
+# shellcheck configuration for this project
+# https://www.shellcheck.net/wiki/
+
+# Target shell: bash
+shell=bash
+
+# Disabled rules:
+#
+# SC1091 - Not following source (external files not tracked)
+# Allow not following sourced files when they are not in repo.
+disable=SC1091
+
+# SC2034 - Variable appears unused
+# False-positive on variables used in subshells or exported for child processes.
+# Uncomment if needed: disable=SC2034
