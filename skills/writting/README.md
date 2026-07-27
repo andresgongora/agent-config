@@ -34,11 +34,19 @@ Curiosity comes from a complete, relevant fact that deserves explanation. Do not
 - Do not weaken paragraph model into a sentence-count exercise.
 - Avoid long enumerations unless exact scope needs every item. Use bullets only when each item adds distinct detail; reserve `(i)`, `(ii)`, and so on for required multi-part concepts in one paragraph.
 - Keep `SKILL.md` dense. It serves AI agents, not human onboarding.
+- Keep `references/patterns-to-minimize.md` a short conditional editing aid, not a ban list or exhaustive style guide.
+- Keep `references/asd-ste100.md` a scoped guide for directives, not formal ASD-STE100 compliance or a general-prose style.
 
 ## Structure
 
 - `SKILL.md`: model-facing rules; frontmatter owns routing.
+- `references/patterns-to-minimize.md`: final-pass patterns, costs, rewrites, and exceptions.
+- `references/asd-ste100.md`: simplified ASD-STE100-inspired rules for directives only.
 - `README.md`: human intent and maintainer constraints.
+
+## Provenance
+
+`references/asd-ste100.md` adapts selected instruction-writing principles from [woosal1337's STE writing skill](https://github.com/woosal1337/blog/blob/main/videos/ep01-the-cure-for-ai-slop/ste-writing-skill.md). It is intentionally less strict than ASD-STE100 and does not claim standard compliance.
 
 ## See also
 

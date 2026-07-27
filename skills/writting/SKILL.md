@@ -23,12 +23,13 @@ description: "Use ONLY when composing or substantially rewriting reader-facing p
 
 - Use shortest wording preserving meaning, tone, and precision. Main point first; optional context after.
 - State subject, action, reason, consequence in plain order. Prevent reasonable misunderstanding, especially in English.
-- Familiar word when equally exact. Keep specialized term when more exact. Cut ceremony, indirect requests, redundant qualifiers, formality hiding action.
+- Familiar word when equally exact. Keep specialized term when more exact. Cut ceremony, indirect requests, redundant qualifiers, formality hiding action. Avoid stock metaphors, similes, and phrases; keep figurative language only when it sharpens meaning.
 - Short is not shallow. Add needed explanation, evidence, and context; isolate optional detail.
 - Name relevant people, organizations, documents, dates, products, policies, places, prices, quantities, identifiers.
 - State mechanism, not category: what happened, why, reader consequence.
 - Quantify expertise through work, time, scope, or result. No unsupported "experienced," "skilled," "significant," or "widespread."
 - Weave specifics into prose. Prefer exact terms over soft abstractions.
+- Writing rules serve reader. Break one when needed for clarity, accuracy, natural tone, or kindness.
 
 ## Reader relationship and tone
 
@@ -38,6 +39,16 @@ description: "Use ONLY when composing or substantially rewriting reader-facing p
 - Emotional force: facts, stakes, concrete action. No foul language, insults, panic, helplessness, or borrowed motivational slogans.
 - Name problem. State known, uncertain, available action, next step. Show confidence through preparation, competence, ownership, follow-through; never strength declarations.
 - Emotion proportionate to consequence. Write toward action and resilience, never despair or empty reassurance. No clichés: "we are stronger together," "this is a journey," "we will emerge stronger."
+
+## Non-native or low-proficiency reader
+
+When user signals the reader has weak command of the writing language (e.g. "write for a Chinese colleague", "keep it simple for non-native readers", "they struggle with English"):
+
+- Apply STE100 rules (see `references/asd-ste100.md`) to the whole piece, not just directive portions: one idea per sentence, active voice, no idioms or metaphors, no cultural references, no phrasal verbs with ambiguous meaning.
+- Prefer the shortest exact word. Cut ceremony entirely.
+- State condition before action. State consequence explicitly; never leave it implied.
+- Politeness and deference rules from `## Reader relationship and tone` are overridden: follow the cultural register the user describes. If no guidance given, default to direct and warm, no idiom, no humor.
+- Do not enumerate or guess cultural norms. User provides context; apply it.
 
 ## Whole-piece flow
 
@@ -74,25 +85,13 @@ Use claim, mechanism, reality:
 - Otherwise name category, move short examples to sentence end, or omit list. Bullets earn space only when each item needs distinct detail or scan value.
 - Use `(i)`, `(ii)`, and so on only for 3–5 required multi-part concepts within one paragraph; never decorate simple noun lists.
 
+## Directive text
+
+- For instructions, commands, warnings, and actionable items, read `references/asd-ste100.md`.
+- Apply it only to directive portions. Never apply it to general prose, email bodies, blog bodies, explanation, or argument.
+- When text mixes both, isolate directives in a list; keep context and rationale outside it.
+
 ## Examples
-
-**Thin and repetitive:**
-
-> The finance system was slow. This caused delays.
->
-> The slow system affected sales. We need to fix it.
-
-**Better:**
-
-> The finance system delayed checkout confirmation during peak traffic. Customers abandoned orders when confirmation took longer than expected. Moving this workload to faster infrastructure will reduce those delays and protect completed sales.
-
-**Clickbait:**
-
-> You will not believe what changed. Sales rose 20%.
-
-**Better:**
-
-> Faster checkout confirmation increased sales by 20%. Moving finance processing off the shared server removed a delay that had been causing customers to abandon orders. The change made completed purchases more likely.
 
 **Excessive deference:**
 
@@ -102,6 +101,16 @@ Use claim, mechanism, reality:
 
 > Please review the proposal by Friday. Your decision will let us begin the June rollout. The rollout timeline is attached.
 
+**Argument — weak (assertion without mechanism or consequence):**
+
+> Our deployment process is slow. We should improve it.
+
+**Better (claim, mechanism, impact):**
+
+> Deployments take 40 minutes because each step runs sequentially on a single CI runner. Parallelizing the test and build stages would cut that to under 15 minutes, removing the main bottleneck on same-day releases.
+
+See `references/examples.md` for additional before/after pairs covering thin prose and clickbait patterns.
+
 ## Avoid
 
 - Empty openers: "I hope this finds you well," "In today's fast-paced world," "It is important to note," or generic scene-setting.
@@ -110,12 +119,20 @@ Use claim, mechanism, reality:
 - Pretending neutrality when evidence supports a conclusion; pretending certainty when it does not.
 - Imitating any named person's voice. Borrow discipline and evidence density, not personality.
 
-## Final pass
+## Boundaries
 
-Check every paragraph:
+- Not for: quick messages, code comments, changelogs, commit messages, internal notes, technical addenda.
+- Not for: chat replies, agent docs, reports, or any text where reader-facing communication quality is not the goal.
+- Stop when: user asks for edits to code, templates, or structured data — route to appropriate behavior.
 
-- Reader knows why this matters.
-- Claims have support proportionate to stakes.
-- Facts, names, dates, links, quotations, and numbers are accurate.
-- Request, decision, or conclusion is unmistakable.
-- Tone fits audience and consequences.
+## Verification
+
+Check every paragraph before returning:
+
+- [ ] Reader knows why this matters.
+- [ ] Claims have support proportionate to stakes.
+- [ ] Facts, names, dates, links, quotations, and numbers are accurate.
+- [ ] Request, decision, or conclusion is unmistakable.
+- [ ] Tone fits audience and consequences.
+- [ ] Read `references/patterns-to-minimize.md`; rewrite only when it improves clarity, precision, or natural tone — no mechanical bans.
+- [ ] If directive text is present (steps, commands, warnings, actionable items): run the `## Check` section in `references/asd-ste100.md` against those portions.
