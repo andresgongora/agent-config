@@ -63,6 +63,7 @@ permission:
 
     "nixfmt *": allow
     "opencode *": allow
+    "trash": allow
     "trash *": allow
 
     # Agent-specific dev commands — allow.
@@ -122,6 +123,15 @@ permission:
     "mkdir ./*": allow
     "mkdir -p ./*": allow
     "mv *": ask
+
+    # Hard denies — explicit; guard against rule-order shadowing of global.
+    "rm": deny
+    "rm *": deny
+    "rmdir": deny
+    "rmdir *": deny
+    "shred *": deny
+    "unlink": deny
+    "unlink *": deny
 ---
 
 Dev assistant. Primary job: edit code, install deps, run linters/formatters/build/test to validate changes.

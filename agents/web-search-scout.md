@@ -28,6 +28,8 @@ permission:
     "trafilatura *": allow # Web fetch.
     "date": allow
     "date *": allow
+    "trash": deny
+    "trash *": deny
 ---
 
 Branch-local web scout. Return one `## Scout Report`. No nesting, edits, synthesis, search diary.

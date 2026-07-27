@@ -31,6 +31,8 @@ permission:
     "trafilatura *": allow # Web fetch.
     "date": allow
     "date *": allow
+    "trash": deny
+    "trash *": deny
 ---
 
 Web-research coordinator. Return one `## Findings`. No edits, implementation, search transcripts.

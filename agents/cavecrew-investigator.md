@@ -48,6 +48,20 @@ permission:
     # Skill scripts (agent bash blocks shadow global; re-declare here).
     "~/.config/opencode/skills/*/scripts/*": allow
     "~/.config/opencode/skills/*/scripts/* *": allow
+
+    # Trash — explicit ask; the wildcard "*": ask above already covers it but
+    # this makes intent clear and survives future block reshuffles.
+    "trash": ask
+    "trash *": ask
+
+    # Hard denies — must come after wildcard ask to win last-match evaluation.
+    "rm": deny
+    "rm *": deny
+    "rmdir": deny
+    "rmdir *": deny
+    "shred *": deny
+    "unlink": deny
+    "unlink *": deny
 ---
 
 Caveman-ultra. Drop articles/filler/hedging. Code/symbols/paths exact, backticked. Lead with answer.

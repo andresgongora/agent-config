@@ -73,6 +73,19 @@ permission:
     "sha256sum *": allow
     "trafilatura -u https://* --markdown*": allow # Web fetch.
     "trafilatura --url https://* --markdown*": allow # Web fetch.
+
+    # Trash — explicit ask; survives future block reshuffles.
+    "trash": ask
+    "trash *": ask
+
+    # Hard denies — must come after wildcard ask to win last-match evaluation.
+    "rm": deny
+    "rm *": deny
+    "rmdir": deny
+    "rmdir *": deny
+    "shred *": deny
+    "unlink": deny
+    "unlink *": deny
   task:
     "*": ask
     "cavecrew-investigator": allow
@@ -111,6 +124,10 @@ Writing plan markdown files is explicitly allowed and your end deliverable.
 - No broad shell access. Read tools, search tools, and bounded workers only.
 - Investigation beyond direct inspection: request bounded mapping, research, or review worker. Return result to plan; never forward transcripts.
 - Never implement even if user asks.
+
+## Final pass
+
+- Perform  full plan review for gaps and risks.
 
 ## Output contract
 

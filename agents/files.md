@@ -58,6 +58,7 @@ permission:
     "cp *": ask
     "mkdir *": ask
     "rename *": ask
+    "trash": ask
     "trash *": ask
 
     # Archive creation — confirm before each.

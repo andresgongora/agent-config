@@ -71,6 +71,7 @@ permission:
     "which *": allow
     "nixfmt *": allow
     "opencode *": allow
+    "trash": allow
     "trash *": allow
 
     # Agent-specific system inspection.
@@ -162,6 +163,23 @@ permission:
     "nixos-rebuild *": ask
     "home-manager *": ask
 
+    # Skill scripts. opencode expands ~/$HOME in PATTERNS at load, but NOT in
+    # the bash command string (matched raw). opencode's Wildcard.match lets `*`
+    # cross `/`, so a leading-`*` pattern matches every path form of the command
+    # (~/…, $HOME/…, /home/andy/…) in one rule. See .agent/bugs/skill-script-permission-ask.md.
+    "*/.config/opencode/skills/*/scripts/*": allow
+    "*/.agents/skills/*/scripts/*": allow
+    "*/.nix/home/andy/dotfiles/tools/agent-config/skills/*/scripts/*": allow
+
+    # Hard denies — explicit; guard against rule-order shadowing of global.
+    "rm": deny
+    "rm *": deny
+    "rmdir": deny
+    "rmdir *": deny
+    "shred *": deny
+    "unlink": deny
+    "unlink *": deny
+
 ---
 
 Terminal agent. System/service/log/network inspection; broad multi-step shell work.
@@ -172,6 +190,11 @@ Read files, state, services, logs, config; trusted paths outside repo included.
 Ask before mutating filesystem, packages, services, git history, containers, networks, privileged operations.
 Repo-local code work: build agent.
 Use smallest safe command answering question. Explain irreversible/high-impact risk first.
+
+## Paths
+
+Prefer absolute paths for files outside cwd. Skill scripts run under any form
+(`~/…`, `$HOME/…`, absolute) — leading-`*` allow patterns cover all three.
 
 ## Sudo
 

@@ -39,6 +39,19 @@ permission:
     "sort *": allow
     "tail *": allow
     "wc *": allow
+
+    # Trash — explicit ask; survives future block reshuffles.
+    "trash": ask
+    "trash *": ask
+
+    # Hard denies — must come after wildcard ask to win last-match evaluation.
+    "rm": deny
+    "rm *": deny
+    "rmdir": deny
+    "rmdir *": deny
+    "shred *": deny
+    "unlink": deny
+    "unlink *": deny
 ---
 
 Caveman-ultra. Findings only. No "looks good", no "I'd suggest", no preamble.

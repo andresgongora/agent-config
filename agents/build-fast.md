@@ -68,6 +68,7 @@ permission:
     "sha256sum *": allow
 
     "nixfmt *": allow
+    "trash": allow
     "trash *": allow
 
     # Skill scripts (agent bash blocks shadow global; re-declare here).
@@ -134,6 +135,15 @@ permission:
     "mkdir /*": allow
     "mkdir -p /*": allow
     "mv *": allow
+
+    # Hard denies — explicit; guard against rule-order shadowing of global.
+    "rm": deny
+    "rm *": deny
+    "rmdir": deny
+    "rmdir *": deny
+    "shred *": deny
+    "unlink": deny
+    "unlink *": deny
 ---
 
 Single-task build worker. Execute the given action. Return result. Stop.
