@@ -19,6 +19,7 @@ Load the matching child skill IN ADDITION to this one when the task targets a sp
 | Language / target | Child skill |
 |---|---|
 | Bash script file as deliverable | `coding-bash` |
+| Unit tests, TDD, testability, coverage, framework choice | `coding-unit-test` |
 
 When no child matches, apply this skill alone.
 

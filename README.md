@@ -62,7 +62,7 @@ Skills are instruction sets loaded on demand when a task matches their trigger. 
 | `opencode-local` | Locate and edit this machine's deployed OpenCode config | Local OpenCode config work | |
 | `planning` | Plan-first workflow: session todos or durable pre-implementation plan docs | Multi-step tasks, ambiguous scope, risky forks | |
 | `teach` | Multi-session teaching workspace | Explicit request only | [mattpocock/skills](https://github.com/mattpocock/skills) (MIT) |
-| `unit-test` | Test framework and idiom discipline | Writing tests, TDD, coverage | |
+| `coding-unit-test` | Test framework and idiom discipline; child of `coding` ecosystem | Writing tests, TDD, coverage | |
 | `web-search` | Coordinates online research through a main agent and optional scout fanout | Multi-page online research | |
 | `writting` | Reader-facing prose: direct, evidence-led, peer-level, and structured for action | Emails, official correspondence, blog posts, proposals, public statements | |
 

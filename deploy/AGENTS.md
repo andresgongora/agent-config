@@ -79,7 +79,7 @@ Task matches: load. `caveman`: session-default compression. `no-ai-slop`: human 
 | `git` | Branch / commit / merge / conflict / push / undo workflows |
 | `caveman-commit` | Write git commit message |
 | `caveman-review` | Code review or PR/diff review comments; one actionable line per finding |
-| `unit-test` | Unit tests, TDD, testability, coverage, framework choice |
+| `coding-unit-test` | Unit tests, TDD, testability, coverage, framework choice |
 | `nixos` | NixOS / Home Manager config, pkg search, flakes, modules, rebuild/debug workflows |
 | `opencode-local` | This machine's OpenCode config, deployed wiring, permissions, agents, skills, plugins, models |
 | `file-tidy` | Metadata-only file inventory, duplicates, cleanup review, portable naming, sorting, or reclaiming disk space. Never file content. |
