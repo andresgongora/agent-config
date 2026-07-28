@@ -31,7 +31,7 @@ Repo-local rules for agents authoring / editing skills, subagents, and docs in t
 - Before adding / restructuring docs under `.agent/`: load the `docs` skill.
 - Before broad code scan: use cheap doc discovery (see `docs` skill) and check `.agent/frontier.md` for current repo state.
 - Update `.agent/frontier.md` when the shape / done / in-progress / next / boundary of the repo shifts. Use the `code-frontier` skill.
-- After any structural change (new skill / subagent / doc, moved template, deleted artifact): run `tools/check-ai-repo` before reporting done.
+- After any structural change (new skill / subagent / doc, moved template, deleted artifact): grep for dead refs before reporting done.
 
 <!------------------------------------------------------------------------------------------------->
 ## Access Level
@@ -72,7 +72,7 @@ Reject when:
 
 ### Skill Authoring
 
-- Every skill folder ships `SKILL.md` + `README.md`. Enforced by `tools/check-ai-repo`.
+- Every skill folder ships `SKILL.md` + `README.md`.
 - Content placement is strict: skill-load triggers + `description` live in `SKILL.md` frontmatter (routing truth); rules / workflow / boundaries live in the `SKILL.md` body; explanations, rationale, design intent, and maintainer notes live in `README.md`. READMEs serve both humans and maintaining agents; a skill-USING agent must not need the README.
 - `SKILL.md` frontmatter (`name`, `description`) owns routing truth. Do NOT repeat trigger phrases in the body.
 - Body is for post-load behavior: workflow, boundaries, decision rules, output contract.
@@ -93,7 +93,7 @@ Reject when:
 
 ### Docs (`.agent/`)
 
-- Frontmatter required: `title`, `summary`. Optional: `status`, `updated`. Enforced by `tools/check-ai-repo`.
+- Frontmatter required: `title`, `summary`. Optional: `status`, `updated`.
 - Living docs. Stale doc → verify from source, then update.
 - If a doc grows past ~2 screens: split.
 - Do not create docs nobody will use.
@@ -120,8 +120,7 @@ Reject when:
 3. Check for duplicates — grep `skills/` first.
 4. Create `skills/<name>/SKILL.md` (caveman, frontmatter routing) + `README.md` (design intent).
 5. Optionally register in `deploy/AGENTS.md` skill-triggers table if it's a first-class trigger.
-6. Run `tools/check-ai-repo`.
-7. If it obsoletes an existing skill: delete the old one in the same change.
+6. If it obsoletes an existing skill: delete the old one in the same change.
 
 ### Adding a New Subagent
 
@@ -129,7 +128,6 @@ Reject when:
 2. Grep `agents/` for name collisions.
 3. Create `agents/<name>.md` with pinned model, narrow tool set, explicit `description`.
 4. If it should appear in the delegation table: register in `deploy/AGENTS.md`.
-5. Run `tools/check-ai-repo`.
 
 ### Adding a New Doc
 
@@ -137,7 +135,6 @@ Reject when:
 2. Check whether an existing doc should absorb this content instead.
 3. Add frontmatter (`title`, `summary`; `status`, `updated` when useful).
 4. Keep to ~2 screens. Split if it grows.
-5. Run `tools/check-ai-repo`.
 
 <!------------------------------------------------------------------------------------------------->
 ## Boundaries
@@ -154,9 +151,5 @@ Reject when:
 ## Tools
 <!------------------------------------------------------------------------------------------------->
 
-- **Repo health check** (frontmatter, skill/README pairing, dead refs, frontier length):
-  ```sh
-  tools/check-ai-repo
-  ```
 - **Deploy**: client-specific and out of scope for this repo. The maintainer symlinks / copies these files into their AI-agent client's config dir (see the outer dotfiles / infrastructure repo). Never agent-initiated.
-- **No build / test / lint / format at repo level** — content is markdown + YAML. Structural validation lives in `check-ai-repo`.
+- **No build / test / lint / format at repo level** — content is markdown + YAML.

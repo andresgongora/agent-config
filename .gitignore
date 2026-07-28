@@ -11,3 +11,11 @@ model-aliases.json
 
 # Plans
 .agent/plan*
+
+# Frontier (machine-local state, not committed)
+.agent/frontier.md
+
+# In-review (not ready to commit)
+commands/checkpoint.md
+commands/commit.md
+commands/document.md

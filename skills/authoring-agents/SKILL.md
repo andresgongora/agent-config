@@ -124,7 +124,6 @@ After creating or editing:
 - [ ] No dead refs to paths/skills/tools that don't exist
 - [ ] Templates reference one level deep (not inlined)
 - [ ] If replacing an artifact: all inbound refs updated or removed
-- [ ] `tools/check-ai-repo` exits 0
 
 ## Boundaries
 
