@@ -111,13 +111,15 @@ Document path to write or maintain durable implementation-plan document. Read bu
 
 Draft captures decision-grade foundation:
 - clearer goal and honest requirement rewrite
-- hard/soft constraints, non-goals, assumptions
+- hard/soft constraints, non-goals, assumptions, locked decisions (standing invariants, when any exist)
 - observable success criteria and risk triggers
 - top-level AI execution plan
 - research, tools, leads, delegation only if they change execution
 - follow-up questions and final deliverable format when useful
 
-Research only decision-blocking unknowns. After scope, inspect approach-changing runtime skills, MCPs/tools, bounded workers. No exhaustive inventory/irrelevant reads. Per chosen capability: purpose, trigger, access, output, fallback. Per non-trivial milestone, assess delegation for context/parallelism/review; useful: record `Delegate:` (worker, bounded task, expected return, trigger). Put instructions beside milestone; centralize only shared setup, environment assumptions, fallbacks. Plan docs may name runtime capabilities: task-scoped, not reusable coupling. Runtime likely, not guaranteed: record material dependency + fallback. Direct-inspect one local fact. Isolate broad mapping, external research, independent review when result compact/useful. Keep source/path leads; no transcript dump. Non-trivial draft is session work: scope, todos, revise openly.
+Research only decision-blocking unknowns. After scope, inspect approach-changing runtime skills, MCPs/tools, bounded workers. No exhaustive inventory/irrelevant reads. Per chosen capability: purpose, trigger, access, output, fallback. Per non-trivial milestone, assess delegation for context/parallelism/review; useful: record `Delegate:` (worker, bounded task, expected return, trigger). Tag `Delegate:` when milestone is isolatable: inputs nameable in the worker prompt, correct without dialogue/thread context, result verifiable on return. Keep in main when it needs live thread context, author intent, or unstated decisions — fresh worker guesses wrong. Deciding the split at plan time spares the executor when-to-delegate reasoning; executor holds more knowledge and may override. Put instructions beside milestone; centralize only shared setup, environment assumptions, fallbacks. Plan docs may name runtime capabilities: task-scoped, not reusable coupling. Runtime likely, not guaranteed: record material dependency + fallback. Direct-inspect one local fact. Isolate broad mapping, external research, independent review when result compact/useful. Keep source/path leads; no transcript dump. Non-trivial draft is session work: scope, todos, revise openly.
+
+Before approval, run a clean-context pass: dispatch a bounded review worker on the finished plan doc, uncontaminated by dialogue. Author context is chat-polluted and blind to what the doc fails to state. Worker judges the doc as a document — stubs/dead-ends, cross-section contradictions (pass locked decisions to verify), leanness, precision. Feed findings back, revise, then approve. Skip only for a trivial plan (state the skip).
 
 User approval: mark approved. Changed scope: amend plan, date revision, explain decision. Archive only after delivery/abandonment.
 

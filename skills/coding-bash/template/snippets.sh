@@ -15,6 +15,9 @@ isRootUser() { [[ "${EUID}" -eq 0 ]]; }
 ## getTimestamp — ISO-8601 timestamp for log lines or filenames
 getTimestamp() { date '+%Y-%m-%dT%H:%M:%S'; }
 
+## getDate — ISO-8601 date for log lines or filenames
+getDate() { date '+%Y-%m-%d'; }
+
 ## createTemporaryDirectory — creates a unique workspace; caller owns cleanup
 createTemporaryDirectory() { mktemp -d "${TMPDIR:-/tmp}/script.XXXXXX"; }
 

@@ -15,6 +15,7 @@ description: >
 
 - Shebang: `#!/usr/bin/env bash`
 - Line 2: `set -Eeuo pipefail` — line 3: `IFS=$'\n\t'`
+- Indent: 4 spaces (never tabs)
 - Line width: 100 chars max
 - Section separators: `##` + 98 `=` chars (100 total), followed by `##<TAB><ALL CAPS>` header
 - Sub-section separators: `##` + 98 `-` chars (100 total), followed by `##<TAB>` title, closed by another `##` + 98 `-` chars line

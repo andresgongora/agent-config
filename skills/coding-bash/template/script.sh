@@ -5,28 +5,34 @@ IFS=$'\n\t'
 ## TEMPLATE: Before ship: replace/remove TEMPLATE lines and examples. Run bash -n, shellcheck.
 
 ##==================================================================================================
-##	DEPENDENCY CHECKS
+##	REQUIREMENTS
 ##==================================================================================================
 
 ## TEMPLATE: Replace/remove examples. requireCommand for every non-baseline external binary.
-requireCommand() { command -v "$1" >/dev/null 2>&1 || { printf 'error: command not found: %s\n' "$1" >&2; exit 1; }; }
+
+requireCommand() { command -v "$1" >/dev/null 2>&1 || { printf "Abort: '%s' not found\n" "$1" >&2; exit 1; }; }
 
 requireCommand dependency_example # TEMPLATE: Replace/remove.
+requireCommand another_example # TEMPLATE: Replace/remove.
 
 ##==================================================================================================
 ##	GLOBALS
 ##==================================================================================================
 
 ## TEMPLATE: Replace/remove example globals.
+
 declare -r SCRIPT_NAME="${0##*/}"
+declare -r SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
 
 ##==================================================================================================
 ##	UTILITIES
 ##==================================================================================================
 
-die() { printf '%s: %s\n' "$SCRIPT_NAME" "$1" >&2; exit "${2:-1}"; }
-
 ## TEMPLATE: Add needed helpers from snippets.sh; else remove this section.
+## TEMPLATE: Or add small helper functions here, e.g. for handling i/o or formatting.
+## TEMPLATE: Keep helpers small and focused; core logic goes in core functions below.
+
+die() { printf '%s: %s\n' "$SCRIPT_NAME" "$1" >&2; exit "${2:-1}"; } # Exit with message.
 
 ##==================================================================================================
 ##	CORE FUNCTIONS
@@ -49,7 +55,20 @@ printHello() {
 ##	ARGUMENT PARSING
 ##==================================================================================================
 
-printUsage() { printf 'Usage: %s <required-arg>\n' "$SCRIPT_NAME"; }
+printUsage() {
+    printf 'Usage:\n'
+    printf '  %s <required-arg>      Run script with required argument\n' "$SCRIPT_NAME"
+    printf '\n'
+    printf 'Options:\n'
+    printf '  -h, --help             Show this message\n'
+    printf '\n'
+    printf 'Examples:\n'
+    printf '  %s Alice\n' "$SCRIPT_NAME"
+    printf '  %s "Some Value"\n' "$SCRIPT_NAME"
+    printf '\n'
+    printf 'Shell alias (optional) — add to ~/.bashrc:\n'
+    printf '  alias myscript='"'"'%s/%s'"'"'\n' "$SCRIPT_DIR" "$SCRIPT_NAME"
+}
 
 if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
     printUsage
@@ -73,4 +92,5 @@ main() {
 ##	SCRIPT ENTRY POINT
 ##==================================================================================================
 
+## TEMPLATE: Unless argument list is trivial, do not pass arguments into main; use globals instead.
 main

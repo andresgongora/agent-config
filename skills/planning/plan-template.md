@@ -29,6 +29,12 @@ updated: YYYY-MM-DD
 
 - <explicit exclusion>
 
+## Locked decisions
+
+<omit if none. Standing invariants the whole plan must stay consistent with; the final-pass review verifies each holds everywhere with no leftover superseded wording. Not a changelog — that is Decisions / revisions.>
+
+- <decision, stated exactly as it must appear everywhere>
+
 ## Assumptions to validate
 
 - <premise> — <validation method / decision impact>
