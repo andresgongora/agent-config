@@ -103,7 +103,8 @@ Reject when:
 
 - Skill (LLM-facing) → `skills/<name>/SKILL.md`.
 - Skill (human maintainer) → `skills/<name>/README.md`.
-- Skill assets (templates, scripts) → `skills/<name>/<asset>` (flat where possible).
+- Skill references/templates → `skills/<name>/<asset>` (flat where possible).
+- Skill executable assets → `skills/<name>/scripts/`; create only when needed, never beside `SKILL.md`.
 - Subagent → `agents/<name>.md`.
 - Nested subagent family → `agents/<family>/`.
 - Cross-cutting design doc → `.agent/notes/<topic>.md`.

@@ -31,6 +31,7 @@ The guiding rationale: context is the scarcest resource. Skills are read on ever
 - **Progressive disclosure.** SKILL.md stays ≤ ~500 lines. Templates, long examples, reference tables → one-level-deep reference files linked from SKILL.md. If SKILL.md grows past 500 lines: extract, do not inline.
 - **Keep templates self-informing and in sync.** Templates carry pointer/reminder cues only — full rules stay in SKILL.md. If you change a rule in SKILL.md, check whether template inline cues still point correctly. Cues that restate or contradict SKILL.md rules diverge silently. Swap-test: SKILL.md must stand without the templates; templates must be usable with only their own inline cues.
 - **Goals-vs-form separation.** SKILL.md body = post-load behavior (rules, workflow, output contract). Rationale, token economics, model-routing philosophy → this README. Do not move rationale into SKILL.md.
+- **Executable asset boundary.** A skill with executable helpers uses `scripts/`; never place them beside `SKILL.md`. Do not create an empty `scripts/` directory for a Markdown-only skill.
 - **Reject-first discipline still applies.** This skill is authoring guidance, not a license to add. Check duplicates, evaluate whether an existing artifact can be extended instead.
 
 ## Reference files (one level deep)

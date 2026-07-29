@@ -27,6 +27,7 @@ description: >
 |---|---|
 | Skill (LLM-facing) | `skills/<name>/SKILL.md` |
 | Skill README (human) | `skills/<name>/README.md` |
+| Skill executable assets | `skills/<name>/scripts/` — create only when needed; never beside `SKILL.md` |
 | Subagent | `agents/<name>.md` |
 | Nested subagent family | `agents/<family>/` |
 | Primary agent | `agents/<name>.md` |
@@ -88,9 +89,10 @@ See template: `templates/agent-file.md`.
 4. Fill frontmatter: `name`/`description` are routing truth — write these last, after body is stable.
 5. Write body following the form rules above.
 6. Trim: if body exceeds ~500 lines, extract to reference file and link.
-7. Ask before shipping: would a cheaper model succeed with this prompt? If no, tighten.
-8. Verify (see section below).
-9. If replacing/obsoleting an existing artifact: grep for all inbound refs; update or remove in the same change.
+7. Add `scripts/` only when skill owns executables; place every executable there. Pure Markdown skills keep no empty folder.
+8. Ask before shipping: would a cheaper model succeed with this prompt? If no, tighten.
+9. Verify (see section below).
+10. If replacing/obsoleting an existing artifact: grep for all inbound refs; update or remove in the same change.
 
 ## Decoupling checklist
 
