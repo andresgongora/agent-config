@@ -12,6 +12,11 @@ model-aliases.json
 # Plans
 .agent/plan*
 
+# agent-benchmark data (reports, prompts, run artifacts — never committed)
+agents/agent-benchmark.md
+skills/agent-benchmark/
+/agent-benchmark/
+
 # Frontier (machine-local state, not committed)
 .agent/frontier.md
 
