@@ -8,6 +8,7 @@ description: >
 mode: subagent
 model: POOL_FAST
 temperature: 0.0
+effort: low
 permission:
   read: deny
   edit: deny
