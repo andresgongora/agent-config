@@ -146,5 +146,5 @@ Material scope conflict: ask before amendment. Minor clarity: amend, record revi
 - Native todo mechanism owns session state.
 - Durable plan document owns stable intent; task handoff/state snapshots own other memory.
 - Delegation by capability, never mandatory or reflexive.
-- Workflow only. Code style, tests, commits, and prose style belong elsewhere.
+- Workflow only. Code style, tests, commits belong elsewhere. Plan-doc output stays dense/low-token (fragments, bullets, exact paths/commands); prose-style skill lives elsewhere but density is not optional.
 - If planning cost exceeds task risk, execute direct.

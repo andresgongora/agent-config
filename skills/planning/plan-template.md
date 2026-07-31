@@ -7,13 +7,15 @@ updated: YYYY-MM-DD
 
 # <work item> Plan
 
+<!-- Fill dense, low-token: fragments, bullets, no filler. Preserve exact paths/commands/code verbatim. Adapt headings; delete unused, never leave empty. -->
+
 ## Goal
 
 <outcome, not activity>
 
 ## Requirement rewrite
 
-<real user need; better path or rejected framing if relevant>
+<real need; better path or rejected framing if any>
 
 ## Constraints
 

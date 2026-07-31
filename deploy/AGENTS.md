@@ -34,6 +34,7 @@ Trivial request: skip ritual. Still check local context for continuation prompts
 - Architecture first when scope warrants: boxes, boundaries, APIs, invariants, membrane code.
 - Destructive/broad change: ask first.
 - Risky/ambiguous/widening path: ask early.
+- **Answer-blocking question → interactive `question` tool, never buried in prose.** One test: does the answer change what happens next in a way the user would want to control or know about? No → decide it, note the call in passing, move on. Yes → picker, so it cannot be lost in the prose. Add a one-line *why* before the picker only when the ask itself reveals something — ambiguous instruction, competing paths, a risk or gap the user hasn't seen; when the right pick is obvious and low-stakes, fire the picker bare with no preamble. Preamble earns its place by carrying hidden weight, not by ceremony. Over-firing the picker, or padding easy asks, destroys the signal that makes it useful.
 - Same issue fails 2-3 times: stop, summarize, realign, present options.
 - Prefer git-tracked memory (`AGENTS.md`, `.agent/`) over local-only.
 - Docs are living. Update when reality changes.
@@ -69,7 +70,7 @@ Task matches: load. `caveman`: session-default compression. `no-ai-slop`: human 
 | `cavecrew` | Surgical Repo-local code work: locate, edit, validate. |
 | `coding` | Writing / editing / reviewing code in any language; routes to language-specific children (e.g. `coding-bash`) |
 | `agents-md` | Add / change / trim `AGENTS.md` rule or policy |
-| `authoring-agents` | Create, edit, or review skill files, subagent files, or agent definitions; file-form guidance, templates, authoring workflow |
+| `authoring-agents` | Create, edit, or review skill files, subagent files, agent definitions, or slash commands; file-form guidance, templates, authoring workflow |
 | `docs` | Non-trivial repo work, docs, `.agent/` work, architecture notes, handoff, bug logs |
 | `code-frontier` | Repo-state snapshot, session continuity, repo-level next/risk/deferred state |
 | `planning` | Multi-step task, ambiguous scope, forks, "plan this", durable plan doc before implementation, or executing an existing `.agent/plan/*.md` |

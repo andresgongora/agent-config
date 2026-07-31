@@ -2,10 +2,10 @@
 name: authoring-agents
 description: >
   Workflow for creating, editing, or reviewing agent ecosystem artifacts: skill files
-  (SKILL.md), subagent files (agents/*.md), and primary agent definitions. Load when
-  authoring or auditing any of these three file forms. Not for AGENTS.md rule-policy
-  work (reject-first checklist, which rules belong — that is the AGENTS.md-maintenance
-  behavior). Not for prose writing, code, or general docs.
+  (SKILL.md), subagent files (agents/*.md), primary agent definitions, and slash commands
+  (commands/*.md). Load when authoring or auditing any of these four file forms. Not for
+  AGENTS.md rule-policy work (reject-first checklist, which rules belong — that is the
+  AGENTS.md-maintenance behavior). Not for prose writing, code, or general docs.
 ---
 
 # authoring-agents
@@ -31,6 +31,7 @@ description: >
 | Subagent | `agents/<name>.md` |
 | Nested subagent family | `agents/<family>/` |
 | Primary agent | `agents/<name>.md` |
+| Slash command | `commands/<name>.md` |
 
 Prefer standalone files under `agents/` over inline blocks in client config. File is source of truth; client config handles cross-agent policy and MCP wiring only.
 
@@ -81,11 +82,28 @@ Body: role boundary, what it does NOT do, output contract if structured, stoppin
 
 See template: `templates/agent-file.md`.
 
+## Command file form
+
+Slash commands are agent-directed instructions invoked by name. No model, no tools, no output contract — just behavior the agent must follow when the command fires.
+
+Frontmatter:
+- `description`: one sentence. What this command does. Shown in command picker; routing truth.
+
+Body rules:
+- Imperative dense prose. No bullet lists unless order matters. No headers.
+- State what to do, in what order, under what conditions. No narration, no filler.
+- Use `$ARGUMENTS` for user-supplied input. Handle missing gracefully (fallback or ask).
+- Reference skills by behavior keyword, not hard name.
+- No output contract section — command body IS the contract.
+- Target length: fits on one screen. Long commands signal over-scoping; split or trim.
+
+No README needed. No template — commands are too short to warrant one.
+
 ## Authoring workflow
 
 1. Check for name collision: grep `skills/` or `agents/` for existing artifact.
-2. Decide file type (skill / subagent / primary agent) and location.
-3. Copy the matching template from `templates/`.
+2. Decide file type (skill / subagent / primary agent / command) and location.
+3. Copy the matching template from `templates/` (skills/subagents/agents); commands have no template — write directly.
 4. Fill frontmatter: `name`/`description` are routing truth — write these last, after body is stable.
 5. Write body following the form rules above.
 6. Trim: if body exceeds ~500 lines, extract to reference file and link.
@@ -121,6 +139,7 @@ Same-family exception: artifacts in one family (e.g. `cavecrew-*`) may name each
 After creating or editing:
 - [ ] Frontmatter YAML parses cleanly
 - [ ] Skill: `SKILL.md` + `README.md` both present
+- [ ] Command: no README, fits one screen, `$ARGUMENTS` handled
 - [ ] `description` is routing truth; no trigger phrases duplicated in body
 - [ ] No hard-name coupling to other skills (behavior keywords only)
 - [ ] No dead refs to paths/skills/tools that don't exist
