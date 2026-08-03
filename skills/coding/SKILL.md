@@ -1,25 +1,22 @@
 ---
 name: coding
-description: >
-  Cross-language coding conventions shared by all or most programming languages: structure,
-  naming discipline, function design, readability. Load whenever writing, editing, or reviewing
-  code in any language, or when a language-specific coding skill would apply. Acts as parent
-  router to language-specific skills (e.g. bash script authoring). Not for prose, docs, config
-  files, or non-code deliverables.
+description: "Cross-language coding conventions shared by all or most programming languages: structure, naming discipline, function design, readability. Load whenever writing, editing, or reviewing code in any language, or when a language-specific coding skill would apply. Acts as parent router to language-specific skills (e.g. bash script authoring). Not for prose, docs, config files, or non-code deliverables."
 ---
 
 # coding
 
-Language-agnostic conventions. Routes to language-specific child skills.
+Language-agnostic conventions. Routes to matching child skills.
 
 ## Child skills (routing)
 
-Load the matching child skill IN ADDITION to this one when the task targets a specific language.
+Load matching child skills IN ADDITION to this one when task needs language, test, or design-specific rules.
 
 | Language / target | Child skill |
 |---|---|
-| Bash script file as deliverable | `coding-bash` |
+| Persistent Bash script file deliverable | `coding-bash` |
+| Python code, packages, or project commands | `coding-python` |
 | Unit tests, TDD, testability, coverage, framework choice | `coding-unit-test` |
+| Object-oriented design, inheritance, interfaces, composition | `coding-oop` |
 
 When no child matches, apply this skill alone.
 
@@ -37,12 +34,11 @@ When no child matches, apply this skill alone.
 
 ## Boundaries
 
-- Not for: prose, docs, config-only files, non-code deliverables.
 - Defer language-specific rules (syntax, idiom, tooling) to the matching child skill.
 - New language-agnostic rules added only when durable patterns emerge — not speculatively.
 
 ## Verification
 
 - [ ] Nesting: reader must track multiple conditions simultaneously? Extract.
-- [ ] Every function has one responsibility
-- [ ] Matching child skill loaded when task is language-specific
+- [ ] Function responsibility: split only when one name needs “and” or extraction improves clarity
+- [ ] Matching child skill loaded when task needs language, test, or design-specific rules

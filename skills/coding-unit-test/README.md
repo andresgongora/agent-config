@@ -19,7 +19,7 @@ unit tests / TDD / testability / coverage / test framework choice / stable modul
 
 ## Maintainer constraints
 
-- **Stay language/framework agnostic.** Language-specific test advice belongs in language-specific child skills (e.g. `coding-python`).
+- **Stay language/framework agnostic.** Language-specific test advice belongs in an owning language-specific child skill when one exists.
 - **Keep "inspect existing setup first".** Primary value. Losing it means agents invent frameworks.
 - **Keep escalation honest.** Ask when framework default is unclear, conventions conflict, policy is unclear, or refactor is material.
 - **Do not turn this into a TDD manifesto.** Some tasks need tests after implementation; tiny or unstable work may need none.

@@ -1,10 +1,6 @@
 ---
 name: coding-unit-test
-description: >
-  Workflow for writing, reviewing, and improving unit tests in any language. Load when
-  user asks for unit tests, TDD, testability, coverage, test framework choice, or when
-  implementing stable module boundaries. Skip when testing is explicitly out of scope,
-  or for tiny glue and unstable spikes that need no test-first ritual.
+description: "Workflow for writing, reviewing, and improving unit tests in any language. Load when user asks for unit tests, TDD, testability, coverage, or test framework choice. Skip when testing is explicitly out of scope, for tiny glue and unstable spikes that need no test-first ritual, or for test infrastructure and CI configuration."
 ---
 
 # coding-unit-test
@@ -31,7 +27,7 @@ No setup exists:
 
 - material, repo-wide framework choice: ask
 - clear ecosystem default: choose it, state choice
-- no clear default: ask — prefer language/tooling convention over generic `tests/` layout
+- no clear default: choose one sane default, state choice; use root `tests/` unless language or tooling convention gives stronger evidence
 
 ## Design
 

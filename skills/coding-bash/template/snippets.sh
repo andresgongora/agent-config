@@ -30,7 +30,7 @@ confirmExactText() {
     local expected="$2"
     local answer
 
-    read -r -p "$prompt" answer
+    IFS= read -r -p "$prompt" answer
     [[ "$answer" == "$expected" ]]
 }
 
@@ -55,4 +55,8 @@ logMessage() {
 }
 
 ## logVerbose MESSAGE... — emit INFO line only when VERBOSE=true
-logVerbose() { [[ "${VERBOSE:-false}" == true ]] && logMessage INFO "$@"; }
+logVerbose() {
+    if [[ "${VERBOSE:-false}" == true ]]; then
+        logMessage INFO "$@"
+    fi
+}

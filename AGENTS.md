@@ -9,8 +9,6 @@ Repo-local rules for agents authoring / editing skills, subagents, and docs in t
 - Living doc. Evolves from repeated signal, not one-off taste.
 - Durable behavior only. Task logs → `.agent/progress/`.
 - Reader is AI. Dense, imperative, fragment OK.
-- Every referenced skill / subagent / doc / path is verified or removed. Dead refs are the failure mode this repo actively fights.
-- If you must add a rule: load the `agents-md` skill first. Reject-first is the default.
 
 <!------------------------------------------------------------------------------------------------->
 ## Info
@@ -26,11 +24,12 @@ Repo-local rules for agents authoring / editing skills, subagents, and docs in t
 ## Directives
 <!------------------------------------------------------------------------------------------------->
 
-- Before adding / changing a skill or subagent: load the `authoring-agents` skill. Non-negotiable.
-- Before adding a rule to any `AGENTS.md`: load the `agents-md` skill. Reject-first.
-- Before adding / restructuring docs under `.agent/`: load the `docs` skill.
-- Before broad code scan: use cheap doc discovery (see `docs` skill) and check `.agent/frontier.md` for current repo state.
-- Update `.agent/frontier.md` when the shape / done / in-progress / next / boundary of the repo shifts. Use the `code-frontier` skill.
+- Before adding / changing a skill or subagent: load artifact-authoring workflow. Non-negotiable.
+- Before touching any `AGENTS.md` (add / change / trim / audit / create): load AGENTS-maintenance workflow. Reject-first.
+- Before adding / restructuring docs under `.agent/`: load documentation workflow.
+- Before broad scan: check `.agent/frontier.md` for current repo state.
+- Update `.agent/frontier.md` when shape / done / in-progress / next / boundary shifts. Use repo-state snapshot workflow.
+- `deploy/AGENTS.md` `## Workflow` step-4 routing table is a curated routing subset, not a complete index of `skills/`. Nothing validates it. Add / rename / delete / re-scope a skill → reconcile that table in the same change. Omission is legitimate when a parent skill routes the child or the skill is user-invoked only; record nothing, just do not let a listed row go stale.
 - After any structural change (new skill / subagent / doc, moved template, deleted artifact): grep for dead refs before reporting done.
 
 <!------------------------------------------------------------------------------------------------->
@@ -65,39 +64,9 @@ Reject when:
 
 ### Style
 
-- **`SKILL.md`, subagent files, `.agent/**/*.md`, `AGENTS.md`**: caveman-ultra by default. Bullets over prose. Fragments OK. Preserve exact code, paths, commands, error strings, URLs. Soften to caveman-full only when adapting skills/agents with complex multi-step sequences where ultra creates ambiguity.
+- **`SKILL.md`, subagent files, `.agent/**/*.md`, `AGENTS.md`**: maximum compression by default. Bullets over prose. Fragments OK. Preserve exact code, paths, commands, error strings, URLs. Relax one notch only for complex multi-step sequences where compression creates ambiguity.
 - **`README.md` (skill, repo root)**: human-facing. Metaphors, design intent, maintainer notes. Brief. An agent USING the repo should NOT rely on READMEs; an agent MAINTAINING may still read them.
 - Structure survives compression (headings, tables, frontmatter, code blocks). Only prose compresses.
-- Do not couple this rule to a specific compression skill. Style is the outcome.
-
-### Skill Authoring
-
-- Every skill folder ships `SKILL.md` + `README.md`.
-- Content placement is strict: skill-load triggers + `description` live in `SKILL.md` frontmatter (routing truth); rules / workflow / boundaries live in the `SKILL.md` body; explanations, rationale, design intent, and maintainer notes live in `README.md`. READMEs serve both humans and maintaining agents; a skill-USING agent must not need the README.
-- `SKILL.md` frontmatter (`name`, `description`) owns routing truth. Do NOT repeat trigger phrases in the body.
-- Body is for post-load behavior: workflow, boundaries, decision rules, output contract.
-- Prompt design: write for a smaller model. Explicit templates, stop conditions, refusal triggers. If it only works with a strong model, tighten the prompt before reaching for a bigger one.
-- Skill file on disk ≠ skill loaded at runtime. Respect the gap.
-
-### Subagent Authoring
-
-- Standalone file under `agents/<name>.md` beats inline agent definitions.
-- Pin `model` explicitly. Cheap for locators / reviewers, balanced for execution, strong only when justified.
-- Set `temperature` explicitly. Choose for task need: lower for exact bounded work; higher when useful diversity outweighs variance.
-- Tools: default-deny. Only what the subagent truly needs.
-- `permission.task` (nesting): allowlist specific children only. Never `"*": "allow"`.
-- `bash` allowlist: narrow. Wildcards leak.
-- Permission profile follows role: `cli` broad terminal; `build` broad workspace-dev; `files` paths/metadata/hashes only; `chat` cloud-only. Narrow workers explicit deny. Rule order: broad `*` first, specific overrides last.
-- Subagents do NOT need a companion README — frontmatter `description` is enough.
-- Output contract: define the shape (e.g. `## Findings`, `## Plan`, one-line-per-finding). Structured output is what protects main context.
-
-### Docs (`.agent/`)
-
-- Frontmatter required: `title`, `summary`. Optional: `status`, `updated`.
-- Living docs. Stale doc → verify from source, then update.
-- If a doc grows past ~2 screens: split.
-- Do not create docs nobody will use.
-- External-sourced content requires `source:` link.
 
 ### File Placement
 
@@ -109,43 +78,28 @@ Reject when:
 - Nested subagent family → `agents/<family>/`.
 - Cross-cutting design doc → `.agent/notes/<topic>.md`.
 - Task-scoped handoff → `.agent/progress/`.
+- Multi-session plan → `.agent/plan/`.
 - Bug attempts → `.agent/bugs/`.
 - Slash-command → `commands/<name>.md`.
 - Plugin (client-specific, e.g. JS) → `plugins/<name>/`.
 - Ad-hoc script → `tools/<name>`.
 
-### Adding a New Skill
+### Adding Artifacts
 
-1. Load `agents-md` skill (skills-authoring reuses the reject-first discipline).
-2. Load `authoring-agents` skill (file-form guidance, templates, workflow).
-3. Check for duplicates — grep `skills/` first.
-4. Create `skills/<name>/SKILL.md` (caveman, frontmatter routing) + `README.md` (design intent).
-5. Optionally register in `deploy/AGENTS.md` skill-triggers table if it's a first-class trigger.
-6. If it obsoletes an existing skill: delete the old one in the same change.
+Owning workflow first: artifact-authoring for skills / subagents / commands, documentation workflow for `.agent/` docs, AGENTS-maintenance for any `AGENTS.md`. Those own the procedure. Repo-specific deltas only:
 
-### Adding a New Subagent
-
-1. Load `authoring-agents` skill (subagent frontmatter section, templates).
-2. Grep `agents/` for name collisions.
-3. Create `agents/<name>.md` with pinned model, narrow tool set, explicit `description`.
-4. If it should appear in the delegation table: register in `deploy/AGENTS.md`.
-
-### Adding a New Doc
-
-1. Load `docs` skill.
-2. Check whether an existing doc should absorb this content instead.
-3. Add frontmatter (`title`, `summary`; `status`, `updated` when useful).
-4. Keep to ~2 screens. Split if it grows.
+- **Skill**: grep `skills/` for overlap before creating. Routing truth is `SKILL.md` frontmatter `description`; reconcile the `deploy/AGENTS.md` step-4 routing table in the same change. Obsoletes an existing skill → delete the old one now, not later.
+- **Subagent**: grep `agents/` for name collision. `deploy/AGENTS.md` carries no worker table; add a line there only for delegation precedence the subagent's own `description` cannot express.
+- **Command**: grep `commands/` for name collision. No README, no frontmatter beyond `description`. Fits one screen or it is over-scoped.
+- **Doc**: check whether an existing `.agent/` doc should absorb the content instead of a new file.
 
 <!------------------------------------------------------------------------------------------------->
 ## Boundaries
 <!------------------------------------------------------------------------------------------------->
 
 - Never add a rule / skill / subagent / doc that references an artifact that does not exist.
-- Never grow `deploy/AGENTS.md` past what its readers can hold in head. If it hurts to read: split or trim.
-- Never introduce a second glue point that names skills directly. `deploy/AGENTS.md` is the only one.
+- Never grow `deploy/AGENTS.md` with anything a skill's own frontmatter already routes. It loads every session; each line is paid for on every task.
 - Never couple this repo's rules to a specific tool ("opencode does X"). Describe behavior. Tool-specific detail lives in deploy wiring, not here.
-- Never delete a skill / subagent / doc without grepping for references first.
 - Never edit `nixos/secrets/*` in the parent repo. Read paths only.
 
 <!------------------------------------------------------------------------------------------------->
@@ -153,4 +107,4 @@ Reject when:
 <!------------------------------------------------------------------------------------------------->
 
 - **Deploy**: client-specific and out of scope for this repo. The maintainer symlinks / copies these files into their AI-agent client's config dir (see the outer dotfiles / infrastructure repo). Never agent-initiated.
-- **No build / test / lint / format at repo level** — content is markdown + YAML.
+- **No build / test at repo level** — content is markdown + YAML. Markdown lint config lives in `.markdownlint.json`; formatter scope in `.prettierignore`.

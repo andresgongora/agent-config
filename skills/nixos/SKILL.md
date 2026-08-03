@@ -1,136 +1,79 @@
 ---
 name: nixos
-description: >
-  NixOS / Home Manager workflow and pitfall guide. Load for NixOS config work,
-  Home Manager work, package/option lookup, flakes/modules, rebuild/debug, or
-  when CLI work hits NixOS-specific friction like missing commands, missing
-  shared libraries, non-FHS binaries, one-off tool use, or Nix traces. Skip
-  for generic Linux/app problems with no NixOS angle.
+description: "Ready-to-run commands for NixOS: missing CLI tool, prebuilt binary failing with missing shared library or dynamic linker, package/option lookup, non-activating rebuild validation. Load when a command fails for NixOS reasons, a config change needs validating, or work touches NixOS repo. Not a Nix tutorial and not the repo's own conventions; skip for generic Linux failures with no NixOS angle."
 ---
 
 # NixOS
 
-Fast NixOS-friction guide. Not full Nix handbook.
+Symptom → command. No Nix theory. Unblock, do not mutate system state.
 
-## Core playbook
+<nix-repo> defaults to `~/.nix` unless otherwise specified.
 
-### 1. Need one-off tool
+## Core rules
 
-Prefer ephemeral shell; do not mutate config.
+- Missing tool: run ephemerally. Never add to config for one-off use.
+- Prefer an already-installed alternative first (`rg`/`grep`, `fd`/`find`, `jq`). Only fetch a package when it is the clean tool for the job.
+- Binary fails on library/linker: assume non-FHS layout, not a missing distro package. Never hunt apt/dnf package names.
+- Config change: validate by building. `switch`/`boot`/`test` only on explicit user request.
+- Search option and package names; never guess them.
+- Append `--show-trace` to any failing Nix eval/build.
+
+## Friction playbook
+
+**Tool not installed** — run it without installing:
 
 ```bash
-nix shell nixpkgs#PKG -c CMD
+nix shell nixpkgs#PKG -c CMD ARGS      # preferred
+nix-shell -p PKG --run 'CMD ARGS'      # legacy fallback; quote whole command
 ```
 
-Legacy fallback:
+Multiple tools: `nix shell nixpkgs#PKG1 nixpkgs#PKG2 -c CMD`.
+
+**Binary fails: `error while loading shared libraries`, missing interpreter/dynamic linker, or `No such file or directory` on an ELF that exists** — give it a traditional FHS environment:
 
 ```bash
-nix-shell -p PKG --run CMD
+fhs -c "CMD ARGS"
 ```
 
-One-off missing CLI (`rg`, `fd`, `jq`, `node`, etc.): use this.
+`fhs` is a local wrapper. If absent (other machine):
 
-### 2. Need package / option lookup
+```bash
+nix run nixpkgs#steam-run -- CMD ARGS
+```
+
+Still failing on one specific library: add it to that module's `targetPkgs` only if the need is persistent.
+
+**Need package or option name**:
 
 ```bash
 nix search nixpkgs QUERY
-nix-locate --whole-name --top-level bin/CMD   # if nix-index available
 ```
 
-Web refs:
 - Packages: https://search.nixos.org/packages
 - NixOS options: https://search.nixos.org/options
 - Home Manager options: https://home-manager-options.extranix.com
 
-### 3. Prebuilt binary fails on NixOS
-
-Symptoms:
-- `error while loading shared libraries`
-- `No such file or directory` for existing ELF binary
-- missing dynamic linker / interpreter
-
-First try:
-
-```bash
-fhs -c "CMD"
-```
-
-Fallback:
-
-```bash
-steam-run CMD
-```
-
-Never hunt random Ubuntu package names. NixOS often has FHS/runtime-env friction, not apt-style missing lib.
-
-### 4. Nix config changed
-
-Validate before apply.
-
-```bash
-sudo nixos-rebuild dry-run --flake .#$(hostname) --show-trace
-```
-
-If only build needed:
-
-```bash
-sudo nixos-rebuild build --flake .#$(hostname) --show-trace
-```
-
-Never run `switch`/`boot` without explicit request.
-
-## Flakes / modules
-
-Useful:
-
-```bash
-nix flake show
-nix flake metadata
-nix flake update INPUT
-```
-
-Module pattern:
-
-```nix
-{ config, lib, pkgs, ... }:
-{
-  options.myMod.enable = lib.mkEnableOption "feature";
-  config = lib.mkIf config.myMod.enable { };
-}
-```
-
-Override reminders:
-- `mkDefault` = weak default
-- plain assignment = normal
-- `mkForce` = hard override
-
-## Common traps
-
-- Never assume FHS-like global shared libs.
-- Never install one-off tool through config unless persistence wanted.
-- Never run `nixos-rebuild switch` to "test".
-- Never update `flake.lock` unless version change needed.
-- Search cheap option names; never guess.
-
-## Fast debug
+**Eval error hard to read**:
 
 ```bash
 nix repl
-:lf .
+:lf <nix-repo>
 ```
 
-```bash
-nix why-depends .#TARGET /nix/store/PATH
-```
+Then inspect attributes directly. `nix why-depends .#TARGET /nix/store/PATH` for unexpected closure entries.
 
-Use `--show-trace` on failing eval/build commands.
+## Boundaries
 
-## Agent rules
+- No activation: no `switch`, `boot`, `test`, `--install-bootloader` without explicit user request.
+- No config edit to satisfy a one-off tool need.
+- No `flake.lock` mutation outside a task whose stated goal is a version change.
+- Generic Linux/app failure with no NixOS cause: drop this playbook, debug normally.
 
-1. Search before guess.
-2. Prefer ephemeral env (`nix shell`) for one-off tools.
-3. Prefer `fhs`/`steam-run` quickly when binary looks non-FHS.
-4. Dry-run before apply.
-5. No `switch` without explicit user request.
-6. If using unstable packages, say why.
-7. Never touch secrets or secret material.
+## Verification
+
+- Command run was copied from a block above, with real package/command substituted.
+- Config change validated by a rebuild that exited 0, when the user asked for validation.
+
+## Growth
+
+New recurring NixOS friction: append one `**symptom**` entry with the exact command. No prose expansion, no Nix explanation, no duplicate rule.

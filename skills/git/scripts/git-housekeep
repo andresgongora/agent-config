@@ -1,129 +1,286 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -Eeuo pipefail
+IFS=$'\n\t'
+
+##==================================================================================================
+##	DEPENDENCY CHECKS
+
+requireCommand() {
+    local command_name=$1
+    command -v "$command_name" >/dev/null 2>&1 || {
+        printf 'Missing command: %s\n' "$command_name" >&2
+        exit 2
+    }
+}
+
+requireCommand find
+requireCommand git
+requireCommand realpath
+
+##==================================================================================================
+##	GLOBALS
+
+REPORT_ONLY=false
+VERIFY=false
+DELETE_MERGED=false
+BASE_BRANCH=""
+ROOT_DIRECTORY="."
+DIRECTORY_SET=false
+REPOSITORIES=0
+FAILURES=0
+COMPACTED=0
+VERIFIED=0
+CANDIDATES=0
+DELETED=0
+
+##==================================================================================================
+##	UTILITIES
 
 die() {
-  printf '%s\n' "$*" >&2
-  exit 2
+    printf '%s\n' "$*" >&2
+    exit 2
 }
 
-require_commands() {
-  local command
-  for command in "$@"; do
-    command -v "$command" >/dev/null || die "Missing command: $command"
-  done
+printUsage() {
+    printf 'Usage: %s [--report] [--verify] [--delete-merged] [--base BRANCH] [directory]\n' "$0"
 }
 
-usage() {
-  printf 'Usage: %s [--report] [--verify] [--delete-merged] [--base BRANCH] [directory]\n' "$0"
+resolveRootDirectory() {
+    local directory=$1
+    local root_directory
+
+    root_directory=$(realpath -e -- "$directory") || die "Cannot resolve directory: $directory"
+    [[ -d $root_directory ]] || die "Not a directory: $root_directory"
+    [[ $root_directory != / ]] || die 'Refusing unbounded directory'
+    printf '%s\n' "$root_directory"
 }
 
-require_commands find git realpath
+##==================================================================================================
+##	CORE FUNCTIONS
 
-report=false
-verify=false
-delete_merged=false
-base=
-directory=.
-directory_set=false
+verifyRepository() {
+    local repository=$1
 
-while (($#)); do
-  case $1 in
-    --report) report=true ;;
-    --verify) verify=true ;;
-    --delete-merged) delete_merged=true ;;
-    --base)
-      shift
-      (($#)) || die "Missing branch after --base"
-      base=$1
-      ;;
-    --help) usage; exit 0 ;;
-    -*) die "Unknown option: $1" ;;
-    *)
-      [[ $directory_set == false ]] || die "Only one directory allowed"
-      directory=$1
-      directory_set=true
-      ;;
-  esac
-  shift
-done
+    git -C "$repository" fsck --connectivity-only --no-dangling
+}
 
-root=$(realpath -e -- "$directory") || die "Cannot resolve directory: $directory"
-[[ -d $root ]] || die "Not a directory: $root"
-[[ $root != / ]] || die "Refusing unbounded directory"
+compactRepository() {
+    local repository=$1
 
-repositories=0 failures=0 compacted=0 verified=0 candidates=0 deleted=0
-while IFS= read -r -d '' git_entry; do
-  repository=${git_entry%/.git}
-  ((repositories += 1))
-  printf 'REPOSITORY\t%q\n' "$repository"
+    git -C "$repository" repack -d -l
+}
 
-  if [[ $verify == true ]]; then
-    if git -C "$repository" fsck --connectivity-only --no-dangling; then
-      ((verified += 1))
-      printf 'HEALTH\tconnectivity=ok\n'
+reportObjectSizes() {
+    local repository=$1
+    local object_sizes
+    local key
+    local value
+
+    object_sizes=$(git -C "$repository" count-objects -v) || return 1
+    while IFS=' ' read -r key value; do
+        case $key in
+            size:|size-pack:) printf 'OBJECTS\t%s\t%s KiB\n' "${key%:}" "$value" ;;
+        esac
+    done < <(printf '%s\n' "$object_sizes")
+}
+
+getCheckedOutBranches() {
+    local repository=$1
+    local worktree_data
+    local field
+    local value
+
+    worktree_data=$(git -C "$repository" worktree list --porcelain) || return 1
+    while IFS=' ' read -r field value; do
+        [[ $field == branch ]] || continue
+        printf '%s\n' "${value#refs/heads/}"
+    done <<< "$worktree_data"
+}
+
+isBranchCheckedOut() {
+    local branch=$1
+    local checked_out_branches=$2
+    local checked_out_branch
+
+    while IFS= read -r checked_out_branch; do
+        [[ $branch == "$checked_out_branch" ]] && return 0
+    done <<< "$checked_out_branches"
+    return 1
+}
+
+reportMergedBranches() {
+    local repository=$1
+    local base_branch=$2
+    local delete_merged=$3
+    local current_branch
+    local branch
+    local upstream
+    local checked_out_branches
+    local references
+    local command_status
+
+    if [[ -z $base_branch ]]; then
+        printf 'MERGED\tskipped; use --base\n'
+        return 0
+    fi
+    if git -C "$repository" show-ref --verify --quiet "refs/heads/$base_branch"; then
+        :
     else
-      printf 'ERROR\tconnectivity check failed\n' >&2
-      ((failures += 1))
-      continue
+        command_status=$?
+        if ((command_status == 1)); then
+            printf 'MERGED\tskipped; missing base %q\n' "$base_branch"
+            return 0
+        fi
+        return "$command_status"
     fi
-  fi
 
-  if [[ $report == false ]]; then
-    if git -C "$repository" repack -d -l; then
-      ((compacted += 1))
-    else
-      printf 'ERROR\trepack failed\n' >&2
-      ((failures += 1))
-      continue
+    current_branch=$(git -C "$repository" branch --show-current) || return 1
+    checked_out_branches=$(getCheckedOutBranches "$repository") || return 1
+    references=$(git -C "$repository" for-each-ref \
+        --format='%(refname:short)%09%(upstream:short)' refs/heads) || return 1
+
+    while IFS=$'\t' read -r branch upstream; do
+        [[ -n $branch && $branch != "$base_branch" && $branch != "$current_branch" && -n $upstream ]] || continue
+        isBranchCheckedOut "$branch" "$checked_out_branches" && continue
+        if git -C "$repository" show-ref --verify --quiet "refs/remotes/$upstream"; then
+            :
+        else
+            command_status=$?
+            ((command_status == 1)) && continue
+            return "$command_status"
+        fi
+        if git -C "$repository" merge-base --is-ancestor "$branch" "$base_branch"; then
+            :
+        else
+            command_status=$?
+            ((command_status == 1)) && continue
+            return "$command_status"
+        fi
+        ((CANDIDATES += 1))
+        printf 'MERGED\tbranch=%q\tupstream=%q\tbase=%q\n' "$branch" "$upstream" "$base_branch"
+
+        if [[ $delete_merged == true ]]; then
+            if git -C "$repository" branch -d -- "$branch"; then
+                ((DELETED += 1))
+            else
+                printf 'ERROR\tbranch deletion refused: %q\n' "$branch" >&2
+                ((FAILURES += 1))
+            fi
+        fi
+    done <<< "$references"
+}
+
+processRepository() {
+    local repository=$1
+    local report_only=$2
+    local verify=$3
+    local base_branch=$4
+    local delete_merged=$5
+
+    ((REPOSITORIES += 1))
+    printf 'REPOSITORY\t%q\n' "$repository"
+
+    if [[ $verify == true ]] && ! verifyRepository "$repository"; then
+        printf 'ERROR\tconnectivity check failed\n' >&2
+        ((FAILURES += 1))
+        return 0
     fi
-  fi
+    [[ $verify == false ]] || ((VERIFIED += 1))
 
-  object_sizes=$(git -C "$repository" count-objects -v) || {
-    printf 'ERROR\tobject report failed\n' >&2
-    ((failures += 1))
-    continue
-  }
-  printf '%s\n' "$object_sizes" | while IFS=' ' read -r key value; do
-    case $key in
-      size:|size-pack:) printf 'OBJECTS\t%s\t%s KiB\n' "${key%:}" "$value" ;;
-    esac
-  done
-
-  if [[ -z $base ]]; then
-    if git -C "$repository" show-ref --verify --quiet refs/heads/main; then
-      repository_base=main
-    elif git -C "$repository" show-ref --verify --quiet refs/heads/master; then
-      repository_base=master
-    else
-      printf 'MERGED\tskipped; no local main or master; use --base\n'
-      continue
+    if [[ $report_only == false ]] && ! compactRepository "$repository"; then
+        printf 'ERROR\trepack failed\n' >&2
+        ((FAILURES += 1))
+        return 0
     fi
-  else
-    repository_base=$base
-    if ! git -C "$repository" show-ref --verify --quiet "refs/heads/$repository_base"; then
-      printf 'MERGED\tskipped; missing base %q\n' "$repository_base"
-      continue
-    fi
-  fi
+    [[ $report_only == true ]] || ((COMPACTED += 1))
 
-  current_branch=$(git -C "$repository" branch --show-current)
-  while IFS=$'\t' read -r branch upstream; do
-    [[ -n $branch && $branch != "$repository_base" && $branch != "$current_branch" && -n $upstream ]] || continue
-    git -C "$repository" show-ref --verify --quiet "refs/remotes/$upstream" || continue
-    git -C "$repository" merge-base --is-ancestor "$branch" "$repository_base" || continue
-    ((candidates += 1))
-    printf 'MERGED\tbranch=%q\tupstream=%q\tbase=%q\n' "$branch" "$upstream" "$repository_base"
-    if [[ $delete_merged == true ]]; then
-      if git -C "$repository" branch -d -- "$branch"; then
-        ((deleted += 1))
-      else
-        printf 'ERROR\tbranch deletion refused: %q\n' "$branch" >&2
-        ((failures += 1))
-      fi
+    if ! reportObjectSizes "$repository"; then
+        printf 'ERROR\tobject report failed\n' >&2
+        ((FAILURES += 1))
+        return 0
     fi
-  done < <(git -C "$repository" for-each-ref --format='%(refname:short)%09%(upstream:short)' refs/heads)
-done < <(find -P "$root" \( -type d -name .git -prune -print0 \) -o \( -type f -name .git -print0 \))
 
-printf 'SUMMARY\trepositories=%d\tcompacted=%d\tverified=%d\tmerged_candidates=%d\tdeleted=%d\tfailures=%d\n' \
-  "$repositories" "$compacted" "$verified" "$candidates" "$deleted" "$failures"
-((failures == 0))
+    if ! reportMergedBranches "$repository" "$base_branch" "$delete_merged"; then
+        printf 'ERROR\tmerged-branch report failed\n' >&2
+        ((FAILURES += 1))
+    fi
+}
+
+processRepositoryTree() {
+    local root_directory=$1
+    local report_only=$2
+    local verify=$3
+    local base_branch=$4
+    local delete_merged=$5
+    local git_entry repository find_output_fd find_process_id
+
+    coproc FIND_REPOSITORIES {
+        find -P "$root_directory" \( -type d -name .git -prune -print0 \) -o \( -type f -name .git -print0 \)
+    }
+    exec {find_output_fd}<&"${FIND_REPOSITORIES[0]}"
+    find_process_id=$FIND_REPOSITORIES_PID
+
+    while IFS= read -r -d '' -u "$find_output_fd" git_entry; do
+        repository=${git_entry%/.git}
+        processRepository "$repository" "$report_only" "$verify" "$base_branch" "$delete_merged"
+    done
+    exec {find_output_fd}<&-
+
+    if ! wait "$find_process_id"; then
+        printf 'ERROR\trepository discovery failed\n' >&2
+        ((FAILURES += 1))
+    fi
+}
+
+printSummary() {
+    printf 'SUMMARY\trepositories=%d\tcompacted=%d\tverified=%d\tmerged_candidates=%d\tdeleted=%d\tfailures=%d\n' \
+        "$REPOSITORIES" "$COMPACTED" "$VERIFIED" "$CANDIDATES" "$DELETED" "$FAILURES"
+}
+
+##==================================================================================================
+##	ARGUMENT PARSING
+
+parseArguments() {
+    while [[ $# -gt 0 ]]; do
+        case $1 in
+            --report) REPORT_ONLY=true ;;
+            --verify) VERIFY=true ;;
+            --delete-merged) DELETE_MERGED=true ;;
+            --base)
+                shift
+                [[ $# -gt 0 ]] || die 'Missing branch after --base'
+                BASE_BRANCH=$1
+                ;;
+            --help)
+                printUsage
+                exit 0
+                ;;
+            -*) die "Unknown option: $1" ;;
+            *)
+                [[ $DIRECTORY_SET == false ]] || die 'Only one directory allowed'
+                ROOT_DIRECTORY=$1
+                DIRECTORY_SET=true
+                ;;
+        esac
+        shift
+    done
+
+    [[ $DELETE_MERGED == false || -n $BASE_BRANCH ]] || die '--delete-merged requires --base'
+    [[ $REPORT_ONLY == false || $DELETE_MERGED == false ]] || die '--report cannot delete branches'
+}
+
+##==================================================================================================
+##	MAIN
+
+main() {
+    parseArguments "$@"
+    ROOT_DIRECTORY=$(resolveRootDirectory "$ROOT_DIRECTORY")
+    processRepositoryTree "$ROOT_DIRECTORY" "$REPORT_ONLY" "$VERIFY" "$BASE_BRANCH" "$DELETE_MERGED"
+    printSummary
+    ((FAILURES == 0))
+}
+
+##==================================================================================================
+##	SCRIPT ENTRY POINT
+
+main "$@"

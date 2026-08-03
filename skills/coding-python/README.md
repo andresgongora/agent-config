@@ -1,10 +1,10 @@
 # coding-python skill
 
-Python child skill. Enforces `uv` tooling and structured `typer` CLIs.
+Python child skill. Prefers `uv` for new projects and structured `typer` CLIs.
 
 ## Design intent
 
-The inspected project guides contained mostly project-specific boundaries and conventions. This skill retains only portable preferences: `uv` for Python tooling, a short root-README command reference, and nested `typer` command groups for new CLIs.
+The inspected project guides contained mostly project-specific boundaries and conventions. This skill retains only portable preferences: `uv` for new projects and nested `typer` command groups for new CLIs. Existing project tooling wins; migration and setup-documentation work need explicit scope.
 
 ## Trigger summary
 

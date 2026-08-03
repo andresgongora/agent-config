@@ -1,15 +1,11 @@
 ---
 name: coding-bash
-description: >
-  Conventions and templates for authoring persistent bash script files to be saved at a
-  named path and owned by the user. Load when the request produces a .sh file as a
-  deliverable: "write me a script", "create a bash script at path X", "add a script that
-  does Y". Do not load for agent-internal bash (commands an agent runs to accomplish a
-  task), inline one-liners, shell debugging, NixOS config, or any bash that is not itself
-  the deliverable.
+description: "Conventions and templates for authoring persistent Bash script files saved at a named path and owned by the user. Load when request produces a Bash script deliverable, extensionless executable included. Do not load for agent-internal Bash, inline one-liners, shell debugging, NixOS config, or Bash that is not itself the deliverable."
 ---
 
 # coding-bash
+
+New scripts follow these conventions. Existing scripts retain established local conventions; edit only requested surface unless migration is requested.
 
 ## File shape
 
@@ -31,7 +27,7 @@ description: >
 
 ## Functions
 
-- Multi-line body: braces on own lines (standard)
+- Multi-line body: opening brace on declaration line, closing brace on own line
 - Single-expression body: one-liner permitted — `fn() { ...; }` — when entire body fits cleanly on one line without wrapping
 - One function per logical operation. Split when a function grows past easy reading — not at a line count, but when holding the whole thing in head becomes work
 - Core functions receive data via parameters — never read arg globals directly
@@ -44,8 +40,8 @@ description: >
 - Expected nonzero statuses belong in `if`, `&&`, or `||`; `set -e` treats unguarded nonzero as fatal
 - Avoid `((count++))`; use `((count += 1))`
 - Always `die()` — never inline `echo ... >&2; exit 1`
-- `requireCommand` defined inline in DEPENDENCY CHECKS — no `die`, no `SCRIPT_NAME`; bare error + exit
-- Always `requireCommand` for every non-baseline external binary dependency
+- When runtime external dependencies exist, define `requireCommand` inline in DEPENDENCY CHECKS — no `die`, no `SCRIPT_NAME`; bare error + exit
+- Classify each external binary as guaranteed by explicit target contract or runtime dependency. Guard every runtime dependency with `requireCommand`; shell builtins need no guard. No runtime dependencies: omit DEPENDENCY CHECKS and `requireCommand`.
 - `trash` instead of `rm`/`rmdir` for destructive file operations
 
 ## Strings, arrays, and input
@@ -63,7 +59,7 @@ description: >
 ## Section order
 
 1. Shebang + `set -Eeuo pipefail` + `IFS`
-2. DEPENDENCY CHECKS (`requireCommand` definition inline + one call per binary)
+2. DEPENDENCY CHECKS when runtime dependencies exist (`requireCommand` definition inline + one call per dependency)
 3. GLOBALS (`declare -r` constants, necessary mutable globals)
 4. UTILITIES (`die`, needed snippets)
 5. CORE FUNCTIONS (one function per logical operation)
@@ -75,44 +71,45 @@ description: >
 
 | File | Purpose |
 |---|---|
-| `template/script.sh` | Canonical starter. Copy first for every persistent bash script. |
+| `template/script.sh` | Canonical starter for new persistent Bash scripts. |
 | `template/snippets.sh` | Opt-in helpers. Copy only blocks required by concrete script behavior. |
-| `template/.shellcheckrc` | Optional project-root ShellCheck configuration. |
-| `template/.editorconfig` | Optional project-root editor defaults. |
+| `template/.shellcheckrc` | Optional configuration for a new dedicated script project. |
+| `template/.editorconfig` | Optional editor defaults for a new dedicated script project. |
 
 `TEMPLATE:` marks authoring instructions — never shipped documentation. Remove or replace every marked line and every example before validation. Do not copy speculative helpers into finished scripts.
 
 ## Workflow
 
-1. Copy `template/script.sh`
-2. Remove or replace every `TEMPLATE:` line, example dependency/global/function; fill usage text
-3. Copy only needed blocks from `template/snippets.sh`; guard each non-baseline binary dependency
-4. Optionally copy `.shellcheckrc` and `.editorconfig` to project root
+1. New script: copy `template/script.sh`. Existing script: inspect its conventions and edit in place; do not rebuild or restyle it from template.
+2. New script: remove or replace every `TEMPLATE:` line, example dependency/global/function; fill usage text
+3. Copy only needed blocks from `template/snippets.sh`; classify and guard runtime dependencies
+4. For a new dedicated script project, offer `.shellcheckrc` and `.editorconfig`; never replace or merge existing root configuration without explicit scope
 5. Write CORE FUNCTIONS — one function per operation, verbose names, params not globals
 6. Wire ARGUMENT PARSING and validate required args with `die`
 7. Write `main()` — short, glue only
-8. `bash -n script.sh` — syntax check
-9. `shellcheck script.sh` — fix code; suppress only documented proven false positives
+8. `bash -n "$script_path"` — syntax check
+9. If available, `shellcheck "$script_path"` — fix code; suppress only documented proven false positives. If unavailable, report validation gap; do not install it unasked.
 
 ## Boundaries
 
 - Not for: NixOS config, Python/other languages, debugging running processes, editor/LSP wiring
 - Not for: installing shellcheck or shfmt
-- Stop when: script needs a build system, compiled deps, or a package manager
+- Stop and ask when requested deliverable is no longer a Bash script (for example, it requires compiled application code or project-wide build-system design)
 
 ## Verification
 
-- [ ] Shebang `#!/usr/bin/env bash`; `set -Eeuo pipefail`; `IFS=$'\n\t'` on first 3 lines
-- [ ] All globals `SNAKE_CASE`; all locals `snake_case`; all functions `camelCase` verb-first
-- [ ] Verbose names — no single-letter vars, no abbreviated function names
-- [ ] `die()` defined and used everywhere instead of inline `exit 1`
-- [ ] `requireCommand` defined inline in DEPENDENCY CHECKS; every non-baseline external binary guarded
-- [ ] Core functions take parameters, not arg globals
-- [ ] `main()` is short — if it grew, the growing part is extracted into a named core function
-- [ ] Finished script has no unused utility, global, or example
-- [ ] All function-local vars declared with `local`; immutable globals with `declare -r`
-- [ ] No unquoted `$variable` expansions
-- [ ] `[[ ]]` conditionals; `$(...)` substitutions; `printf` for formatted output
-- [ ] `trash` used instead of `rm`/`rmdir`
-- [ ] `bash -n script.sh` exits 0; `shellcheck` clean
-- [ ] Standalone comments use `##`; inline (after-code) comments use single `#`
+- New script:
+  - [ ] Shebang `#!/usr/bin/env bash`; `set -Eeuo pipefail`; `IFS=$'\n\t'` on first 3 lines
+  - [ ] All globals `SNAKE_CASE`; all locals `snake_case`; all functions `camelCase` verb-first
+  - [ ] Verbose names — no single-letter vars, no abbreviated function names
+  - [ ] `die()` defined and used for error exits outside documented `requireCommand` exception
+  - [ ] Runtime dependencies: `requireCommand` defined inline in DEPENDENCY CHECKS; every dependency guarded unless target contract guarantees it
+  - [ ] No runtime dependencies: no DEPENDENCY CHECKS or unused `requireCommand`
+  - [ ] Core functions take parameters, not arg globals; `main()` is short
+  - [ ] No unused utility, global, or example; locals use `local`; immutable globals use `declare -r`
+  - [ ] No unquoted `$variable` expansions; `[[ ]]`; `$(...)`; `printf`; `trash` instead of `rm`/`rmdir`
+  - [ ] Standalone comments use `##`; inline comments use single `#`
+- Existing script:
+  - [ ] Touched surface preserves established local naming, structure, and comment conventions
+  - [ ] No unrelated style migration or template boilerplate
+- All scripts: `bash -n "$script_path"` exits 0; `shellcheck` clean when available, otherwise gap reported
