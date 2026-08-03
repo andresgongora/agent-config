@@ -1,13 +1,7 @@
 ---
-description: >
-  Fast, cheap one-shot answer worker. Use for common-knowledge facts, simple
-  comparisons, definitions, or one quick web search when local files and deep
-  reasoning are unnecessary. Returns only answer, uncertainty, or no information.
-  Not for implementation, research, multi-step reasoning, source verification, or
-  local context.
+description: "Fast, cheap one-shot answer worker. Use for common-knowledge facts, simple comparisons, definitions, or one quick web search when local files and deep reasoning are unnecessary. Returns only answer, uncertainty, or no information. Not for implementation, research, multi-step reasoning, source verification, or local context."
 mode: subagent
 model: POOL_FAST
-temperature: 0.0
 effort: low
 permission:
   read: deny

@@ -1,13 +1,8 @@
 ---
 name: cavecrew-reviewer
-description: >
-  Diff/branch/file reviewer. One line per finding, severity-tagged, no praise,
-  no scope creep. Output format `path:line: <emoji> <severity>: <problem>. <fix>.`
-  Use for "review this PR", "review my diff", "audit this file". Skips
-  formatting nits unless they change meaning.
+description: "Reviews a diff, branch, or single file and returns terse severity-tagged findings, one line each. Pick for \"review this PR\", \"review my diff\", \"audit this file\", bug/risk/security-hole hunting on bounded changes. Not for locating code, editing, refactor proposals, or reviews needing broad cross-file exploration."
 mode: subagent
 model: WORK_LIGHT
-temperature: 0.1
 permission:
   read: allow
   edit: deny

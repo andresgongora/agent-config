@@ -1,12 +1,7 @@
 ---
-description: >
-  Development agent. Edit code, install dependencies, run linters/formatters/builds/tests to
-  validate changes. Use for repo-local code work, dependency management, and non-deploy
-  validation commands. Do not use for broad system administration, OS-level investigation,
-  or deploy/publish workflows.
+description: "Development agent. Edit code, install dependencies, run linters/formatters/builds/tests to validate changes. Use for repo-local code work, dependency management, and non-deploy validation commands. Do not use for broad system administration, OS-level investigation, or deploy/publish workflows."
 mode: primary
 model: WORK_MID
-temperature: 0.2
 color: "#FFA500"
 permission:
   edit: allow
@@ -38,6 +33,7 @@ permission:
     "git rev-parse *": allow
     "git show *": allow
     "git status*": allow
+    "~/.config/opencode/skills/git/scripts/git-secret-scan": allow
     "grep *": allow
     "head *": allow
     "ls": allow

@@ -1,13 +1,8 @@
 ---
 name: cavecrew-investigator
-description: >
-  Read-only code locator. Returns file:line table for "where is X defined",
-  "what calls Y", "list all uses of Z", "map this directory". Output is
-  caveman-compressed so the main thread eats ~60% fewer tokens than
-  vanilla Explore. Refuses to suggest fixes.
+description: "Read-only code locator. Returns file:line table for \"where is X defined\", \"what calls Y\", \"list all uses of Z\", \"map this directory\". Output is caveman-compressed so the main thread eats ~60% fewer tokens than vanilla Explore. Refuses to suggest fixes."
 mode: subagent
 model: WORK_LIGHT
-temperature: 0.0
 permission:
   edit: deny
   glob: allow

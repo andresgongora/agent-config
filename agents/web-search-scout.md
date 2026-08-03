@@ -1,11 +1,7 @@
 ---
-description: >
-  Nested leaf scout for @web-search only. Use for one isolated web query angle, source family,
-  or URL lead. Run bounded search/fetch triage; return `## Scout Report` with answer, lead, or
-  none. Not broad research, synthesis, local files, implementation, direct main-thread delegation.
+description: "Nested leaf scout for @web-search only. Use for one isolated web query angle, source family, or URL lead. Run bounded search/fetch triage; return `## Scout Report` with answer, lead, or none. Not broad research, synthesis, local files, implementation, direct main-thread delegation."
 mode: subagent
 model: POOL_LIGHT
-temperature: 0.1
 tools:
   read: true
   write: false

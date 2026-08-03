@@ -1,0 +1,162 @@
+---
+name: agent-author
+description: "Workflow for creating, editing, or reviewing agent ecosystem artifacts: skill files (SKILL.md), subagent files (agents/*.md), primary agent definitions, and slash commands (commands/*.md). Load when authoring or auditing any of these four file forms. Not for any file named `AGENTS.md` — rule policy, edits, audits, and creation all belong to the AGENTS.md-maintenance behavior. Not for prose writing, code, or general docs."
+---
+
+# agent-author
+
+## Core rules
+
+- Reject-first. Every new artifact must earn its place. Default answer: no. Bloat is the main failure mode.
+- One job per artifact. Sharp boundaries beat overlapping capabilities.
+- Decouple. Reference other skills/subagents by behavior keyword. Hard names only for `deploy/AGENTS.md` glue or same-family siblings.
+- Cheap-model test. A correct artifact works with a smaller model than you used to write it. If it only works strong, tighten the prompt.
+- Template-first. Copy the matching template from `templates/`, fill it, validate. Do not author from blank.
+- Agent-facing prose: dense, imperative, exact. Fragments OK. Remove narration, filler, marketing, repeated rules. Preserve needed order and safety clarity.
+- WHAT + HOW in the artifact; WHY → README, unless the executing agent needs the reason to act correctly. Routing-relevant why may stay in frontmatter.
+- No stubs. Artifact holds only text the executing agent needs. Maintainer-facing meta — obsolete-decision residue, "no longer handles X", "removed per request", inverse rules with no active concern — goes to README, never the body.
+- No dead refs. Every path, skill, tool named must exist at ship time.
+- Ship paired: every skill folder needs both `SKILL.md` (LLM-facing) and `README.md` (human/maintainer). Subagents do NOT need a README.
+- Check for duplicates before creating. Grep `skills/` and `agents/` first. Extend or replace; never add a competitor.
+
+## Frontmatter
+
+Primary routing surface. Always in scope. Specificity governs load correctness — vague loads when unneeded, narrow misses when needed. Applies to every file form's frontmatter (`description` and any routing field).
+
+- One line per field. No line-wrapping a single value across multiple lines. Long `description` stays one physical line.
+- Current-state only. Describe what the artifact does and when to load it NOW. No stubs, no obsolete-decision residue ("no longer handles X"), no roadmap ("load when Z even if incomplete"), no "load other artifact instead". All such meta → README.
+- Information-dense. Concrete triggers + keywords highly correlated with the artifact's job. Include explicit non-triggers where a sibling scope could misfire.
+- No hard coupling. Frontmatter names no other skill/subagent. Describe boundary scopes by behavior, never by artifact name.
+- Same agent-directed style as the body: dense, imperative, exact, fragments OK. WHY/rationale never here → README.
+
+## File placement
+
+| Artifact                | Location                                                                    |
+| ----------------------- | --------------------------------------------------------------------------- |
+| Skill (LLM-facing)      | `skills/<name>/SKILL.md`                                                    |
+| Skill README (human)    | `skills/<name>/README.md`                                                   |
+| Skill executable assets | `skills/<name>/scripts/` — create only when needed; never beside `SKILL.md` |
+| Subagent                | `agents/<name>.md`                                                          |
+| Nested subagent family  | `agents/<family>/`                                                          |
+| Primary agent           | `agents/<name>.md`                                                          |
+| Slash command           | `commands/<name>.md`                                                        |
+
+Prefer standalone files under `agents/` over inline blocks in client config. File is source of truth; client config handles cross-agent policy and MCP wiring only.
+
+## Skill file form
+
+Frontmatter (see Frontmatter section):
+- `name`: lowercase-hyphenated, gerund preferred
+- `description`: third-person, ≤4 sentences, trigger phrases + explicit non-triggers. Routing truth lives here; do NOT repeat in body.
+
+Body rules:
+- One `#` title, shallow `##` sections only (no `###`)
+- Flat bullets for policy; numbered lists only for ordered workflow
+- ≤ ~500 lines total; bulky templates/examples → one-level-deep reference files, link from body
+- Body = post-load behavior (workflow, boundaries, decision rules, output contract). Never trigger text.
+
+Companion README must include: one-line what, design intent, trigger summary, maintainer constraints, see-also. Write it human-facing and readable — plain prose, no AI slop.
+
+See template: `templates/skill.md`.
+
+## Subagent file form
+
+Frontmatter fields (all required unless noted; see Frontmatter section):
+- `description`: routing truth — first sentence exact task, second when-to-pick-this-agent, optional third non-uses. Optimize for correct delegation, not brevity.
+- Runtime configuration: target-client schema. Declare subagent role; pin model explicitly with target runtime field. Sampling: omit by default; set only deliberate, tested behavior. Tools: default-deny, enable only needed access. Command access: narrow. Delegation: named children only; never broad grant. Ordered permissions: deny before grant.
+
+Nested subagents:
+- Default: subagents cannot spawn subagents.
+- Enable per-subagent via `permission.task` allowlist.
+- Depth cap: 5. Scope `task` to specific children only.
+- Global `permission.task: "allow"` enables unbounded recursion — never do this.
+
+Body: output contract + behavior. Short. Define output shape, stopping conditions, refusal triggers.
+
+See template: `templates/subagent.md`.
+
+## Agent file form
+
+Primary agent / AGENTS.md-adjacent definition:
+- `name`, `description` (role boundary, not implementation)
+- Runtime configuration: follow target-client schema. Pin model where supported; set sampling only with a tested reason. Use least privilege; broad denial before specific grants when schema has ordered permission rules.
+
+Body: role boundary, what it does NOT do, output contract if structured, stopping/refusal conditions. Do NOT restate AGENTS.md rule-policy in the body.
+
+See template: `templates/agent-file.md`.
+
+## Command file form
+
+Slash commands are agent-directed instructions invoked by name. No model, no tools, no output contract — just behavior the agent must follow when the command fires.
+
+Frontmatter:
+- `description`: one sentence. What this command does. Shown in command picker; routing truth.
+
+Body rules:
+- Imperative dense prose. No bullet lists unless order matters. No headers.
+- State what to do, in what order, under what conditions. No narration, no filler.
+- Use `$ARGUMENTS` for user-supplied input. Handle missing gracefully (fallback or ask).
+- Reference skills by behavior keyword, not hard name.
+- No output contract section — command body IS the contract.
+- Target length: fits on one screen. Long commands signal over-scoping; split or trim.
+
+No README needed. No template — commands are too short to warrant one.
+
+## Workflow
+
+1. Classify request: create, edit, or read-only audit. Identify file form, target client, intended reader, and success evidence. Target basename is `AGENTS.md`: stop here and load `agent-agents-md` instead (same family; it owns that file entirely).
+2. Inspect target and governing local rules. For creation, grep `skills/` or `agents/` for collision. For edit/audit, read current artifact first; never replace it with a fresh template.
+3. Create: choose location. Skill: copy `templates/skill.md` + `templates/skill-readme.md`. Subagent/primary agent: copy matching template. Commands write direct. Edit: change smallest affected surface. Audit: make no mutations; collect `path:line` evidence, impact, and fix direction.
+4. Write or revise body first. Use form rules; dense agent-facing language. Write routing frontmatter last. Configure runtime fields against target-client schema, not template defaults.
+5. Trim: if body exceeds ~500 lines, extract reference file. Add `scripts/` only for owned executables. If replacing/obsoleting: grep inbound refs; update/remove same change.
+6. Run verification. Cheap-model test: would smaller model succeed? If no, tighten.
+7. Ready-to-ship artifact: delegate clean-context final review to a read-only artifact evaluator. Give target, intent, scope, and applicable rules. Incorporate justified findings; re-verify. Skip only trivial, mechanical edits; state skip reason.
+
+## Decoupling checklist
+
+Before naming any other skill/subagent:
+- Is this a dependency (breaks if referenced artifact removed) or an example (survives swap)?
+- If dependency: decouple — describe by behavior keyword instead.
+- Swap test: if the referenced artifact were replaced by an equivalent, would this artifact still work?
+
+Same-family exception: artifacts in one family (e.g. `cavecrew-*`, `agent-*`) may name each other. Cross-family stays behavior/trigger-only.
+
+## Risks
+
+| Risk                                          | Mitigation                                                |
+| --------------------------------------------- | --------------------------------------------------------- |
+| Hard-name coupling                            | Reference by behavior keyword; swap-test before shipping  |
+| Duplicate skill/agent                         | Grep before creating; extend or replace                   |
+| Verbose skill (marketing prose)               | Enforce dense fragment style; reject if reads like a blog |
+| Wide bash allowlist in subagent               | Narrow allowlist; default-deny + explicit allows          |
+| Subagent spawns subagents by default          | Scope `permission.task` to specific children only         |
+| Skill without README                          | Always ship both for skills                               |
+| Inline template cue contradicts SKILL.md rule | Cues are pointers only; full rules stay in SKILL.md       |
+| Dead ref after note/artifact deletion         | Grep all inbound refs; fix in same change                 |
+
+## Verification
+
+After creating or editing:
+- [ ] Frontmatter YAML parses cleanly
+- [ ] Each frontmatter field on one physical line (no wrapped values)
+- [ ] Frontmatter current-state only: no stubs, obsolete-decision residue, roadmap, or "load other artifact instead"
+- [ ] Frontmatter names no other skill/subagent; boundary scopes by behavior
+- [ ] `description` dense with correlated keywords + explicit non-triggers where a sibling could misfire
+- [ ] No placeholders, scaffold comments, or template-only examples remain; required values are concrete
+- [ ] No stubs/residue: no maintainer-facing meta or obsolete-decision text in the body (README only)
+- [ ] README (skills): human-facing, readable, no AI slop
+- [ ] Skill: `SKILL.md` + `README.md` both present
+- [ ] Command: no README, fits one screen, `$ARGUMENTS` handled
+- [ ] `description` is routing truth; no trigger phrases duplicated in body
+- [ ] Named skills/subagents use behavior keywords unless same-family exception passes swap test
+- [ ] No dead refs to paths/skills/tools that don't exist
+- [ ] Templates reference one level deep (not inlined)
+- [ ] If replacing an artifact: all inbound refs updated or removed
+- [ ] Ready-to-ship non-trivial artifact received clean-context read-only evaluation; justified findings resolved or recorded
+
+## Boundaries
+
+- Not for files named `AGENTS.md` — rule policy, edits, audits, creation. Hand off to `agent-agents-md`.
+- Not for prose/documentation writing — use reader-facing writing behavior.
+- Not for general repo docs (`.agent/notes/`, architecture) — use docs discipline behavior.
+- Stop if asked to rewrite existing skills as part of a new-skill task — log as follow-up, do not touch.

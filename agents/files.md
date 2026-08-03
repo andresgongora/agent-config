@@ -1,12 +1,7 @@
 ---
-description: >
-  Filesystem agent. Navigate, inspect metadata (sizes, hashes, EXIF, media), find/remove
-  duplicates, rename/move files. Never read text; use paths, sizes, timestamps, hashes,
-  metadata only. Use for folder organization, duplicate detection, photo/media management,
-  bulk renaming. Not code/document content; build agent owns that.
+description: "Filesystem agent. Navigate, inspect metadata (sizes, hashes, EXIF, media), find/remove duplicates, rename/move files. Never read text; use paths, sizes, timestamps, hashes, metadata only. Use for folder organization, duplicate detection, photo/media management, bulk renaming. Not code/document content; build agent owns that."
 mode: primary
 model: WORK_LIGHT
-temperature: 0.1
 color: "#00BFFF"
 permission:
   read: deny          # Hard deny — no text content via read tool.

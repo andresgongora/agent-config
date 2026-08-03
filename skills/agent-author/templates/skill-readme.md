@@ -1,0 +1,26 @@
+# <!-- Skill Name -->
+
+<!-- One-line what. Creation scaffold only. Edit/audit: preserve existing structure. -->
+
+## Design intent
+
+<!-- Rationale and maintainer context; do not duplicate runtime instructions. -->
+
+## When it triggers
+
+<!-- Concise trigger summary. -->
+
+## When it does NOT trigger
+
+<!-- Adjacent exclusions. -->
+
+## Maintainer constraints
+
+<!-- Durable maintenance rules. -->
+
+## See also
+
+<!-- Existing paths or behavior references only. -->
+
+<!-- Replace/remove all placeholders, comments, empty sections, and examples. Ready non-trivial
+     skill: clean-context, read-only final evaluation, then re-verify. -->

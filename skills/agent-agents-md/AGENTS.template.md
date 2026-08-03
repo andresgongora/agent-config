@@ -1,50 +1,17 @@
 <!--
-================================================================================
-AGENTS.md TEMPLATE
+AGENTS.md TEMPLATE — bootstrap a new `AGENTS.md` for a project or nested scope.
 
-Purpose: bootstrap a new `AGENTS.md` for a project (or subdirectory / nested
-scope). Loaded by AI coding agents on every session inside that scope.
+Use:
+1. Copy to target location as `AGENTS.md`.
+2. Delete this comment block.
+3. Delete every section this project does not need. Empty section is worse than none.
+4. Replace `<PLACEHOLDER>` markers with real content. Delete inline guidance comments.
 
-Reader: AI agent, not human. Dense compressed style. Bullets over prose.
-Fragments OK. Preserve exact commands, paths, invariants.
-
-Scope: works for any project that needs agent guidance — code repos, config
-repos, prose / docs projects, knowledge bases, research notes, mixed content.
-This template stays domain-agnostic at the core. Code-specific sections
-(Tools & Commands, Commit / PR) are optional and clearly marked.
-
-Guiding principles (from community + this repo's own experience):
-- SHORT. Community target <200 lines. Fewer sharp rules beats many
-  overlapping rules.
-- ARTIFACT-FIRST. Exact paths, exact commands, exact invariants beat prose.
-- LINK OUT. Deep design goes in a durable doc (e.g. `.agent/`), not here.
-- DELETE UNUSED SECTIONS. Every heading below is optional. Only keep what
-  the project actually needs. Empty section = worse than no section.
-- NO REDUNDANCY WITH PARENT. Nested AGENTS.md must not restate the parent
-  unless narrowing or overriding.
-- ROUTING BY BEHAVIOR, NOT NAMES. When triggering a workflow, describe the
-  behavior needed (e.g. "compressed style"), not the tool name (e.g. "load
-  caveman"). One glue file per user is allowed to name skills directly.
-- DEAD REFS ARE POISON. Every referenced skill / tool / path is verified
-  or removed. Do not leave stale references.
-
-PROJECT-SHAPE HINTS (pick sections accordingly):
-- Code project → keep Info, Directives, Access Level, Rules (Workflow +
-  Style + File Placement), Boundaries, Tools & Commands, maybe Commit / PR.
-- Config / infra project → same as code, but Style may be minimal.
-- Content project (docs, notes, prose, knowledge base) → keep Info,
-  Directives, Access Level, Rules (Workflow + Style + File Placement),
-  Boundaries. Drop Tools & Commands and Commit / PR unless meaningful.
-- Meta project (rules, skills, agent scaffolding — like this repo) → same
-  as content, plus a Rules subsection for the artifact-authoring workflow.
-
-HOW TO USE THIS TEMPLATE:
-1. Copy this whole file to the target location as `AGENTS.md`.
-2. Delete this HTML comment block.
-3. Delete sections you do NOT need for this project's shape.
-4. Replace `<PLACEHOLDER>` markers with real content.
-5. Prune examples and inline guidance comments once real content is in.
-================================================================================
+Section picking:
+- Code / config project → all sections.
+- Content project (docs, notes, prose) → drop Tools & Commands and Commit / PR.
+- Meta project (rules, skills, agent scaffolding) → as content, plus a Rules
+  subsection for the artifact-authoring workflow.
 -->
 
 # AI Agent Guidelines
@@ -67,7 +34,7 @@ Keep tiny. Cut if the parent AGENTS.md already covers this.
 
 - Living doc. Evolves from repeated signal, not one-off taste.
 - Durable behavior only. Task logs → a progress-notes folder (e.g. `.agent/progress/`).
-- Nested `AGENTS.md` may narrow / override. Top-level prevails on conflict.
+- Nearest applicable `AGENTS.md` wins. Child narrows / overrides parent; never restates it.
 - Style: dense, imperative, fragment OK. Reader is AI.
 - Verify referenced skills / tools / paths exist before saving.
 
@@ -209,18 +176,6 @@ build, deploy. Add or drop rows to match the project.
   <exact command>
   ```
 - **Test:**
-  ```sh
-  <exact command>
-  ```
-- **Lint:**
-  ```sh
-  <exact command>
-  ```
-- **Format:**
-  ```sh
-  <exact command>
-  ```
-- **Build:**
   ```sh
   <exact command>
   ```

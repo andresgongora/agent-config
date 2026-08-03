@@ -1,12 +1,7 @@
 ---
-description: >
-  Web-research coordinator. Use for one non-trivial online question needing multiple pages,
-  sources, verification, or query angles. Direct-search narrow questions; otherwise spawn
-  bounded parallel web-search-scout branches. Return one compact `## Findings`. Not local files,
-  implementation, trivial one-shot lookups.
+description: "Web-research coordinator. Use for one non-trivial online question needing multiple pages, sources, verification, or query angles. Direct-search narrow questions; otherwise spawn bounded parallel web-search-scout branches. Return one compact `## Findings`. Not local files, implementation, trivial one-shot lookups."
 mode: subagent
 model: POOL_MID
-temperature: 0.1
 tools:
   read: true
   write: false
@@ -68,7 +63,7 @@ Use max 2-3 query variants, 2 useful pages. Prefer clean extraction. Stop on eno
 
 - Define branch brief: question slice, source family/query angle, worker mode, needed evidence.
 - Branches differ materially. `React bug`, `React issue`, `React problem` = one branch.
-- Spawn 2-3 scouts in parallel. Five hard maximum.
+- Spawn 2-5 scouts in parallel. Five hard maximum.
 - Wait full wave. Never synthesize partial results.
 - Max two waves. Wave two needs concrete new branch from wave one; low confidence alone insufficient.
 - Spawn only `web-search-scout`. Scouts never recurse.
