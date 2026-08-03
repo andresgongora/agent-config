@@ -1,15 +1,11 @@
 ---
 name: code-frontier
-description: >
-  Maintain a repo-state snapshot: current shape, done, in-flight, near next,
-  and boundary facts. Load for repo state, session continuity, repo-level next
-  steps, risks, limitations, or deferred/discarded decisions. Not for handoff,
-  bug logs, or architecture docs.
+description: "Maintain a repo-state snapshot: current shape, done, in-flight, near next, and boundary facts. Load for repo state, session continuity, repo-level next steps, risks, limitations, or deferred/discarded decisions. Not for handoff, bug logs, or architecture docs."
 ---
 
 # Skill: code-frontier
 
-Repo-state snapshot. Present tense only.
+Repo-state snapshot. Current-state only.
 
 ## Use
 
@@ -20,8 +16,8 @@ Load:
 - structural map changed enough that fresh agent would care
 
 Do not load:
-- task handoff (`.agent/progress/`)
-- bug attempts (`.agent/bugs/`)
+- task handoff, task progress.
+- bug attempts
 - architecture/reference docs
 - trivial work in already-understood repo
 
@@ -33,7 +29,7 @@ Do not load:
 - Not the README (framed for onboarding humans)
 - Not the AGENTS.md (agent behavior, not repo state)
 - Not the architecture doc (stable reference; frontier changes as work happens)
-- Not a handoff note (`.agent/progress/` is task-scoped; frontier is repo-scoped)
+- Not a handoff note (task-scoped; frontier is repo-scoped)
 
 Content belongs there: put it there.
 
@@ -41,7 +37,7 @@ Content belongs there: put it there.
 
 Default path: `.agent/frontier.md`.
 
-Skill owns path. Other files name concept, not filename.
+Path changes require targeted reference scan.
 
 ## Shape
 
@@ -50,7 +46,7 @@ Keep fixed shape. Fill all sections. Empty: `- (none)`.
 ```markdown
 ---
 title: <Repo> Frontier
-summary: Present-tense repo boundary — Shape / Done / In progress / Next / Boundary.
+summary: Current repo boundary — Shape / Done / In progress / Next / Boundary.
 status: active
 updated: YYYY-MM-DD
 ---
@@ -132,17 +128,8 @@ To hit the ~60-line target:
 3. Fill `Done` from stable capabilities.
 4. Leave rest `- (none)` until real state exists.
 
-## Relation to `docs`
-
-`docs` owns generic infrastructure: doc discovery, frontmatter, `scripts/inventory`, handoff notes, bug logs.
-
-`code-frontier` owns one artifact: repo-state snapshot. Uses the frontmatter contract from `docs`. Keep separate. Light cross-reference only.
-
-If a request touches both (e.g. "audit doc/ and update frontier"), load both. They do not conflict.
-
 ## Boundaries
 
-- Skill owns path. Path changes: update only this file.
-- Present tense only. History/future elsewhere.
-- No subagent. Frontier update needs live parent context. Same rationale as `docs` no-subagent decision.
-- No fixed compression style. File dense (`caveman` if loaded).
+- Path changes: targeted reference scan and update.
+- Keep current continuity only. `Done` = stable capability; `Next` = accepted near move. No chronology or distant roadmap.
+- No subagent. Frontier update needs live parent context.

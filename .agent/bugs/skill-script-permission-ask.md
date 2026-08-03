@@ -1,8 +1,9 @@
 ---
 title: Skill Script Permission Ask — Tilde/Path-Form Mismatch
-summary: Skill scripts (e.g. ~/.config/opencode/skills/docs/scripts/inventory) triggered permission ask despite allow patterns. Root cause: opencode expands ~/$HOME in PATTERNS at load but matches the bash COMMAND string raw. Fix: a leading-`*` allow pattern (opencode's `*` crosses `/`), matching every path form in one rule. RESOLVED + verified.
+summary: >-
+  Skill scripts (e.g. ~/.config/opencode/skills/docs/scripts/inventory) triggered permission ask despite allow patterns. Root cause: opencode expands ~/$HOME in PATTERNS at load but matches the bash COMMAND string raw. Fix: a leading-`*` allow pattern (opencode's `*` crosses `/`), matching every path form in one rule. RESOLVED + verified.
 status: resolved
-updated: 2026-07-27
+updated: 2026-08-02
 ---
 
 ## Symptom
@@ -87,11 +88,13 @@ no-arg case after any permission change; it must run silently.
 CLI non-interactive; no TUI needed. Run from a dir containing `.agent/` for meaningful output.
 
 ### Inspect deployed pattern map
+
 ```bash
 grep -o '"[^"]*scripts[^"]*":"[^"]*"' ~/.config/opencode/opencode.json
 ```
 
 ### Exp 1 — baseline reproduce (expect ask, pre-fix only)
+
 ```bash
 opencode run --agent cli --model github-copilot/claude-haiku-4.5 \
   "Run verbatim, keep the tilde, do not rewrite: ~/.config/opencode/skills/docs/scripts/inventory"
@@ -99,6 +102,7 @@ opencode run --agent cli --model github-copilot/claude-haiku-4.5 \
 Pre-fix: `permission requested … auto-rejecting`. Post-fix: script runs.
 
 ### Exp 2 — --auto bypass (proves script works, permission is the blocker)
+
 ```bash
 opencode run --auto --agent cli --model github-copilot/claude-haiku-4.5 \
   "run: bash ~/.config/opencode/skills/docs/scripts/inventory"
@@ -106,18 +110,21 @@ opencode run --auto --agent cli --model github-copilot/claude-haiku-4.5 \
 Always runs (--auto approves non-denied).
 
 ### Exp 3 — post-fix tilde (expect run, no prompt)
+
 ```bash
 opencode run --agent cli --model github-copilot/claude-haiku-4.5 \
   "Run verbatim, keep tilde: ~/.config/opencode/skills/docs/scripts/inventory"
 ```
 
 ### Exp 4 — negative control (arbitrary absolute exe still asks)
+
 ```bash
 opencode run --agent cli --model github-copilot/claude-haiku-4.5 "run: /usr/bin/env echo hi"
 ```
 Expect `auto-rejecting` — not in allowlist. Confirms allow is scoped, not global.
 
 ### Notes
+
 - `cli.md` / `opencode.json` symlinks are live: pattern edits to the source take effect for the
   next `opencode run` immediately. `opencode.nix` edits need `nixos-rebuild` to reach `opencode.json`.
 - Model may silently rewrite `~`→absolute; force literal tilde with "keep the tilde, do not rewrite".

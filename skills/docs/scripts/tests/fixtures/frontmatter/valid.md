@@ -1,0 +1,8 @@
+---
+name: Third-party Document
+description: Valid generic frontmatter.
+unknown:
+  nested: retained
+---
+
+# Valid

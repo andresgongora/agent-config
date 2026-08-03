@@ -1,17 +1,18 @@
 # code-frontier
 
-Repo-state snapshot. One artifact. Present tense.
+Repo-state snapshot. One artifact. Current continuity.
 
 ## What it does
 
 Maintains `.agent/frontier.md`: current shape, done, in progress, near next, boundary facts. Not changelog. Not roadmap. Not handoff.
 
-## Why separate from `docs`
+## Why separate from generic docs
 
-`docs` handles generic doc discipline.
+Generic doc discipline handles discovery, lifecycle, handoffs, and bug logs.
 
-`code-frontier` handles one repo-state artifact with stricter rules:
-- present tense only
+This workflow handles one repo-state artifact with stricter rules:
+
+- stable `Done` and accepted near `Next`, not chronology
 - near next only
 - current evidenced risks only
 - update in place
@@ -30,5 +31,4 @@ Keep cross-reference. Avoid stronger coupling.
 ## See also
 
 - `SKILL.md`
-- `../docs/SKILL.md`
 - `../../.agent/frontier.md`

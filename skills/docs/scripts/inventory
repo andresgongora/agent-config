@@ -1,39 +1,118 @@
 #!/usr/bin/env bash
-# List Markdown docs in a tree with frontmatter. Cheap discovery: one call, no full reads.
-# Sorted by `updated:` frontmatter desc (recent first), then path.
-# Usage: inventory [dir]   (default: .agent/)
-set -euo pipefail
+set -Eeuo pipefail
+IFS=$'\n\t'
 
-dir="${1:-.agent}"
-if [[ ! -d "$dir" ]]; then
-  echo "No directory: $dir" >&2
-  exit 1
-fi
+##==================================================================================================
+##	DEPENDENCY CHECKS
+##==================================================================================================
+requireCommand() {
+    command -v "$1" >/dev/null 2>&1 || {
+        printf 'Missing dependency: %s\n' "$1" >&2
+        exit 1
+    }
+}
 
-# Emit: "<updated>\t<path>\t<title>\t<status>\t<summary>" per file, tab-separated.
-while IFS= read -r -d '' f; do
-  awk -v path="$f" '
-    NR==1 && /^---[[:space:]]*$/ { fm=1; next }
-    fm && /^---[[:space:]]*$/ { exit }
-    fm {
-      if ($0 ~ /^[Tt]itle:/)   { sub(/^[^:]*:[[:space:]]*/,""); title=$0 }
-      if ($0 ~ /^[Ss]ummary:/) { sub(/^[^:]*:[[:space:]]*/,""); summary=$0 }
-      if ($0 ~ /^[Ss]tatus:/)  { sub(/^[^:]*:[[:space:]]*/,""); status=$0 }
-      if ($0 ~ /^[Uu]pdated:/) { sub(/^[^:]*:[[:space:]]*/,""); updated=$0 }
-    }
-    END {
-      if (title=="")   title="(no title)"
-      if (updated=="") updated="0000-00-00"
-      printf "%s\t%s\t%s\t%s\t%s\n", updated, path, title, status, summary
-    }
-  ' "$f"
-done < <(find "$dir" -type f -name '*.md' -print0) | sort -r | awk -F'\t' '
-  {
-    printf "%s\n", $2
-    printf "  title:   %s\n", $3
-    if ($1 != "0000-00-00") printf "  updated: %s\n", $1
-    if ($4 != "")           printf "  status:  %s\n", $4
-    if ($5 != "")           printf "  summary: %s\n", $5
-    printf "\n"
-  }
-'
+requireCommand yq
+
+##==================================================================================================
+##	GLOBALS
+##==================================================================================================
+SCRIPT_DIRECTORY="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+declare -r SCRIPT_DIRECTORY
+declare -r FRONTMATTER_SCRIPT="$SCRIPT_DIRECTORY/get-frontmatter"
+declare -a RECORDS=()
+
+##==================================================================================================
+##	UTILITIES
+##==================================================================================================
+die() {
+    printf '%s\n' "$1" >&2
+    exit 1
+}
+
+##==================================================================================================
+##	CORE FUNCTIONS
+##==================================================================================================
+extractMetadata() {
+    local file="$1"
+    local raw_frontmatter
+    local metadata
+    local title
+    local summary
+    local status
+    local updated
+    local frontmatter_status
+
+    if raw_frontmatter="$("$FRONTMATTER_SCRIPT" "$file" 2>/dev/null)"; then
+        :
+    else
+        frontmatter_status=$?
+        case "$frontmatter_status" in
+            2)
+                printf '0000-00-00\t%s\t(no frontmatter)\t\t\n' "$file"
+                return
+                ;;
+            3) die "Unclosed YAML frontmatter: $file" ;;
+            4) die "Invalid YAML frontmatter: $file" ;;
+            *) die "Cannot read frontmatter: $file" ;;
+        esac
+    fi
+
+    if ! metadata="$(printf '%s\n' "$raw_frontmatter" | yq -r '
+        [
+            (.title // .name // "(no title)" | tostring | sub("\\t"; " ") | sub("\\n"; " ") | sub("\\r"; " ") | sub("\\|"; " ") | trim),
+            (.summary // .description // "" | tostring | sub("\\t"; " ") | sub("\\n"; " ") | sub("\\r"; " ") | sub("\\|"; " ") | trim),
+            (.status // "" | tostring | sub("\\t"; " ") | sub("\\n"; " ") | sub("\\r"; " ") | sub("\\|"; " ") | trim),
+            (.updated // .lastmod // .date // "0000-00-00" | tostring | sub("\\t"; " ") | sub("\\n"; " ") | sub("\\r"; " ") | sub("\\|"; " ") | trim)
+        ] | join("|")
+    ' 2>/dev/null)"; then
+        die "Invalid YAML frontmatter: $file"
+    fi
+
+    IFS='|' read -r title summary status updated <<< "$metadata"
+    printf '%s\t%s\t%s\t%s\t%s\n' "$updated" "$file" "$title" "$status" "$summary"
+}
+
+listRecords() {
+    local directory="$1"
+    local file
+
+    while IFS= read -r -d '' file; do
+        RECORDS+=("$(extractMetadata "$file")")
+    done < <(find "$directory" -type f -name '*.md' -print0)
+}
+
+printRecords() {
+    if (( ${#RECORDS[@]} == 0 )); then
+        return
+    fi
+
+    printf '%s\n' "${RECORDS[@]}" |
+        sort -t $'\t' -k1,1r -k2,2 |
+        awk -F'\t' '
+            {
+                printf "%s\n", $2
+                printf "  title:   %s\n", $3
+                if ($1 != "0000-00-00") printf "  updated: %s\n", $1
+                if ($4 != "")           printf "  status:  %s\n", $4
+                if ($5 != "")           printf "  summary: %s\n", $5
+                printf "\n"
+            }
+        '
+}
+
+##==================================================================================================
+##	MAIN
+##==================================================================================================
+main() {
+    local directory="${1:-.agent}"
+
+    [[ -d "$directory" ]] || die "No directory: $directory"
+    listRecords "$directory"
+    printRecords
+}
+
+##==================================================================================================
+##	SCRIPT ENTRY POINT
+##==================================================================================================
+main "$@"

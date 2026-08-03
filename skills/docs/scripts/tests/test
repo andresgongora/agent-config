@@ -1,0 +1,94 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+IFS=$'\n\t'
+
+##==================================================================================================
+##	GLOBALS
+##==================================================================================================
+TEST_DIRECTORY="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+declare -r TEST_DIRECTORY
+SCRIPT_DIRECTORY="$(cd -- "$TEST_DIRECTORY/.." && pwd)"
+declare -r SCRIPT_DIRECTORY
+REPOSITORY_DIRECTORY="$(cd -- "$TEST_DIRECTORY/../../../.." && pwd)"
+declare -r REPOSITORY_DIRECTORY
+declare -r FIXTURE_DIRECTORY="$TEST_DIRECTORY/fixtures"
+declare -r EXPECTED_DIRECTORY="$TEST_DIRECTORY/expected"
+
+##==================================================================================================
+##	UTILITIES
+##==================================================================================================
+fail() {
+    printf '%s\n' "$1" >&2
+    exit 1
+}
+
+assertOutput() {
+    local expected_file="$1"
+    shift
+    local actual_output
+    local expected_output
+
+    actual_output="$("$@")"
+    expected_output="$(< "$expected_file")"
+    [[ "$actual_output" == "$expected_output" ]] && return
+
+    diff -u "$expected_file" <(printf '%s\n' "$actual_output") || true
+    fail "Unexpected output: $*"
+}
+
+assertFailure() {
+    local expected_status="$1"
+    local expected_message="$2"
+    shift 2
+    local output
+    local status
+
+    if output="$("$@" 2>&1)"; then
+        fail "Expected failure: $*"
+    else
+        status=$?
+    fi
+
+    [[ "$status" == "$expected_status" ]] || fail "Unexpected exit status $status: $*"
+    [[ "$output" == "$expected_message" ]] || fail "Unexpected error: $output"
+}
+
+assertFailureStatus() {
+    local expected_status="$1"
+    shift
+    local status
+
+    if "$@" >/dev/null 2>&1; then
+        fail "Expected failure: $*"
+    else
+        status=$?
+    fi
+
+    [[ "$status" == "$expected_status" ]] || fail "Unexpected exit status $status: $*"
+}
+
+##==================================================================================================
+##	MAIN
+##==================================================================================================
+main() {
+    cd "$REPOSITORY_DIRECTORY"
+    assertOutput "$EXPECTED_DIRECTORY/inventory.txt" \
+        "$SCRIPT_DIRECTORY/inventory" "skills/docs/scripts/tests/fixtures/inventory"
+    assertOutput "$EXPECTED_DIRECTORY/frontmatter.txt" \
+        "$SCRIPT_DIRECTORY/get-frontmatter" "$FIXTURE_DIRECTORY/frontmatter/valid.md"
+    assertFailure 2 "Malformed frontmatter in $FIXTURE_DIRECTORY/frontmatter/missing.md: file must start with a '---' line. No frontmatter block found." \
+        "$SCRIPT_DIRECTORY/get-frontmatter" "$FIXTURE_DIRECTORY/frontmatter/missing.md"
+    assertFailure 3 "Malformed frontmatter in $FIXTURE_DIRECTORY/frontmatter/unclosed.md: opening '---' has no matching closing '---'. Block is unclosed." \
+        "$SCRIPT_DIRECTORY/get-frontmatter" "$FIXTURE_DIRECTORY/frontmatter/unclosed.md"
+    assertFailure 1 "Unclosed YAML frontmatter: skills/docs/scripts/tests/fixtures/inventory-unclosed/unclosed.md" \
+        "$SCRIPT_DIRECTORY/inventory" "skills/docs/scripts/tests/fixtures/inventory-unclosed"
+    assertFailure 1 "Invalid YAML frontmatter: skills/docs/scripts/tests/fixtures/inventory-invalid/invalid.md" \
+        "$SCRIPT_DIRECTORY/inventory" "skills/docs/scripts/tests/fixtures/inventory-invalid"
+    assertFailureStatus 4 \
+        "$SCRIPT_DIRECTORY/get-frontmatter" "$FIXTURE_DIRECTORY/inventory-invalid/invalid.md"
+}
+
+##==================================================================================================
+##	SCRIPT ENTRY POINT
+##==================================================================================================
+main "$@"

@@ -1,0 +1,8 @@
+# Agent-directed Markdown intentionally keeps compact lead-in/list flow.
+**/AGENTS.md
+agents/**/*.md
+commands/**/*.md
+skills/**/SKILL.md
+skills/**/templates/**/*.md
+assets/**/*.md
+.agent/**/*.md

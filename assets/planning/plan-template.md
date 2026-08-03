@@ -53,17 +53,17 @@ updated: YYYY-MM-DD
 
 1. <milestone> — <outcome / dependency>.
    - Use: <named discovered capability — trigger / expected output; omit if none>
-   - Delegate: <named worker — bounded task / expected return / trigger; omit if main-thread work is cheaper or needs live synthesis>
+   - Delegate: <role/capability — bounded task / expected return / trigger / fallback; omit if main-thread work is cheaper or needs live synthesis>
 
 ## Execution capability notes
 
-- Runtime assumption: <shared skill, MCP/tool, worker, or permission expected during execution — validation / fallback>
+- Runtime assumption: <shared capability or permission expected during execution — validation / fallback>
 - Setup: <one-time capability setup needed before affected milestones, or omit>
 - Research: <decision-blocking question — direct inspection | web research | review — why>
 - Lead: <current promising source/path and why, or omit>
 - Avoid: <capability/approach that wastes tokens, risks damage, or cannot answer question>
 
-Name a capability only when its use changes execution. Milestone-specific use/delegation goes beside that milestone; this section holds only shared assumptions, setup, fallback. Favour workers for independent read-only mapping, focused review, known 1-2 file surgical edits; not for trivial work, broad refactors, or live-synthesis work.
+Name capability role only when use changes execution. Milestone-specific use/delegation goes beside milestone; this section holds only shared assumptions, setup, fallback. Favour bounded workers for independent read-only mapping, focused review, known 1-2 file surgical edits; not for trivial work, broad refactors, or live-synthesis work.
 
 ## Open questions
 

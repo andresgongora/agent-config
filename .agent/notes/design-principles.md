@@ -2,7 +2,7 @@
 title: Design Principles
 summary: Durable why-decisions behind this agent setup. Layer model, memory placement, testability stance, brutal-truth reminders. Read once to understand the shape; do not restate in AGENTS.md.
 status: active
-updated: 2026-07-23
+updated: 2026-08-02
 ---
 
 # Design Principles
@@ -13,14 +13,14 @@ Why this setup exists in its current shape. Read once, do not restate elsewhere.
 
 Few sharp layers, each with one clear job.
 
-| Layer | Purpose | Loaded |
-|---|---|---|
-| Home `AGENTS.md` | Cross-project durable behavior | Every session |
-| Project `AGENTS.md` | Repo-local rules, workflow, tooling | Every session in that repo |
-| Nested `AGENTS.md` | Subdir-only overrides | When working in that subdir |
-| `.agent/` | Durable notes, project state, task handoffs, bug logs | On demand |
-| Skills (`skills/<name>/`) | Repeated specialized workflows | On trigger |
-| Subagents (`agents/<name>.md`) | Isolatable delegated work | On invocation |
+| Layer                          | Purpose                                               | Loaded                      |
+| ------------------------------ | ----------------------------------------------------- | --------------------------- |
+| Home `AGENTS.md`               | Cross-project durable behavior                        | Every session               |
+| Project `AGENTS.md`            | Repo-local rules, workflow, tooling                   | Every session in that repo  |
+| Nested `AGENTS.md`             | Subdir-only overrides                                 | When working in that subdir |
+| `.agent/`                      | Durable notes, project state, task handoffs, bug logs | On demand                   |
+| Skills (`skills/<name>/`)      | Repeated specialized workflows                        | On trigger                  |
+| Subagents (`agents/<name>.md`) | Isolatable delegated work                             | On invocation               |
 
 Preferred over: giant all-in-one memory file, chat-log memory, or brittle local DB.
 
@@ -53,9 +53,8 @@ Preferred over: giant all-in-one memory file, chat-log memory, or brittle local 
 - Frontmatter + summary are routing layer. If an agent must read the whole doc just to decide relevance, the doc is too expensive.
 - Read relevant docs before broad re-exploration.
 - Stale docs → verify from source, then update.
-- Frontmatter (`title`, `summary`, `status`, `updated`) enables one-call discovery.
+- `.agent/**/*.md` require frontmatter: `title`, `summary`, `status`, `updated`. Discovery accepts third-party aliases without making them managed-doc schema.
 - External-sourced content requires `source:` link. Undocumented sources become unverifiable.
-- Plans are temporary execution artifacts. On delivery or abandonment, delete them; move only enduring decisions into an appropriate durable doc or rule.
 
 ### Skills
 
@@ -65,6 +64,13 @@ Preferred over: giant all-in-one memory file, chat-log memory, or brittle local 
 - Skill file on disk ≠ skill loaded at runtime. Respect that gap.
 - Persistent skills need re-anchoring after long / tool-heavy turns.
 - Every skill folder ships `SKILL.md` + `README.md` (LLM + human).
+
+### Instruction Evaluation
+
+- Static instruction review cannot see user intent, assembled runtime context, target-client behavior, or model execution. It finds source-evidenced severe misalignment, contradiction, unsound scope, and obvious ship blockers; it does not certify behavior.
+- Minimal completeness: retain smallest rule set that makes critical boundaries, priorities, stop conditions, consumer contract, and exceptions executable. Add no ritual check, fixed syntax, or generic best practice without a concrete failure prevented.
+- Multi-step workflow quality is semantic: state owner, transitions, completion evidence, and stop/replan behavior. Checkbox TODO syntax is optional, never a quality signal by itself.
+- Deterministic validation and static judgment differ. Use parsers/tests/runtime exercise for facts they can establish; use read-only review for direction, coherence, and missing constraints.
 
 ### Subagents
 
@@ -83,18 +89,20 @@ Preferred over: giant all-in-one memory file, chat-log memory, or brittle local 
 
 ## Memory Placement Rules
 
-| Content | Home |
-|---|---|
-| Durable + cross-project | Home `AGENTS.md` |
-| Durable + repo-specific | Project `AGENTS.md` |
-| Durable + subdir-specific | Nested local `AGENTS.md` |
-| Design / architecture / reference | `.agent/notes/` |
-| Reusable workflow | Skill |
-| Current state of a project | Repo-state snapshot (see `code-frontier` skill) |
-| Task-scoped handoff | `.agent/progress/` |
-| Bug attempts | `.agent/bugs/` |
-| Private / noisy / machine-specific | Local-only, do not commit |
-| Secrets | Not in memory / not in docs / never |
+| Content                            | Home                                            |
+| ---------------------------------- | ----------------------------------------------- |
+| Durable + cross-project            | Home `AGENTS.md`                                |
+| Durable + repo-specific            | Project `AGENTS.md`                             |
+| Durable + subdir-specific          | Nested local `AGENTS.md`                        |
+| Design / architecture / reference  | `.agent/notes/`                                 |
+| Reusable workflow                  | Skill                                           |
+| Current state of a project         | Repo-state snapshot workflow                     |
+| Task-scoped handoff                | `.agent/progress/`                              |
+| Bug attempts                       | `.agent/bugs/`                                  |
+| Private / noisy / machine-specific | Local-only, do not commit                       |
+| Secrets                            | Not in memory / not in docs / never             |
+
+`.agent/progress/` also holds active task scratchpads. Task ends: delete; move reusable conclusion to `notes/`. Prompt/todo holds uncommitted thought.
 
 **Portable memory rule:** git-tracked > local. High-value durable knowledge should survive machine loss.
 

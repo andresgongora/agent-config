@@ -1,22 +1,33 @@
+# Temporary files
+*.DS_Store
+*.egg
+*.egg-info/
+*.pyc
+*.pyd
+*.pyo
+*.swo
+*.swp
+*~
+.eggs/
+.env
+.envrc
+.venv/
+__pycache__/
+build/
+dist/
+
 # Skills
 # no-ai-slop — upstream has no license yet; not redistributable until resolved
 skills/no-ai-slop/
 
-# Disabled skills (local experiments)
-disabled-skills/
-skills/opencode-local/
+# Spikes (local experiments)
+spikes/
 
 # Local model aliases (machine-specific)
 model-aliases.json
 
 # Plans
 .agent/plan*
-
-# agent-benchmark (local experiments — never committed)
-agents/agent-benchmark*.md
-skills/agent-benchmark/
-/agent-benchmark/
-.agent/notes/agent-benchmark.md
 
 # Frontier (machine-local state, not committed)
 .agent/frontier.md
