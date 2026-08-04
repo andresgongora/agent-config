@@ -23,10 +23,6 @@ Three facts here are specific to this setup and were verified rather than assume
 local wrapper from `nixos/modules/system/fhs.nix`, Home Manager runs as a NixOS module so one
 rebuild validates both layers, and `steam-run` is not installed, hence the `nix run` form.
 
-Earlier versions drifted into a mini Nix handbook — module templates, override glossary, a
-trailing rule summary that repeated the body. All dead weight against the real goal, all
-removed.
-
 ## When it triggers
 
 A command fails for a NixOS reason (missing tool, missing shared library, missing interpreter),

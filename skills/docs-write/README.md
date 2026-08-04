@@ -4,7 +4,7 @@ Write side of repository knowledge. Turns expensive session knowledge into cheap
 
 ## What it does
 
-Owns admission, shaping, placement, frontmatter schema, update, and prune rules for durable repository documentation. Companion to the doc-discovery discipline (read side); the two split one former `docs` skill.
+Owns admission, shaping, placement, frontmatter schema, update, and prune rules for durable repository documentation. Companion to the doc-discovery discipline (read side).
 
 ## Why split from discovery
 

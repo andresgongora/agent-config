@@ -20,7 +20,7 @@ Everything else — reject-first instinct, dense style, no dead refs, no stubs �
 ## Maintainer notes
 
 - **Admission checklist stays at the top.** It is the main value. Buried, it does not fire.
-- **Any single criterion rejects.** An earlier version required two hits before pushing back, which let single fatal defects — dead refs, one-off instructions — through the front door. Do not reintroduce a threshold.
+- **Any single criterion rejects.** Dead refs and one-off instructions fail admission.
 - **Do not re-add generic authoring rules.** If a rule applies to skills and subagents too, it belongs in `agent-author`, not here.
 - **Template must track reality.** If real `AGENTS.md` files grow a new convention, update the template. A template that misleads is worse than none.
 - **Keep placement paths as examples.** `.agent/progress/` and friends are this repo's convention; the skill is used in other repos too, so they are written as examples, not requirements.

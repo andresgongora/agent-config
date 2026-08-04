@@ -35,7 +35,7 @@ Curiosity has to come from a complete, relevant fact that deserves explanation. 
 - Keep reader-facing, not a named-person voice profile.
 - Preserve direct peer-level tone and evidence proportional to stakes.
 - Add rules only when they change output behavior. Examples stay short and operational.
-- Keep the three-part paragraph rule unhedged. "Often", "when the reader needs it", and "diagnostic, not a quota" were removed on purpose; reintroducing them lets the closing sentence vanish.
+- Keep the three-part paragraph rule unhedged; hedging lets the closing sentence vanish.
 - `SKILL.md` carries WHAT and HOW only. Rationale lives here, including the skimming model behind the paragraph rule. Move any WHY that leaks back into the skill.
 - Keep the ask-for-mechanism-and-impact rule adjacent to the missing-fact rules. Removing it turns the skill into a polisher of vague claims, which is the failure it exists to prevent.
 - The ask rule needs its non-ask exits kept intact. Constrained edits, explicitly requested placeholders, supplied-reason judgments, and non-material vagueness each have their own handling; delete those exits and the skill starts interrogating the user over grammar fixes.

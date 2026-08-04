@@ -18,7 +18,7 @@ User wants visual grouping (e.g. `coding-*` children under a `coding/` parent) w
 
 ## Loader facts (verified, opencode v1.18.3 binary)
 
-Source: `strings` of `/nix/store/g8n4rzm8iii1c9yz9gj5mldgfh2sac60-opencode-1.18.3/bin/.opencode-wrapped`. Re-verify if opencode version bumps past 1.18.3 or the Nix store path changes.
+Source: installed OpenCode binary. Re-verify after an OpenCode upgrade.
 
 - Discovery glob = `**/SKILL.md` — **recursive**. Nesting depth irrelevant. `coding/coding-bash/SKILL.md` AND `coding/bash/SKILL.md` both found.
 - Skill identity = **frontmatter `name`** (code: `j.skills[z.data.name]={...}`). Folder path NOT parsed for identity. Docs' "matches the folder name" = convention, not enforcement.
@@ -55,7 +55,3 @@ Source: `strings` of `/nix/store/g8n4rzm8iii1c9yz9gj5mldgfh2sac60-opencode-1.18.
 ## Open questions
 
 - Adopt the flatten-on-install rule now (keeps nesting a *safe* future option) or defer? Current lean: **defer** — do not implement the rule yet; flat needs no transform. The rule stays documented above for whenever nesting is actually wanted.
-
-## Decisions / revisions
-
-- 2026-07-30 — Verdict: stay flat. Basis: `name` is flat-namespaced regardless of tree; flat is the mandatory cross-client deploy shape; nesting only adds a self-undoing transform. Prefer Option A if ever reversed; avoid Option B. Loader facts verified against v1.18.3 binary.

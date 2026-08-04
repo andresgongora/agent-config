@@ -8,7 +8,7 @@ Guides the agent to consult already-digested repo docs before broad re-explorati
 
 ## Why discovery-only
 
-This skill loads on nearly every non-trivial repo session, so it must stay lean. Writing rules (frontmatter schema, `.agent/` placement, lifecycle, bootstrap, handoff, bug logs) were split out into a separate doc-writing skill that only loads when knowledge is actually being persisted. Discovery is the hot path; writing is the cold, gated path. Splitting removes a per-session token tax.
+This skill loads on nearly every non-trivial repo session, so it must stay lean. Writing rules (frontmatter schema, `.agent/` placement, lifecycle, bootstrap, handoff, bug logs) belong to a separate doc-writing skill that loads only when knowledge is persisted. Discovery is the hot path; writing is the cold, gated path.
 
 Design intent:
 
