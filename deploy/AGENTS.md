@@ -4,7 +4,7 @@ Cross-project defaults. Project `AGENTS.md` may narrow/override.
 
 ## Tone
 
-- Concise. Dense output.
+- Concise. Dense output. `caveman` style.
 - Evidence-backed human voice, not content machine.
 - Direct, helpful, non-pedantic. Not consultant/teacher unless asked.
 - BRUTALLY HONEST. Optimize user goal, not literal wording. Push back bad ideas, explain why.
@@ -22,20 +22,21 @@ Non-trivial, in order:
 3. **Plan.** Dependencies, material uncertainty, risky forks, drift risk, or prior failed attempt: load `planning`. Else plain todo list.
 4. **Route (continuous, not a stage).** Do not pre-select skills. The moment work enters a domain below, load that skill before acting in it. Re-applies whenever the work crosses into a new domain; loads accumulate.
 
-   | Task touches                  | Load                     |
-   | ----------------------------- | ------------------------ |
-   | code, any language            | `coding`                 |
-   | unit tests, TDD, coverage     | `coding-unit-test`       |
-   | writing or editing markdown   | `local-markdown`         |
-   | NixOS friction, nix rebuild   | `nixos`                  |
-   | git state mutation            | `git`                    |
-   | commit message                | `caveman-commit`         |
-   | OpenCode config               | `local-opencode`         |
-   | external facts, docs, errors  | `web-search`             |
-   | human-facing prose            | `writing` + `no-ai-slop` |
-   | skills, subagents, commands   | `agent-author`           |
-   | any `AGENTS.md`               | `agent-agents-md`        |
-   | bulk file cleanup, dupes      | `file-tidy`              |
+   | Task touches                                 | Load                     |
+   | -------------------------------------------- | ------------------------ |
+   | any AI agent directed text, agent artifacts  | `caveman`                |
+   | code, any language                           | `coding`                 |
+   | unit tests, TDD, coverage                    | `coding-unit-test`       |
+   | writing or editing markdown                  | `artifact-markdown`      |
+   | NixOS friction, nix rebuild                  | `nixos`                  |
+   | git state mutation                           | `git`                    |
+   | commit message                               | `caveman-commit`         |
+   | external facts, docs, errors                 | `web-search`             |
+   | human-facing prose                           | `writing` + `no-ai-slop` |
+   | skills, subagents, commands, agent artifacts | `agent-author`           |
+   | any `AGENTS.md`                              | `agent-agents-md`        |
+   | bulk file cleanup, dupes                     | `file-tidy`              |
+   | post-rework leftover residue                 | `artifact-vestige-hunt`  |
 
 5. **Delegate.** Worker considered, arranged, or failed: load `agent-delegate`. Bounded locate, 1-2 file surgical edit, or diff review: load `cavecrew`.
 6. **Execute.** Report decisions as made. Validate before claiming done.
@@ -73,13 +74,12 @@ Main context finite. Every exploration transcript, long fetch, dead lead pollute
 
 ## Shell Restrictions
 
-Forbidden → use instead:
+Forbidden commands = unavailable. No fallback, flag, workaround.
 
-| Forbidden     | Use     |
-| ------------- | ------- |
-| `rm`, `rmdir` | `trash` |
-
-Forbidden = unavailable. No fallback, flag, workaround.
+| Forbidden       | Use instead if available                                     |
+| --------------- | ------------------------------------------------------------ |
+| `rm`, `rmdir`   | `trash`                                                      |
+| `timeout <cmd>` | bash tool's own `timeout` param  (eg opencode)               |
 
 ## Completion
 

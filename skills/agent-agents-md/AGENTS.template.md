@@ -11,7 +11,7 @@ Section picking:
 - Code / config project → all sections.
 - Content project (docs, notes, prose) → drop Tools & Commands and Commit / PR.
 - Meta project (rules, skills, agent scaffolding) → as content, plus a Rules
-  subsection for the artifact-authoring workflow.
+  subsection for the agent-artifact authoring workflow.
 -->
 
 # AI Agent Guidelines

@@ -1,4 +1,4 @@
-# local-markdown
+# artifact-markdown
 
 Small finish gate for Markdown files: scoped formatter check, lint, then a short source review.
 

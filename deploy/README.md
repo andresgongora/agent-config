@@ -8,9 +8,7 @@ Everywhere else in the repo, artifacts refer to each other by behavior rather th
 
 ## The routing table trade-off
 
-Step 4 of `## Workflow` maps a work domain to the skill that owns it. Each of those skills already declares its own triggers in frontmatter, which the runtime reads without help from this file. An earlier version of `AGENTS.md` carried a fuller table and it was deleted for that reason.
-
-A narrower version came back because frontmatter answers "what triggers this skill" and cannot answer "when during the work does it load". Step 4 answers the second question: load lazily, at the moment the work crosses into a domain, and keep accumulating loads as one task spans several. Cells are keywords, not rewritten descriptions.
+Step 4 of `## Workflow` maps a work domain to the skill that owns it. Frontmatter answers "what triggers this skill" but not "when during the work does it load". Step 4 answers the second question: load lazily, when work crosses into a domain, and accumulate loads as one task spans several. Cells are keywords, not rewritten descriptions.
 
 The cost has not gone away. Rename or remove a skill and the table drifts out of sync with `skills/`, and nothing catches it.
 

@@ -24,7 +24,7 @@ Repo-local rules for agents authoring / editing skills, subagents, and docs in t
 ## Directives
 <!------------------------------------------------------------------------------------------------->
 
-- Before adding / changing a skill or subagent: load artifact-authoring workflow. Non-negotiable.
+- Before adding / changing a skill or subagent: load agent-artifact authoring workflow. Non-negotiable.
 - Before touching any `AGENTS.md` (add / change / trim / audit / create): load AGENTS-maintenance workflow. Reject-first.
 - Before adding / restructuring docs under `.agent/`: load documentation workflow.
 - Before broad scan: check `.agent/frontier.md` for current repo state.
@@ -86,7 +86,7 @@ Reject when:
 
 ### Adding Artifacts
 
-Owning workflow first: artifact-authoring for skills / subagents / commands, documentation workflow for `.agent/` docs, AGENTS-maintenance for any `AGENTS.md`. Those own the procedure. Repo-specific deltas only:
+Owning workflow first: agent-artifact authoring for skills / subagents / commands, documentation workflow for `.agent/` docs, AGENTS-maintenance for any `AGENTS.md`. Those own the procedure. Repo-specific deltas only:
 
 - **Skill**: grep `skills/` for overlap before creating. Routing truth is `SKILL.md` frontmatter `description`; reconcile the `deploy/AGENTS.md` step-4 routing table in the same change. Obsoletes an existing skill → delete the old one now, not later.
 - **Subagent**: grep `agents/` for name collision. `deploy/AGENTS.md` carries no worker table; add a line there only for delegation precedence the subagent's own `description` cannot express.

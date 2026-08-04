@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+IFS=$'\n\t'
+
+##==================================================================================================
+##	GLOBALS
+##==================================================================================================
+# High-recall, low-precision candidate scan for vestige markers. Emits path:line:text.
+# Not a verdict — every hit needs the core-mechanic (zero-impact) judgment from SKILL.md.
+declare -r MARKER_PATTERN='no longer|used to|previously|formerly|instead of|we removed|deprecated|note that .*(does not|doesn'"'"'t)|intentionally (not|omit)|deliberately avoid|superseded|legacy|historically|in the past|kept for'
+
+##==================================================================================================
+##	UTILITIES
+##==================================================================================================
+die() {
+    printf '%s\n' "$1" >&2
+    exit 1
+}
+
+##==================================================================================================
+##	CORE FUNCTIONS
+##==================================================================================================
+scanTarget() {
+    local target="$1"
+    local -i status=0
+
+    if command -v rg >/dev/null 2>&1; then
+        rg -n -i -H --no-heading -e "$MARKER_PATTERN" -- "$target" || status=$?
+    else
+        grep -rn -H -i -E "$MARKER_PATTERN" -- "$target" || status=$?
+    fi
+
+    # 1 = no matches (expected, high-recall scan may find nothing) — success.
+    # Any other nonzero status is a real scanner failure and must not look like a clean scan.
+    if (( status != 0 && status != 1 )); then
+        die "Scan failed (exit $status): $target"
+    fi
+    return 0
+}
+
+##==================================================================================================
+##	MAIN
+##==================================================================================================
+main() {
+    local target="${1:-.}"
+
+    [[ -e "$target" ]] || die "No such path: $target"
+    scanTarget "$target"
+}
+
+##==================================================================================================
+##	SCRIPT ENTRY POINT
+##==================================================================================================
+main "$@"

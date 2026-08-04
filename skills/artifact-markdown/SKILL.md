@@ -1,5 +1,5 @@
 ---
-name: local-markdown
+name: artifact-markdown
 description: "Minimal Markdown completion checks. Load whenever writing, editing, finishing, or reviewing Markdown files (`*.md`, `*.markdown`). Not for prose/content guidance or broader documentation workflow."
 ---
 

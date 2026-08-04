@@ -13,6 +13,13 @@ Agent definitions for OpenCode-compatible clients. Primary agents own a broad wo
 - Finds source-evidenced contradictions, scope problems, and visible execution gaps.
 - Does not edit artifacts, run software, grade numerically, or review application code.
 
+## Artifact Vestige
+
+`artifact-vestige-hunter.md` is a read-only subagent that finds vestigial residue (leftover comments, steps, or notes describing removed/superseded behavior) in code, docs, or agent-directed text.
+
+- Judges each candidate by a zero-impact-refactor test, not pattern match alone; emits a terse finding-per-line list.
+- Does not edit, propose diffs, audit correctness/alignment of agent-directed artifacts, or perform static dead-code analysis.
+
 ## Build
 
 `build.md` is the primary development agent for repository-local work.
