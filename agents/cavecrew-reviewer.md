@@ -14,6 +14,10 @@ permission:
   websearch: deny
   task: deny
   bash:
+    # Intentional local wildcard. Agent frontmatter merges AFTER the whole
+    # global bash ruleset, so this "*" outranks every global allow — this
+    # agent is fully self-contained and must re-declare each command it
+    # permits below. A future global bash allow will NOT reach this agent.
     "*": ask
     "basename *": allow
     "cat *": allow

@@ -20,52 +20,11 @@ permission:
   skill: allow
   question: allow
   bash:
-    # Read-only inspection baseline (explicit; global no longer carries these).
-    "basename *": allow
-    "cat *": allow
-    "command -v *": allow
-    "cut *": allow
-    "date": allow
-    "date *": allow
-    "df *": allow
-    "dirname *": allow
-    "du *": allow
-    "echo": allow
-    "echo *": allow
-    "exit": allow
-    "exit *": allow
+    # Global config (opencode.nix) already covers read-only inspection, shell
+    # no-ops, git read-only, formatters/linters, and skill-script paths. Only
+    # role-specific deltas below.
     "false *": allow
-    "file *": allow
-    "find *": allow
-    "git branch *": allow
-    "git diff*": allow
-    "git grep *": allow
-    "git log *": allow
-    "git rev-parse *": allow
-    "git show *": allow
-    "git status*": allow
-    "grep *": allow
-    "head *": allow
-    "ls": allow
-    "ls *": allow
-    "printf *": allow
-    "printenv*": allow
-    "pwd *": allow
-    "readlink *": allow
-    "realpath *": allow
-    "rg *": allow
-    "sed *": allow
-    "sort *": allow
-    "stat *": allow
-    "tail *": allow
-    "tr *": allow
-    "tree *": allow
     "true *": allow
-    "type *": allow
-    "uniq *": allow
-    "wc *": allow
-    "which *": allow
-    "nixfmt *": allow
     "opencode *": allow
     "trash": allow
     "trash *": allow
@@ -96,7 +55,6 @@ permission:
     "dig *": allow
     "nslookup *": allow
     "curl *": allow
-    "sha256sum *": allow
     "wget *": allow
     "traceroute *": allow
     "tracepath *": allow
@@ -158,14 +116,6 @@ permission:
     "nix *": ask
     "nixos-rebuild *": ask
     "home-manager *": ask
-
-    # Skill scripts. opencode expands ~/$HOME in PATTERNS at load, but NOT in
-    # the bash command string (matched raw). opencode's Wildcard.match lets `*`
-    # cross `/`, so a leading-`*` pattern matches every path form of the command
-    # (~/…, $HOME/…, /home/andy/…) in one rule. See .agent/bugs/skill-script-permission-ask.md.
-    "*/.config/opencode/skills/*/scripts/*": allow
-    "*/.agents/skills/*/scripts/*": allow
-    "*/.nix/home/andy/dotfiles/tools/agent-config/skills/*/scripts/*": allow
 
     # Hard denies — explicit; guard against rule-order shadowing of global.
     "rm": deny

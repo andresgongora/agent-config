@@ -1,130 +1,182 @@
 ---
-title: Skill Script Permission Ask — Tilde/Path-Form Mismatch
+title: Bash Permission Asks — Path-Form Mismatch and Per-Sub-Command Matching
 summary: >-
-  Skill scripts (e.g. ~/.config/opencode/skills/docs/scripts/inventory) triggered permission ask despite allow patterns. Root cause: opencode expands ~/$HOME in PATTERNS at load but matches the bash COMMAND string raw. Fix: a leading-`*` allow pattern (opencode's `*` crosses `/`), matching every path form in one rule. RESOLVED + verified.
+  Two distinct causes of spurious bash permission prompts. (1) Tilde/relative path forms never match absolute allow patterns, because patterns are `~`-expanded at load but command strings are not. (2) The bash tool emits one pattern per AST `command` node, so a single unlisted shell no-op (`exit`, `true`, `continue`) forces the whole compound command to prompt — and the dialog then lists every sub-command, allowed ones included. Both fixed in global config. RESOLVED.
 status: resolved
-updated: 2026-08-02
+updated: 2026-08-04
 ---
 
-## Symptom
+## Symptoms
 
-Bash command whose text is literally `~/.config/opencode/skills/docs/scripts/inventory`
-triggers:
+**Symptom A** — command text literally `~/.config/opencode/skills/docs/scripts/inventory` prompts,
+despite a verbatim `"~/.config/opencode/skills/*/scripts/*": "allow"` entry. CLI `run` auto-rejects
+(no approver); TUI asks every time.
 
-```
-! permission requested: bash (~/.config/opencode/skills/docs/scripts/inventory); auto-rejecting
-```
-
-Even though `opencode.json` contains verbatim `"~/.config/opencode/skills/*/scripts/*": "allow"`.
-CLI `run` auto-rejects (no approver). TUI asks every time.
-
-## Root Cause (verified against v1.18.3 source)
-
-opencode config permission is a JSON **object/map** of `{pattern: action}`, not an ordered array.
-
-1. **Patterns expanded at load.** `Permission.fromConfig()` expands leading `~/`, bare `~`, and
-   leading `$HOME` via `os.homedir()`. So `~/.config/...` pattern becomes `/home/andy/.config/...`
-   in memory.
-   Source: `https://github.com/anomalyco/opencode/blob/v1.18.3/packages/opencode/src/permission/index.ts`
-2. **Command string matched RAW.** The bash tool submits the parsed AST source text (`.trim()`),
-   with NO `~`/`$HOME` expansion, as the permission input.
-   Source: `https://github.com/anomalyco/opencode/blob/v1.18.3/packages/opencode/src/tool/shell.ts`
-3. **Asymmetry = miss.** Runtime pattern `/home/andy/.config/...` vs runtime command
-   `~/.config/...` → no match → falls to `"*": "ask"`.
-4. **Matcher: custom `Wildcard.match`.** `*`→regex `.*`, `?`→`.`, anchored `^...$`. Therefore
-   **`*` DOES cross `/`** (unlike minimatch/picomatch).
-   Source: `https://github.com/anomalyco/opencode/blob/v1.18.3/packages/opencode/src/util/wildcard.ts`
-
-Known upstream request: `https://github.com/anomalyco/opencode/issues/9806` (expand `~`/`$HOME`
-in patterns; done for patterns, not for command strings).
-
-## Fix (applied + verified)
-
-Because `*` crosses `/`, ONE leading-`*` pattern matches every path form of the command
-(`~/…`, `$HOME/…`, `/home/andy/…`) and any trailing args:
+**Symptom B** — an approval dialog lists a long, seemingly-arbitrary set of patterns, most of which
+are already allowlisted:
 
 ```
-"*/.config/opencode/skills/*/scripts/*": "allow"
-"*/.agents/skills/*/scripts/*": "allow"
-"*/.nix/home/andy/dotfiles/tools/agent-config/skills/*/scripts/*": "allow"
+git status *, git log *, git diff *, git ls-files *, prettier *, python -m *,
+exit *, true *, continue *, printf *, nix *, markdownlint-cli2 *,
+/home/<user>/.config/opencode/skills/docs/scripts/inventory *
 ```
 
-Applied in two places:
-- Global truth: `/home/andy/.nix/home/modules/tools/ai/opencode.nix` (needs `nixos-rebuild` to deploy).
-- Live-tested now: `/home/andy/.nix/home/andy/dotfiles/tools/agent-config/agents/cli.md` (live symlink;
-  effective immediately, no rebuild). Redundant with global once rebuilt — kept as tested guarantee.
+Symptom B is the one that looks like "permissions are completely broken". It is not.
 
-Trade-off: leading `*` is broader than an absolute pattern (any prefix before `/.config/opencode/…`
-matches). Acceptable for personal skill scripts. For least privilege, allowlist only the expanded
-`$HOME`/absolute form and invoke scripts by canonical absolute path.
+## Root Cause
 
-## What Was WRONG in the First Diagnosis
+Verified against `v1.18.11`:
+`packages/opencode/src/tool/shell.ts`, `packages/opencode/src/permission/index.ts`,
+`packages/opencode/src/agent/agent.ts`, `packages/opencode/src/util/wildcard.ts`.
 
-- **Wrong model**: assumed array + "last-match-wins" ordering. Config is a MAP; ordering as
-  originally described does not apply. (`opencode agent list` renders it array-like — misleading.)
-- **Wrong fix**: "force absolute paths in the system prompt." Works but treats the symptom, is
-  fragile (depends on model obeying), and misses that a single leading-`*` pattern fixes it at
-  the config layer for all agents and all path forms.
-- **Redundant noise**: ~20 exact-literal + per-form patterns added to `cli.md`. All replaced by
-  3 leading-`*` globs.
+### 1. One pattern per sub-command; any `ask` prompts the whole call
 
-## Verification (all passed, 2026-07-27)
+`collect()` parses the command with tree-sitter, walks `descendantsOfType("command")`, and for each
+node does:
 
-Run via `opencode run --agent cli --model github-copilot/claude-haiku-4.5`, cwd
-`/home/andy/.nix/home/andy/dotfiles/tools/agent-config`:
+```ts
+scan.patterns.add(source(node))                              // raw sub-command text
+scan.always.add(BashArity.prefix(tokens).join(" ") + " *")   // suggested pattern for the dialog
+```
 
-| Case | Command form | Result |
-|---|---|---|
-| tilde, no arg | `~/.config/opencode/skills/docs/scripts/inventory` | runs, no prompt |
-| tilde, with arg | `~/.config/opencode/skills/docs/scripts/inventory .agent/bugs` | runs, no prompt |
-| $HOME, with arg | `$HOME/.config/opencode/skills/docs/scripts/frontmatter .agent/frontier.md` | runs, no prompt |
-| absolute | `/home/andy/.config/opencode/skills/docs/scripts/inventory` | runs, no prompt |
+`Permission.ask()` then evaluates **every** pattern; `allow` continues, `deny` aborts immediately,
+anything else sets `needsAsk = true`. So `a && b` where `b` is unlisted prompts for the whole call.
+The dialog renders `scan.always` — i.e. every sub-command, including already-allowed ones.
 
-Pre-fix baseline (for regression): literal tilde command → `auto-rejecting`. Re-run the tilde
-no-arg case after any permission change; it must run silently.
+**Consequence:** reading the dialog as "these all need approval" is wrong. Only the unlisted entries
+matter. In the Symptom B case the actual blockers were `exit`, `true`, `continue`,
+`markdownlint-cli2`, `nix`, and a relative-path skill script. Everything else was a passenger.
 
-## Experiments (replicate)
+**Consequence:** shell no-ops are real `command` nodes. `exit`, `true`, `false`, `continue`,
+`break`, `:`, `test`, `[` must be allowlisted or every script with error handling prompts.
 
-CLI non-interactive; no TUI needed. Run from a dir containing `.agent/` for meaningful output.
+`cd`/`pushd`/`popd` are the only exemption (`CWD` set, skipped by `collect`).
+
+### 2. Ordered array, `findLast`, agent frontmatter last
+
+```ts
+rulesets.flat().findLast((r) => Wildcard.match(permission, r.permission) && Wildcard.match(pattern, r.pattern))
+```
+
+Not a map lookup — a flat ordered array, last match wins. `agent.ts` merges in this order:
+
+```
+builtin defaults  ->  builtin per-agent overrides  ->  global config (opencode.json)  ->  agent frontmatter
+```
+
+**Consequence:** an agent-file `bash: deny` or `bash: {"*": deny}` always beats a global allow. The
+global baseline can therefore be widened freely; agents that declare their own deny stay tight.
+
+**Consequence:** `builtins.toJSON` sorts Nix attrset keys alphabetically. `*` (0x2A) happens to sort
+below `.`, `:`, `[`, and every letter, so `"*" = "ask"` lands first by accident, not by design.
+Re-verify deny resolution after any batch edit to the global map.
+
+### 3. Patterns are `~`-expanded; command strings are not
+
+`Permission.fromConfig()` runs `expand()` on each pattern (leading `~/`, bare `~`, leading `$HOME`).
+The bash tool submits `source(node).trim()` with **no** expansion. Pattern `/home/<user>/.config/...`
+vs command `~/.config/...` never matches.
+
+`Wildcard.match` compiles `*` to `.*` and `?` to `.`, anchored. **`*` crosses `/`**, unlike
+minimatch/picomatch. One leading-`*` pattern therefore covers every absolute form
+(`~/…`, `$HOME/…`, `/home/<user>/…`).
+
+Relative invocations (`skills/docs/scripts/tests/test`, run from the repo root) match none of the
+absolute patterns and need their own rule.
+
+Upstream: `https://github.com/anomalyco/opencode/issues/9806`.
+
+## Fix
+
+All in `/home/<user>/.nix/home/modules/tools/ai/opencode.nix` under `permission.bash`.
+Requires `nixos-rebuild` to reach `~/.config/opencode/opencode.json`.
+
+```
+"*/.config/opencode/skills/*/scripts/*"                            = allow
+"*/.agents/skills/*/scripts/*"                                     = allow
+"*/.nix/home/<user>/dotfiles/tools/agent-config/skills/*/scripts/*"  = allow
+"skills/*/scripts/*"                                               = allow   # relative form
+"./skills/*/scripts/*"                                             = allow   # relative form
+```
+
+Plus a global baseline covering: shell no-ops and control flow; read-only inspection
+(`cat`/`stat`/`jq`/`diff`/`sed`/`awk`/…); read-only git; formatters and linters
+(`prettier`, `markdownlint-cli2`, `nixfmt`, `shfmt`, `statix`, `deadnix`, …); read-only `nix`
+subcommands only.
+
+Deliberately left at `ask`: `xargs`, `env`, `bash`, `sh`, `eval`, `nix build`/`run`/`shell` — all
+generic execution escapes.
+
+Deliberately accepted risk: the two relative skill-script patterns cannot be anchored to a trusted
+root, so a checked-out repo containing `skills/<x>/scripts/<y>` would also match. Drop those two
+lines to require absolute invocation.
+
+## What Was Wrong in Earlier Diagnoses
+
+- **First pass**: assumed last-match-wins ordering, then "fixed" it by forcing absolute paths in the
+  system prompt — symptom treatment, model-dependent, fragile.
+- **Second pass**: corrected to "config is a MAP, ordering does not apply". Also wrong. Ordering is
+  real (`findLast` over a flat array); the map is only the authoring surface.
+- **Both passes** missed per-sub-command matching entirely, which is why Symptom B kept recurring
+  after Symptom A was fixed.
+- **Structural cause**: a ~43-entry read-only baseline was duplicated into `build.md`,
+  `build-fast.md`, `build-medium.md`, and `cli.md` instead of living in global config. Gaps in one
+  copy were invisible. Baseline now global; agent files should carry role deltas only.
+
+## Verification
+
+`opencode.nix` edits need `nixos-rebuild`. Agent-file and skill symlinks are live — effective on the
+next `opencode run`.
 
 ### Inspect deployed pattern map
 
 ```bash
-grep -o '"[^"]*scripts[^"]*":"[^"]*"' ~/.config/opencode/opencode.json
+python3 -c "import json;print(json.dumps(json.load(open('$HOME/.config/opencode/opencode.json'))['permission']['bash'],indent=1))"
 ```
 
-### Exp 1 — baseline reproduce (expect ask, pre-fix only)
+### Static resolution check (no rebuild needed)
+
+Sort the rule keys the way Nix will, then take the last match per command. Confirms `"*" = "ask"`
+sorts first and no allow shadows a deny.
+
+### Exp 1 — tilde form (expect run, no prompt)
 
 ```bash
 opencode run --agent cli --model github-copilot/claude-haiku-4.5 \
   "Run verbatim, keep the tilde, do not rewrite: ~/.config/opencode/skills/docs/scripts/inventory"
 ```
-Pre-fix: `permission requested … auto-rejecting`. Post-fix: script runs.
 
-### Exp 2 — --auto bypass (proves script works, permission is the blocker)
+Model may silently rewrite `~` to absolute; the "keep the tilde" wording is load-bearing.
+
+### Exp 2 — compound command with shell no-op (regression test for Symptom B)
+
+```bash
+opencode run --agent build --model github-copilot/claude-haiku-4.5 \
+  "Run exactly: git status --short && test -d .agent && echo ok || exit 1"
+```
+
+Pre-fix: prompts on `exit`/`test`. Post-fix: runs silently.
+
+### Exp 3 — relative skill script
+
+```bash
+cd ~/.nix/home/<user>/dotfiles/tools/agent-config
+opencode run --agent build --model github-copilot/claude-haiku-4.5 \
+  "Run exactly, do not make it absolute: skills/docs/scripts/inventory .agent"
+```
+
+### Exp 4 — negative controls (expect prompt/reject; proves scoping held)
+
+```bash
+opencode run --agent cli --model github-copilot/claude-haiku-4.5 "run: /usr/bin/env echo hi"
+opencode run --agent cli --model github-copilot/claude-haiku-4.5 "run: nix build .#nothing"
+```
+
+### Exp 5 — `--auto` bypass (isolates permission from script bugs)
 
 ```bash
 opencode run --auto --agent cli --model github-copilot/claude-haiku-4.5 \
   "run: bash ~/.config/opencode/skills/docs/scripts/inventory"
 ```
-Always runs (--auto approves non-denied).
 
-### Exp 3 — post-fix tilde (expect run, no prompt)
-
-```bash
-opencode run --agent cli --model github-copilot/claude-haiku-4.5 \
-  "Run verbatim, keep tilde: ~/.config/opencode/skills/docs/scripts/inventory"
-```
-
-### Exp 4 — negative control (arbitrary absolute exe still asks)
-
-```bash
-opencode run --agent cli --model github-copilot/claude-haiku-4.5 "run: /usr/bin/env echo hi"
-```
-Expect `auto-rejecting` — not in allowlist. Confirms allow is scoped, not global.
-
-### Notes
-
-- `cli.md` / `opencode.json` symlinks are live: pattern edits to the source take effect for the
-  next `opencode run` immediately. `opencode.nix` edits need `nixos-rebuild` to reach `opencode.json`.
-- Model may silently rewrite `~`→absolute; force literal tilde with "keep the tilde, do not rewrite".
+Always runs; `--auto` approves everything not explicitly denied.

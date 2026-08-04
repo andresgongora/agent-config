@@ -21,6 +21,9 @@ permission:
     ".agent/plan/**/*.md": allow
   bash:
     # OpenCode 1.18.9: strict deny replaces old read-command allowlist. Revert only if permission matching regresses.
+    # Also intentional local wildcard — agent frontmatter merges AFTER the
+    # whole global bash ruleset, so this "*" outranks every global allow;
+    # planning agent runs no shell commands regardless of global config.
     "*": deny
   task:
     "*": deny

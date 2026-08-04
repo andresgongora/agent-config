@@ -106,6 +106,17 @@ permission:
 
 Agent permissions override global configuration. `ask` needs an approver; do not use it for required non-interactive subagent work. Use narrow `task` allowlists. `tools.task: true` is deprecated broad access, not a substitute for a narrow allowlist.
 
+### Caring for bash permissions
+
+Four facts decide whether a rule fires. Check them in this order before adding rules.
+
+1. **One pattern per sub-command.** The bash tool parses the command into an AST and emits a pattern for every `command` node. `a && b`, pipelines, `if`/`for` bodies all contribute. If any one resolves to `ask`, the whole call prompts — the approval dialog then lists *every* sub-command, including already-allowed ones. Read the dialog as a haystack, not a list of blockers.
+2. **Allowlist shell no-ops.** `exit`, `true`, `false`, `continue`, `break`, `:`, `test`, `[` are real AST command nodes. Unlisted, they drag otherwise-allowed pipelines and every skill script wrapped in error handling into a prompt.
+3. **Order is real; agent wins.** Rules flatten to one ordered array resolved by `findLast`, merged `builtin defaults → global config → agent frontmatter`. So an agent `bash: deny` fully neutralises any global allow — safe to widen the global baseline for locked-down agents that declare their own deny. Nix `builtins.toJSON` sorts keys alphabetically, which happens to place `"*"` first; verify denies still resolve after any batch edit.
+4. **Patterns expand `~`/`$HOME`; commands do not.** Match is `Wildcard.match`, where `*` compiles to `.*` and crosses `/`. One leading-`*` pattern therefore covers every absolute path form. Relative invocations (`skills/x/scripts/y`) match none of them and need their own rule.
+
+Global baseline lives in `opencode.nix`; agent files should carry role deltas only. Duplicating a 40-entry read-only baseline across agent files is how gaps like the above go unnoticed.
+
 ## Debug order
 
 - Wrong field/value: version, schema, docs, provider docs.

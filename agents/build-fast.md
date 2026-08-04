@@ -12,58 +12,15 @@ permission:
   websearch: deny
   task: deny
   bash:
-    # Read-only inspection baseline.
-    "basename *": allow
-    "cat *": allow
-    "command -v *": allow
-    "cut *": allow
-    "date": allow
-    "date *": allow
-    "df *": allow
-    "dirname *": allow
-    "du *": allow
-    "echo": allow
-    "echo *": allow
-    "file *": allow
-    "find *": allow
-    "git branch *": allow
-    "git diff*": allow
-    "git grep *": allow
-    "git log *": allow
-    "git rev-parse *": allow
-    "git show *": allow
-    "git status*": allow
+    # Global config (opencode.nix) already covers read-only inspection, shell
+    # no-ops, git read-only, formatters/linters, and skill-script paths. Only
+    # role-specific deltas below.
     "git submodule *": allow
-    "grep *": allow
-    "head *": allow
-    "ls": allow
-    "ls *": allow
-    "printf *": allow
-    "printenv*": allow
-    "pwd *": allow
-    "readlink *": allow
-    "realpath *": allow
-    "rg *": allow
-    "sed *": allow
-    "sort *": allow
-    "stat *": allow
-    "tail *": allow
-    "tr *": allow
-    "tree *": allow
-    "type *": allow
-    "uniq *": allow
-    "wc *": allow
-    "which *": allow
     "curl *": allow
-    "sha256sum *": allow
-
-    "nixfmt *": allow
     "trash": allow
     "trash *": allow
 
-    # Skill scripts (agent bash blocks shadow global; re-declare here).
-    "~/.config/opencode/skills/*/scripts/*": allow
-    "~/.config/opencode/skills/*/scripts/* *": allow
+    # Skill scripts beyond the generic scripts/* shape.
     "~/.config/opencode/skills/*/eval-viewer/*.py": allow
     "python -m scripts.*": allow
     "python3 -m scripts.*": allow

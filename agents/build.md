@@ -12,52 +12,10 @@ permission:
   websearch: allow
   task: allow
   bash:
-    # Read-only inspection baseline (mirrors global; re-declared so subagents inherit).
-    "basename *": allow
-    "cat *": allow
-    "command -v *": allow
-    "cut *": allow
-    "date": allow
-    "date *": allow
-    "df *": allow
-    "dirname *": allow
-    "du *": allow
-    "echo": allow
-    "echo *": allow
-    "file *": allow
-    "find *": allow
-    "git branch *": allow
-    "git diff*": allow
-    "git grep *": allow
-    "git log *": allow
-    "git rev-parse *": allow
-    "git show *": allow
-    "git status*": allow
-    "~/.config/opencode/skills/git/scripts/git-secret-scan": allow
-    "grep *": allow
-    "head *": allow
-    "ls": allow
-    "ls *": allow
-    "printf *": allow
-    "printenv*": allow
-    "pwd *": allow
-    "readlink *": allow
-    "realpath *": allow
-    "rg *": allow
-    "sed *": allow
-    "sort *": allow
-    "stat *": allow
-    "tail *": allow
-    "tr *": allow
-    "tree *": allow
-    "type *": allow
-    "uniq *": allow
-    "wc *": allow
-    "which *": allow
+    # Global config (opencode.nix) already covers read-only inspection, shell
+    # no-ops, git read-only, formatters/linters, and skill-script paths. Only
+    # role-specific deltas below.
     "curl *": allow
-    "sha256sum *": allow
-
-    "nixfmt *": allow
     "opencode *": allow
     "trash": allow
     "trash *": allow

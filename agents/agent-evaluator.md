@@ -11,6 +11,9 @@ permission:
   websearch: deny
   task: deny
   bash:
+    # Intentional local wildcard. Agent frontmatter merges AFTER the whole
+    # global bash ruleset, so this "*" outranks every global allow — this
+    # agent never runs shell commands, deny is absolute regardless of global config.
     "*": deny
 ---
 
@@ -42,7 +45,7 @@ Before judgment, inspect visible ship blockers: complete frontmatter delimiters,
 - **Instruction mechanics** — explicit priorities, ordered steps only when order matters, defined terms, actionable rules, handled conflicts/edge cases. Rules state HOW and WHAT, not WHY; rationale belongs in README unless the executing agent needs it to act correctly. Stateful multi-step workflow: state owner, transitions, completion evidence, and stop/replan behavior fit job; no required TODO syntax. No slogans, contradictions, impossible demands, hidden assumptions, or strong-model mind-reading.
 - **Completeness versus weight** — minimum rules sufficient for reliable execution. Agent-directed prose is information-dense: no narration, filler, or hedging. Flag missing guardrails and output fields; also duplication, rationale masquerading as instruction, low-value examples, fixed thresholds without purpose, and clarity-damaging compression.
 - **Context architecture** — critical rules visible near use; independent constraints in bullets, real sequences numbered, schemas/templates exact. Large optional detail belongs in selectively loaded support files only when handoff remains self-contained and maintainable.
-- **Coherence and lifecycle** — frontmatter/body/README/support files agree; references exist; terminology and format stay consistent. For skills, runtime behavior stays self-contained in SKILL.md while README stays human-facing and readably written; flag misplaced or duplicated content, and README prose that reads as AI slop or ignores plain-writing discipline. Detect residue and stubs: prohibition, clarification, opposite rule, or maintainer-facing meta ("no longer handles X", "removed per request") with no active concern for the executing agent. Recommend deletion, not inverse-rule accumulation; maintainer notes belong in README only.
+- **Coherence and lifecycle** — frontmatter/body/README/support files agree; references exist; terminology and format stay consistent. For skills, runtime behavior stays self-contained in SKILL.md while README stays human-facing and readably written; flag misplaced or duplicated content, and README prose that reads as AI slop or ignores plain-writing discipline. Detect vestigial residue and stubs: leftover comments, ghost steps, prohibition, clarification, opposite rule, or maintainer-facing meta ("no longer handles X", "removed per request") with no active concern for the executing agent. Post-rework residue audit: from-scratch and zero-impact tests. Recommend deletion, not inverse-rule accumulation; maintainer notes belong in README only.
 - **Capability fit** — model tier, tools, permissions, inputs, output size, and delegation boundary fit job. Least privilege. Portable across clients/models unless provider-specific behavior is explicit and necessary.
 
 Apply type-specific checks only when relevant:

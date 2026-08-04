@@ -64,6 +64,7 @@ See template: `templates/skill.md`.
 Frontmatter fields (all required unless noted; see Frontmatter section):
 - `description`: routing truth — first sentence exact task, second when-to-pick-this-agent, optional third non-uses. Optimize for correct delegation, not brevity.
 - Runtime configuration: target-client schema. Declare subagent role; pin model explicitly with target runtime field. Sampling: omit by default; set only deliberate, tested behavior. Tools: default-deny, enable only needed access. Command access: narrow. Delegation: named children only; never broad grant. Ordered permissions: deny before grant.
+- Locked-down agent: lead bash block `"*": deny`/`ask` — outranks global allows, forces full self-declared allowlist. Use when tight.
 
 Nested subagents:
 - Default: subagents cannot spawn subagents.
@@ -129,6 +130,8 @@ Same-family exception: artifacts in one family (e.g. `cavecrew-*`, `agent-*`) ma
 | Duplicate skill/agent                         | Grep before creating; extend or replace                   |
 | Verbose skill (marketing prose)               | Enforce dense fragment style; reject if reads like a blog |
 | Wide bash allowlist in subagent               | Narrow allowlist; default-deny + explicit allows          |
+| Command allowlist ignores compound commands   | Grant shell no-ops (`exit`, `true`, `continue`, `test`); clients match per sub-command |
+| Baseline grants copied into every agent file  | Baseline belongs in runtime config; agent files carry role deltas only |
 | Subagent spawns subagents by default          | Scope `permission.task` to specific children only         |
 | Skill without README                          | Always ship both for skills                               |
 | Inline template cue contradicts SKILL.md rule | Cues are pointers only; full rules stay in SKILL.md       |
