@@ -5,15 +5,14 @@
 // - Parses user messages for /caveman commands and natural-language toggles
 // - Injects per-turn reinforcement into the system prompt
 //
-// Bun ESM module; loads the existing security-hardened helpers from
-// caveman-config.js via createRequire so the symlink-safe flag-write code
-// lives in one place.
+// Bun ESM module; evaluates security-hardened CommonJS helpers with
+// createRequire-provided built-ins.
 //
 // Layout once installed:
 //   ~/.config/opencode/plugins/caveman/
 //   ├── package.json
 //   ├── plugin.js              ← this file
-//   └── caveman-config.cjs     ← copied sibling of src/hooks/caveman-config.js
+//   └── caveman-config.cjs
 //
 // The always-on caveman ruleset is provided separately via
 // ~/.config/opencode/AGENTS.md (Tier-3 base). This plugin handles dynamic
@@ -36,18 +35,14 @@
 import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
-import { existsSync, unlinkSync, readFileSync } from 'node:fs';
+import { unlinkSync, readFileSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 
 const here = dirname(fileURLToPath(import.meta.url));
 
-// When installed: caveman-config.cjs sits next to plugin.js (copied by
-// bin/install.js, renamed to .cjs because this directory's package.json
-// declares "type": "module" — bare .js would be loaded as ESM). When loaded
-// from the source tree (tests, dev): fall back to the canonical
-// src/hooks/caveman-config.js, which lives in a directory whose own
-// package.json pins "type": "commonjs". One source of truth either way.
+// caveman-config.cjs sits next to plugin.js. The .cjs extension keeps it
+// CommonJS despite this directory's package.json declaring "type": "module".
 //
 // Loaded by evaluating the file as CommonJS by hand, NOT via the module
 // loader: opencode runs plugins inside a compiled Bun binary where
@@ -57,9 +52,7 @@ const here = dirname(fileURLToPath(import.meta.url));
 // resolves node BUILT-INS fine in the compiled binary, which is all
 // caveman-config needs (fs/path/os).
 function loadConfig() {
-  const installed = join(here, 'caveman-config.cjs');
-  const dev = join(here, '..', '..', 'hooks', 'caveman-config.js');
-  const target = existsSync(installed) ? installed : dev;
+  const target = join(here, 'caveman-config.cjs');
   const code = readFileSync(target, 'utf8').replace(/^#![^\n]*\n/, '');
   const mod = { exports: {} };
   new Function('module', 'exports', 'require', '__dirname', '__filename', code)(
@@ -95,7 +88,7 @@ function reinforcementLine(mode) {
 
 // Parse a prompt for slash-command activation or natural-language toggles.
 // Returns the new mode to write, the literal string 'off' to deactivate, or
-// null when the prompt doesn't change state. Mirrors caveman-mode-tracker.js.
+// null when the prompt doesn't change state.
 function parseModeChange(promptRaw) {
   let prompt = (promptRaw || '').trim();
   // opencode's non-interactive `run` path delivers the message wrapped in

@@ -3,7 +3,7 @@ title: agent-benchmark Evaluation Layer
 summary: >-
   Durable LLM-judge evaluation design: frozen-report rubric, mechanical/judgmental routing, evidence verdicts, interaction checks, and derived A/B assessment. Reports remain immutable; evaluation never gates.
 status: active
-updated: 2026-08-02
+updated: 2026-08-04
 ---
 
 # agent-benchmark Evaluation Layer
@@ -202,17 +202,6 @@ Orchestrating eval flow ships `SKILL.md` (caveman) + `README.md`; allowlist judg
 - Test-only before real judgment: evaluator + rule judge use `POOL_FAST`, `0.1`; test prompt runs use `github-copilot/claude-haiku-4.5` unless user selects another model. Phase-quality model tiers stay deferred. Runtime depth currently blocks nested judges, so evaluator uses sequential one-item/one-response prompts with same verdict contract. Judge agent stays available if nesting becomes enabled.
 - A/B command accepts older/newer paths in chronological order, verifies all controlled fields plus skill-key set, requires exactly one changed skill hash. Desired direction comes from changed skill body; user supplies it only when body cannot decide. Equal/ambiguous chronology stops.
 - Scope policy: negative/positive/interaction only. Bespoke scope requires explicit maintainer approval. Delimiter fallback, if needed, updates `run.py`, benchmark skill, and benchmark agent together; current anchors avoid it.
-
-## Open questions
-
-- **Harness delimiter**: if splitting fragile, willing to add machine-readable response delimiter to `run.py` (committed harness change, re-run to benefit)? Or splitter must work off current format only?
-- **Judge count**: min scopes negative/positive/interaction locked. Allow arbitrary per-skill extra scopes (e.g. tone judge for `writting`), or keep fixed parameterized scopes to fight bloat?
-- **A/B "desired direction"**: inferred from skill promises, or short human-authored "what this change should improve" note per A/B run?
-- **Interaction-pass cost knob (DEFERRED)**: strong-model pass reads full responses × N; cost scales with N. Decide in Phase 5: run over all N or sample subset (adaptive).
-
-## Recommended final deliverable format
-
-- This plan doc. On approval: committed eval skill (`skills/<name>/SKILL.md`+`README.md`), committed judge subagent(s) `agents/`, committed eval script; gitignored artifacts under `agent-benchmark/evaluation/` mirroring `reports/`. Built phase-by-phase, each phase working + verified before next.
 
 ## Decisions / revisions
 

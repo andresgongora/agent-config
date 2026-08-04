@@ -242,8 +242,7 @@ function readFlag(flagPath) {
 
 // Symlink-safe append. Same parent-dir + symlink-target rules as safeWriteFlag,
 // but opens with O_APPEND so concurrent writers from different sessions don't
-// clobber each other. Used for the lifetime stats log
-// ($CLAUDE_CONFIG_DIR/.caveman-history.jsonl).
+// clobber each other. Used for the mode-transition log.
 //
 // Silent-fails on any filesystem error.
 function appendFlag(filePath, line) {
@@ -299,7 +298,7 @@ function appendFlag(filePath, line) {
   }
 }
 
-// Mode-transition log (#601). Whenever the active-mode flag actually changes,
+// Whenever the active-mode flag actually changes,
 // append {ts, mode, prev} to $CLAUDE_CONFIG_DIR/.caveman-mode-log.jsonl so
 // caveman-stats can attribute output tokens to the mode that was active when
 // each message was generated, instead of whatever mode the flag holds at

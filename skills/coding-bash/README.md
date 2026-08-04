@@ -42,7 +42,7 @@ Load when writing or extending a bash script as a deliverable. Not for debugging
 | -------------------- | ------------------------------------------------------------------ |
 | Shebang              | `#!/usr/bin/env bash`                                              |
 | Error flags          | `set -Eeuo pipefail`                                               |
-| Separator width      | 100 characters total (`##` + 98 `=` chars)                         |
+| Separator width      | 100 characters total (`##` + 98 `=` chars), top-bottom             |
 | Section header style | `##<TAB><ALL CAPS>`                                                |
 | Variable naming      | Globals `SNAKE_CASE`; locals `snake_case`                          |
 | Function naming      | `camelCase` verb-first; contextual: `context_sub_camelCase()`      |

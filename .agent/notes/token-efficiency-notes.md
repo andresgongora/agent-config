@@ -2,12 +2,10 @@
 title: Token Efficiency Notes
 summary: Selective token-efficiency lessons retained in repo policy, plus what it explicitly does not adopt.
 status: active
-updated: 2026-08-01
+updated: 2026-08-04
 ---
 
 # Token Efficiency Notes
-
-Former local source artifact removed. These retained lessons stand independently.
 
 ## Keep
 

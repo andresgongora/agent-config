@@ -7,7 +7,7 @@ Workflow skill for creating, editing, or auditing agent ecosystem artifacts: `SK
 These four file forms have repeatable patterns. Cheaper models need explicit forms and checks.
 
 - File-form guidance from Anthropic agent-skills best practices and OpenAI prompt-engineering guidance (vendor-neutral framing)
-- Durable authoring rules formerly kept in a dissolved note
+- Durable authoring rules for repeatable artifact maintenance
 - Four portable self-informing templates: paired skill/runtime README, subagent, and primary agent; commands stay short enough to write direct
 
 Context is scarce. Write dense agent-facing instructions: imperative, exact, low-token; fragments when clear. Templates shape artifacts; models fill intent. Ready non-trivial artifacts get clean-context read-only evaluation before ship, then re-verification.

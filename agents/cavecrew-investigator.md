@@ -12,6 +12,10 @@ permission:
   websearch: deny
   task: deny
   bash:
+    # Intentional local wildcard. Agent frontmatter merges AFTER the whole
+    # global bash ruleset, so this "*" outranks every global allow — this
+    # agent is fully self-contained and must re-declare each command it
+    # permits below. A future global bash allow will NOT reach this agent.
     "*": ask
     # Read-only locator baseline.
     "basename *": allow
@@ -96,12 +100,9 @@ Q: "where symlink-safe flag write?"
 
 ```
 Defs:
-- hooks/caveman-config.js:81 — `safeWriteFlag` — atomic write w/ O_NOFOLLOW
-- hooks/caveman-config.js:160 — `readFlag` — paired reader
+- plugins/caveman/caveman-config.cjs:132 — `safeWriteFlag` — atomic write w/ O_NOFOLLOW
+- plugins/caveman/caveman-config.cjs:211 — `readFlag` — paired reader
 Callers:
-- hooks/caveman-mode-tracker.js:33,87
-- hooks/caveman-activate.js:40
-Tests:
-- tests/test_symlink_flag.js — 12 cases
-2 defs, 3 callers, 1 test file.
+- plugins/caveman/plugin.js:169,181,221
+2 defs, 3 callers.
 ```

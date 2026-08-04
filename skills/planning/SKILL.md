@@ -23,7 +23,7 @@ Goal: <outcome>. Constraints: <hard limits>. Out: <non-goals>.
 
 ### Shape
 
-Plan 3-10 outcome milestones. Order: dependency, risk, value, question cost. Retire cheap unknowns early. No micro-steps before current milestone.
+Plan 3-14 outcome milestones. Order: dependency, risk, value, question cost. Retire cheap unknowns early. No micro-steps before current milestone.
 
 Every plan: observable success evidence, stated assumptions. Group mechanical work. "Wire module" beats "add import, save, lint".
 
