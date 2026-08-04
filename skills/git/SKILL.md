@@ -19,7 +19,9 @@ description: "Git safety constraints for state-mutating work: staging, committin
 - Inspect status and proposed diff. `.gitignore` neither untracks nor protects tracked/staged secrets.
 - Suspected secret blocks commit. Do not expose secret value in output.
 - Before each commit, inspect its staged diff.
+- Before grouping and after staging: run `scripts/git-change-inspect`; it NUL-safely reports unstaged, staged, and untracked paths, file types, and changed Markdown lint. Missing `file`/Markdown linter or lint failure blocks commit. Use `--staged` for staged-only inspection.
 - Before each commit: run `scripts/git-secret-scan` from repository root.
+- Identity findings: staged `$HOME`/`/home/$USER` paths and username are hard blocks. Full-name-like text is warning severity, but stop transaction until user explicitly accepts identity exposure; then rerun scanner with `--accept-identity-exposure`. `--skip-identity-scan` also requires explicit user approval.
 - Re-run detection and scan after any staged-content change.
 - Commit message: concise, imperative, project-consistent. Use a message-only workflow when requested; it does not own staging or commit execution.
 
