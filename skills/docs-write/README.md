@@ -27,7 +27,7 @@ The gate is an economic trade, not a style choice. Two failure modes bracket it:
 
 So the admission test is: _was this expensive to obtain, and is it likely to be reused?_ If yes, persisting converts a one-time cost into a cheap future read. If no, it stays in the live session. Routing metadata (frontmatter, sibling switch rule) carries the same value qualifier, because the body gate cannot un-spend the load cost once the skill is already loaded.
 
-Evidence type is matched to claim type (added after audit): factual conclusions need proof; accepted decisions need recorded rationale/scope/owner, not proof. Otherwise a smaller model rejects valuable decision records for lacking "proof" they can never have.
+Evidence type matches claim type: factual conclusions need proof; accepted decisions need recorded rationale, scope, and owner, not proof. Otherwise a smaller model rejects valuable decision records for lacking "proof" they can never have.
 
 ## Bug-log and plan ownership
 
@@ -44,6 +44,7 @@ Loads when persisting knowledge worth keeping (settled research, architecture/de
 - Do not couple to the discovery skill or any research skill by name. Reference by behavior only. The frontmatter schema is the one shared contract; this skill is its authority. Read-only consumers of that contract: the discovery discipline, the repo-state snapshot discipline, and the durable-planning capability's plan template. They read the schema; they never redefine it.
 - Do not add new `.agent/` folders for content kinds without real justification (reject-first).
 - Discovery scripts (`inventory`, `get-frontmatter`) live with the discovery skill, not here.
+- `scripts/check-frontmatter` validates this skill's managed-doc contract. Silent success; failures list only bad fields.
 
 ## See also
 

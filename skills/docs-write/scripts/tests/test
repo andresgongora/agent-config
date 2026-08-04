@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+IFS=$'\n\t'
+
+##==================================================================================================
+##	GLOBALS
+##==================================================================================================
+TEST_DIRECTORY="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+declare -r TEST_DIRECTORY
+SCRIPT_DIRECTORY="$(cd -- "$TEST_DIRECTORY/.." && pwd)"
+declare -r SCRIPT_DIRECTORY
+declare -r FIXTURE_DIRECTORY="$TEST_DIRECTORY/fixtures"
+
+##==================================================================================================
+##	UTILITIES
+##==================================================================================================
+fail() {
+    printf '%s\n' "$1" >&2
+    exit 1
+}
+
+assertFailure() {
+    local expected_message="$1"
+    shift
+    local output
+
+    if output="$("$@" 2>&1)"; then
+        fail "Expected failure: $*"
+    fi
+
+    [[ "$output" == "$expected_message" ]] || fail "Unexpected error: $output"
+}
+
+##==================================================================================================
+##	MAIN
+##==================================================================================================
+main() {
+    "$SCRIPT_DIRECTORY/check-frontmatter" "$FIXTURE_DIRECTORY/valid.md"
+    assertFailure 'summary: required non-empty value' \
+        "$SCRIPT_DIRECTORY/check-frontmatter" "$FIXTURE_DIRECTORY/missing-summary.md"
+    assertFailure 'status: must be draft, active, stale, resolved, archived, or done' \
+        "$SCRIPT_DIRECTORY/check-frontmatter" "$FIXTURE_DIRECTORY/invalid-status.md"
+    assertFailure 'updated: must use YYYY-MM-DD' \
+        "$SCRIPT_DIRECTORY/check-frontmatter" "$FIXTURE_DIRECTORY/invalid-date.md"
+    assertFailure 'frontmatter: closing --- missing' \
+        "$SCRIPT_DIRECTORY/check-frontmatter" "$FIXTURE_DIRECTORY/unclosed.md"
+}
+
+##==================================================================================================
+##	SCRIPT ENTRY POINT
+##==================================================================================================
+main "$@"
