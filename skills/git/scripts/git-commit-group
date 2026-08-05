@@ -49,7 +49,8 @@ verifyStagedPaths() {
 
     [[ -r $paths_file ]] || die "Cannot read paths file: $paths_file"
     mapfile -d '' -t expected_paths < "$paths_file"
-    mapfile -d '' -t staged_paths < <(git diff --cached --name-only -z)
+    ## Exact-path checks need both sides of rename-like delete/add pairs.
+    mapfile -d '' -t staged_paths < <(git diff --cached --no-renames --name-only -z)
     ((${#staged_paths[@]} > 0)) || die 'Nothing staged to commit'
 
     for path in "${expected_paths[@]}"; do

@@ -71,8 +71,9 @@ ensureNoPartialStaging() {
     local -a overlap_paths=()
     local -A staged_set=()
 
-    mapfile -d '' -t staged_paths < <(git diff --cached --name-only -z)
-    mapfile -d '' -t unstaged_paths < <(git diff --name-only -z)
+    ## Exact-path checks need both sides of rename-like delete/add pairs.
+    mapfile -d '' -t staged_paths < <(git diff --cached --no-renames --name-only -z)
+    mapfile -d '' -t unstaged_paths < <(git diff --no-renames --name-only -z)
 
     for path in "${staged_paths[@]}"; do
         staged_set["$path"]=true
@@ -102,18 +103,10 @@ validateRequestedPaths() {
 }
 
 stageRequestedPaths() {
-    local path
-
-    for path in "${REQUESTED_PATHS[@]}"; do
-        if [[ -e $path || -L $path ]]; then
-            git add -- "$path"
-        else
-            git add -u -- "$path"
-        fi || {
-            resetIndex
-            die "Cannot stage path: $path"
-        }
-    done
+    git add -A -- "${REQUESTED_PATHS[@]}" || {
+        resetIndex
+        die 'Cannot stage requested paths'
+    }
 }
 
 verifyStagedPaths() {
@@ -125,7 +118,8 @@ verifyStagedPaths() {
     local -A staged_set=()
     local message='Staged paths do not match requested paths.'
 
-    mapfile -d '' -t staged_paths < <(git diff --cached --name-only -z)
+    ## Disable rename folding so requested source and destination paths remain distinct.
+    mapfile -d '' -t staged_paths < <(git diff --cached --no-renames --name-only -z)
     for path in "${staged_paths[@]}"; do
         staged_set["$path"]=true
     done
