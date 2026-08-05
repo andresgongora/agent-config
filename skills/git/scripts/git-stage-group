@@ -105,7 +105,11 @@ stageRequestedPaths() {
     local path
 
     for path in "${REQUESTED_PATHS[@]}"; do
-        git add -- "$path" || {
+        if [[ -e $path || -L $path ]]; then
+            git add -- "$path"
+        else
+            git add -u -- "$path"
+        fi || {
             resetIndex
             die "Cannot stage path: $path"
         }
