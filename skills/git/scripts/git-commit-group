@@ -1,0 +1,149 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+IFS=$'\n\t'
+
+##==================================================================================================
+##	GLOBALS
+##==================================================================================================
+
+MESSAGE_FILE=''
+PATHS_FILE=''
+
+##==================================================================================================
+##	UTILITIES
+##==================================================================================================
+
+die() {
+    printf '%s\n' "$*" >&2
+    exit 1
+}
+
+requireCommand() {
+    local command_name=$1
+
+    command -v "$command_name" >/dev/null 2>&1 || die "Missing command: $command_name. Install it, then rerun this script."
+}
+
+##==================================================================================================
+##	CORE FUNCTIONS
+##==================================================================================================
+
+ensureMessageFile() {
+    local message_file=$1
+    local message_content
+
+    [[ -r $message_file ]] || die "Cannot read message file: $message_file"
+    message_content=$(<"$message_file")
+    [[ -n ${message_content//[[:space:]]/} ]] || die 'Commit message file is empty or whitespace-only'
+}
+
+verifyStagedPaths() {
+    local paths_file=$1
+    local path
+    local escaped_path
+    local mismatch=''
+    declare -a expected_paths=()
+    declare -a staged_paths=()
+    declare -A expected_path_set=()
+    declare -A staged_path_set=()
+
+    [[ -r $paths_file ]] || die "Cannot read paths file: $paths_file"
+    mapfile -d '' -t expected_paths < "$paths_file"
+    mapfile -d '' -t staged_paths < <(git diff --cached --name-only -z)
+    ((${#staged_paths[@]} > 0)) || die 'Nothing staged to commit'
+
+    for path in "${expected_paths[@]}"; do
+        expected_path_set["$path"]=1
+    done
+
+    for path in "${staged_paths[@]}"; do
+        staged_path_set["$path"]=1
+    done
+
+    for path in "${staged_paths[@]}"; do
+        [[ -v "expected_path_set[$path]" ]] && continue
+        printf -v escaped_path '%q' "$path"
+        mismatch+="Extra staged path: $escaped_path"$'\n'
+    done
+
+    for path in "${expected_paths[@]}"; do
+        [[ -v "staged_path_set[$path]" ]] && continue
+        printf -v escaped_path '%q' "$path"
+        mismatch+="Missing expected path: $escaped_path"$'\n'
+    done
+
+    [[ -z $mismatch ]] || die "Staged paths do not match expected paths:
+$mismatch"
+}
+
+commitStagedChanges() {
+    local message_file=$1
+    local commit_sha
+    local subject_line
+    local commit_output
+
+    commit_output=$(git commit -F "$message_file" 2>&1) || die "Git commit failed:
+$commit_output"
+    commit_sha=$(git rev-parse --short HEAD)
+    IFS= read -r subject_line < "$message_file" || true
+    printf 'OK: %s %s\n' "$commit_sha" "$subject_line"
+}
+
+##==================================================================================================
+##	ARGUMENT PARSING
+##==================================================================================================
+
+printUsage() {
+    cat <<'USAGE'
+Usage: git-commit-group --message-file FILE --paths-file FILE
+
+Commits exactly the currently staged paths when they match the NUL-delimited path list.
+USAGE
+}
+
+parseArguments() {
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+        --message-file)
+            [[ $# -ge 2 ]] || die '--message-file requires a value'
+            MESSAGE_FILE=$2
+            shift 2
+            ;;
+        --paths-file)
+            [[ $# -ge 2 ]] || die '--paths-file requires a value'
+            PATHS_FILE=$2
+            shift 2
+            ;;
+        -h | --help)
+            printUsage
+            exit 0
+            ;;
+        *)
+            printUsage
+            die "Unknown argument: $1"
+            ;;
+        esac
+    done
+
+    [[ -n $MESSAGE_FILE ]] || die '--message-file is required'
+    [[ -n $PATHS_FILE ]] || die '--paths-file is required'
+}
+
+##==================================================================================================
+##	MAIN
+##==================================================================================================
+
+main() {
+    requireCommand git
+    cd "$(git rev-parse --show-toplevel)" || die 'Not inside a Git repository'
+    ensureMessageFile "$MESSAGE_FILE"
+    verifyStagedPaths "$PATHS_FILE"
+    commitStagedChanges "$MESSAGE_FILE"
+}
+
+##==================================================================================================
+##	SCRIPT ENTRY POINT
+##==================================================================================================
+
+parseArguments "$@"
+main

@@ -7,11 +7,14 @@ IFS=$'\n\t'
 ##==================================================================================================
 
 declare -a PATHS=()
-declare -a PATH_SOURCES=()
-declare -a MARKDOWN_PATHS=()
+declare -A STATE_BY_PATH=()
+declare -A ADD_BY_PATH=()
+declare -A DEL_BY_PATH=()
 INSPECT_UNSTAGED=true
 INSPECT_STAGED=true
 INSPECT_UNTRACKED=true
+SHOW_TYPES=false
+SHOW_CONTEXT=false
 
 ##==================================================================================================
 ##	UTILITIES
@@ -29,15 +32,26 @@ requireCommand() {
 
 printUsage() {
     cat <<'USAGE'
-Usage: git-change-inspect [--staged|--worktree]
+Usage: git-change-inspect [--staged|--worktree] [--types] [--context]
 
-Inspect Git changes from repository root: status, numstats, paths, file types,
-and Markdown lint. Default scope includes unstaged, staged, and untracked files.
+Inspect Git changes from repository root. One line per changed path:
+  CHANGE\t<state>\t<+adds>\t<-dels>\t<path>[\t<file-type>]
+state is one of: staged, unstaged, untracked, both. Deleted paths show
+0/0 counts with state marker; no separate deletion line. Path field is
+the raw literal path (tab-separated field, not shell-quoted); a path
+containing a literal tab or newline fails closed with a nonzero exit
+rather than emitting an ambiguous line.
 
 Options:
   --staged    Inspect staged changes only.
   --worktree  Inspect unstaged and untracked changes only.
+  --types     Append `file --brief` type column (opt-in; shells out per path).
+  --context   Prepend one REPO line: toplevel, branch, short HEAD.
   -h, --help  Show this message.
+
+Default scope: unstaged + staged + untracked. Silent beyond the change
+lines and (with --context) one REPO line. Does not lint or gate; see
+git-lint-changed for Markdown lint.
 USAGE
 }
 
@@ -47,30 +61,29 @@ isExistingPath() {
     [[ -e $path || -L $path ]]
 }
 
-isMarkdownPath() {
-    local path=$1
-
-    [[ $path == *.md || $path == *.markdown ]]
-}
-
 ##==================================================================================================
 ##	CORE FUNCTIONS
 ##==================================================================================================
 
-addPath() {
+recordState() {
     local source=$1
     local path=$2
-    local index
 
-    for index in "${!PATHS[@]}"; do
-        if [[ ${PATHS[$index]} == "$path" ]]; then
-            PATH_SOURCES[index]+=" $source"
-            return
-        fi
-    done
+    if [[ $path == *$'\t'* || $path == *$'\n'* ]]; then
+        die "Path contains a literal tab or newline, unsupported by this line format: $path"
+    fi
 
-    PATHS+=("$path")
-    PATH_SOURCES+=("$source")
+    if [[ -n ${STATE_BY_PATH[$path]+set} && ${STATE_BY_PATH[$path]} != "$source" ]]; then
+        STATE_BY_PATH[$path]='both'
+    else
+        STATE_BY_PATH[$path]=$source
+    fi
+
+    if [[ -z ${ADD_BY_PATH[$path]+set} ]]; then
+        PATHS+=("$path")
+        ADD_BY_PATH[$path]=0
+        DEL_BY_PATH[$path]=0
+    fi
 }
 
 collectPaths() {
@@ -79,84 +92,65 @@ collectPaths() {
     local path
 
     while IFS= read -r -d '' path; do
-        addPath "$source" "$path"
+        recordState "$source" "$path"
     done < <("$@")
 }
 
-printNumstats() {
+applyNumstat() {
     local source=$1
     shift
+    local adds dels path
 
-    printf 'NUMSTAT\t%s\n' "$source"
-    "$@"
+    while IFS=$'\t' read -r -d '' adds dels path; do
+        [[ -n $path ]] || continue
+        recordState "$source" "$path"
+        [[ $adds == '-' ]] && adds=0
+        [[ $dels == '-' ]] && dels=0
+        ADD_BY_PATH[$path]=$((${ADD_BY_PATH[$path]:-0} + adds))
+        DEL_BY_PATH[$path]=$((${DEL_BY_PATH[$path]:-0} + dels))
+    done < <("$@" -z)
 }
 
-printStatus() {
-    if [[ $INSPECT_STAGED == true && $INSPECT_UNSTAGED == false && $INSPECT_UNTRACKED == false ]]; then
-        printf 'STATUS\tstaged\n'
-        git diff --cached --name-status
-        return
-    fi
-
-    if [[ $INSPECT_UNSTAGED == true && $INSPECT_STAGED == false && $INSPECT_UNTRACKED == true ]]; then
-        printf 'STATUS\tworktree\n'
-        git diff --name-status
-        git ls-files --others --exclude-standard | while IFS= read -r path; do
-            printf '??\t%s\n' "$path"
-        done
-        return
-    fi
-
-    printf 'STATUS\tall\n'
-    git status --short --untracked-files=all
-}
-
-collectChangePaths() {
+collectChanges() {
     if [[ $INSPECT_UNSTAGED == true ]]; then
-        collectPaths unstaged git diff --name-only -z
+        applyNumstat unstaged git diff --numstat
     fi
     if [[ $INSPECT_STAGED == true ]]; then
-        collectPaths staged git diff --cached --name-only -z
+        applyNumstat staged git diff --cached --numstat
     fi
     if [[ $INSPECT_UNTRACKED == true ]]; then
         collectPaths untracked git ls-files --others --exclude-standard -z
     fi
 }
 
-printChangeSummary() {
-    if [[ $INSPECT_UNSTAGED == true ]]; then
-        printNumstats unstaged git diff --numstat
-    fi
-    if [[ $INSPECT_STAGED == true ]]; then
-        printNumstats staged git diff --cached --numstat
-    fi
+printRepoContext() {
+    [[ $SHOW_CONTEXT == true ]] || return 0
+
+    local toplevel branch head_sha
+    toplevel=$(git rev-parse --show-toplevel)
+    branch=$(git symbolic-ref --quiet --short HEAD || printf 'HEAD-detached')
+    head_sha=$(git rev-parse --short HEAD 2>/dev/null || printf 'no-commits')
+    printf 'REPO\t%s\tBRANCH\t%s\tHEAD\t%s\n' "$toplevel" "$branch" "$head_sha"
 }
 
-reportPathsAndTypes() {
-    local index
-    local path
+printChanges() {
+    local path state adds dels type_column
 
-    for index in "${!PATHS[@]}"; do
-        path=${PATHS[$index]}
-        printf 'PATH\t%s\t%q\n' "${PATH_SOURCES[$index]}" "$path"
-        if isExistingPath "$path"; then
-            printf 'FILE\t%q\t' "$path"
-            file --brief -- "$path"
-            if isMarkdownPath "$path"; then
-                MARKDOWN_PATHS+=("$path")
+    for path in "${PATHS[@]}"; do
+        state=${STATE_BY_PATH[$path]}
+        adds=${ADD_BY_PATH[$path]:-0}
+        dels=${DEL_BY_PATH[$path]:-0}
+        type_column=''
+        if [[ $SHOW_TYPES == true ]]; then
+            requireCommand file
+            if isExistingPath "$path"; then
+                type_column=$'\t'$(file --brief -- "$path")
+            else
+                type_column=$'\t'deleted
             fi
-        else
-            printf 'FILE\t%q\tdeleted\n' "$path"
         fi
+        printf 'CHANGE\t%s\t%s\t%s\t%s%s\n' "$state" "$adds" "$dels" "$path" "$type_column"
     done
-}
-
-lintMarkdown() {
-    ((${#MARKDOWN_PATHS[@]})) || return 0
-
-    requireCommand markdownlint-cli2
-    printf 'MARKDOWNLINT\t%s file(s); failure blocks commit\n' "${#MARKDOWN_PATHS[@]}"
-    markdownlint-cli2 -- "${MARKDOWN_PATHS[@]}"
 }
 
 ##==================================================================================================
@@ -176,6 +170,12 @@ parseArguments() {
             INSPECT_STAGED=false
             INSPECT_UNTRACKED=true
             ;;
+        --types)
+            SHOW_TYPES=true
+            ;;
+        --context)
+            SHOW_CONTEXT=true
+            ;;
         -h | --help)
             printUsage
             exit 0
@@ -194,15 +194,12 @@ parseArguments() {
 ##==================================================================================================
 
 main() {
-    requireCommand file
     requireCommand git
     cd "$(git rev-parse --show-toplevel)" || die 'Not inside a Git repository'
 
-    printStatus
-    printChangeSummary
-    collectChangePaths
-    reportPathsAndTypes
-    lintMarkdown
+    printRepoContext
+    collectChanges
+    printChanges
 }
 
 ##==================================================================================================

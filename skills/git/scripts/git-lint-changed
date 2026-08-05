@@ -1,0 +1,147 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+IFS=$'\n\t'
+
+##==================================================================================================
+##	GLOBALS
+##==================================================================================================
+
+declare -a MARKDOWN_PATHS=()
+INSPECT_UNSTAGED=true
+INSPECT_STAGED=true
+INSPECT_UNTRACKED=true
+
+##==================================================================================================
+##	UTILITIES
+##==================================================================================================
+
+die() {
+    printf '%s\n' "$*" >&2
+    exit 1
+}
+
+requireCommand() {
+    local command_name=$1
+    command -v "$command_name" >/dev/null 2>&1 || die "Missing command: $command_name. Install it, then rerun this script."
+}
+
+printUsage() {
+    cat <<'USAGE'
+Usage: git-lint-changed [--staged|--worktree]
+
+Lints changed Markdown (.md/.markdown) files with markdownlint-cli2.
+Silent on success (exit 0, no output). Failure prints lint output and
+exits nonzero. Missing markdownlint-cli2 exits nonzero with install hint.
+Skips entirely (exit 0) when no changed Markdown files exist.
+
+Options:
+  --staged    Only staged changes.
+  --worktree  Only unstaged and untracked changes.
+  -h, --help  Show this message.
+USAGE
+}
+
+isExistingPath() {
+    local path=$1
+
+    [[ -e $path || -L $path ]]
+}
+
+isMarkdownPath() {
+    local path=$1
+
+    [[ $path == *.md || $path == *.markdown ]]
+}
+
+##==================================================================================================
+##	CORE FUNCTIONS
+##==================================================================================================
+
+addIfMarkdown() {
+    local path=$1
+    local index
+
+    isMarkdownPath "$path" || return 0
+    isExistingPath "$path" || return 0
+
+    for index in "${!MARKDOWN_PATHS[@]}"; do
+        [[ ${MARKDOWN_PATHS[$index]} == "$path" ]] && return 0
+    done
+    MARKDOWN_PATHS+=("$path")
+}
+
+collectMarkdownPaths() {
+    local path
+
+    if [[ $INSPECT_UNSTAGED == true ]]; then
+        while IFS= read -r -d '' path; do
+            addIfMarkdown "$path"
+        done < <(git diff --name-only -z)
+    fi
+    if [[ $INSPECT_STAGED == true ]]; then
+        while IFS= read -r -d '' path; do
+            addIfMarkdown "$path"
+        done < <(git diff --cached --name-only -z)
+    fi
+    if [[ $INSPECT_UNTRACKED == true ]]; then
+        while IFS= read -r -d '' path; do
+            addIfMarkdown "$path"
+        done < <(git ls-files --others --exclude-standard -z)
+    fi
+}
+
+##==================================================================================================
+##	ARGUMENT PARSING
+##==================================================================================================
+
+parseArguments() {
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+        --staged)
+            INSPECT_UNSTAGED=false
+            INSPECT_STAGED=true
+            INSPECT_UNTRACKED=false
+            ;;
+        --worktree)
+            INSPECT_UNSTAGED=true
+            INSPECT_STAGED=false
+            INSPECT_UNTRACKED=true
+            ;;
+        -h | --help)
+            printUsage
+            exit 0
+            ;;
+        *)
+            printUsage
+            die "Unknown argument: $1"
+            ;;
+        esac
+        shift
+    done
+}
+
+##==================================================================================================
+##	MAIN
+##==================================================================================================
+
+main() {
+    requireCommand git
+    cd "$(git rev-parse --show-toplevel)" || die 'Not inside a Git repository'
+
+    collectMarkdownPaths
+    ((${#MARKDOWN_PATHS[@]})) || exit 0
+
+    requireCommand markdownlint-cli2
+    markdownlint-cli2 -- "${MARKDOWN_PATHS[@]}" >/tmp/git-lint-changed.out 2>&1 ||
+        {
+            cat /tmp/git-lint-changed.out >&2
+            die "Markdown lint failed for ${#MARKDOWN_PATHS[@]} file(s); fix reported issues, then rerun git-lint-changed."
+        }
+}
+
+##==================================================================================================
+##	SCRIPT ENTRY POINT
+##==================================================================================================
+
+parseArguments "$@"
+main

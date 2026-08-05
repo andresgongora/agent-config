@@ -8,19 +8,22 @@ description: "Git safety constraints for state-mutating work: staging, committin
 ## Mutation guardrails
 
 1. Inspect repository state, current branch, recent history, and relevant diff before Git mutation.
-2. Stage exact intended file paths only. No directories, globs, `git add .`, `git add -u`, or `git commit -a`.
+2. Stage exact intended file paths only, via `scripts/git-stage-group`. No directories, globs, `git add .`, `git add -u`, or `git commit -a`.
 3. Dirty tree before branch movement, merge, or rebase: stop and assess.
-4. Unrelated or entangled changes: stop and ask.
+4. Pre-existing staged content is reversible input, not a blocker. Command-specific flow can unstage and restage it while forming groups. This skill only requires the partial-hunk guard below before any reset. Unrelated changes outside the task's own scope: stop and ask.
 5. Prefer reversible operations. No shared-history rewrite, destructive cleanup, or branch deletion without explicit user approval.
-6. Discover repository remote, base branch, and policy before any sync or push. Never assume `origin` or `main`.
+6. Discover repository remote, base branch, and policy before any sync or push. Never assume `origin` or `main`; use `scripts/git-repo-context` to discover them.
 
 ## Commit integrity
 
 - Inspect status and proposed diff. `.gitignore` neither untracks nor protects tracked/staged secrets.
 - Suspected secret blocks commit. Do not expose secret value in output.
 - Before each commit, inspect its staged diff.
-- Before grouping and after staging: run `scripts/git-change-inspect`; it NUL-safely reports unstaged, staged, and untracked paths, file types, and changed Markdown lint. Missing `file`/Markdown linter or lint failure blocks commit. Use `--staged` for staged-only inspection.
-- Before each commit: run `scripts/git-secret-scan` from repository root.
+- Preflight, before grouping: run `scripts/git-repo-context` and `scripts/git-change-inspect`; both NUL-safely report state and are silent beyond their structured output. `--staged` on `git-change-inspect` supports the per-commit staged integrity gate.
+- Before grouping: run `scripts/git-lint-changed`. Failure blocks commit.
+- Resetting the index (`scripts/git-stage-group --unstage-all` or any restage): if a path has both staged and unstaged changes for the same file, that is partial-hunk staging — the script blocks and lists it, no override flag exists. Stop and ask the user to fully stage or fully unstage each listed file outside this flow, then retry. Never silently reset a partial-hunk stage.
+- Per-file change context for delegated extraction: `scripts/git-change-digest`; keeps raw diff bytes out of the caller's context.
+- Before each commit: run `scripts/git-secret-scan` from repository root, then `scripts/git-commit-group`, which independently verifies the staged set matches the expected group before committing.
 - Identity findings: staged `$HOME`/`/home/$USER` paths and username are hard blocks. Full-name-like text is warning severity, but stop transaction until user explicitly accepts identity exposure; then rerun scanner with `--accept-identity-exposure`. `--skip-identity-scan` also requires explicit user approval.
 - Re-run detection and scan after any staged-content change.
 - Commit message: concise, imperative, project-consistent. Use a message-only workflow when requested; it does not own staging or commit execution.

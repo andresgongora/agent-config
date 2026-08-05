@@ -1,0 +1,231 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+IFS=$'\n\t'
+
+##==================================================================================================
+##	GLOBALS
+##==================================================================================================
+
+declare -r DEFAULT_MAX_LINES=40
+declare -r MAX_FILE_BYTES=1048576
+DIFF_SOURCE='' # mutable, set by argument parsing
+MAX_LINES=$DEFAULT_MAX_LINES
+declare -a PATHS=()
+
+##==================================================================================================
+##	UTILITIES
+##==================================================================================================
+
+die() {
+    printf '%s\n' "$*" >&2
+    exit 1
+}
+
+requireCommand() {
+    local command_name=$1
+    command -v "$command_name" >/dev/null 2>&1 || die "Missing command: $command_name"
+}
+
+isUntrackedPath() {
+    local path=$1
+
+    git ls-files --others --exclude-standard --error-unmatch -- "$path" >/dev/null 2>&1
+}
+
+getDiffState() {
+    local path=$1
+
+    if [[ $DIFF_SOURCE != worktree ]] && ! git diff --cached --quiet -- "$path"; then
+        printf '%s' staged
+    elif [[ $DIFF_SOURCE != staged ]] && ! git diff --quiet -- "$path"; then
+        printf '%s' unstaged
+    elif [[ $DIFF_SOURCE != staged ]] && isUntrackedPath "$path"; then
+        printf '%s' untracked
+    else
+        die "No change found for path: $path"
+    fi
+}
+
+printDiffHunks() {
+    local state=$1
+    local path=$2
+    local -a diff_arguments=(--no-ext-diff --unified=0)
+    local line
+
+    [[ $state == staged ]] && diff_arguments=(--cached "${diff_arguments[@]}")
+
+    while IFS= read -r line; do
+        if [[ $line == @@* ]]; then
+            printf 'HUNK\t%s\n' "$line"
+        fi
+    done < <(git diff "${diff_arguments[@]}" -- "$path")
+}
+
+getDiffCounts() {
+    local state=$1
+    local path=$2
+    local -a diff_arguments=(--numstat --no-ext-diff)
+    local counts
+
+    [[ $state == staged ]] && diff_arguments=(--cached "${diff_arguments[@]}")
+    counts=$(git diff "${diff_arguments[@]}" -- "$path")
+
+    if [[ $counts == $'-\t-'* ]]; then
+        printf '%s\t%s' '-' '-'
+        return
+    fi
+
+    IFS=$'\t' read -r -a counts <<< "$counts"
+    printf '%s\t%s' "${counts[0]:-0}" "${counts[1]:-0}"
+}
+
+printDiffLines() {
+    local state=$1
+    local path=$2
+    local shown_lines=0
+    local remaining_lines=0
+    local -a diff_arguments=(--no-ext-diff --unified=0)
+    local line
+
+    [[ $state == staged ]] && diff_arguments=(--cached "${diff_arguments[@]}")
+
+    while IFS= read -r line; do
+        case "$line" in
+        '+++'* | '---'*) continue ;;
+        '+'* | '-'*)
+            if ((shown_lines < MAX_LINES)); then
+                printf 'LINE\t%s\n' "$line"
+                ((shown_lines += 1))
+            else
+                ((remaining_lines += 1))
+            fi
+            ;;
+        esac
+    done < <(git diff "${diff_arguments[@]}" -- "$path")
+
+    ((remaining_lines == 0)) || printf 'TRUNCATED\t%s\t%s\n' "$path" "$remaining_lines"
+}
+
+printUntrackedDigest() {
+    local path=$1
+    local file_size
+    local shown_lines=0
+    local remaining_lines=0
+    local line
+
+    file_size=$(wc -c < "$path")
+    if ! grep -Iq '' "$path"; then
+        printf 'BINARY\t%s\n' "$path"
+        return
+    fi
+
+    while IFS= read -r line || [[ -n $line ]]; do
+        if ((shown_lines < MAX_LINES)) && ((file_size <= MAX_FILE_BYTES)); then
+            printf 'LINE\t%s\n' "$line"
+            ((shown_lines += 1))
+        else
+            ((remaining_lines += 1))
+        fi
+    done < "$path"
+
+    ((remaining_lines == 0)) || printf 'TRUNCATED\t%s\t%s\n' "$path" "$remaining_lines"
+}
+
+printPathDigest() {
+    local path=$1
+    local state
+    local counts
+    local additions
+    local deletions
+
+    state=$(getDiffState "$path")
+    if [[ $state == untracked ]]; then
+        printf 'DIGEST\t%s\t%s\t+0\t-0\n' "$path" "$state"
+        printUntrackedDigest "$path"
+        return
+    fi
+
+    counts=$(getDiffCounts "$state" "$path")
+    IFS=$'\t' read -r additions deletions <<< "$counts"
+    if [[ $additions == '-' ]]; then
+        printf 'BINARY\t%s\n' "$path"
+        return
+    fi
+
+    printf 'DIGEST\t%s\t%s\t+%s\t-%s\n' "$path" "$state" "$additions" "$deletions"
+    printDiffHunks "$state" "$path"
+    printDiffLines "$state" "$path"
+}
+
+##==================================================================================================
+##	ARGUMENT PARSING
+##==================================================================================================
+
+printUsage() {
+    cat <<'USAGE'
+Usage: git-change-digest [--staged|--worktree] [--max-lines N] -- <path> [<path> ...]
+
+Prints bounded per-path Git change digests. Default source order: staged, unstaged,
+then untracked file content. Paths must be explicit and follow `--`.
+USAGE
+}
+
+parseArguments() {
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+        --staged)
+            [[ -z $DIFF_SOURCE ]] || die 'Choose only one of --staged or --worktree'
+            DIFF_SOURCE=staged
+            shift
+            ;;
+        --worktree)
+            [[ -z $DIFF_SOURCE ]] || die 'Choose only one of --staged or --worktree'
+            DIFF_SOURCE=worktree
+            shift
+            ;;
+        --max-lines)
+            [[ $# -ge 2 ]] || die '--max-lines requires a value'
+            [[ $2 =~ ^[0-9]+$ ]] || die '--max-lines must be a non-negative integer'
+            MAX_LINES=$2
+            shift 2
+            ;;
+        --)
+            shift
+            PATHS=("$@")
+            break
+            ;;
+        -h | --help)
+            printUsage
+            exit 0
+            ;;
+        *)
+            printUsage
+            die "Unknown argument: $1"
+            ;;
+        esac
+    done
+
+    ((${#PATHS[@]} > 0)) || die 'At least one path is required after --'
+}
+
+##==================================================================================================
+##	MAIN
+##==================================================================================================
+
+main() {
+    local path
+
+    requireCommand git
+    cd "$(git rev-parse --show-toplevel)" || die 'Not inside a Git repository'
+
+    for path in "${PATHS[@]}"; do
+        printPathDigest "$path"
+    done
+}
+
+##==================================================================================================
+##	SCRIPT ENTRY POINT
+##==================================================================================================
+
+parseArguments "$@"
+main

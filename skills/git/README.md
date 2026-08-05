@@ -6,11 +6,11 @@ Git safety constraints. Not Git tutorial.
 
 Models know common Git syntax. This skill adds durable behavior where syntax is not enough:
 
-- exact-path staging and dirty-tree stops
+- exact-path staging and dirty-tree stops, via deterministic scripts (`git-stage-group`, `git-commit-group`) — not hand-rolled `git add`/`git commit`
 - explicit boundaries for destructive or shared-history operations
 - per-commit staged secret scanning, with honest unavailable-tool handling
-- deliberate push discovery instead of assumed `origin` and `main`
-- bounded local maintenance and change-inspection helpers
+- deliberate push discovery instead of assumed `origin` and `main` (`git-repo-context`)
+- bounded local maintenance, change-inspection, and change-digest helpers, each with a fixed structured-output contract and no extra noise beyond it
 
 `gitleaks`, `trufflehog`, and `detect-secrets` are independent scan gates. `scripts/git-secret-scan` defaults to `gitleaks`, selects a different scanner via `--scanner`, or runs all three with `--scanner all`; it fails closed when the selected command is missing, finds a secret, or errors. It also blocks staged local paths/usernames and warns on normalized full-name matches. Scanner output never replaces manual staged-diff inspection.
 
@@ -30,6 +30,11 @@ Load for Git mutations and risky Git-state inspection. Load for object-store spa
 
 - `SKILL.md`
 - `scripts/README.md`
-- `scripts/git-secret-scan`
+- `scripts/git-repo-context`
 - `scripts/git-change-inspect`
+- `scripts/git-change-digest`
+- `scripts/git-lint-changed`
+- `scripts/git-stage-group`
+- `scripts/git-commit-group`
+- `scripts/git-secret-scan`
 - `../../deploy/AGENTS.md`

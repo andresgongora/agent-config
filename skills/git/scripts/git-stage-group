@@ -1,0 +1,235 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+IFS=$'\n\t'
+
+##==================================================================================================
+##	GLOBALS
+##==================================================================================================
+
+UNSTAGE_ALL=false
+PATHS_FILE=''
+declare -a REQUESTED_PATHS=()
+declare -A STATUS_PATHS=()
+
+##==================================================================================================
+##	UTILITIES
+##==================================================================================================
+
+die() {
+    printf '%s\n' "$*" >&2
+    exit 1
+}
+
+requireCommand() {
+    local command_name=$1
+
+    command -v "$command_name" >/dev/null 2>&1 || die "Missing command: $command_name. Install it, then rerun this script."
+}
+
+formatPaths() {
+    local -n paths=$1
+    local path
+    local formatted=''
+
+    for path in "${paths[@]}"; do
+        printf -v formatted '%s\n  %q' "$formatted" "$path"
+    done
+    printf '%s' "$formatted"
+}
+
+##==================================================================================================
+##	CORE FUNCTIONS
+##==================================================================================================
+
+readRequestedPaths() {
+    local path
+    local read_status
+    local -A seen_paths=()
+
+    while :; do
+        if IFS= read -r -d '' path; then
+            read_status=0
+        else
+            read_status=$?
+        fi
+
+        if ((read_status != 0)); then
+            [[ -z $path ]] || die 'Paths must be NUL-delimited'
+            break
+        fi
+
+        [[ $path != *'*'* && $path != *'?'* ]] || die "Glob characters are not allowed: $path"
+        [[ -n ${seen_paths["$path"]:-} ]] && continue
+        seen_paths["$path"]=true
+        REQUESTED_PATHS+=("$path")
+    done
+}
+
+ensureNoPartialStaging() {
+    local path
+    local -a staged_paths=()
+    local -a unstaged_paths=()
+    local -a overlap_paths=()
+    local -A staged_set=()
+
+    mapfile -d '' -t staged_paths < <(git diff --cached --name-only -z)
+    mapfile -d '' -t unstaged_paths < <(git diff --name-only -z)
+
+    for path in "${staged_paths[@]}"; do
+        staged_set["$path"]=true
+    done
+    for path in "${unstaged_paths[@]}"; do
+        [[ -n ${staged_set["$path"]:-} ]] && overlap_paths+=("$path")
+    done
+
+    ((${#overlap_paths[@]} == 0)) || die "Partial-hunk staging risk; human confirmation required before reset. Paths:$(formatPaths overlap_paths)"
+}
+
+resetIndex() {
+    git reset --quiet || die 'Cannot reset index'
+}
+
+getStatusPaths() {
+    local record
+    local status
+
+    STATUS_PATHS=()
+    while IFS= read -r -d '' record; do
+        status=${record:0:2}
+        STATUS_PATHS["${record:3}"]=true
+        [[ $status == *R* || $status == *C* ]] && IFS= read -r -d '' record
+    done < <(git status --porcelain=v1 -z)
+
+    return 0
+}
+
+validateRequestedPaths() {
+    local path
+
+    getStatusPaths
+    for path in "${REQUESTED_PATHS[@]}"; do
+        [[ ! -d $path ]] || die "Directories are not allowed: $path"
+        [[ -n ${STATUS_PATHS["$path"]:-} ]] || die "Path is not changed or untracked: $path"
+    done
+}
+
+stageRequestedPaths() {
+    local path
+
+    for path in "${REQUESTED_PATHS[@]}"; do
+        git add -- "$path" || {
+            resetIndex
+            die "Cannot stage path: $path"
+        }
+    done
+}
+
+verifyStagedPaths() {
+    local path
+    local -a staged_paths=()
+    local -a missing_paths=()
+    local -a extra_paths=()
+    local -A requested_set=()
+    local -A staged_set=()
+    local message='Staged paths do not match requested paths.'
+
+    mapfile -d '' -t staged_paths < <(git diff --cached --name-only -z)
+    for path in "${staged_paths[@]}"; do
+        staged_set["$path"]=true
+    done
+    for path in "${REQUESTED_PATHS[@]}"; do
+        requested_set["$path"]=true
+        [[ -n ${staged_set["$path"]:-} ]] || missing_paths+=("$path")
+    done
+    for path in "${staged_paths[@]}"; do
+        [[ -n ${requested_set["$path"]:-} ]] || extra_paths+=("$path")
+    done
+
+    if ((${#missing_paths[@]} > 0 || ${#extra_paths[@]} > 0)); then
+        ((${#missing_paths[@]} > 0)) && message+=" Missing:$(formatPaths missing_paths)"
+        ((${#extra_paths[@]} > 0)) && message+=" Extra:$(formatPaths extra_paths)"
+        resetIndex
+        die "$message"
+    fi
+}
+
+##==================================================================================================
+##	ARGUMENT PARSING
+##==================================================================================================
+
+printUsage() {
+    cat <<'USAGE'
+Usage: git-stage-group --unstage-all
+       git-stage-group [--paths-file FILE] < NUL-delimited-paths
+
+Unstages all changes only when no file has both staged and unstaged changes.
+Stage mode clears the index, then stages exactly the requested literal paths.
+USAGE
+}
+
+parseArguments() {
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+        --unstage-all)
+            UNSTAGE_ALL=true
+            shift
+            ;;
+        --paths-file)
+            [[ $# -ge 2 ]] || die '--paths-file requires a file'
+            [[ $2 != *'*'* && $2 != *'?'* ]] || die "Glob characters are not allowed: $2"
+            PATHS_FILE=$2
+            shift 2
+            ;;
+        -h | --help)
+            printUsage
+            exit 0
+            ;;
+        *)
+            printUsage
+            die "Unknown argument: $1"
+            ;;
+        esac
+    done
+
+    [[ $UNSTAGE_ALL == false || -z $PATHS_FILE ]] || die '--unstage-all and --paths-file are mutually exclusive'
+}
+
+##==================================================================================================
+##	MAIN
+##==================================================================================================
+
+main() {
+    local repository_root
+
+    requireCommand git
+    repository_root=$(git rev-parse --show-toplevel) || die 'Not inside a Git repository'
+    cd "$repository_root" || die "Cannot enter repository root: $repository_root"
+
+    if [[ $UNSTAGE_ALL == true ]]; then
+        ensureNoPartialStaging
+        resetIndex
+        printf '%s\n' 'OK: unstaged all'
+        return
+    fi
+
+    if [[ -n $PATHS_FILE ]]; then
+        [[ -f $PATHS_FILE ]] || die "Paths file does not exist: $PATHS_FILE"
+        readRequestedPaths < "$PATHS_FILE"
+    else
+        readRequestedPaths
+    fi
+
+    ensureNoPartialStaging
+    resetIndex
+    validateRequestedPaths
+    stageRequestedPaths
+    verifyStagedPaths
+    printf 'OK: staged %d path(s)\n' "${#REQUESTED_PATHS[@]}"
+}
+
+##==================================================================================================
+##	SCRIPT ENTRY POINT
+##==================================================================================================
+
+parseArguments "$@"
+main

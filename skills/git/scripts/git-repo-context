@@ -1,0 +1,161 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+IFS=$'\n\t'
+
+##==================================================================================================
+##	GLOBALS
+##==================================================================================================
+
+declare -a STAGED_PATHS=()
+
+##==================================================================================================
+##	UTILITIES
+##==================================================================================================
+
+die() {
+    printf '%s\n' "$*" >&2
+    exit 1
+}
+
+requireCommand() {
+    local command_name=$1
+
+    command -v "$command_name" >/dev/null 2>&1 || die "Missing command: $command_name. Install it, then rerun this script."
+}
+
+##==================================================================================================
+##	CORE FUNCTIONS
+##==================================================================================================
+
+getBranch() {
+    git symbolic-ref --quiet --short HEAD 2>/dev/null || printf '%s' 'HEAD-detached'
+}
+
+getUpstream() {
+    git rev-parse --abbrev-ref --symbolic-full-name '@{u}' 2>/dev/null || printf '%s' 'none'
+}
+
+getRemoteName() {
+    local upstream=$1
+    local -a remote_names=()
+
+    if [[ $upstream != none ]]; then
+        printf '%s' "${upstream%%/*}"
+        return
+    fi
+
+    mapfile -t remote_names < <(git remote)
+    printf '%s' "${remote_names[0]:-none}"
+}
+
+getRemoteUrl() {
+    local remote_name=$1
+
+    [[ $remote_name != none ]] || {
+        printf '%s' 'none'
+        return
+    }
+
+    git remote get-url "$remote_name" 2>/dev/null || printf '%s' 'none'
+}
+
+getAheadBehind() {
+    local upstream=$1
+    local counts
+    local behind=0
+    local ahead=0
+
+    if [[ $upstream != none ]] && counts=$(git rev-list --left-right --count '@{u}...HEAD' 2>/dev/null); then
+        read -r behind ahead <<< "$counts"
+    fi
+
+    printf '%s\t%s' "$ahead" "$behind"
+}
+
+printStagedPaths() {
+    local staged_path
+
+    mapfile -d '' -t STAGED_PATHS < <(git diff --cached --name-only -z)
+    if [[ ${#STAGED_PATHS[@]} -eq 0 ]]; then
+        printf 'STAGED-HINT\tNONE\n'
+        return
+    fi
+
+    for staged_path in "${STAGED_PATHS[@]}"; do
+        if [[ $staged_path == *$'\t'* || $staged_path == *$'\n'* ]]; then
+            die "Staged path contains a literal tab or newline, unsupported by this line format: $staged_path"
+        fi
+        printf 'STAGED-HINT\t%s\n' "$staged_path"
+    done
+}
+
+printContext() {
+    local branch
+    local upstream
+    local remote_name
+    local remote_url
+    local ahead_behind
+    local ahead
+    local behind
+    local head
+
+    branch=$(getBranch)
+    upstream=$(getUpstream)
+    remote_name=$(getRemoteName "$upstream")
+    remote_url=$(getRemoteUrl "$remote_name")
+    ahead_behind=$(getAheadBehind "$upstream")
+    read -r ahead behind <<< "$ahead_behind"
+    head=$(git rev-parse --short HEAD 2>/dev/null || printf '%s' 'no-commits')
+
+    printf 'BRANCH\t%s\n' "$branch"
+    printf 'UPSTREAM\t%s\n' "$upstream"
+    printf 'REMOTE\t%s\t%s\n' "$remote_name" "$remote_url"
+    printf 'AHEAD\t%s\tBEHIND\t%s\n' "$ahead" "$behind"
+    printf 'TOPLEVEL\t%s\n' "$(git rev-parse --show-toplevel)"
+    printf 'HEAD\t%s\n' "$head"
+    printStagedPaths
+}
+
+##==================================================================================================
+##	ARGUMENT PARSING
+##==================================================================================================
+
+printUsage() {
+    cat <<'USAGE'
+Usage: git-repo-context [--help]
+
+Prints current Git repository context for commit preflight.
+USAGE
+}
+
+parseArguments() {
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+        -h | --help)
+            printUsage
+            exit 0
+            ;;
+        *)
+            printUsage
+            die "Unknown argument: $1"
+            ;;
+        esac
+    done
+}
+
+##==================================================================================================
+##	MAIN
+##==================================================================================================
+
+main() {
+    requireCommand git
+    cd "$(git rev-parse --show-toplevel)" || die 'Not inside a Git repository'
+    printContext
+}
+
+##==================================================================================================
+##	SCRIPT ENTRY POINT
+##==================================================================================================
+
+parseArguments "$@"
+main

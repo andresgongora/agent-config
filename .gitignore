@@ -34,5 +34,4 @@ model-aliases.json
 
 # In-review (not ready to commit)
 commands/checkpoint.md
-commands/commit.md
 commands/document.md
