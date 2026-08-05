@@ -9,7 +9,6 @@ IFS=$'\n\t'
 UNSTAGE_ALL=false
 PATHS_FILE=''
 declare -a REQUESTED_PATHS=()
-declare -A STATUS_PATHS=()
 
 ##==================================================================================================
 ##	UTILITIES
@@ -89,27 +88,16 @@ resetIndex() {
     git reset --quiet || die 'Cannot reset index'
 }
 
-getStatusPaths() {
-    local record
-    local status
-
-    STATUS_PATHS=()
-    while IFS= read -r -d '' record; do
-        status=${record:0:2}
-        STATUS_PATHS["${record:3}"]=true
-        [[ $status == *R* || $status == *C* ]] && IFS= read -r -d '' record
-    done < <(git status --porcelain=v1 -z)
-
-    return 0
-}
-
 validateRequestedPaths() {
     local path
 
-    getStatusPaths
     for path in "${REQUESTED_PATHS[@]}"; do
         [[ ! -d $path ]] || die "Directories are not allowed: $path"
-        [[ -n ${STATUS_PATHS["$path"]:-} ]] || die "Path is not changed or untracked: $path"
+        if git diff --quiet -- "$path" &&
+            git diff --cached --quiet -- "$path" &&
+            ! git ls-files --others --exclude-standard --error-unmatch -- "$path" >/dev/null 2>&1; then
+            die "Path is not changed or untracked: $path"
+        fi
     done
 }
 
