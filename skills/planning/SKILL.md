@@ -76,3 +76,7 @@ After implementation: report changes, validation, risk, deferred follow-ups. Sug
 - OpenCode `todowrite` or client equivalent owns session state.
 - Workflow only. Code style, tests, commits belong elsewhere.
 - If planning cost exceeds task risk, execute direct.
+
+## Durable plan document
+
+Big plan, worth surviving session end (cross-session, high-risk, architecture, migration): hand off to `agents/planning.md`, not this skill's session flow. That agent uses `templates/plan-document.md` (path relative to this skill dir) to write `.agent/plan/*.md`. This skill never writes plan documents itself.

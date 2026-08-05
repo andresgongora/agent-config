@@ -35,7 +35,7 @@ permission:
     "sha256sum *": allow
     "fdupes *": allow
     "czkawka_cli *": allow
-    # Metadata/hash tools may read bytes internally; output only metadata or digest.
+    # Permit byte reads only inside metadata/hash tools; output only metadata or digest.
     "exiftool *": deny
     "identify *": deny
     "ffprobe *": deny

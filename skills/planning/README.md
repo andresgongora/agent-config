@@ -22,17 +22,17 @@ Session workflow: scope, coarse roadmap, lazy `todowrite` decomposition, live ad
 
 ## Primary planning agent
 
-`agents/planning.md` creates or amends decision-grade `.agent/plan/<slug>.md` documents. It writes plans only; implementation session consumes them. Agent reads `assets/planning/plan-template.md` directly; no runtime-skill dependency.
+`agents/planning.md` creates or amends decision-grade `.agent/plan/<slug>.md` documents. It writes plans only; implementation session consumes them. Agent loads this skill to reach `templates/plan-document.md` — template belongs conceptually to the agent, but lives here because a skill's location is reliably discoverable at load time and an agent's own file path is not.
 
 ## Plan template
 
-`assets/planning/plan-template.md` — planning agent uses conditionally. Remove sections with no decision value. Never write `none` filler.
+`templates/plan-document.md` — planning agent uses conditionally. Remove sections with no decision value. Never write `none` filler.
 
 ## Structure
 
 - `SKILL.md` — LLM-facing session workflow.
 - `README.md` — this file. Human maintainer notes.
-- `assets/planning/plan-template.md` — reusable plan document template.
+- `templates/plan-document.md` — reusable plan document template.
 
 ## Revising this skill
 
@@ -46,5 +46,5 @@ Session workflow: scope, coarse roadmap, lazy `todowrite` decomposition, live ad
 ## See also
 
 - `SKILL.md` — full LLM-facing instructions.
-- `assets/planning/plan-template.md` — plan document shape.
+- `templates/plan-document.md` — plan document shape.
 - `../../agents/planning.md` — primary durable-plan agent.

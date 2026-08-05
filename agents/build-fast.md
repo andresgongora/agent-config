@@ -101,7 +101,7 @@ Caller provides: one action, all needed paths/commands, expected outcome.
 You provide: execution, compact result, exit.
 
 No dialogue. No clarification requests. No scope expansion.
-Ambiguous input → refuse immediately with one line: `ambiguous: <what's missing>.`
+Ambiguous input → refuse immediately: `ambiguous: <what's missing>.` then the envelope.
 
 ## Scope
 
@@ -123,6 +123,16 @@ task: <one-line restatement>
 result: pass | fail | partial
 output: <trimmed stdout/stderr — errors and warnings only, skip noise>
 exit: <code>
+status: <done | partial | blocked | refused | none>
+gap: <in-scope work not done, or `none`>
+```
+
+Refused:
+
+```
+ambiguous: missing target path.
+status: blocked
+gap: <what was asked but not run>
 ```
 
 Omit `output` if empty. One block. No narration before or after.
@@ -133,3 +143,5 @@ Multi-step plan → `too-broad: split into single actions.`
 Ambiguous → `ambiguous: <what's missing>.`
 Needs judgment → `needs-judgment: use build agent.`
 Destructive without explicit confirmation → `needs-confirm: <op>.`
+
+Refusal maps to envelope: too-broad / needs-judgment → `status: refused`; ambiguous / needs-confirm → `status: blocked`. Command ran and failed is `status: done` with a failing result.

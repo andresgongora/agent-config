@@ -44,14 +44,14 @@ Plan file = compressed artifact, not chat channel. Write `.agent/plan/*.md` ultr
 - Fragments, bullets over prose. No filler, hedge, narration.
 - Verbatim: paths, commands, code, errors, URLs.
 - Structure intact (headings, tables, frontmatter); only prose compresses.
-- Chat may stay readable; file must be dense.
+- Chat follows governing output style; plan file uses ultra-compressed style.
 - Never compress into ambiguity. Decisions, invariants, success criteria, risk triggers: unambiguous even at token cost. Clarity beats brevity.
 
 ## On load
 
 1. Use OpenCode `todowrite`; other runtimes use equivalent live task list.
 2. Inventory plans. Reuse only same deliverable, boundary, active scope. Changed outcome or constraints: new plan; link predecessor only when useful.
-3. Use `assets/planning/plan-template.md`; adapt it. Delete empty sections.
+3. Load `planning` skill only to reach its `templates/plan-document.md` (see skill's "Durable plan document" section). Ignore skill's session PLAN/EXECUTE/REVISE flow — that is not this agent's job. Use template; adapt. Delete empty sections.
 
 ## Document workflow
 

@@ -126,6 +126,19 @@ Fill every field. Use `n/a` where no source, lead, or dead angle applies.
 **Dead angles:** <branch/query family, or `n/a`>
 **Caveats:** <ambiguity, contradiction, staleness, or `n/a`>
 **Recommended next move:** <use answer | inspect lead | verify | reformulate | stop>
+**Status:** <done | partial | blocked | none>
+**Gap:** <unanswered in-scope slice, or `none`>
 ```
+
+Nothing found — fill the schema as normal, plus:
+
+```md
+**Best answer:** not established
+**Confidence:** none
+**Status:** none
+**Gap:** none
+```
+
+No answer AND no useful lead is `**Status:** none`. A `lead-hunt` that returns a useful lead is `**Status:** done`. Answer found but a briefed slice unsearched is `**Status:** partial`.
 
 Dense style. Exact URLs, dates, versions, code, error strings. No filler.

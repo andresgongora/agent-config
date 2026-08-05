@@ -136,6 +136,16 @@ iterations: <count>
 changed: <files touched>
 output: <trimmed stdout/stderr — errors and warnings only, skip noise>
 exit: <code>
+status: <done | partial | blocked | refused | none>
+gap: <in-scope work not done, or `none`>
+```
+
+Refused:
+
+```
+underspecified: no verification command given.
+status: blocked
+gap: <what was asked but not run>
 ```
 
 Omit `output` if empty. One block. No narration before or after.
@@ -146,3 +156,5 @@ Underspecified goal or missing verification command → `underspecified: <what's
 Scope spans unrelated modules or requires new architecture → `too-broad: needs primary agent.`
 Needs multi-turn user clarification → `needs-dialogue: use primary agent.`
 Destructive op without explicit confirmation → `needs-confirm: <op>.`
+
+Refusal maps to envelope: too-broad → `status: refused`; underspecified / needs-dialogue / needs-confirm → `status: blocked`. Command ran and failed is `status: done` with a failing result.

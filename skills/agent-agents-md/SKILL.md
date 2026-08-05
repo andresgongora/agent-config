@@ -66,11 +66,33 @@ Read the whole chain first: target file, its parents, up to the user-global file
 7. Re-read the whole file. Trim duplicates, weak lines, bloated examples introduced earlier.
 8. Report: changed, rejected, relocated, why.
 
+## Orientation facts (project scope only)
+
+Exception to *router, not warehouse*: orientation facts ARE routing — tell agent where go before it asks. Project `AGENTS.md` must carry them.
+
+Admit fact only if all hold:
+- **High signal** — changes where agent goes or what it touches.
+- **High veracity** — stable across months, not moving target.
+- **Not self-evident from names** — bare path list derivable; ROLE, ownership, boundary not. Store role, not listing.
+
+Typical set (5-12 lines total): purpose; top-level dirs, one clause role each; entry points to read first; unspoken boundaries (generated, vendored, protected, not-source-of-truth); build/test reality if non-obvious.
+
+Never: file-by-file inventory, counts, anything regenerable, aspirational structure.
+
+Write triggers — only three; outside them leave section alone:
+
+1. **Init** — creating file. Explore enough to fill set honestly.
+2. **Manual** — user asks refresh.
+3. **Shape shift** — work just moved dirs, entry points, boundaries. Update moved fact only; no re-audit.
+
+Exploration costs. Facts already in context: write them. Trigger 2/3, not in context: probe shifted area only.
+
 ## Creation
 
 - Start from `AGENTS.template.md`. Delete the header comment and every section the project does not need.
 - Empty or placeholder-only section is worse than no section.
 - Do not invent project facts. Unknown value: ask or omit the line.
+- `## Info` is mandatory at project scope: fill the orientation set above before anything else.
 
 ## Boundaries
 

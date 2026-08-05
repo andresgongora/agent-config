@@ -16,3 +16,13 @@ description: "<!-- One physical line. Routing truth: exact task; when to choose 
 ## Output contract
 
 <!-- Exact returned shape. Define explicit empty-result behavior; never return silently. -->
+
+<!-- Mandatory envelope. Every report ends with these two fields, INSIDE this fenced template as
+     its last two lines — a prose rule above the fence does not bind. Formatting may follow this
+     agent's own style, token strings may not change. Map any refusal/terminal token this agent
+     defines onto a status value; never restate the token's meaning.
+       status: <done | partial | blocked | refused | none>
+       gap: <in-scope work not done, or `none`>
+     `none` = ran fully, found nothing — distinct from `done`.
+     Also ship a second fenced example for the empty-result or refusal path showing the literal
+     token (`status: none` / `status: refused`). A success-only example teaches `done` as default. -->

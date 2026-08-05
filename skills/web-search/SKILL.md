@@ -44,6 +44,7 @@ Never create duplicate query branches to feel thorough.
 - `Confidence`: answer certainty, not source attractiveness
 - `Dead angles`: do not retry without new information
 - `Recommended next move`: coordinator advice; main agent still decides
+- `Status`/`Gap`: `none` means ran fully, found nothing — do not retry it; `partial` means `Gap` names an unanswered slice
 
 `high`: multiple authoritative or convergent strong sources.
 `medium`: one authoritative source or convergent partial evidence.

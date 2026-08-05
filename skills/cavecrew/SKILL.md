@@ -27,27 +27,35 @@ What main thread can rely on per agent:
 <Header>:
 - path:line — `symbol` — short note
 totals: <counts>.
+status: <done | partial | refused | none>
+gap: <unsearched in-scope area, or `none`>
 ```
 
-Or `No match.` Always file-path-first, line-number-attached, backticked symbols. Safe to grep with `path:\d+`.
+Or `No match.` (= `status: none`) as the payload, envelope still appended. Always file-path-first, line-number-attached, backticked symbols. Safe to grep with `path:\d+`.
 
 **`cavecrew-builder`**
 
 ```
 <path:line-range> — <change ≤10 words>.
 verified: <re-read OK | mismatch @ path:line>.
+status: <done | partial | blocked | refused>
+gap: <in-scope work not done, or `none`>
 ```
 
-Or one of: `too-big.` / `needs-confirm.` / `ambiguous.` / `regressed.` (terminal first token).
+Or one of: `too-big.` / `needs-confirm.` / `ambiguous.` / `regressed.` (terminal first token) as the payload, envelope still appended.
 
 **`cavecrew-reviewer`**
 
 ```
 path:line: <emoji> <severity>: <problem>. <fix>.
 totals: N🔴 N🟡 N🔵 N❓
+status: <done | partial | refused | none>
+gap: <unreviewed in-scope area, or `none`>
 ```
 
-Or `No issues.` Findings sorted file → line ascending.
+Or `No issues.` (= `status: none`) as the payload, envelope still appended. Findings sorted file → line ascending.
+
+Every contract ends with `status:` + `gap:`; a terminal token never replaces them. Generic evaluation and escalation rules live in the delegation-supervision behavior.
 
 ## Chaining patterns
 

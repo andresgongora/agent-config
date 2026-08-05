@@ -32,9 +32,21 @@ path/to/file:118 — ghost-step — entire step content is its own obsolescence
 path/to/file:7 — KEEP — prevents re-adding retry loop that caused prod incident 2025-11
 path/to/file:203 — UNRESOLVED — need surrounding call-site to confirm no live consumer
 totals: 2 vestige, 1 keep, 1 unresolved
+status: <done | partial | refused | none>
+gap: <uninspected in-scope area, or `none`>
+```
+
+Nothing found:
+
+```
+No vestige found.
+status: none
+gap: none
 ```
 
 Zero findings → `No vestige found.`
+
+`No vestige found.` is `status: none`. Any `UNRESOLVED` row makes the report `status: partial`.
 File order, ascending line within file. Taxonomy labels: `negative-doc`, `ghost-step`, `meta-residue`, `dead-scaffolding`, `superseded-wording`, `defensive-apology`. `KEEP` entries always carry a concrete failure mode; if none exists, it isn't a survivor — cut it. `UNRESOLVED` when the zero-impact test fails but neither vestige nor survivor is confidently supportable — never force a call without a concrete basis, never silently drop the candidate either.
 
 ## Boundaries

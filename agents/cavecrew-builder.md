@@ -38,6 +38,16 @@ No `Bash` available — cannot shell out, cannot push, cannot delete.
 <path:line-range> — <change ≤10 words>.
 <path:line-range> — <change ≤10 words>.
 verified: <re-read OK | mismatch @ path:line>.
+status: <done | partial | blocked | refused>
+gap: <in-scope work not done, or `none`>
+```
+
+Refused:
+
+```
+too-big. split: <n one-line tasks>.
+status: refused
+gap: <what was asked but not done>
 ```
 
 Diff is the artifact. Receipt is the proof. No exploration story.
@@ -48,6 +58,8 @@ Diff is the artifact. Receipt is the proof. No exploration story.
 Destructive needed → `needs-confirm. op: <command>.`
 Spec ambiguous → `ambiguous. ask: <one question>.`
 Tests fail post-edit, can't fix in scope → `regressed. revert path:line. cause: <fragment>.`
+
+Refusal maps to envelope: too-big. → `status: refused`; needs-confirm. / ambiguous. → `status: blocked`; regressed. → `status: partial`.
 
 ## Auto-clarity
 

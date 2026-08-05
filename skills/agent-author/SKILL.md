@@ -13,7 +13,8 @@ description: "Workflow for creating, editing, or reviewing agent ecosystem artif
 - Cheap-model test. A correct artifact works with a smaller model than you used to write it. If it only works strong, tighten the prompt.
 - Template-first. Copy the matching template from `templates/`, fill it, validate. Do not author from blank.
 - Agent-facing prose: dense, imperative, exact. Fragments OK. Remove narration, filler, marketing, repeated rules. Preserve needed order and safety clarity.
-- WHAT + HOW in the artifact; WHY → README, unless the executing agent needs the reason to act correctly. Routing-relevant why may stay in frontmatter.
+- Consider simplified-technical-English style (one term per concept, active voice, short direct sentences) to cut ambiguity. Not enforced — denser or more precise wording wins when it conflicts.
+- WHAT + HOW in artifact; WHY → README. Exception: keep WHY in artifact when executing agent needs it to act correctly; keep routing-relevant WHY in frontmatter.
 - No stubs. Artifact holds only text the executing agent needs. Maintainer-facing meta — obsolete-decision residue, "no longer handles X", "removed per request", inverse rules with no active concern — goes to README, never the body.
 - No dead refs. Every path, skill, tool named must exist at ship time.
 - Ship paired: every skill folder needs both `SKILL.md` (LLM-facing) and `README.md` (human/maintainer). Subagents do NOT need a README.
@@ -27,7 +28,7 @@ Primary routing surface. Always in scope. Specificity governs load correctness �
 - Current-state only. Describe what the artifact does and when to load it NOW. No stubs, no obsolete-decision residue ("no longer handles X"), no roadmap ("load when Z even if incomplete"), no "load other artifact instead". All such meta → README.
 - Information-dense. Concrete triggers + keywords highly correlated with the artifact's job. Include explicit non-triggers where a sibling scope could misfire.
 - No hard coupling. Frontmatter names no other skill/subagent. Describe boundary scopes by behavior, never by artifact name.
-- Same agent-directed style as the body: dense, imperative, exact, fragments OK. WHY/rationale never here → README.
+- Same agent-directed style as body: dense, imperative, exact, fragments OK. Frontmatter WHY limited to routing rationale needed for correct loading.
 
 ## File placement
 
@@ -73,6 +74,16 @@ Nested subagents:
 - Global `permission.task: "allow"` enables unbounded recursion — never do this.
 
 Body: output contract + behavior. Short. Define output shape, stopping conditions, refusal triggers.
+
+Mandatory report envelope — every subagent report ends with:
+- `status:` — exactly one of `done` `partial` `blocked` `refused` `none`
+- `gap:` — in-scope work not covered, or `none`
+
+Token strings are fixed; field formatting follows the agent's own style. `none` (ran fully, found nothing) is distinct from `done`. Refusal or terminal tokens the agent defines map onto a status value — bind them in one line, never restate their meaning. Envelope wraps the bespoke contract; it does not replace it.
+
+Envelope placement is load-bearing, not cosmetic. Agents copy the fenced example and ignore adjacent prose, so:
+- Put `status:`/`gap:` INSIDE the fenced output template, as its last two lines. A prose rule above the fence does not bind.
+- Ship a second fenced example for the empty-result or refusal path with the literal token (`status: none`, `status: refused`). A success-only example teaches `done` as the default.
 
 See template: `templates/subagent.md`.
 
@@ -120,7 +131,7 @@ Before naming any other skill/subagent:
 - If dependency: decouple — describe by behavior keyword instead.
 - Swap test: if the referenced artifact were replaced by an equivalent, would this artifact still work?
 
-Same-family exception: artifacts in one family (e.g. `cavecrew-*`, `agent-*`) may name each other. Cross-family stays behavior/trigger-only.
+Same-family exception: permit artifacts in one family (e.g. `cavecrew-*`, `agent-*`) to name each other. Cross-family stays behavior/trigger-only.
 
 ## Risks
 
@@ -152,6 +163,8 @@ After creating or editing:
 - [ ] Command: no README, fits one screen, `$ARGUMENTS` handled
 - [ ] `description` is routing truth; no trigger phrases duplicated in body
 - [ ] Named skills/subagents use behavior keywords unless same-family exception passes swap test
+- [ ] Subagent: report ends with `status:` (one of `done` `partial` `blocked` `refused` `none`) and `gap:`; every refusal or terminal token maps to a status and is payload, not a replacement
+- [ ] Subagent: envelope sits inside the fenced output template, and a second fence shows the empty-result or refusal path with a literal non-`done` token
 - [ ] No dead refs to paths/skills/tools that don't exist
 - [ ] Templates reference one level deep (not inlined)
 - [ ] If replacing an artifact: all inbound refs updated or removed

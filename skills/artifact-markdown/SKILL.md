@@ -20,6 +20,25 @@ description: "Minimal Markdown completion checks. Load whenever writing, editing
 4. Writing, editing, or finishing: run `prettier --write "$file"` when human-facing format fails; fix lint findings, then rerun applicable checks. Read-only review: report findings; do not modify file.
 5. Read final file. Check applicable frontmatter, headings, lists and code fences, link syntax, paths, and commands.
 
+## Heading structure
+
+- One `#` per file. Title only.
+- `##` sections wrapped above and below, HTML-comment dash decorator:
+
+  ```markdown
+  <!------------------------------------------------------------------------------------------------->
+  ## Section title
+  <!------------------------------------------------------------------------------------------------->
+  ```
+
+- Decorator width: match nearest file/repo convention. Default 100 dashes. 80-col repo: 80. One width per file, no mix.
+- `###` deepest level by default. Past it needs concrete reason (deep reference material). Avoid `####`+.
+- Skip decorators on Markdown-lint-only artifacts (Finish step 2 classification) unless that file already uses them.
+
+## README template
+
+New root README, no existing convention: start `templates/MAIN-README.md`. Self-contained — inline HTML comments mark required vs optional, cover License section rule, tell you to delete comments once filled. Minimalist, optional sections (config, contributing, license) drop clean. Apply heading rules above while filling it.
+
 ## Boundaries
 
 - Format and lint checks do not prove factual accuracy, reachable external links, or good prose.

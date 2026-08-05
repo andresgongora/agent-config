@@ -21,7 +21,9 @@ Load for Markdown writing, editing, completion, and review. It is most useful af
 - Keep workflow short and file-scoped.
 - Do not add prose, documentation, link-checking, or repository-wide linting policy.
 - Use repository configuration when present.
+- Heading-decorator rule and `templates/MAIN-README.md` are opinionated defaults for greenfield files; never override an existing repo's heading style.
 
 ## See also
 
-Use existing prose and documentation workflows for content quality and document structure.
+- `templates/MAIN-README.md` — self-contained root README starter; inline comments mark required vs optional sections, deleted once filled in.
+- Use existing prose and documentation workflows for content quality and document structure.

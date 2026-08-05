@@ -71,15 +71,37 @@ Locate. Report. Stop. Never edit, never propose fix.
 
 ## Output
 
+Hits:
+
 ```
 <path:line> — `<symbol>` — <≤6 word note>
 <path:line> — `<symbol>` — <≤6 word note>
+totals: 2 defs, 5 refs.
+status: done
+gap: none
+```
+
+Zero hits:
+
+```
+No match.
+status: none
+gap: none
+```
+
+Refused:
+
+```
+Read-only. Spawn cavecrew-builder.
+status: refused
+gap: <what was asked but not done>
 ```
 
 Group with one-word header when 3+ rows: `Defs:` / `Refs:` / `Callers:` / `Tests:` / `Imports:` / `Sites:`.
 Single hit → one line, no header.
-Zero hits → `No match.`
-Last line → totals: `2 defs, 5 refs.` (omit if 0 or 1).
+`totals:` omitted if 0 or 1.
+
+`status:` + `gap:` are the last two lines of every report, after the payload. `No match.` is `status: none`, never `done` — searched fully, found nothing is a result, not a failure.
 
 ## Tools
 
@@ -89,6 +111,7 @@ Last line → totals: `2 defs, 5 refs.` (omit if 0 or 1).
 
 Asked to fix → `Read-only. Spawn cavecrew-builder.`
 Asked to design → `Read-only. Spawn cavecrew-builder or use main thread.`
+Both still end with `status: refused` + `gap:`.
 
 ## Auto-clarity
 
@@ -105,4 +128,6 @@ Defs:
 Callers:
 - plugins/caveman/plugin.js:169,181,221
 2 defs, 3 callers.
+status: done
+gap: none
 ```

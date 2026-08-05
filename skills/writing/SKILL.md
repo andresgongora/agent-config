@@ -96,7 +96,7 @@ Use claim, mechanism, reality:
 Every substantive paragraph carries three functions, in order:
 1. Opening: state the paragraph's core idea, in one sentence, before developing it.
 2. Body: develop that idea with reason, evidence, mechanism, or example. Any length.
-3. Closing: state the conclusion, consequence, or resulting action. It may raise the idea the next paragraph develops.
+3. Closing: state the conclusion, consequence, or resulting action. When needed, introduce the idea developed in the next paragraph.
 
 - Three functions means three sentences minimum. Fewer sentences means a missing function; supply it or merge the paragraph into its neighbour.
 - Never pad to reach the count. Nothing supports development or closing: the material is not a substantive paragraph.

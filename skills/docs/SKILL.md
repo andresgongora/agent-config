@@ -1,6 +1,6 @@
 ---
 name: docs
-description: "Discover existing repository knowledge cheaply before broad exploration. Load on non-trivial repo work: scan `.agent/` docs via inventory script, read only task-relevant docs, fall back to README. For AI agents. Dense style. Not for writing/updating docs (that is the doc-writing discipline). Not for repo-state snapshots."
+description: "Discover existing repository knowledge cheaply before broad exploration. Load on non-trivial repo work: scan `.agent/` docs via inventory script, read only task-relevant docs, fall back to README. For AI agents. Dense style. Not for writing/updating docs (that is the doc-writing discipline)."
 ---
 
 # Skill: docs

@@ -96,7 +96,7 @@ Preferred over: giant all-in-one memory file, chat-log memory, or brittle local 
 | Durable + subdir-specific          | Nested local `AGENTS.md`                        |
 | Design / architecture / reference  | `.agent/notes/`                                 |
 | Reusable workflow                  | Skill                                           |
-| Current state of a project         | Repo-state snapshot workflow                     |
+| Current state of a project         | `.agent/frontier.md` (project `AGENTS.md` Info block for durable facts) |
 | Task-scoped handoff                | `.agent/progress/`                              |
 | Bug attempts                       | `.agent/bugs/`                                  |
 | Private / noisy / machine-specific | Local-only, do not commit                       |

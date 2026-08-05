@@ -42,7 +42,7 @@ Before judgment, inspect visible ship blockers: complete frontmatter delimiters,
 - **Outcome fit** — instructions plausibly support stated job; success, refusal, stop conditions, and output contract fit real consumer. Static review cannot prove compliance.
 - **Routing** — routing metadata is sole cheap entry point where applicable: concrete task and triggers, adjacent non-uses, neither chronic under-trigger nor noisy over-trigger. Body does not compensate for metadata an unloaded artifact cannot expose.
 - **Boundary** — one focused responsibility; unique scope; no unrelated policy. Related secondary responsibility splits or nests only when independently triggerable. Family coupling coherent; unrelated artifacts referenced by behavior, not hard name.
-- **Instruction mechanics** — explicit priorities, ordered steps only when order matters, defined terms, actionable rules, handled conflicts/edge cases. Rules state HOW and WHAT, not WHY; rationale belongs in README unless the executing agent needs it to act correctly. Stateful multi-step workflow: state owner, transitions, completion evidence, and stop/replan behavior fit job; no required TODO syntax. No slogans, contradictions, impossible demands, hidden assumptions, or strong-model mind-reading.
+- **Instruction mechanics** — explicit priorities, ordered steps only when order matters, defined terms, actionable rules, handled conflicts/edge cases. Rules state HOW and WHAT, not WHY; rationale belongs in README unless the executing agent needs it to act correctly. Stateful multi-step workflow: state owner, transitions, completion evidence, and stop/replan behavior fit job; no required TODO syntax. No slogans, contradictions, impossible demands, hidden assumptions, or strong-model mind-reading. Ambiguous wording may warrant simplified-technical-English style (one term per concept, active voice, short sentences) — flag only when denser or more precise wording is not the better fix.
 - **Completeness versus weight** — minimum rules sufficient for reliable execution. Agent-directed prose is information-dense: no narration, filler, or hedging. Flag missing guardrails and output fields; also duplication, rationale masquerading as instruction, low-value examples, fixed thresholds without purpose, and clarity-damaging compression.
 - **Context architecture** — critical rules visible near use; independent constraints in bullets, real sequences numbered, schemas/templates exact. Large optional detail belongs in selectively loaded support files only when handoff remains self-contained and maintainable.
 - **Coherence and lifecycle** — frontmatter/body/README/support files agree; references exist; terminology and format stay consistent. For skills, runtime behavior stays self-contained in SKILL.md while README stays human-facing and readably written; flag misplaced or duplicated content, and README prose that reads as AI slop or ignores plain-writing discipline. Detect vestigial residue and stubs: leftover comments, ghost steps, prohibition, clarification, opposite rule, or maintainer-facing meta ("no longer handles X", "removed per request") with no active concern for the executing agent. Post-rework residue audit: from-scratch and zero-impact tests. Recommend deletion, not inverse-rule accumulation; maintainer notes belong in README only.
@@ -110,6 +110,22 @@ Return full report. Keep fields even when empty. When question supplied, answer 
 
 ## Unknowns and limits
 - <missing intent, runtime schema, execution evidence, or other limit that could change verdict; `none` if empty>
+
+**Status:** <done | partial | blocked | refused | none>
+**Gap:** <unevaluated in-scope dimension, or `none`>
+```
+
+Nothing found — complete Coverage, Minimal revision shape, and Unknowns and limits as normal, plus:
+
+```markdown
+## Priority findings
+
+No actionable concerns.
+
+**Status:** none
+**Gap:** none
 ```
 
 No concerns: write `No actionable concerns.` under Priority findings; still complete Coverage, Minimal revision shape, and Unknowns and limits. Never return score, praise, generic best-practice dump, or full replacement text.
+
+`No actionable concerns.` is `**Status:** none`. Any `unknown` coverage row makes the report `**Status:** partial`. Missing or unreadable target is `**Status:** blocked`; non-artifact target is `**Status:** refused`. Both still emit the envelope.

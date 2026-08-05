@@ -28,14 +28,22 @@ Output exactly one form:
 
 ```text
 <direct answer>
+status: done
+gap: none
 ```
 
 ```text
 Unknown. <short reason>
+status: none
+gap: <what stayed unanswered>
 ```
 
 ```text
 Uncertain. Likely <X | Y | Z>. <short reason>
+status: partial
+gap: <what stayed unanswered>
 ```
 
-For a web-backed answer, append one source URL on its own line. Nothing else.
+For a web-backed answer, append one source URL on its own line before `status:`. Nothing else.
+
+`status:` + `gap:` are the last two lines of every report. `Unknown.` is `status: none`, never `done`.

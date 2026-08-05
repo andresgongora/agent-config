@@ -12,7 +12,7 @@ The discovery skill loads on nearly every non-trivial repo session — it must s
 
 ## Design intent
 
-- **Two-tier gate.** Frontmatter/placement rules apply to any write. _Creating a new durable note_ additionally requires high-confidence, reuse-worthy knowledge. Routine handoff and bug logs are exempt from the value bar because they clear it by being active task state / debugging evidence.
+- **Two-tier gate.** Frontmatter/placement rules apply to any write. _Creating a new durable note_ additionally requires high-confidence, reuse-worthy knowledge. Handoff and bug logs clear the bar differently — not by being routine, but by being gated on costly-to-lose task state (session boundary, multiple failed attempts, explicit handoff): see "Bug-log and plan ownership" below.
 - **No progress narration.** Work-in-flight context stays in the AI session. Persist only what is likely to be retained: settled research, hard-won architecture facts, root causes, decisions.
 - **`notes/` is the catch-all.** Architecture, research, philosophy, conventions all live in `.agent/notes/`. Content kind is the doc's job, not a directory's. No `research/`/`architecture/` folder sprawl.
 - **Frontmatter is the routing contract.** `summary:` decides read-or-skip. Any external-sourced content requires `source:`; `references:` is optional supplementary only and never substitutes for a missing `source:`. No source = unverifiable claim.
@@ -36,12 +36,12 @@ Evidence type matches claim type: factual conclusions need proof; accepted decis
 
 ## Trigger summary
 
-Loads when persisting knowledge worth keeping (settled research, architecture/design fact, resolved root cause, cross-session handoff, missing-doc bootstrap), or when any workflow needs the managed-doc frontmatter schema / `.agent/` placement rules. Does not load for reading/discovery or for the repo-state snapshot artifact.
+Loads when persisting knowledge worth keeping (settled research, architecture/design fact, resolved root cause, cross-session handoff, missing-doc bootstrap), or when any workflow needs the managed-doc frontmatter schema / `.agent/` placement rules. Does not load for reading/discovery.
 
 ## Maintainer constraints
 
 - Keep `SKILL.md` caveman-dense; it is not read every session but still pays a token cost when loaded.
-- Do not couple to the discovery skill or any research skill by name. Reference by behavior only. The frontmatter schema is the one shared contract; this skill is its authority. Read-only consumers of that contract: the discovery discipline, the repo-state snapshot discipline, and the durable-planning capability's plan template. They read the schema; they never redefine it.
+- Do not couple to the discovery skill or any research skill by name. Reference by behavior only. The frontmatter schema is the one shared contract; this skill is its authority. Read-only consumers of that contract: the discovery discipline and the durable-planning capability's plan template. They read the schema; they never redefine it.
 - Do not add new `.agent/` folders for content kinds without real justification (reject-first).
 - Discovery scripts (`inventory`, `get-frontmatter`) live with the discovery skill, not here.
 - `scripts/check-frontmatter` validates this skill's managed-doc contract. Silent success; failures list only bad fields.
@@ -49,5 +49,4 @@ Loads when persisting knowledge worth keeping (settled research, architecture/de
 ## See also
 
 - Doc-discovery discipline — read side, inventory scripts.
-- Repo-state snapshot discipline — `.agent/frontier.md`, shares the frontmatter contract.
 - `../../.agent/notes/design-principles.md` — memory-placement model and brutal-truth reminders.

@@ -1,6 +1,6 @@
 # Personal Agent Rules
 
-Cross-project defaults. Project `AGENTS.md` may narrow/override.
+Cross-project defaults. Nearest project `AGENTS.md` narrows or overrides these defaults.
 
 ## Tone
 
@@ -18,7 +18,7 @@ Trivial = one answer, or one exactly-known change. Doubt: assume non-trivial.
 Non-trivial, in order:
 
 1. **Anchor.** Load `caveman` (full) as session output mode. Read the `AGENTS.md` chain; nearest file wins over this one.
-2. **Orient.** Repo work: load `docs` for cheap inventory before any broad scan.
+2. **Orient.** Repo work: the loaded project `AGENTS.md` orientation facts replace speculative `ls`/glob — trust them first. Then load `docs` for cheap inventory before any broad scan. Repo has no `AGENTS.md`: load `agent-agents-md` and create one.
 3. **Plan.** Dependencies, material uncertainty, risky forks, drift risk, or prior failed attempt: load `planning`. Else plain todo list.
 4. **Route (continuous, not a stage).** Do not pre-select skills. The moment work enters a domain below, load that skill before acting in it. Re-applies whenever the work crosses into a new domain; loads accumulate.
 
@@ -38,7 +38,7 @@ Non-trivial, in order:
    | bulk file cleanup, dupes                     | `file-tidy`              |
    | post-rework leftover residue                 | `artifact-vestige-hunt`  |
 
-5. **Delegate.** Worker considered, arranged, or failed: load `agent-delegate`. Bounded locate, 1-2 file surgical edit, or diff review: load `cavecrew`.
+5. **Delegate.** Worker considered, arranged, judged, or failed: load `agent-delegate`. Bounded locate, 1-2 file surgical edit, or diff review: load `cavecrew`.
 6. **Execute.** Report decisions as made. Validate before claiming done.
 7. **Close.** See `## Completion`.
 
@@ -61,7 +61,7 @@ Main context finite. Every exploration transcript, long fetch, dead lead pollute
 
 - **Never whole-read "just to see".** Grep first. Read needed ranges.
 - **Never chase tangents.** "Since I'm here, also fix X": follow-up note, no touch.
-- **Boundary shifts: update living memory.** Future session reads the docs and repo-state snapshot, not this chat.
+- **Boundary shifts: update living memory.** Future session reads project `AGENTS.md` and repo docs, not this chat.
 
 ## Delegated Workers
 
@@ -70,7 +70,7 @@ Main context finite. Every exploration transcript, long fetch, dead lead pollute
 - Review: `caveman-review` formats main-thread findings. Delegate bounded review only when isolated output saves context; `cavecrew` selects its reviewer.
 - Cheap model for locating and mechanical work; strong model only where the task needs judgment.
 - Instruct workers in caveman style. Preserve task-critical detail; drop caveman where it would introduce ambiguity.
-- Nest only when isolation beats call cost. Flat calls usually cheaper. Never duplicate work.
+- Judge a report by its `status:`/`gap:` fields and its evidence, never its claims. Worker failed: retry with changed input (max two), then tier up one level, then take over. Never duplicate work.
 
 ## Shell Restrictions
 
@@ -85,4 +85,5 @@ Forbidden commands = unavailable. No fallback, flag, workaround.
 
 - After implementation: report changes, validation, risk.
 - Suggest optional next step.
-- Implementation complete: keep state durable. `docs-write`/`code-frontier` update owned docs/repo snapshot for cold fresh session.
+- Implementation complete: keep state durable. `docs-write` update owned docs for cold fresh session.
+- Repo shape, entry points, or boundaries moved: `agent-agents-md` refresh the project `AGENTS.md` orientation facts.

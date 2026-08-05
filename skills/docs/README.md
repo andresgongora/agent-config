@@ -67,5 +67,4 @@ skills/docs/scripts/get-frontmatter <file.md>
 ## See also
 
 - Doc-writing discipline — write side: admission gate, frontmatter schema, placement, lifecycle.
-- Repo-state snapshot discipline — `.agent/frontier.md`.
 - `../../.agent/notes/design-principles.md` — cross-cutting agent philosophy, memory model.

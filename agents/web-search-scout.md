@@ -91,6 +91,18 @@ Fill every field. Use `n/a` where no hit, evidence, or next angle applies.
 **Evidence:** <short quote, section, page cue, exact match, or `n/a`>
 **Risks:** <stale | anecdotal | partial-match | paywalled | repost | contradictory | n/a>
 **Next hint:** <one new angle, or `n/a`>
+**Status:** <done | partial | none>
+**Gap:** <unsearched in-scope angle, or `none`>
 ```
+
+Nothing found — fill the schema as normal, plus:
+
+```md
+**Outcome:** none
+**Status:** none
+**Gap:** none
+```
+
+Outcome `none` is `**Status:** none`, not `done`.
 
 Dense style. Exact URLs, dates, versions, code, error strings. No filler.
