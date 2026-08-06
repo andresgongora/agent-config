@@ -1,6 +1,6 @@
 ---
 title: <work item> Plan
-summary: <goal, boundary, why this plan exists>
+description: <goal, boundary, why this plan exists>
 status: draft
 updated: YYYY-MM-DD
 ---
