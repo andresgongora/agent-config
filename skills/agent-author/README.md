@@ -8,7 +8,7 @@ These four file forms have repeatable patterns. Cheaper models need explicit for
 
 - File-form guidance from Anthropic agent-skills best practices and OpenAI prompt-engineering guidance (vendor-neutral framing)
 - Durable authoring rules for repeatable artifact maintenance
-- Four portable self-informing templates: paired skill/runtime README, subagent, and primary agent; commands stay short enough to write direct
+- Four portable self-informing templates: paired skill/runtime README, one shared primary-agent/subagent scaffold, and a command scaffold
 
 Context is scarce. Write dense agent-facing instructions: imperative, exact, low-token; fragments when clear. Templates shape artifacts; models fill intent. Ready non-trivial artifacts get clean-context read-only evaluation before ship, then re-verification.
 
@@ -37,13 +37,14 @@ Context is scarce. Write dense agent-facing instructions: imperative, exact, low
 - **Runtime/maintenance split.** SKILL.md tells an agent WHAT to do and HOW. WHY belongs here for future maintenance; frontmatter may retain routing-relevant rationale.
 - **Executable asset boundary.** A skill with executable helpers uses `scripts/`; never place them beside `SKILL.md`. Do not create an empty `scripts/` directory for a Markdown-only skill.
 - **Reject-first discipline still applies.** This skill is authoring guidance, not a license to add. Check duplicates, evaluate whether an existing artifact can be extended instead.
+- **Split trigger (2026-08-06 consolidation decision).** This skill stays one file covering all four forms. Revisit a split only when `SKILL.md` exceeds ~400 lines, OR any single form section exceeds ~120 lines, OR a fifth file form arrives with rules sharing nothing with the existing four. Below those thresholds a split is bloat: it multiplies always-loaded routing surfaces and forces double-loading for near-identical shared rules. Rejected once already (4-way split into per-form skills) on exactly this evidence — re-derive nothing, just check the thresholds.
 
 ## Reference files (one level deep)
 
 - `templates/skill.md` — fillable `SKILL.md` skeleton with inline authoring cues
 - `templates/skill-readme.md` — required companion README skeleton
-- `templates/subagent.md` — fillable subagent frontmatter + body scaffold
-- `templates/agent-file.md` — fillable primary agent definition skeleton
+- `templates/agent.md` — fillable primary-agent/subagent scaffold, shared body + subagent-only delta block
+- `templates/command.md` — fillable slash-command scaffold
 
 ## See also
 
