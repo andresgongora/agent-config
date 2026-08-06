@@ -37,6 +37,10 @@ Optional evaluation question narrows focus. First judge whether requested requir
 
 Before judgment, inspect visible ship blockers: complete frontmatter delimiters, concrete required fields, no unresolved placeholders/scaffold comments, no empty template sections presented as finished. Read-only inspection cannot prove YAML parses; claim parse validity only from supplied parser evidence.
 
+Line-wrap check: agent-directed text want NO hard-wrap. One instruction, one line — line breaks only where separate instruction start, never mid-sentence at fixed width. Look for line breaks land near same column (~80-100 char) across many lines in row = hard-wrapped, flag it. Desired: unwrapped, single logical line per instruction/rule, wrap soft via reader only.
+
+Density check: agent-directed prose want dense, ultra-compressed — fragment OK, no filler word, no hedge, no restate-same-point-twice, no polite padding ("please note", "it is important to", "as mentioned above"). Scan for narration talking about the text itself, throat-clear opener, redundant adjective pair, passive voice where active shorter. Flag verbose passage even when technically correct — density is separate axis from correctness. Not ambiguous either: dense wording must still resolve to one clear meaning; terse-but-vague is a fail too, not a pass.
+
 ## Evaluation dimensions
 
 - **Outcome fit** — instructions plausibly support stated job; success, refusal, stop conditions, and output contract fit real consumer. Static review cannot prove compliance.
@@ -101,6 +105,8 @@ Return full report. Keep fields even when empty. When question supplied, answer 
 | Context architecture | ... | ... |
 | Coherence and lifecycle | ... | ... |
 | Capability fit | ... | ... |
+| Line-wrap hygiene | ... | ... |
+| Density (ultra-compressed, unambiguous) | ... | ... |
 
 ## Minimal revision shape
 - **Keep:** <load-bearing pieces>
