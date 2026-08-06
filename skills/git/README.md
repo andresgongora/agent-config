@@ -11,6 +11,7 @@ Models know common Git syntax. This skill adds durable behavior where syntax is 
 - per-commit staged secret scanning, with honest unavailable-tool handling
 - deliberate push discovery instead of assumed `origin` and `main` (`git-repo-context`)
 - bounded local maintenance, change-inspection, and change-digest helpers, each with a fixed structured-output contract and no extra noise beyond it
+- bounded history-rewrite for re-signing a commit range with a new date (`git-resign-from`), dry-run first, clean-tree required, never pushes
 
 `gitleaks`, `trufflehog`, and `detect-secrets` are independent scan gates. `scripts/git-secret-scan` defaults to `gitleaks`, selects a different scanner via `--scanner`, or runs all three with `--scanner all`; it fails closed when the selected command is missing, finds a secret, or errors. It also blocks staged local paths/usernames and warns on normalized full-name matches. Scanner output never replaces manual staged-diff inspection.
 
@@ -37,4 +38,5 @@ Load for Git mutations and risky Git-state inspection. Load for object-store spa
 - `scripts/git-stage-group`
 - `scripts/git-commit-group`
 - `scripts/git-secret-scan`
+- `scripts/git-resign-from`
 - `../../deploy/AGENTS.md`

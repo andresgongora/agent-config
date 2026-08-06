@@ -1,0 +1,158 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+IFS=$'\n\t'
+
+##==================================================================================================
+##	GLOBALS
+##==================================================================================================
+
+FROM_COMMIT=''
+NEW_DATE=''
+
+##==================================================================================================
+##	UTILITIES
+##==================================================================================================
+
+die() {
+    printf '%s\n' "$*" >&2
+    exit 1
+}
+
+requireCommand() {
+    local command_name=$1
+
+    command -v "$command_name" >/dev/null 2>&1 || die "Missing command: $command_name. Install it, then rerun this script."
+}
+
+##==================================================================================================
+##	CORE FUNCTIONS
+##==================================================================================================
+
+requireCleanTree() {
+    [[ -z $(git status --porcelain) ]] || die 'Working tree is dirty. Commit, stash, or restore before resigning history.'
+}
+
+resolveFromCommit() {
+    local from_ref=$1
+    local sha
+
+    sha=$(git rev-parse --verify --quiet "${from_ref}^{commit}") || die "Not a valid commit: $from_ref"
+    git merge-base --is-ancestor "$sha" HEAD || die "$from_ref is not an ancestor of HEAD"
+    printf '%s' "$sha"
+}
+
+requireParent() {
+    local commit_sha=$1
+
+    git rev-parse --verify --quiet "${commit_sha}^" >/dev/null || die 'Target commit is the root commit; resigning the root commit is not supported by this script (no parent to rebase onto).'
+}
+
+countCommits() {
+    local commit_sha=$1
+
+    git rev-list --count "${commit_sha}^..HEAD"
+}
+
+printLogRange() {
+    git log --oneline --format='COMMIT%x09%h%x09%GK%x09%s' "$@"
+}
+
+resignRange() {
+    local commit_sha=$1
+    local new_date=$2
+    local exec_cmd
+
+    printf -v exec_cmd 'GIT_COMMITTER_DATE=%q git commit --amend --no-edit -S --date=%q' "$new_date" "$new_date"
+    GIT_SEQUENCE_EDITOR=true git rebase --committer-date-is-author-date "${commit_sha}^" --exec "$exec_cmd" \
+        || die 'Rebase failed. Resolve manually, or run: git rebase --abort'
+}
+
+##==================================================================================================
+##	ARGUMENT PARSING
+##==================================================================================================
+
+printUsage() {
+    cat <<'USAGE'
+Usage: git-resign-from --from COMMIT [--date DATE]
+
+Re-signs COMMIT and every commit forward to HEAD, stamping each with the
+same author/committer date. Rewrites history (new SHAs from COMMIT forward).
+Requires a clean working tree. Does not push.
+
+  --from COMMIT   Commit-ish to resign, inclusive. Must be an ancestor of HEAD.
+  --date DATE     Date to stamp (any `git commit --date` format). Default: now.
+
+Preview only, no rewrite:
+  git-resign-from --from COMMIT --date now --dry-run
+USAGE
+}
+
+parseArguments() {
+    local dry_run_requested=0
+
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+        --from)
+            [[ $# -ge 2 ]] || die '--from requires a value'
+            FROM_COMMIT=$2
+            shift 2
+            ;;
+        --date)
+            [[ $# -ge 2 ]] || die '--date requires a value'
+            NEW_DATE=$2
+            shift 2
+            ;;
+        --dry-run)
+            dry_run_requested=1
+            shift
+            ;;
+        -h | --help)
+            printUsage
+            exit 0
+            ;;
+        *)
+            printUsage
+            die "Unknown argument: $1"
+            ;;
+        esac
+    done
+
+    [[ -n $FROM_COMMIT ]] || die '--from is required'
+    [[ -n $NEW_DATE && $NEW_DATE != now ]] || NEW_DATE=$(date -R)
+    DRY_RUN=$dry_run_requested
+}
+
+##==================================================================================================
+##	MAIN
+##==================================================================================================
+
+main() {
+    local commit_sha
+    local commit_count
+
+    requireCommand git
+    cd "$(git rev-parse --show-toplevel)" || die 'Not inside a Git repository'
+    requireCleanTree
+    commit_sha=$(resolveFromCommit "$FROM_COMMIT")
+    requireParent "$commit_sha"
+    commit_count=$(countCommits "$commit_sha")
+
+    if [[ $DRY_RUN -eq 1 ]]; then
+        printf 'DRY-RUN\tdate=%s\n' "$NEW_DATE"
+        printf 'REWRITE-RANGE\t%s..HEAD\n' "$commit_sha"
+        printLogRange "${commit_sha}^..HEAD"
+        return
+    fi
+
+    resignRange "$commit_sha" "$NEW_DATE"
+    printf 'OK: resigned %s commit(s) at %s\n' "$commit_count" "$NEW_DATE"
+    printLogRange -n "$commit_count" HEAD
+}
+
+##==================================================================================================
+##	SCRIPT ENTRY POINT
+##==================================================================================================
+
+DRY_RUN=0
+parseArguments "$@"
+main

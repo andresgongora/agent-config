@@ -39,6 +39,13 @@ description: "Git safety constraints for state-mutating work: staging, committin
 - List unresolved paths with `git diff --name-only --diff-filter=U`. Resolve task-relevant conflicts only; unrelated conflicts: ask.
 - Prefer `git revert`, `git restore --staged`, and `git reflog`. `reset --hard`, `clean -fd`, amend of pushed work, force-push, and branch deletion require explicit user intent plus impact review.
 
+## Re-signing history
+
+- Explicit user request required — never resign proactively.
+- Working tree must be clean before rewrite; `scripts/git-resign-from` enforces this and dies otherwise.
+- Run `scripts/git-resign-from --from <commit> --dry-run` first; review the printed range and current signing keys before the live rewrite.
+- Rewrites SHAs for `<commit>..HEAD`. If any of that range is already pushed, treat it as shared-history rewrite: explicit user approval plus normal (never force) push, per the mutation guardrails above.
+
 ## Repository maintenance
 
 - Object-store maintenance, connectivity verification, merged-local-branch review: read `scripts/README.md`, then run `scripts/git-housekeep`.

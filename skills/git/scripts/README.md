@@ -92,6 +92,18 @@ git diff --cached --name-only -z | xargs -0 detect-secrets-hook [--baseline .sec
 
 The baseline argument is included only when `.secrets.baseline` exists. `--scanner all` runs every scanner and fails closed if any is missing, finds a secret, or errors. Full-name findings use fuzzy normalized matching (`John West`, `johnwest.com`, `john-west`); warning severity still stops commit flow until user explicitly accepts, then scanner is rerun with `--accept-identity-exposure`. `--skip-identity-scan` is exceptional: only use after explicit user acceptance of identity exposure.
 
+## git-resign-from
+
+Run from repository root, clean working tree required. Rewrites `<COMMIT>^..HEAD`, re-signing every commit with a single new author/committer date (default: now). History-rewriting — new SHAs from `<COMMIT>` forward. Never pushes.
+
+```bash
+~/.config/opencode/skills/git/scripts/git-resign-from --from <COMMIT> --dry-run
+~/.config/opencode/skills/git/scripts/git-resign-from --from <COMMIT>
+~/.config/opencode/skills/git/scripts/git-resign-from --from <COMMIT> --date "2026-08-01 09:00:00"
+```
+
+`--dry-run` prints `REWRITE-RANGE` and one `COMMIT` line per affected commit (short hash, current signing key, subject) with no mutation. Live run resigns via `git rebase --exec 'GIT_COMMITTER_DATE=... git commit --amend --no-edit -S --date=...'`, then prints `OK:` plus the same `COMMIT` preview against the new SHAs. Dies on dirty tree, invalid/non-ancestor commit, or root-commit target (no parent to rebase onto). Rewritten commits already pushed need explicit user approval and normal (never force) push, per this skill's mutation guardrails.
+
 ## git-housekeep
 
 Contract for `git-housekeep`.
