@@ -134,7 +134,7 @@ task: <one-line restatement>
 result: pass | fail | partial
 iterations: <count>
 changed: <files touched>
-output: <trimmed stdout/stderr — errors and warnings only, skip noise>
+output: <trimmed stdout/stderr; errors and warnings only, skip noise>
 exit: <code>
 status: <done | partial | blocked | refused | none>
 gap: <in-scope work not done, or `none`>

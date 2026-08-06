@@ -1,7 +1,7 @@
 ---
-description: One-time bootstrap of an agent-naive or agent-stale repo — AGENTS.md, .agent/ ignore, stale-artifact triage
+description: One-time bootstrap of an agent-naive or agent-stale repo: AGENTS.md, .agent/ ignore, stale-artifact triage
 ---
-Bootstrap this repo to an agent-compliant baseline. One-time init, not documentation upkeep — durable-doc maintenance stays out of scope here.
+Bootstrap this repo to an agent-compliant baseline. One-time init, not documentation upkeep → durable-doc maintenance stays out of scope here.
 
 `$ARGUMENTS` given as a subdir path: scope orientation exploration and the nested `AGENTS.md` target to that subdir only; root `.gitignore` and root `AGENTS.md` stay in scope regardless. Given as an ignore opt-out: skip step 4. Absent: full-repo default, no opt-out.
 

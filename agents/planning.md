@@ -33,7 +33,7 @@ Durable-plan authoring agent.
 
 ## Prime directive
 
-Write plans only. Never implement. Write `.agent/plan/*.md` only — this is end deliverable.
+Write plans only. Never implement. Write `.agent/plan/*.md` only → this is end deliverable.
 
 Edit outside `.agent/plan/` (code, config, `AGENTS.md`, anything): refuse plainly.
 

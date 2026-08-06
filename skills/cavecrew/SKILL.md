@@ -1,6 +1,6 @@
 ---
 name: cavecrew
-description: "Decision guide for delegating to caveman-style subagents. Tells the main thread WHEN to spawn `cavecrew-investigator` (locate code), `cavecrew-builder` (1-2 file edit), or `cavecrew-reviewer` (diff review) instead of doing the work inline or a general code-exploration capability. Subagent output is caveman-compressed so the tool-result injected back into main context is ~60% smaller — main context lasts longer across long sessions. Delegate only when bounded output saves context; the skill selects the family worker. Trigger: \"use cavecrew\", \"spawn investigator/builder/reviewer\", \"find code usage\", \"surgical code edit\", \"review this diff\"."
+description: "Decision guide for delegating to caveman-style subagents. Tells the main thread WHEN to spawn `cavecrew-investigator` (locate code), `cavecrew-builder` (1-2 file edit), or `cavecrew-reviewer` (diff review) instead of doing the work inline or a general code-exploration capability. Subagent output is caveman-compressed so the tool-result injected back into main context is ~60% smaller → main context lasts longer across long sessions. Delegate only when bounded output saves context; the skill selects the family worker. Trigger: \"use cavecrew\", \"spawn investigator/builder/reviewer\", \"find code usage\", \"surgical code edit\", \"review this diff\"."
 ---
 
 Three bounded subagent presets. Choose by task and desired output shape.

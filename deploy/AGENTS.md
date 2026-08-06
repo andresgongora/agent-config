@@ -18,7 +18,7 @@ Trivial = one answer, or one exactly-known change. Doubt: assume non-trivial.
 Non-trivial, in order:
 
 1. **Anchor.** Load `caveman` (full) as session output mode. Read the `AGENTS.md` chain; nearest file wins over this one.
-2. **Orient.** Repo work: the loaded project `AGENTS.md` orientation facts replace speculative `ls`/glob — trust them first. Then load `docs` for cheap inventory before any broad scan. Repo has no `AGENTS.md`: load `agent-agents-md` and create one.
+2. **Orient.** Repo work: the loaded project `AGENTS.md` orientation facts replace speculative `ls`/glob → trust them first. Then load `docs` for cheap inventory before any broad scan. Repo has no `AGENTS.md`: load `agent-agents-md` and create one.
 3. **Plan.** Dependencies, material uncertainty, risky forks, drift risk, or prior failed attempt: load `planning`. Else plain todo list.
 4. **Route (continuous, not a stage).** Do not pre-select skills. The moment work enters a domain below, load that skill before acting in it. Re-applies whenever the work crosses into a new domain; loads accumulate.
 

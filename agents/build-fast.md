@@ -1,6 +1,6 @@
 ---
 name: build-fast
-description: "Fast build worker for single unambiguous tasks: run tests, lint, format, install deps, execute one script, check types. Light model — cheap and quick. Caller MUST provide a single self-contained action with all needed context (paths, commands, expected outcome). No dialogue, no clarification. Refuses multi-step plans, ambiguous scope, architecture decisions, or tasks needing judgment. Returns compact result: output, exit code, pass/fail. Spawn when: task is mechanical, repeatable, requires no reasoning. Do NOT spawn when: task needs judgment, or output feeds a decision the caller needs to make."
+description: "Fast build worker for single unambiguous tasks: run tests, lint, format, install deps, execute one script, check types. Light model → cheap and quick. Caller MUST provide a single self-contained action with all needed context (paths, commands, expected outcome). No dialogue, no clarification. Refuses multi-step plans, ambiguous scope, architecture decisions, or tasks needing judgment. Returns compact result: output, exit code, pass/fail. Spawn when: task is mechanical, repeatable, requires no reasoning. Do NOT spawn when: task needs judgment, or output feeds a decision the caller needs to make."
 mode: subagent
 model: POOL_FAST
 permission:
@@ -121,7 +121,7 @@ Ambiguous input → refuse immediately: `ambiguous: <what's missing>.` then the 
 ```
 task: <one-line restatement>
 result: pass | fail | partial
-output: <trimmed stdout/stderr — errors and warnings only, skip noise>
+output: <trimmed stdout/stderr; errors and warnings only, skip noise>
 exit: <code>
 status: <done | partial | blocked | refused | none>
 gap: <in-scope work not done, or `none`>
