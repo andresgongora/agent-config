@@ -11,6 +11,19 @@
 
 # Project name
 
+<!-- Badges:
+     - AI Agent badges (optional, pick relevant):
+       [![AGENTS.md](https://img.shields.io/badge/AGENTS.md-compatible-blue)](URL)
+       [![OpenCode](https://img.shields.io/badge/OpenCode-compatible-7c3aed)](https://opencode.ai)
+     - More badges: img.shields.io (static), shields.io (dynamic), simpleicons.org (logos)
+     - Update License Badge accordingly. If no license, warn user and ommit
+     - Tip badge goes last
+-->
+
+[![GitHub release](https://img.shields.io/github/v/release/USER/REPO)](https://github.com/USER/REPO/releases)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy_Me_A_Coffee-tip-yellow)](https://buymeacoffee.com/YOUR_USERNAME)
+
 One-line description of what this does and who it's for.
 
 <!------------------------------------------------------------------------------------------------->
