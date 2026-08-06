@@ -13,7 +13,7 @@ This skill loads on nearly every non-trivial repo session, so it must stay lean.
 Design intent:
 
 - **Cheap discovery first.** One `inventory` call replaces N file reads. If discovery is expensive, agents skip docs; if agents skip docs, docs rot.
-- **Route, don't dump.** Frontmatter + `summary:` let the agent decide whether to read deeper.
+- **Route, don't dump.** Frontmatter + `description:` let the agent decide whether to read deeper.
 - **Read, don't write.** Persisting knowledge is a separate discipline with its own value gate. This skill never creates or edits docs.
 - **Not a subagent.** Discovery is a script the parent runs directly; the writing decisions that would follow need live parent context. Considered and rejected.
 
@@ -37,8 +37,8 @@ skills/docs/scripts/inventory [dir]
 ```
 
 - Default dir: `.agent/`
-- Lists every `*.md`; projects `title`, `summary`, `status`, `updated` from frontmatter
-- Aliases: `name`, `description`, `lastmod`, `date`; unknown keys hidden
+- Lists every `*.md`; projects `title`, `description`, `status`, `updated` from frontmatter
+- Aliases: `name`, `summary`, `lastmod`, `date`; unknown keys hidden
 - Sorted by `updated:` desc, path asc
 - Deps: `bash`, `yq`, `awk`, `find`, `sort`. `yq` parses YAML; no heuristic fallback
 

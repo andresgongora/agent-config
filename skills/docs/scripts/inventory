@@ -38,7 +38,7 @@ extractMetadata() {
     local raw_frontmatter
     local metadata
     local title
-    local summary
+    local description
     local status
     local updated
     local frontmatter_status
@@ -61,7 +61,7 @@ extractMetadata() {
     if ! metadata="$(printf '%s\n' "$raw_frontmatter" | yq -r '
         [
             (.title // .name // "(no title)" | tostring | sub("\\t"; " ") | sub("\\n"; " ") | sub("\\r"; " ") | sub("\\|"; " ") | trim),
-            (.summary // .description // "" | tostring | sub("\\t"; " ") | sub("\\n"; " ") | sub("\\r"; " ") | sub("\\|"; " ") | trim),
+            (.description // .summary // "" | tostring | sub("\\t"; " ") | sub("\\n"; " ") | sub("\\r"; " ") | sub("\\|"; " ") | trim),
             (.status // "" | tostring | sub("\\t"; " ") | sub("\\n"; " ") | sub("\\r"; " ") | sub("\\|"; " ") | trim),
             (.updated // .lastmod // .date // "0000-00-00" | tostring | sub("\\t"; " ") | sub("\\n"; " ") | sub("\\r"; " ") | sub("\\|"; " ") | trim)
         ] | join("|")
@@ -69,8 +69,8 @@ extractMetadata() {
         die "Invalid YAML frontmatter: $file"
     fi
 
-    IFS='|' read -r title summary status updated <<< "$metadata"
-    printf '%s\t%s\t%s\t%s\t%s\n' "$updated" "$file" "$title" "$status" "$summary"
+    IFS='|' read -r title description status updated <<< "$metadata"
+    printf '%s\t%s\t%s\t%s\t%s\n' "$updated" "$file" "$title" "$status" "$description"
 }
 
 listRecords() {
@@ -92,10 +92,10 @@ printRecords() {
         awk -F'\t' '
             {
                 printf "%s\n", $2
-                printf "  title:   %s\n", $3
-                if ($1 != "0000-00-00") printf "  updated: %s\n", $1
-                if ($4 != "")           printf "  status:  %s\n", $4
-                if ($5 != "")           printf "  summary: %s\n", $5
+                printf "  title:       %s\n", $3
+                if ($1 != "0000-00-00") printf "  updated:     %s\n", $1
+                if ($4 != "")           printf "  status:      %s\n", $4
+                if ($5 != "")           printf "  description: %s\n", $5
                 printf "\n"
             }
         '

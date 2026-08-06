@@ -1,18 +1,18 @@
 skills/docs/scripts/tests/fixtures/inventory/lastmod.md
-  title:   Quoted Document
-  updated: 2026-08-03
-  summary: Summary with line break.
+  title:       Quoted Document
+  updated:     2026-08-03
+  description: Summary with line break.
 
 skills/docs/scripts/tests/fixtures/inventory/third-party.md
-  title:   Third-party Document
-  updated: 2026-08-02
-  summary: Folded third-party summary survives parsing.
+  title:       Third-party Document
+  updated:     2026-08-02
+  description: Folded third-party summary survives parsing.
 
 skills/docs/scripts/tests/fixtures/inventory/canonical.md
-  title:   Canonical Document
-  updated: 2026-08-01
-  status:  active
-  summary: Canonical summary.
+  title:       Canonical Document
+  updated:     2026-08-01
+  status:      active
+  description: Canonical summary.
 
 skills/docs/scripts/tests/fixtures/inventory/no-frontmatter.md
-  title:   (no frontmatter)
+  title:       (no frontmatter)
