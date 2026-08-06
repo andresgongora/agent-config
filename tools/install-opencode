@@ -1,0 +1,282 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+IFS=$'\n\t'
+
+##==================================================================================================
+## DEPENDENCY CHECKS
+##==================================================================================================
+
+requireCommand() {
+    command -v "$1" >/dev/null 2>&1 || {
+        printf "Abort: '%s' not found\n" "$1" >&2
+        exit 1
+    }
+}
+
+requireCommand ln
+requireCommand mkdir
+requireCommand mv
+requireCommand readlink
+requireCommand dirname
+requireCommand unlink
+requireCommand cp
+requireCommand cmp
+requireCommand diff
+requireCommand trash
+
+##==================================================================================================
+## GLOBALS
+##==================================================================================================
+
+declare -r SCRIPT_NAME="${0##*/}"
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
+declare -r SCRIPT_DIR
+REPOSITORY_ROOT="$(cd -- "$SCRIPT_DIR/.." && pwd -P)"
+declare -r REPOSITORY_ROOT
+declare -r CONFIG_ROOT="${XDG_CONFIG_HOME:-$HOME/.config}/opencode"
+declare -r MANIFEST_PATH="$CONFIG_ROOT/.agent-config-installed"
+
+declare DRY_RUN=false
+declare FORCE=false
+declare UNINSTALL=false
+declare COPY=false
+declare ONLY=""
+
+##==================================================================================================
+## UTILITIES
+##==================================================================================================
+
+die() { printf '%s: %s\n' "$SCRIPT_NAME" "$1" >&2; exit "${2:-1}"; }
+
+printAction() {
+    local action="$1"
+    local destination="$2"
+    printf '%s %s\n' "$action" "$destination"
+}
+
+runCommand() {
+    if [[ "$DRY_RUN" == true ]]; then
+        printf '+ '
+        printf '%q ' "$@"
+        printf '\n'
+        return 0
+    fi
+    "$@"
+}
+
+##==================================================================================================
+## CORE FUNCTIONS
+##==================================================================================================
+
+validateArguments() {
+    if [[ -n "$ONLY" && "$ONLY" != "opencode" ]]; then
+        die "unknown target: $ONLY"
+    fi
+}
+
+backupExisting() {
+    local destination="$1"
+    local backup_path="${destination}.agent-config-backup-${EPOCHSECONDS}"
+
+    [[ "$FORCE" == true ]] || die "destination exists: $destination (use --force to back it up)"
+    printAction "backup" "$destination -> $backup_path"
+    runCommand mv -- "$destination" "$backup_path"
+}
+
+manifestContains() {
+    local destination="$1"
+    local source="$2"
+    local installed_destination
+    local installed_source
+
+    [[ -f "$MANIFEST_PATH" ]] || return 1
+    while IFS=$'\t' read -r installed_destination installed_source; do
+        if [[ "$installed_destination" == "$destination" &&
+            "$installed_source" == "$source" ]]; then
+            return 0
+        fi
+    done < "$MANIFEST_PATH"
+    return 1
+}
+
+recordInstall() {
+    local destination="$1"
+    local source="$2"
+
+    if manifestContains "$destination" "$source"; then
+        return 0
+    fi
+    if [[ "$DRY_RUN" == false ]]; then
+        printf '%s\t%s\n' "$destination" "$source" >> "$MANIFEST_PATH"
+    fi
+}
+
+destinationMatchesSource() {
+    local source="$1"
+    local destination="$2"
+
+    if [[ "$COPY" == false ]]; then
+        [[ -L "$destination" && "$(readlink "$destination")" == "$source" ]]
+    elif [[ -d "$source" ]]; then
+        return 1
+    else
+        cmp -s -- "$source" "$destination"
+    fi
+}
+
+installLink() {
+    local source="$1"
+    local destination="$2"
+
+    if destinationMatchesSource "$source" "$destination"; then
+        printAction "keep" "$destination"
+        recordInstall "$destination" "$source"
+        return 0
+    fi
+    if [[ -e "$destination" || -L "$destination" ]]; then
+        backupExisting "$destination"
+    fi
+
+    runCommand mkdir -p -- "$(dirname -- "$destination")"
+    if [[ "$COPY" == false ]]; then
+        printAction "link" "$destination -> $source"
+        runCommand ln -s -- "$source" "$destination"
+    else
+        printAction "copy" "$destination <- $source"
+        if [[ -d "$source" ]]; then
+            runCommand cp -a -- "$source" "$destination"
+        else
+            runCommand cp -- "$source" "$destination"
+        fi
+    fi
+    recordInstall "$destination" "$source"
+}
+
+installFileGroup() {
+    local source_directory="$1"
+    local destination_directory="$2"
+    local source_path
+    local filename
+
+    while IFS= read -r -d '' source_path; do
+        filename="${source_path##*/}"
+        [[ -f "$source_path" ]] || continue
+        if [[ "$filename" == "README.md" ]]; then
+            continue
+        fi
+        installLink "$source_path" "$destination_directory/$filename"
+    done < <(printf '%s\0' "$source_directory"/*)
+}
+
+installDirectoryGroup() {
+    local source_directory="$1"
+    local destination_directory="$2"
+    local source_path
+    local filename
+
+    while IFS= read -r -d '' source_path; do
+        filename="${source_path##*/}"
+        [[ -d "$source_path" ]] || continue
+        installLink "$source_path" "$destination_directory/$filename"
+    done < <(printf '%s\0' "$source_directory"/*)
+}
+
+installOpenCode() {
+    [[ -d "$REPOSITORY_ROOT/deploy" ]] || die "repository root not found: $REPOSITORY_ROOT"
+    [[ -d "$REPOSITORY_ROOT/agents" ]] || die "repository is incomplete: agents/ missing"
+
+    runCommand mkdir -p -- "$CONFIG_ROOT"
+    installLink "$REPOSITORY_ROOT/deploy/AGENTS.md" "$CONFIG_ROOT/AGENTS.md"
+    installFileGroup "$REPOSITORY_ROOT/agents" "$CONFIG_ROOT/agents"
+    installDirectoryGroup "$REPOSITORY_ROOT/skills" "$CONFIG_ROOT/skills"
+    installFileGroup "$REPOSITORY_ROOT/commands" "$CONFIG_ROOT/commands"
+    installDirectoryGroup "$REPOSITORY_ROOT/plugins" "$CONFIG_ROOT/plugins"
+}
+
+uninstallOpenCode() {
+    local destination
+    local source
+    local removed=false
+
+    [[ -f "$MANIFEST_PATH" ]] || die "no install manifest: $MANIFEST_PATH"
+    while IFS=$'\t' read -r destination source; do
+        [[ -n "$destination" ]] || continue
+        if destinationMatchesSource "$source" "$destination"; then
+            printAction "remove" "$destination"
+            runCommand trash -- "$destination"
+            removed=true
+        else
+            printf 'keep %s (changed or missing)\n' "$destination"
+        fi
+    done < "$MANIFEST_PATH"
+
+    if [[ "$removed" == true ]]; then
+        printAction "remove" "$MANIFEST_PATH"
+        runCommand unlink "$MANIFEST_PATH"
+    fi
+}
+
+##==================================================================================================
+## ARGUMENT PARSING
+##==================================================================================================
+
+printUsage() {
+    printf 'Usage: %s [options]\n\n' "$SCRIPT_NAME"
+    printf 'Install this repository into the user-level OpenCode config directory.\n\n'
+    printf 'Options:\n'
+    printf '  --only opencode   Select the OpenCode installer (default)\n'
+    printf '  --dry-run         Show actions without writing\n'
+    printf '  --force           Back up conflicting destinations before linking\n'
+    printf '  --uninstall       Remove links created by this installer\n'
+    printf '  -h, --help        Show this message\n\n'
+    printf 'Target: %s\n' "$CONFIG_ROOT"
+}
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --only)
+            [[ $# -ge 2 ]] || die "--only requires a target"
+            ONLY="$2"
+            shift 2
+            ;;
+        --dry-run)
+            DRY_RUN=true
+            shift
+            ;;
+        --force)
+            FORCE=true
+            shift
+            ;;
+        --uninstall)
+            UNINSTALL=true
+            shift
+            ;;
+        -h|--help)
+            printUsage
+            exit 0
+            ;;
+        *)
+            die "unknown option: $1 (run with --help)"
+            ;;
+    esac
+done
+
+##==================================================================================================
+## MAIN
+##==================================================================================================
+
+main() {
+    validateArguments
+    if [[ "$UNINSTALL" == true ]]; then
+        uninstallOpenCode
+    else
+        installOpenCode
+    fi
+    [[ "$DRY_RUN" == true ]] || printf 'Done. Restart OpenCode if it was running.\n'
+}
+
+##==================================================================================================
+## SCRIPT ENTRY POINT
+##==================================================================================================
+
+main
