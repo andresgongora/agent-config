@@ -26,11 +26,8 @@ spikes/
 # Local model aliases (machine-specific)
 model-aliases.json
 
-# Plans
-.agent/plan*
-
-# Frontier (machine-local state, not committed)
-.agent/frontier.md
+# Local repo knowledge (machine-local, not committed)
+.agent/
 
 # In-review (not ready to commit)
 commands/checkpoint.md
