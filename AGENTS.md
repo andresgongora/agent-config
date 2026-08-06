@@ -56,9 +56,10 @@ Reject when:
 
 ### Style
 
-- **`SKILL.md`, subagent files, `.agent/**/*.md`, `AGENTS.md`**: maximum compression by default. Bullets over prose. Fragments OK. Preserve exact code, paths, commands, error strings, URLs. Relax one notch only for complex multi-step sequences where compression creates ambiguity.
+- **`SKILL.md`, subagent files, `.agent/**/*.md`, `AGENTS.md`**: maximum compression by default. Bullets over prose. Fragments OK. Preserve exact code, paths, commands, error strings, URLs. Relax one notch only for complex multi-step sequences where compression creates ambiguity. Caveman style.
 - **`README.md` (skill, repo root)**: human-facing. Metaphors, design intent, maintainer notes. Brief. Agents using the repo: never rely on READMEs. Agents maintaining the repo: use READMEs as optional context.
 - Structure survives compression (headings, tables, frontmatter, code blocks). Only prose compresses.
+- Em dash for aside/appositive only; still avoid. Consequence, sequence, or state transition (condition → action, before → after, step → step): use `→`, not em dash.
 
 ### File Placement
 

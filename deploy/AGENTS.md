@@ -24,7 +24,7 @@ Non-trivial, in order:
 
    | Task touches                                 | Load                     |
    | -------------------------------------------- | ------------------------ |
-   | any AI agent directed text, agent artifacts  | `caveman`                |
+   | AI agent directives, agent artifacts, ultra-compressed  | `caveman`                |
    | code, any language                           | `coding`                 |
    | unit tests, TDD, coverage                    | `coding-unit-test`       |
    | writing or editing markdown                  | `artifact-markdown`      |
@@ -70,7 +70,7 @@ Main context finite. Every exploration transcript, long fetch, dead lead pollute
 - Review: `caveman-review` formats main-thread findings. Delegate bounded review only when isolated output saves context; `cavecrew` selects its reviewer.
 - Cheap model for locating and mechanical work; strong model only where the task needs judgment.
 - Instruct workers in caveman style. Preserve task-critical detail; drop caveman where it would introduce ambiguity.
-- Judge a report by its `status:`/`gap:` fields and its evidence, never its claims. Worker failed: retry with changed input (max two), then tier up one level, then take over. Never duplicate work.
+- Judge a report by its `status:`/`gap:` fields and its evidence, never its claims.
 
 ## Shell Restrictions
 
