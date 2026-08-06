@@ -31,4 +31,3 @@ This skill is a child of `coding`. Load `coding` as the parent for language-agno
 ## See also
 
 - `SKILL.md` — LLM-facing workflow
-- `../../.agent/notes/design-principles.md` — testability stance in context of the broader agent philosophy
