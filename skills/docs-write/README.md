@@ -15,7 +15,7 @@ The discovery skill loads on nearly every non-trivial repo session — it must s
 - **Two-tier gate.** Frontmatter/placement rules apply to any write. _Creating a new durable note_ additionally requires high-confidence, reuse-worthy knowledge. Handoff and bug logs clear the bar differently — not by being routine, but by being gated on costly-to-lose task state (session boundary, multiple failed attempts, explicit handoff): see "Bug-log and plan ownership" below.
 - **No progress narration.** Work-in-flight context stays in the AI session. Persist only what is likely to be retained: settled research, hard-won architecture facts, root causes, decisions.
 - **`notes/` is the catch-all.** Architecture, research, philosophy, conventions all live in `.agent/notes/`. Content kind is the doc's job, not a directory's. No `research/`/`architecture/` folder sprawl.
-- **Frontmatter is the routing contract.** `summary:` decides read-or-skip. Any external-sourced content requires `source:`; `references:` is optional supplementary only and never substitutes for a missing `source:`. No source = unverifiable claim.
+- **Frontmatter is the routing contract.** `description:` decides read-or-skip. Any external-sourced content requires `source:`; `references:` is optional supplementary only and never substitutes for a missing `source:`. No source = unverifiable claim.
 - **Not a subagent.** Deciding what to persist needs live parent context (what just happened, what the user asked). A fresh subagent would have to re-carry all of it — negating the isolation benefit.
 
 ## Why the gate sits where it does
@@ -49,4 +49,4 @@ Loads when persisting knowledge worth keeping (settled research, architecture/de
 ## See also
 
 - Doc-discovery discipline — read side, inventory scripts.
-- `../../.agent/notes/design-principles.md` — memory-placement model and brutal-truth reminders.
+- `../../.agent/notes/design-principles.md` — memory-placement model and ecosystem failure modes.

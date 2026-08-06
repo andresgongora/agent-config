@@ -59,7 +59,7 @@ checkRequiredStrings() {
     local frontmatter="$1"
     local key
 
-    for key in title summary status updated; do
+    for key in title description status updated; do
         isNonEmptyScalar "$key" "$frontmatter" || printf '%s: required non-empty value\n' "$key"
     done
 }

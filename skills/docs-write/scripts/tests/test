@@ -36,8 +36,8 @@ assertFailure() {
 ##==================================================================================================
 main() {
     "$SCRIPT_DIRECTORY/check-frontmatter" "$FIXTURE_DIRECTORY/valid.md"
-    assertFailure 'summary: required non-empty value' \
-        "$SCRIPT_DIRECTORY/check-frontmatter" "$FIXTURE_DIRECTORY/missing-summary.md"
+    assertFailure 'description: required non-empty value' \
+        "$SCRIPT_DIRECTORY/check-frontmatter" "$FIXTURE_DIRECTORY/missing-description.md"
     assertFailure 'status: must be draft, active, stale, resolved, archived, or done' \
         "$SCRIPT_DIRECTORY/check-frontmatter" "$FIXTURE_DIRECTORY/invalid-status.md"
     assertFailure 'updated: must use YYYY-MM-DD' \
