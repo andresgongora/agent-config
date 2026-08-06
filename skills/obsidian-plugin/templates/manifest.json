@@ -1,0 +1,9 @@
+{
+	"id": "<plugin-id>",
+	"name": "<Plugin Display Name>",
+	"version": "0.1.0",
+	"minAppVersion": "<minAppVersion>",
+	"description": "<One-sentence description of what the plugin does.>",
+	"author": "<author>",
+	"isDesktopOnly": false
+}
