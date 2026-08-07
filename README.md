@@ -151,7 +151,16 @@ commands/               Slash-commands.
 tools/                  Ad-hoc scripts.
 ```
 
+<!------------------------------------------------------------------------------------------------->
+## Donations
+<!------------------------------------------------------------------------------------------------->
+
+If you like this project and want to show your support,
+[buy me a coffee](https://buymeacoffee.com/andresgongora). Caffeine goes in, code comes out.
+
+<!------------------------------------------------------------------------------------------------->
 ## License
+<!------------------------------------------------------------------------------------------------->
 
 Original files in this repo are [MIT licensed](./LICENSE).
 

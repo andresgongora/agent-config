@@ -67,6 +67,13 @@ Short example output or explanation, if it's not obvious from the command.
 Short pointer to `CONTRIBUTING.md` or a one-line PR/issue expectation.
 
 <!------------------------------------------------------------------------------------------------->
+## Donations
+<!------------------------------------------------------------------------------------------------->
+
+If you like this project and want to show your support,
+[buy me a coffee](https://buymeacoffee.com/andresgongora). Caffeine goes in, code comes out.
+
+<!------------------------------------------------------------------------------------------------->
 ## License
 <!------------------------------------------------------------------------------------------------->
 
