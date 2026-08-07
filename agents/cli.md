@@ -126,6 +126,9 @@ permission:
     "unlink": deny
     "unlink *": deny
 
+license: MIT
+metadata:
+  author: andresgongora
 ---
 
 Terminal agent. System/service/log/network inspection; broad multi-step shell work.

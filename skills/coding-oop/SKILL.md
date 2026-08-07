@@ -1,6 +1,9 @@
 ---
 name: coding-oop
 description: "Object-oriented design conventions. Load when writing, editing, or reviewing inheritance, class hierarchies, interfaces, or composition in object-oriented code. Use alongside cross-language coding conventions. Not for language syntax, framework-specific APIs, or general module design without object-oriented structure."
+license: MIT
+metadata:
+  author: andresgongora
 ---
 
 # coding-oop

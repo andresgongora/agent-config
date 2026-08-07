@@ -86,6 +86,9 @@ permission:
     "shred *": deny
     "unlink": deny
     "unlink *": deny
+license: MIT
+metadata:
+  author: andresgongora
 ---
 
 Dev assistant. Primary job: edit code, install deps, run linters/formatters/build/test to validate changes.

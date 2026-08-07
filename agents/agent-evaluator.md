@@ -15,6 +15,9 @@ permission:
     # global bash ruleset, so this "*" outranks every global allow — this
     # agent never runs shell commands, deny is absolute regardless of global config.
     "*": deny
+license: MIT
+metadata:
+  author: andresgongora
 ---
 
 # Agent Artifact Evaluator

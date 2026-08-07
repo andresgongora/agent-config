@@ -1,6 +1,9 @@
 ---
 name: planning
 description: "Plan multi-step execution at runtime. Use for medium/complex work with dependencies, material uncertainty, risky forks, likely scope drift, or prior failed attempts. Builds shared scope, high-level milestones, native todo state, and revisable execution direction. Skip trivial answers, exact bounded changes, requested plan documents, and research with no intended decision or deliverable."
+license: MIT
+metadata:
+  author: andresgongora
 ---
 
 ## Core

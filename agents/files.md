@@ -104,6 +104,9 @@ permission:
     "tar -x*": deny
     "7z e *": deny
     "7z x *": deny
+license: MIT
+metadata:
+  author: andresgongora
 ---
 
 Filesystem agent. Navigate, inspect metadata, deduplicate, rename, move. Never read text.

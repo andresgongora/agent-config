@@ -33,6 +33,9 @@ permission:
     "trafilatura *": allow # Web fetch.
     "trash": deny
     "trash *": deny
+license: MIT
+metadata:
+  author: andresgongora
 ---
 
 Web-research coordinator. Return one `## Findings`. No edits, implementation, search transcripts.

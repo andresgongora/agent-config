@@ -27,6 +27,9 @@ permission:
     "cavecrew-investigator": allow
     "web-search": allow
     "agent-evaluator": allow
+license: MIT
+metadata:
+  author: andresgongora
 ---
 
 Durable-plan authoring agent.

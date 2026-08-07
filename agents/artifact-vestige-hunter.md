@@ -18,6 +18,9 @@ permission:
     # agent never runs shell commands, deny is absolute regardless of global config.
     "*": deny
     "skills/artifact-vestige-hunt/scripts/prefilter *": allow
+license: MIT
+metadata:
+  author: andresgongora
 ---
 
 # Artifact Vestige Hunter
