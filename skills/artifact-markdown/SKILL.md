@@ -23,15 +23,13 @@ description: "Minimal Markdown completion checks. Load whenever writing, editing
 ## Heading structure
 
 - One `#` per file. Title only.
-- `##` sections wrapped above and below, HTML-comment dash decorator:
+- `##` sections wrapped above and below, HTML-comment dash decorator, no new lines between decorator and heading. Omit decorator in AI-directed files.
 
   ```markdown
   <!------------------------------------------------------------------------------------------------->
   ## Section title
   <!------------------------------------------------------------------------------------------------->
   ```
-
-- Decorator width: match nearest file/repo convention. Default 100 dashes. 80-col repo: 80. One width per file, no mix.
 - `###` deepest level by default. Past it needs concrete reason (deep reference material). Avoid `####`+.
 - Skip decorators on Markdown-lint-only artifacts (Finish step 2 classification) unless that file already uses them.
 
