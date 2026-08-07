@@ -55,6 +55,7 @@ Body rules:
 - Flat bullets for policy; numbered lists only for ordered workflow
 - ≤ ~500 lines total; bulky templates/examples → one-level-deep reference files, link from body
 - Body = post-load behavior (workflow, boundaries, decision rules, output contract). Never trigger text.
+- Own-script refs: bare relative only (`scripts/foo`). Never `<skill-root>/scripts/foo` (unresolved placeholder, weak models run it literally), never hardcoded absolute deploy path (`~/.config/opencode/skills/foo/scripts/bar` — breaks under any other deploy root). Skill loader appends a base-dir footer at load time; bare relative is the one form that resolves against it everywhere.
 
 Companion README must include: one-line what, design intent, trigger summary, maintainer constraints, see-also. Write it human-facing and readable — plain prose, no AI slop.
 
@@ -168,6 +169,7 @@ After creating or editing:
 - [ ] Subagent: envelope sits inside the fenced output template, and a second fence shows the empty-result or refusal path with a literal non-`done` token
 - [ ] No dead refs to paths/skills/tools that don't exist
 - [ ] Templates reference one level deep (not inlined)
+- [ ] Skill's own script refs are bare relative (`scripts/foo`), no `<skill-root>` placeholder, no hardcoded absolute deploy path
 - [ ] If replacing an artifact: all inbound refs updated or removed
 - [ ] Ready-to-ship non-trivial artifact received clean-context read-only evaluation; justified findings resolved or recorded
 

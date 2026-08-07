@@ -19,8 +19,8 @@ Agent-directed documentation resides in `.agent/`.
 
 Once per session, unless already scanned:
 
-1. `.agent/` exists: run `<skill-root>/scripts/inventory`. Scan rows, full-read only task-relevant doc.
-2. One file's full frontmatter, no body: `<skill-root>/scripts/get-frontmatter <file>`.
+1. `.agent/` exists: run `scripts/inventory`. Scan rows, full-read only task-relevant doc.
+2. One file's full frontmatter, no body: `scripts/get-frontmatter <file>`.
 3. No relevant doc, `README.md` exists: read relevant section.
 4. Script fails: it names file and reason. Repair write-side — load `docs-write`, rerun.
 5. Inventory unavailable (no `yq`, denied, other failure): read README and targeted `.agent/` paths direct; report blocked.

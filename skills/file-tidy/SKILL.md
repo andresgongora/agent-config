@@ -43,8 +43,8 @@ description: "Metadata-only file collection maintenance: disk-space inventory, s
 - Use `scripts/safe-rename-plan` for regular files. Default dry-run; `--apply` only after reviewed output.
 
 ```sh
-~/.config/opencode/skills/file-tidy/scripts/safe-rename-plan /path/to/downloads
-~/.config/opencode/skills/file-tidy/scripts/safe-rename-plan --apply /path/to/downloads
+scripts/safe-rename-plan /path/to/downloads
+scripts/safe-rename-plan --apply /path/to/downloads
 ```
 
 ## Scripts

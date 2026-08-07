@@ -57,7 +57,7 @@ references: https://example.com/spec   # optional supplementary
 - `updated:`: real date of last substantive change.
 - Any external-source content (web, manual, API, spec) MUST carry `source:`. `references:` never substitutes for it. No source = unverifiable claim.
 - Managed docs use canonical keys. Discovery tolerates aliases (`name`, `summary`, `lastmod`, `date`) on foreign files only.
-- Before finishing a managed-doc edit: `<skill-root>/scripts/check-frontmatter <file.md>`. Silent success; failures name only invalid fields.
+- Before finishing a managed-doc edit: `scripts/check-frontmatter <file.md>`. Silent success; failures name only invalid fields.
 
 ## Doc Shape
 
