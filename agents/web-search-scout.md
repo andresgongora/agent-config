@@ -14,6 +14,9 @@ tools:
   task: false
 permission:
   edit: deny
+  read:
+    "skills/web-search/references/**": allow
+    "*": deny
   webfetch: allow
   websearch: allow
   task: deny
@@ -25,8 +28,6 @@ permission:
     "exit": allow
     "exit *": allow
     "trafilatura *": allow # Web fetch.
-    "date": allow
-    "date *": allow
     "trash": deny
     "trash *": deny
 ---
