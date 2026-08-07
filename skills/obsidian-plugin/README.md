@@ -26,4 +26,6 @@ Generic TypeScript/npm/esbuild work with no Obsidian API involved. Editing vault
 
 - `templates/manifest.json`, `templates/versions.json`, `templates/esbuild.config.mjs`, `templates/version-bump.mjs`, `templates/release.sh` — scaffold files
 - `resources/community-plugin-submission.md` — one-time community-store submission process
+- `resources/first-submission-checklist.md` — minimal step list for the initial submission only
+- `resources/lifecycle-and-load-time.md` — cleanup + startup-cost code examples
 - coding conventions skill (cross-language) — general code quality still applies on top of this skill's Obsidian-specific rules

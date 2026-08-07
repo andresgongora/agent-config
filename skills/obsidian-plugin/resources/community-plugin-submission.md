@@ -1,5 +1,7 @@
 # Obsidian community plugin submission
 
+Source: https://docs.obsidian.md/plugins/releasing/submit-plugin
+
 One-time process, distinct from routine GitHub releases. Only relevant when a plugin is submitted to Obsidian's official community plugin store for the first time.
 
 ## Requirements before submitting
