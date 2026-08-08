@@ -92,8 +92,6 @@ permission:
     "unlink": deny
     "unlink *": deny
 license: MIT
-metadata:
-  author: andresgongora
 ---
 
 Single-task build worker. Execute the given action. Return result. Stop.

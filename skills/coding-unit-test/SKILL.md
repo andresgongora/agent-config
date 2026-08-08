@@ -2,8 +2,6 @@
 name: coding-unit-test
 description: "Workflow for writing, reviewing, and improving unit tests in any language. Load when user asks for unit tests, TDD, testability, coverage, or test framework choice. Skip when testing is explicitly out of scope, for tiny glue and unstable spikes that need no test-first ritual, or for test infrastructure and CI configuration."
 license: MIT
-metadata:
-  author: andresgongora
 ---
 
 # coding-unit-test

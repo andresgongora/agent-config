@@ -1,7 +1,7 @@
 ---
 description: "General terminal agent. Broad Linux/CLI access: system, service, network diagnostics; complex shell workflows. Use for commands outside repo: state, logs, services, networking, packages. Not pure code editing; build agent owns that."
 mode: primary
-model: WORK_MID
+model: POOL_MID
 color: "#FF0000"
 permission:
   edit:
@@ -127,8 +127,6 @@ permission:
     "unlink *": deny
 
 license: MIT
-metadata:
-  author: andresgongora
 ---
 
 Terminal agent. System/service/log/network inspection; broad multi-step shell work.

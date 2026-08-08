@@ -15,8 +15,6 @@ permission:
   websearch: allow
   external_directory: deny
 license: MIT
-metadata:
-  author: andresgongora
 ---
 
 Answer immediately. No preamble, politeness, restatement, next step, or filler.

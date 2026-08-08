@@ -1,7 +1,7 @@
 ---
 description: "Nested leaf scout for @web-search only. Use for one isolated web query angle, source family, or URL lead. Run bounded search/fetch triage; return `## Scout Report` with answer, lead, or none. Not broad research, synthesis, local files, implementation, direct main-thread delegation."
 mode: subagent
-model: POOL_LIGHT
+model: PERSONAL_LIGHT
 tools:
   read: true
   write: false
@@ -31,8 +31,6 @@ permission:
     "trash": deny
     "trash *": deny
 license: MIT
-metadata:
-  author: andresgongora
 ---
 
 Branch-local web scout. Return one `## Scout Report`. No nesting, edits, synthesis, search diary.

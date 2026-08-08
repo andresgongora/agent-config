@@ -16,8 +16,6 @@ permission:
     # agent never runs shell commands, deny is absolute regardless of global config.
     "*": deny
 license: MIT
-metadata:
-  author: andresgongora
 ---
 
 # Agent Artifact Evaluator

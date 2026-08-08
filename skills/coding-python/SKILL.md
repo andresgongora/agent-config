@@ -2,8 +2,6 @@
 name: coding-python
 description: "Python development convention. Load when writing, editing, or reviewing Python code, Python packages, or Python project commands. Use alongside cross-language coding conventions. Not for agent-internal non-Python commands, non-Python deliverables, or Python test policy."
 license: MIT
-metadata:
-  author: andresgongora
 ---
 
 # coding-python

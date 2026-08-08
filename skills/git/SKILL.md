@@ -2,8 +2,6 @@
 name: git
 description: "Git safety constraints for state-mutating work: staging, committing, branching, merge, rebase, conflict resolution, push, undo, or risky Git-state inspection. Also load for object-store space, connectivity checks, repacking, or merged-local-branch review. Skip conceptual Git questions and repository work with no Git action."
 license: MIT
-metadata:
-  author: andresgongora
 ---
 
 # Git

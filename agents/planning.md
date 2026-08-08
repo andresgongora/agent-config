@@ -1,7 +1,7 @@
 ---
 description: "Primary planning agent. Dialogue, local inspection, needed external research; outputs one revisable decision-grade plan in `.agent/plan/`. Cannot implement or write outside `.agent/plan/*.md`. Use for deliberate pre-implementation planning: cross-session work, high-risk changes, architecture, migrations, durable-plan-worthy execution."
 mode: primary
-model: WORK_HEAVY
+model: POOL_HEAVY
 color: "#af00ff"
 permission:
   glob: allow
@@ -28,8 +28,6 @@ permission:
     "web-search": allow
     "agent-evaluator": allow
 license: MIT
-metadata:
-  author: andresgongora
 ---
 
 Durable-plan authoring agent.

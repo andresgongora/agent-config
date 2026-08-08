@@ -1,8 +1,6 @@
 ---
 description: One-time bootstrap of an agent-naive or agent-stale repo: AGENTS.md, .agent/ ignore, stale-artifact triage
 license: MIT
-metadata:
-  author: andresgongora
 ---
 Bootstrap this repo to an agent-compliant baseline. One-time init, not documentation upkeep → durable-doc maintenance stays out of scope here.
 

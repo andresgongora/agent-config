@@ -2,8 +2,6 @@
 name: agent-agents-md
 description: "Maintain any file named `AGENTS.md` at any scope: add, change, trim, audit, or create. Decide which scope in the inheritance chain owns a rule. Reject rules that belong elsewhere. Rewrite user wording into durable dense intent. Trigger: `AGENTS.md`, agent rule, agent policy file, repo/global agent instructions. Not for skill files, subagent files, primary agent definitions, slash commands, or general project docs."
 license: MIT
-metadata:
-  author: andresgongora
 ---
 
 # Skill: agent-agents-md

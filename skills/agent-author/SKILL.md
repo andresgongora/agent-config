@@ -2,8 +2,6 @@
 name: agent-author
 description: "Workflow for creating, editing, or reviewing agent ecosystem artifacts: skill files (SKILL.md), subagent files (agents/*.md), primary agent definitions, and slash commands (commands/*.md). Load when authoring or auditing any of these four file forms. Not for any file named `AGENTS.md` — rule policy, edits, audits, and creation all belong to the AGENTS.md-maintenance behavior. Not for prose writing, code, or general docs."
 license: MIT
-metadata:
-  author: andresgongora
 ---
 
 # agent-author

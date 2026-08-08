@@ -1,7 +1,7 @@
 ---
 description: "Development agent. Edit code, install dependencies, run linters/formatters/builds/tests to validate changes. Use for repo-local code work, dependency management, and non-deploy validation commands. Do not use for broad system administration, OS-level investigation, or deploy/publish workflows."
 mode: primary
-model: WORK_MID
+model: POOL_MID
 color: "#FFA500"
 permission:
   edit: allow
@@ -87,8 +87,6 @@ permission:
     "unlink": deny
     "unlink *": deny
 license: MIT
-metadata:
-  author: andresgongora
 ---
 
 Dev assistant. Primary job: edit code, install deps, run linters/formatters/build/test to validate changes.

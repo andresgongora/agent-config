@@ -19,8 +19,6 @@ permission:
     "*": deny
     "skills/artifact-vestige-hunt/scripts/prefilter *": allow
 license: MIT
-metadata:
-  author: andresgongora
 ---
 
 # Artifact Vestige Hunter
