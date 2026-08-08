@@ -6,74 +6,89 @@ license: MIT
 
 # Agent Delegation
 
-Four questions, in order: delegate or not → what goes in the brief → is this report acceptable → retry, tier up, or take over.
+Four questions, in order: delegate or not → brief → evaluate report → retry, tier up, or take over.
 
 ## 1. Decision gate
 
-- Mentioning delegation does not justify it.
-- Delegate only bounded, isolatable, independently checkable work when compact return saves more main-context cost than setup and transferred context.
-- Brief costs more tokens than the expected result: do it in main.
-- Keep in main: needs existing context, authority, synthesis, user decisions, ambiguity resolution, risky action, or authorial voice.
-- Describe needed capability and output shape, not worker name.
-- Parallelize independent contracts only. To-do list with independent tasks, or one task that splits cleanly: consider a wave.
-- Main integrates conclusion, evidence, blockers; discard exploration detail.
+Evaluate the work, not the question.
+
+| Task shape                                      | Delegate? |
+| ----------------------------------------------- | --------- |
+| Needs existing context main already holds       | No        |
+| User decision or confirmation required          | No        |
+| Ambiguity resolution or risky action            | No        |
+| Brief + report tokens > inline tokens           | No        |
+| Bounded scope, checkable result, compact return | Yes       |
+
+Describe needed capability and output shape, not worker name.
 
 ## 2. Brief
 
-Template: `templates/task-brief.md`. Mandatory core is six fields; optional blocks are omitted when empty.
+Template: `templates/task-brief.md`. Six required fields; optional blocks deleted when empty.
 
-- State goal and bounds; worker owns method. Under-specified brief causes runoff; over-specified brief means main already did the work.
+- State goal and bounds; worker owns method.
 - Send needed context only. Worker has none of main's history.
-- Name the return shape explicitly, including the report envelope below.
-- Give one done-condition and one escalation trigger. Absent them, a worker grinds.
-- Files of interest: give `path:line` plus why it matters. Paths without reasons get scanned blindly.
+- Name the return shape explicitly, including report envelope (§4).
+- One done-condition, one escalation trigger.
+- Files of interest: `path:line` plus why it matters. Paths without reasons get scanned blindly.
 
-## 3. Report envelope
+## 3. Chaining
 
-Every worker report ends with two mandatory fields, whatever else its own contract specifies:
+Chain when each hop has a different done-condition. Same condition twice → one worker's job.
 
-- `status:` — exactly one of `done` `partial` `blocked` `refused` `none`
+**Locate → act → verify:** worker finds sites → main picks targets → worker acts → optional audit.
+
+**Parallel scout:** 2–3 workers, different angles, no shared state. Aggregate in main.
+
+**Single-shot:** site known → skip locate, hand `path:line` directly.
+
+Each hop pays context transfer. Ensure net savings.
+
+## 4. Report envelope
+
+Every worker report ends with two mandatory fields:
+
+- `status:` — one of `done` `partial` `blocked` `refused` `none`
 - `gap:` — in-scope work not finished, or `none`
 
-Token strings are fixed. Field formatting follows the worker's own style.
+| Status    | Meaning                                        |
+| --------- | ---------------------------------------------- |
+| `done`    | full scope covered                             |
+| `partial` | some in-scope work unfinished; `gap` says what |
+| `blocked` | needs input, confirmation, or scope            |
+| `refused` | outside worker's scope or capability           |
+| `none`    | ran fully, found nothing                       |
 
-| Status    | Meaning                                             |
-| --------- | --------------------------------------------------- |
-| `done`    | full scope covered                                  |
-| `partial` | some in-scope work unfinished; `gap` says what      |
-| `blocked` | cannot proceed; needs input, confirmation, or scope |
-| `refused` | outside this worker's scope or capability           |
-| `none`    | ran fully, found nothing                            |
+Status orthogonal to payload. Tests failed = `done` with failing result, not `partial`.
 
-Status is orthogonal to payload. A test worker whose tests failed is `done` with a failing result, not `partial`.
+## 5. Evaluate
 
-## 4. Evaluate
+- Judge evidence, never claims. Evidence: `path:line`, command output, exit code, verbatim quote, URL.
+- Outcome asserted without evidence → `partial` regardless of declared status.
+- `gap: none` on work with visible gaps → unreliable, re-drive narrowed.
+- `none` is a result. Don't retry. Reconsider the question.
+- `refused` is routing signal. Re-route, don't retry.
+- Accept when evidence answers the brief. Extra polish is main's cost.
+- Main integrates conclusion + evidence. Never forward worker's full output to user.
 
-- Judge evidence, never claims. Acceptable evidence: `path:line`, exact command output, exit code, verbatim quote, URL.
-- Report asserts an outcome with no evidence: treat as `partial` regardless of declared status.
-- `gap: none` on work that visibly had gaps: treat as unreliable, re-drive with narrowed scope.
-- `none` is a result. Do not retry it. Reconsider the question instead.
-- `refused` is a routing signal, not a failure. Re-route, do not retry.
-- Accept and move on the moment evidence answers the brief. Extra polish is main's cost.
+## 6. Escalate
 
-## 5. Escalate
+`blocked`: missing piece is scope/context main can supply → retry with it. Missing piece is user input/authority → stop and ask.
 
-`blocked` first: if the missing piece is scope, context, or a guidepost main can supply, retry with it added — that's step 1 below. If the missing piece is user input, confirmation, or authority, stop and ask; retrying or tiering up a model never obtains what only the user can give.
+`partial` / failure ladder (never skip more than one rung):
 
-For `partial` and ordinary failure, ordered ladder. Never skip more than one rung without stating why.
+1. **Retry with changed input** — max two. Narrow scope, add context, add guidepost, or split. Identical re-spawn forbidden.
+2. **Tier up one model level** — same brief, stronger worker. Output shape right, judgment thin.
+3. **Take over in main** — blocker is context, authority, or ambiguity.
 
-1. **Retry with materially changed input** — max two. Change means narrower scope, added context, added guidepost, or split into steps. Identical re-spawn is forbidden; it reproduces the failure at full price.
-2. **Tier up one model level** — same brief, stronger worker. Use when output shape was right but judgment was thin.
-3. **Take over in main** — use when the blocker is context, authority, or ambiguity. These never resolve by retrying.
+Same blocker twice → stop, summarize, re-plan. Never bypass a safety or authority refusal.
 
-Same blocker twice: stop, summarize, re-plan with new evidence. Never bypass a safety or authority refusal.
+## 7. Coordinator
 
-## Domain coordinator
+Worker that spawns workers; cannot ask user. Worth it only when all hold:
 
-A worker that itself spawns workers pays for its own model plus downward context transfer, and cannot ask the user. Worth it only when all hold:
+- Three or more independent branches
+- Branches need consolidation
+- Domain narrow enough coordinator needs no main-thread history
 
-- three or more independent branches
-- branches need consolidation into one compact answer
-- the domain is narrow enough that the coordinator needs no main-thread history
-
-Then: coordinator sits at mid tier, not main's tier; children never recurse; branch count is capped; a wave completes before synthesis. Existing research-coordination workers implement this pattern — copy it rather than inventing a generic one. A general-purpose coordinator at main's tier is a loss: it pays the expensive model twice while main still holds the context.
+Then: coordinator at mid tier; children never recurse; branch count capped; wave completes before synthesis. Copy existing coordinator pattern rather than inventing one.

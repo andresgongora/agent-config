@@ -55,11 +55,11 @@ Material ambiguity: state interpretation in Caveats. Never invent intent.
 Direct-search if one authoritative source/exact query likely resolves in 1-2 fetches. Use if: suspect one obvious source, unresolved ambiguity.
 
 Fan out (delegate to scout, consolidate results) when any of the following true:
-- distinct source families likely contain different evidence
-- wording has genuinely different interpretations/query angles
-- broad topic or high junk rate makes cheap filtering worthwhile
+- distinct source families likely contain different evidence.
+- wording has genuinely different interpretations/query angles.
+- broad topic or high junk rate makes cheap filtering worthwhile.
 - expect different results from different sources (e.g., one scout per search engine or location).
-- target broad search, obtain diverse information, then combine results
+- target broad search, obtain diverse information, then combine results.
 
 ## Direct search
 

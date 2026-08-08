@@ -21,6 +21,11 @@ license: MIT
 - Ship paired: every skill folder needs both `SKILL.md` (LLM-facing) and `README.md` (human/maintainer). Subagents do NOT need a README.
 - Check for duplicates before creating. Grep `skills/` and `agents/` first. Extend or replace; never add a competitor.
 
+## Style
+
+- Paragraph, enumeration, bullet list: terminal punctuation `.`, `!`, `?`.
+- Tables: compact, `---` columns, leading + trailing pipes.
+
 ## Frontmatter
 
 Primary routing surface. Always in scope. Specificity governs load correctness — vague loads when unneeded, narrow misses when needed. Applies to every file form's frontmatter (`description` and any routing field).
@@ -33,28 +38,28 @@ Primary routing surface. Always in scope. Specificity governs load correctness �
 
 ## File placement
 
-| Artifact                | Location                                                                    |
-| ----------------------- | --------------------------------------------------------------------------- |
-| Skill (LLM-facing)      | `skills/<name>/SKILL.md`                                                    |
-| Skill README (human)    | `skills/<name>/README.md`                                                   |
+| Artifact | Location |
+|---|---|
+| Skill (LLM-facing) | `skills/<name>/SKILL.md` |
+| Skill README (human) | `skills/<name>/README.md` |
 | Skill executable assets | `skills/<name>/scripts/` — create only when needed; never beside `SKILL.md` |
-| Subagent                | `agents/<name>.md`                                                          |
-| Nested subagent family  | `agents/<family>/`                                                          |
-| Primary agent           | `agents/<name>.md`                                                          |
-| Slash command           | `commands/<name>.md`                                                        |
+| Subagent | `agents/<name>.md` |
+| Nested subagent family | `agents/<family>/` |
+| Primary agent | `agents/<name>.md` |
+| Slash command | `commands/<name>.md` |
 
 Prefer standalone files under `agents/` over inline blocks in client config. File is source of truth; client config handles cross-agent policy and MCP wiring only.
 
 ## Skill file form
 
 Frontmatter (see Frontmatter section):
-- `name`: lowercase-hyphenated, gerund preferred
+- `name`: lowercase-hyphenated, gerund preferred.
 - `description`: third-person, ≤4 sentences, trigger phrases + explicit non-triggers. Routing truth lives here; do NOT repeat in body.
 
 Body rules:
-- One `#` title, shallow `##` sections only (no `###`)
-- Flat bullets for policy; numbered lists only for ordered workflow
-- ≤ ~500 lines total; bulky templates/examples → one-level-deep reference files, link from body
+- One `#` title, shallow `##` sections only (no `###`).
+- Flat bullets for policy; numbered lists only for ordered workflow.
+- ≤ ~500 lines total; bulky templates/examples → one-level-deep reference files, link from body.
 - Body = post-load behavior (workflow, boundaries, decision rules, output contract). Never trigger text.
 - Own-script refs: bare relative only (`scripts/foo`). Never `<skill-root>/scripts/foo` (unresolved placeholder, weak models run it literally), never hardcoded absolute deploy path (`~/.config/opencode/skills/foo/scripts/bar` — breaks under any other deploy root). Skill loader appends a base-dir footer at load time; bare relative is the one form that resolves against it everywhere.
 
@@ -78,8 +83,8 @@ Subagent-only delta:
 - Locked-down agent: lead bash block `"*": deny`/`ask` — outranks global allows, forces full self-declared allowlist. Use when tight.
 - Nested subagents: default cannot spawn subagents. Enable per-subagent via `permission.task` allowlist. Depth cap: 5, scoped to specific children only. Global `permission.task: "allow"` enables unbounded recursion — never do this.
 - Mandatory report envelope — every subagent report ends with:
-  - `status:` — exactly one of `done` `partial` `blocked` `refused` `none`
-  - `gap:` — in-scope work not covered, or `none`
+  - `status:` — exactly one of `done` `partial` `blocked` `refused` `none`.
+  - `gap:` — in-scope work not covered, or `none`.
 
   Token strings are fixed; field formatting follows the agent's own style. `none` (ran fully, found nothing) is distinct from `done`. Refusal or terminal tokens the agent defines map onto a status value — bind them in one line, never restate their meaning. Envelope wraps the bespoke contract; it does not replace it.
 
@@ -138,41 +143,41 @@ Same-family exception: permit artifacts in one family (e.g. `cavecrew-*`, `agent
 
 ## Risks
 
-| Risk                                          | Mitigation                                                |
-| --------------------------------------------- | --------------------------------------------------------- |
-| Hard-name coupling                            | Reference by behavior keyword; swap-test before shipping  |
-| Duplicate skill/agent                         | Grep before creating; extend or replace                   |
-| Verbose skill (marketing prose)               | Enforce dense fragment style; reject if reads like a blog |
-| Wide bash allowlist in subagent               | Narrow allowlist; default-deny + explicit allows          |
-| Command allowlist ignores compound commands   | Grant shell no-ops (`exit`, `true`, `continue`, `test`); clients match per sub-command |
+| Risk | Mitigation |
+|---|---|
+| Hard-name coupling | Reference by behavior keyword; swap-test before shipping |
+| Duplicate skill/agent | Grep before creating; extend or replace |
+| Verbose skill (marketing prose) | Enforce dense fragment style; reject if reads like a blog |
+| Wide bash allowlist in subagent | Narrow allowlist; default-deny + explicit allows |
+| Command allowlist ignores compound commands | Grant shell no-ops (`exit`, `true`, `continue`, `test`); clients match per sub-command |
 | Baseline grants copied into every primary agent or subagent | Baseline belongs in runtime config; each carries role deltas only |
-| Subagent spawns subagents by default          | Scope `permission.task` to specific children only         |
-| Skill without README                          | Always ship both for skills                               |
-| Inline template cue contradicts SKILL.md rule | Cues are pointers only; full rules stay in SKILL.md       |
-| Dead ref after note/artifact deletion         | Grep all inbound refs; fix in same change                 |
+| Subagent spawns subagents by default | Scope `permission.task` to specific children only |
+| Skill without README | Always ship both for skills |
+| Inline template cue contradicts SKILL.md rule | Cues are pointers only; full rules stay in SKILL.md |
+| Dead ref after note/artifact deletion | Grep all inbound refs; fix in same change |
 
 ## Verification
 
 After creating or editing:
-- [ ] Frontmatter YAML parses cleanly
-- [ ] Each frontmatter field on one physical line (no wrapped values)
-- [ ] No stubs or maintainer-facing residue in frontmatter or body (README only); frontmatter also free of roadmap and "load other artifact instead"
-- [ ] Frontmatter names no other skill/subagent; boundary scopes by behavior
-- [ ] `description` dense with correlated keywords + explicit non-triggers where a sibling could misfire
-- [ ] No placeholders, scaffold comments, or template-only examples remain; required values are concrete
-- [ ] README (skills): human-facing, readable, no AI slop
-- [ ] Skill: `SKILL.md` + `README.md` both present
-- [ ] Command: no README, fits one screen, `$ARGUMENTS` handled, dense/compressed phrasing throughout
-- [ ] Command: `Delegate:` per-step tags present only where a real tradeoff exists, never forced on a trivial command
-- [ ] `description` is routing truth; no trigger phrases duplicated in body
-- [ ] Named skills/subagents use behavior keywords unless same-family exception passes swap test
-- [ ] Subagent: report ends with `status:` (one of `done` `partial` `blocked` `refused` `none`) and `gap:`; every refusal or terminal token maps to a status and is payload, not a replacement
-- [ ] Subagent: envelope sits inside the fenced output template, and a second fence shows the empty-result or refusal path with a literal non-`done` token
-- [ ] No dead refs to paths/skills/tools that don't exist
-- [ ] Templates reference one level deep (not inlined)
-- [ ] Skill's own script refs are bare relative (`scripts/foo`), no `<skill-root>` placeholder, no hardcoded absolute deploy path
-- [ ] If replacing an artifact: all inbound refs updated or removed
-- [ ] Ready-to-ship non-trivial artifact received clean-context read-only evaluation; justified findings resolved or recorded
+- [ ] Frontmatter YAML parses cleanly.
+- [ ] Each frontmatter field on one physical line (no wrapped values).
+- [ ] No stubs or maintainer-facing residue in frontmatter or body (README only); frontmatter also free of roadmap and "load other artifact instead".
+- [ ] Frontmatter names no other skill/subagent; boundary scopes by behavior.
+- [ ] `description` dense with correlated keywords + explicit non-triggers where a sibling could misfire.
+- [ ] No placeholders, scaffold comments, or template-only examples remain; required values are concrete.
+- [ ] README (skills): human-facing, readable, no AI slop.
+- [ ] Skill: `SKILL.md` + `README.md` both present.
+- [ ] Command: no README, fits one screen, `$ARGUMENTS` handled, dense/compressed phrasing throughout.
+- [ ] Command: `Delegate:` per-step tags present only where a real tradeoff exists, never forced on a trivial command.
+- [ ] `description` is routing truth; no trigger phrases duplicated in body.
+- [ ] Named skills/subagents use behavior keywords unless same-family exception passes swap test.
+- [ ] Subagent: report ends with `status:` (one of `done` `partial` `blocked` `refused` `none`) and `gap:`; every refusal or terminal token maps to a status and is payload, not a replacement.
+- [ ] Subagent: envelope sits inside the fenced output template, and a second fence shows the empty-result or refusal path with a literal non-`done` token.
+- [ ] No dead refs to paths/skills/tools that don't exist.
+- [ ] Templates reference one level deep (not inlined).
+- [ ] Skill's own script refs are bare relative (`scripts/foo`), no `<skill-root>` placeholder, no hardcoded absolute deploy path.
+- [ ] If replacing an artifact: all inbound refs updated or removed.
+- [ ] Ready-to-ship non-trivial artifact received clean-context read-only evaluation; justified findings resolved or recorded.
 
 ## Boundaries
 

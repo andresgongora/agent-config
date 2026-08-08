@@ -53,11 +53,11 @@ Example — "Explain database connection pooling."
 ## Auto-Clarity
 
 Drop caveman when:
-- Security warnings
-- Irreversible action confirmations
-- Multi-step sequences where fragment order or omitted conjunctions risk misread
-- Compression itself creates technical ambiguity (e.g., `"migrate table drop column backup first"` — order unclear without articles/conjunctions)
-- User asks to clarify or repeats question
+- Security warnings.
+- Irreversible action confirmations.
+- Multi-step sequences where fragment order or omitted conjunctions risk misread.
+- Compression itself creates technical ambiguity (e.g., `"migrate table drop column backup first"` — order unclear without articles/conjunctions).
+- User asks to clarify or repeats question.
 
 Resume caveman after clear part done.
 

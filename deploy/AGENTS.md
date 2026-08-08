@@ -22,23 +22,24 @@ Non-trivial, in order:
 3. **Plan.** Dependencies, material uncertainty, risky forks, drift risk, or prior failed attempt: load `planning`. Else plain todo list.
 4. **Route (continuous, not a stage).** Do not pre-select skills. The moment work enters a domain below, load that skill before acting in it. Re-applies whenever the work crosses into a new domain; loads accumulate.
 
-   | Task touches                                 | Load                     |
-   | -------------------------------------------- | ------------------------ |
-   | AI agent directives, agent artifacts, ultra-compressed  | `caveman`                |
-   | code, any language                           | `coding`                 |
-   | unit tests, TDD, coverage                    | `coding-unit-test`       |
-   | writing or editing markdown                  | `artifact-markdown`      |
-   | NixOS friction, nix rebuild                  | `nixos`                  |
-   | git state mutation                           | `git`                    |
-   | commit message                               | `caveman-commit`         |
-   | external facts, docs, errors                 | `web-search`             |
-   | human-facing prose                           | `writing` + `no-ai-slop` |
-   | skills, subagents, commands, agent artifacts | `agent-author`           |
-   | any `AGENTS.md`                              | `agent-agents-md`        |
-   | bulk file cleanup, dupes                     | `file-tidy`              |
-   | post-rework leftover residue                 | `artifact-vestige-hunt`  |
+   | Task touches | Load |
+   |---|---|
+   | AI agent directives, agent artifacts, ultra-compressed | `caveman` |
+   | code, any language | `coding` |
+   | unit tests, TDD, coverage | `coding-unit-test` |
+   | writing or editing markdown | `artifact-markdown` |
+   | NixOS friction, nix rebuild | `nixos` |
+   | git state mutation | `git` |
+   | commit message | `caveman-commit` |
+   | external facts, docs, errors | `web-search` |
+   | human-facing prose | `writing` + `no-ai-slop` |
+   | skills, subagents, commands, agent artifacts | `agent-author` |
+   | any `AGENTS.md` | `agent-agents-md` |
+   | bulk file cleanup, dupes | `file-tidy` |
+   | post-rework leftover residue | `artifact-vestige-hunt` |
+   | AI agent notes | `dods-write` |
 
-5. **Delegate.** Worker considered, arranged, judged, or failed: load `agent-delegate`. Bounded locate, 1-2 file surgical edit, or diff review: load `cavecrew`.
+5. **Delegate.** Delegation considered, arranged, judged, or failed: also load `agent-delegate`. Bounded locate, surgical edit, or diff review: also load `cavecrew` (aka "workcrew", "work-crew").
 6. **Execute.** Report decisions as made. Validate before claiming done.
 7. **Close.** See `## Completion`.
 
@@ -76,14 +77,14 @@ Main context finite. Every exploration transcript, long fetch, dead lead pollute
 
 Forbidden commands = unavailable. No fallback, flag, workaround.
 
-| Forbidden       | Use instead if available                                     |
-| --------------- | ------------------------------------------------------------ |
-| `rm`, `rmdir`   | `trash`                                                      |
-| `timeout <cmd>` | bash tool's own `timeout` param  (eg opencode)               |
+| Forbidden | Use instead if available |
+|---|---|
+| `rm`, `rmdir` | `trash` |
+| `timeout <cmd>` | bash tool's own `timeout` param (eg opencode) |
 
 ## Completion
 
-- After implementation: report changes, validation, risk.
-- Suggest optional next step.
-- Implementation complete: keep state durable. `docs-write` update owned docs for cold fresh session.
+- After implementation: report changes, validation, risk. One line per element, format `🟢<change>: <optional comment>`, `🟡<risk or gap><reason>`, `🔴<error or refused>: <details>`, `❓<question or suggestion>: <details>`.
+- Suggest optional 0-2 next steps, one per line. `➡️<next step>`.
+- Implementation complete, big success: keep state durable. `docs-write`, make note for cold fresh session.
 - Repo shape, entry points, or boundaries moved: `agent-agents-md` refresh the project `AGENTS.md` orientation facts.

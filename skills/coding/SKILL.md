@@ -41,5 +41,5 @@ When no child matches, apply this skill alone.
 ## Verification
 
 - [ ] Nesting: reader must track multiple conditions simultaneously? Extract.
-- [ ] Function responsibility: split only when one name needs “and” or extraction improves clarity
-- [ ] Matching child skill loaded when task needs language, test, or design-specific rules
+- [ ] Function responsibility: split only when one name needs "and" or extraction improves clarity.
+- [ ] Matching child skill loaded when task needs language, test, or design-specific rules.

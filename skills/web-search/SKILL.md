@@ -17,35 +17,35 @@ Search noise dies below main context. Do not invoke scout from main thread.
 Inline only if one obvious source or one trivial fact needs one lookup.
 
 Otherwise call `@web-search` once per research question. Give:
-- **Question:** exact thing to establish
-- **Context:** 1-3 lines; version, product, error, date, constraints
-- **Decision:** why answer matters; answer vs lead vs verification
-- **Mode:** `concise-answer` default | `lead-hunt` | `verify-claim` | `broad-scan`
+- **Question:** exact thing to establish.
+- **Context:** 1-3 lines; version, product, error, date, constraints.
+- **Decision:** why answer matters; answer vs lead vs verification.
+- **Mode:** `concise-answer` default | `lead-hunt` | `verify-claim` | `broad-scan`.
 
 No raw pages, result dumps, or search diary in prompt.
 
 ## Parallelism
 
 Main-thread sibling calls:
-- use only for independent user questions or unrelated research tasks
-- one coordinator per question; wait for all before synthesis
+- use only for independent user questions or unrelated research tasks.
+- one coordinator per question; wait for all before synthesis.
 
 Coordinator fanout:
-- same question; independent source families or genuinely distinct query angles
-- coordinator decides direct search vs scout fanout
-- do not prescribe scout mechanics from main thread
+- same question; independent source families or genuinely distinct query angles.
+- coordinator decides direct search vs scout fanout.
+- do not prescribe scout mechanics from main thread.
 
 Never create duplicate query branches to feel thorough.
 
 ## Read `## Findings`
 
-- `Best answer`: supported answer, or `not established`
-- `Best sources`: evidence worth using now
-- `Useful leads`: promising targets, not established facts
-- `Confidence`: answer certainty, not source attractiveness
-- `Dead angles`: do not retry without new information
-- `Recommended next move`: coordinator advice; main agent still decides
-- `Status`/`Gap`: `none` means ran fully, found nothing — do not retry it; `partial` means `Gap` names an unanswered slice
+- `Best answer`: supported answer, or `not established`.
+- `Best sources`: evidence worth using now.
+- `Useful leads`: promising targets, not established facts.
+- `Confidence`: answer certainty, not source attractiveness.
+- `Dead angles`: do not retry without new information.
+- `Recommended next move`: coordinator advice; main agent still decides.
+- `Status`/`Gap`: `none` means ran fully, found nothing — do not retry it; `partial` means `Gap` names an unanswered slice.
 
 `high`: multiple authoritative or convergent strong sources.
 `medium`: one authoritative source or convergent partial evidence.
