@@ -61,7 +61,20 @@ nix repl
 :lf <nix-repo>
 ```
 
-Then inspect attributes directly. `nix why-depends .#TARGET /nix/store/PATH` for unexpected closure entries.
+Then inspect attributes directly.
+
+**Deployment wants unexpected local builds** — list exact derivations before activation:
+
+```bash
+nix build .#nixosConfigurations.HOST.config.system.build.toplevel --dry-run --print-build-logs
+```
+
+**Trace one listed derivation to its owner** — use exact `.drv` path from dry-run; separately evaluated package attributes may differ after overrides:
+
+```bash
+TOP_DRV=$(nix eval --raw .#nixosConfigurations.HOST.config.system.build.toplevel.drvPath)
+nix why-depends "$TOP_DRV" /nix/store/HASH-PACKAGE.drv
+```
 
 ## Boundaries
 
