@@ -30,4 +30,6 @@ model-aliases.json
 .agent/
 
 # In-review (not ready to commit)
+agents/delegation-coordinator.md
 commands/checkpoint.md
+commands/fanout.md

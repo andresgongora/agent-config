@@ -3,7 +3,7 @@
 name: "<!-- lowercase-hyphenated agent name -->"
 description: "<!-- One physical line. Primary agent: role boundary, not implementation. Subagent: routing truth — exact task, when to choose it, optional non-uses, dense correlated keywords. No stubs/roadmap/other-artifact names. -->"
 
-# Add target-client runtime fields. Pin model explicitly with target field; sampling
+# Add target-client runtime fields. Pin model unless runtime guarantees deliberate caller-model inheritance; then omit it. Sampling
 # only with tested reason. Least privilege: deny before grant where ordered; no broad
 # delegation.
 # Subagent only: declare subagent role. Tools default-deny, grant only need. Command

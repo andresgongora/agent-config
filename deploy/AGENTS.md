@@ -25,6 +25,7 @@ Non-trivial, in order:
    | Task touches | Load |
    |---|---|
    | AI agent directives, agent artifacts, ultra-compressed | `caveman` |
+   | nested delegation execution, mission package | `delegation-execution` |
    | code, any language | `coding` |
    | unit tests, TDD, coverage | `coding-unit-test` |
    | writing or editing markdown | `artifact-markdown` |
@@ -39,7 +40,7 @@ Non-trivial, in order:
    | post-rework leftover residue | `artifact-vestige-hunt` |
    | AI agent notes | `dods-write` |
 
-5. **Delegate.** Delegation considered, arranged, judged, or failed: also load `agent-delegate`. Bounded locate, surgical edit, or diff review: also load `cavecrew` (aka "workcrew", "work-crew").
+5. **Delegate.** Delegation considered, arranged, judged, or failed: also load `delegation`. Bounded locate, surgical edit, or diff review: also load `cavecrew` (aka "workcrew", "work-crew").
 6. **Execute.** Report decisions as made. Validate before claiming done.
 7. **Close.** See `## Completion`.
 
@@ -84,7 +85,10 @@ Forbidden commands = unavailable. No fallback, flag, workaround.
 
 ## Completion
 
-- After implementation: report changes, validation, risk. One line per element, format `🟢<change>: <optional comment>`, `🟡<risk or gap><reason>`, `🔴<error or refused>: <details>`, `❓<question or suggestion>: <details>`.
-- Suggest optional 0-2 next steps, one per line. `➡️<next step>`.
+After implementation:
+
+- Concise summary for user: report, reasoning, risks, validation.
+- Report changes and tasks. Caveman style. One line per element, format `🟢 <change>: <optional summary>`, `🟡 <risk or gap><reason>`, `🔴 <error, refused, unfeasible>: <details>`, `❓ <question, suggestion, unresolved authority>: <details>`.
+- Suggest 0-3 next steps, one per line, non-trivial. `➡️ <next step>`.
 - Implementation complete, big success: keep state durable. `docs-write`, make note for cold fresh session.
 - Repo shape, entry points, or boundaries moved: `agent-agents-md` refresh the project `AGENTS.md` orientation facts.

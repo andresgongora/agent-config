@@ -1,10 +1,10 @@
 ---
-name: agent-delegate
+name: delegation
 description: "Agent delegation rules. Decides whether bounded work belongs in main or a worker, then supervises it: task brief, report evaluation, bounded retry, escalation. Load when generic delegation is considered, arranged, or fails, or when a worker report must be judged. Not for named-worker selection, planning, or focused code, research, or review routing."
 license: MIT
 ---
 
-# Agent Delegation
+# Delegation
 
 Four questions, in order: delegate or not → brief → evaluate report → retry, tier up, or take over.
 
@@ -22,15 +22,13 @@ Evaluate the work, not the question.
 
 Describe needed capability and output shape, not worker name.
 
+Nested delegation execution candidate: one complex self-contained mission, no open authority or user questions, broad judgment needed, implementation detail would pollute main context. Load `delegation-execution` before choosing executor or writing mission package.
+
 ## 2. Brief
 
-Template: `templates/task-brief.md`. Six required fields; optional blocks deleted when empty.
+After gate returns yes, read `templates/worker-prompt.md`; fill required fields, delete empty optional fields. Template carries worker contract and report semantics unavailable from caller's loaded skill state.
 
-- State goal and bounds; worker owns method.
-- Send needed context only. Worker has none of main's history.
-- Name the return shape explicitly, including report envelope (§4).
-- One done-condition, one escalation trigger.
-- Files of interest: `path:line` plus why it matters. Paths without reasons get scanned blindly.
+Send only context worker cannot derive. Files of interest need `path:line` plus reason. Worker owns method. Preserve stricter worker-specific output contracts; mandatory `status:` and `gap:` remain final lines.
 
 ## 3. Chaining
 
@@ -82,13 +80,3 @@ Status orthogonal to payload. Tests failed = `done` with failing result, not `pa
 3. **Take over in main** — blocker is context, authority, or ambiguity.
 
 Same blocker twice → stop, summarize, re-plan. Never bypass a safety or authority refusal.
-
-## 7. Coordinator
-
-Worker that spawns workers; cannot ask user. Worth it only when all hold:
-
-- Three or more independent branches
-- Branches need consolidation
-- Domain narrow enough coordinator needs no main-thread history
-
-Then: coordinator at mid tier; children never recurse; branch count capped; wave completes before synthesis. Copy existing coordinator pattern rather than inventing one.

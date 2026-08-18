@@ -75,7 +75,7 @@ Covers both primary agent definitions and subagents (bounded workers invoked by 
 
 Shared:
 - `name`, `description`. Primary agent: role boundary, not implementation. Subagent: routing truth — first sentence exact task, second when-to-pick-this-agent, optional third non-uses. Optimize subagent description for correct delegation, not brevity.
-- Runtime configuration: target-client schema. Pin model explicitly with target runtime field. Sampling: omit by default; set only deliberate, tested behavior. Least privilege; broad denial before specific grants when schema has ordered permission rules.
+- Runtime configuration: target-client schema. Pin model explicitly unless target runtime guarantees deliberate caller-model inheritance; then omit model field. Sampling: omit by default; set only deliberate, tested behavior. Least privilege; broad denial before specific grants when schema has ordered permission rules.
 - Body: role boundary, what it does NOT do, output contract if structured, stopping/refusal conditions. Do NOT restate `AGENTS.md` rule-policy in the body.
 
 Subagent-only delta:
