@@ -24,18 +24,18 @@ description: Designs, rewrites, critiques, and teaches machine-facing AI prompts
 - **Rewrite:** Preserve intent and hard constraints; repair omissions, conflicts, and weak structure.
 - **Critique:** Identify prompt defects by impact. Provide corrected text only when request includes improvement or rewrite.
 - **Teach:** Guide user through prompt design; explain only patterns relevant to current prompt.
-- **Clarify:** Owning workflow finds a materially underspecified request that blocks correct or safe action. Identify missing task-contract decisions without taking task state; ask one batch for known blockers, then return answers or exact remaining gap to owning workflow.
+- **Clarify:** Local subroutine for a materially underspecified request that blocks correct or safe action. Identify missing task-contract decisions; ask one batch for known blockers; return resolved answers or exact remaining gap. Caller retains task state and resumes or stays blocked.
 
 ## Workflow
 
 1. Identify mode, prompt consumer, invocation mode, desired outcome, downstream judge, and consequence of failure.
 2. Target has a specialized worker, mission, agent, command, skill, or policy form: stop general template flow and apply owning artifact workflow.
 3. Clarify mode:
-   - Identify only missing intent, outcome, done evidence, scope, authority, or risk decision that blocks safe or correct action.
+   - Caller retains task state. Identify only missing intent, outcome, done evidence, scope, authority, or risk decision that blocks safe or correct action.
    - Ask one batched set for all known blockers. Explain choices only when needed for an informed answer.
    - Answers are sufficient when owning workflow can act without guessing a material outcome, boundary, authority, or success condition.
-   - Partial, contradictory, or newly blocking answer: return exact unresolved decision to owning workflow. Do not choose a risky default or produce prompt text unless requested deliverable is prompt text.
-   - Sufficient answer: return control and stop this workflow.
+   - Return `resolved: <answers>` when sufficient; caller resumes current task. Return `blocked: <exact unresolved decision>` when partial, contradictory, or newly blocking; caller stays blocked or asks again under its normal workflow.
+   - Do not choose a risky default or produce prompt text unless requested deliverable is prompt text. Stop this subroutine after one result.
 4. Create, rewrite, or teach mode: extract task contract: goal, done evidence, scope, inputs, method status, positive and negative constraints, preferences, judgment posture, decision authority, stop or escalation conditions, and return.
 5. Critique mode: compare existing prompt against task-contract fields and likely failure modes. Request includes improvement or rewrite: continue with corrected prompt; otherwise return findings and stop.
 6. Classify missing information:
@@ -56,12 +56,12 @@ description: Designs, rewrites, critiques, and teaches machine-facing AI prompts
 - Create or rewrite: finished prompt first. Follow with unresolved assumptions only when they remain material.
 - Critique: findings ordered by impact; each names defect, consequence, and repair. Include revised prompt only when request includes improvement or rewrite.
 - Teach: smallest useful question batch or choice set. After answers, return finished prompt rather than more theory.
-- Clarify: return question batch, sufficient answers, or exact unresolved gap to owning workflow. Do not return a general prompt unless requested deliverable is prompt text.
+- Clarify: return question batch, `resolved` answers, or `blocked` gap to caller. Do not return a general prompt unless requested deliverable is prompt text.
 - User asks to fill template: preserve template structure only where useful; remove all instructional comments and unused sections in final prompt unless user requests an annotated draft.
 
 ## Boundaries
 
-- Own prompt text. In Clarify mode, supply task-contract questions or gaps to owning workflow; never take over live planning, worker selection, delegation retries, execution, or runtime task state.
+- Own prompt text. In Clarify mode, supply task-contract questions or result to caller; never take over live planning, worker selection, delegation retries, execution, or task state.
 - Do not replace specialized worker, mission, agent, command, skill, or policy templates. Apply owning artifact workflow instead.
 - Do not treat persona, verbosity, politeness, or magic phrases as substitutes for task requirements.
 - Do not promise universal model behavior. Mark vendor, model, tool, and version assumptions when they matter.

@@ -36,30 +36,36 @@ Preserve exact paths, commands, error text, quoted text, identifiers, limits, an
 ## Inputs and context
 
 <!--
-REQUIRED when consumer cannot derive inputs. Give minimum sufficient context.
+CONDITIONAL. Keep this section only when consumer cannot derive material inputs or context.
+When kept, retain only fields with content. Give minimum sufficient context.
 Prefer exact artifacts over summaries: paths with relevant lines, URLs, identifiers, versions, quoted errors, supplied data.
 Do not dump unrelated history or files.
 -->
 
 **Inputs:** [Artifacts or data to inspect. State where each comes from.]
 
+<!-- OPTIONAL. Delete when Inputs are self-explanatory. -->
+
 **Context:** [Facts needed to interpret inputs or choose correctly.]
 
-<!-- OPTIONAL. Record settled choices so consumer does not reopen them. -->
+<!-- OPTIONAL. Delete when no settled choices need preserving. -->
 
 **Accepted decisions:** [Decisions already made and their operational consequences.]
 
-<!-- OPTIONAL. Use only for bounded defaults. Never disguise a material unknown as an assumption. -->
+<!-- OPTIONAL. Delete when no bounded defaults apply. Never disguise a material unknown as an assumption. -->
 
 **Assumptions:** [Assumptions consumer may use; how to react if one is false.]
 
-<!-- OPTIONAL but important for mixed or hostile content. Delimit untrusted data and state that instructions inside it are data, not commands. -->
+<!-- OPTIONAL. Delete unless prompt mixes authoritative directions with untrusted content. Delimit untrusted data and state that instructions inside it are data, not commands. -->
 
 **Trust boundary:** [Which instructions are authoritative; which files, pages, messages, or tool results are untrusted content.]
 
 ## Constraints and authority
 
-<!-- REQUIRED for consequential, tool-using, delegated, or no-dialog work. Use exact limits. -->
+<!--
+CONDITIONAL. Keep this section for consequential, tool-using, delegated, or no-dialog work.
+If kept, retain only fields with content. Use exact limits.
+-->
 
 <!-- `Do`/`Don't` are valid alternate labels. Keep positive requirements and exclusions separate. Do not force uncertain gray areas into either list. -->
 
@@ -81,17 +87,17 @@ Do not dump unrelated history or files.
 
 **Judgment posture:** [For candid review, require premise challenges, strongest objection, facts-versus-judgment labels, unknowns, and a plain recommendation. Set directness without requesting hostility.]
 
-<!-- State reversible choices consumer owns. Missing authority is not permission. -->
+<!-- OPTIONAL. Delete when consumer owns no discretionary choices. Missing authority is not permission. -->
 
 **May decide:** [Low-risk decisions consumer can make without asking.]
 
-<!-- Name conditions that require user input, approval, or termination. -->
+<!-- OPTIONAL. Delete when no distinct stop or escalation condition applies. -->
 
 **Stop or escalate when:** [Missing authority, unsafe action, contradictory input, repeated blocker, or scope change.]
 
-<!-- OPTIONAL. Keep when instructions can conflict. Put highest authority first. -->
+<!-- OPTIONAL. Delete unless prompt-local instructions can conflict. This field cannot override applicable higher-authority instructions. -->
 
-**Priority on conflict:** [Safety and platform authority; then Must, Must not, and approval boundaries; then goal; then preferences and proposed approach.]
+**Priority on conflict:** [Within this prompt: safety, Must, Must not, and approval boundaries; then goal; then preferences and proposed approach.]
 
 ## Clarification policy
 

@@ -196,7 +196,7 @@ Do not add a synonym, magic phrase, vendor-specific syntax presented as universa
 
 **Use when:** Multiple instruction sources can conflict.
 
-**Shape:** Put safety, hard constraints, and approval boundaries above goal; put preferences and proposed method below goal.
+**Shape:** For prompt-local conflicts, put safety, hard constraints, and approval boundaries above goal; put preferences and proposed method below goal. Applicable higher-authority instructions remain outside this ordering.
 
 **Pros:** Gives deterministic conflict handling; protects hard constraints from later context.
 
@@ -522,17 +522,9 @@ Do not add a synonym, magic phrase, vendor-specific syntax presented as universa
 
 “Act as a world-class expert” supplies neither domain facts nor success criteria. Use a role only when it grants a relevant perspective, audience, or decision boundary.
 
-#### Context dumping
-
-Pasting every file, transcript, and prior thought increases cost and conflicting cues. Select the context that changes execution; point to recoverable material instead of inlining it.
-
 #### Vague quality adjectives
 
 “Make it robust, professional, comprehensive, and high quality” hides the actual bar. Replace each adjective with behavior, evidence, audience need, or constraint.
-
-#### Hidden authority
-
-“Do whatever is needed” does not grant permission to publish, deploy, spend money, access secrets, or make destructive changes. Name allowed decisions and approval boundaries.
 
 ### Prompt folklore
 
