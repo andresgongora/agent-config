@@ -25,6 +25,7 @@ Non-trivial, in order:
    | Task touches | Load |
    |---|---|
    | AI agent directives, agent artifacts, ultra-compressed | `caveman` |
+   | AI prompt design/review, reusable prompt templates, prompt-contract gaps blocking safe or correct action | `agent-prompt` |
    | nested delegation execution, mission package | `delegation-execution` |
    | code, any language | `coding` |
    | unit tests, TDD, coverage | `coding-unit-test` |
@@ -73,6 +74,10 @@ Main context finite. Every exploration transcript, long fetch, dead lead pollute
 - Cheap model for locating and mechanical work; strong model only where the task needs judgment.
 - Instruct workers in caveman style. Preserve task-critical detail; drop caveman where it would introduce ambiguity.
 - Judge a report by its `status:`/`gap:` fields and its evidence, never its claims.
+
+## Tools
+
+- Bundled skill script `scripts/<script-name>`: before Bash, substitute `<base-directory>/scripts/<script-name>`; replace `<base-directory>` with loader footer `Base directory for this skill` literal path.
 
 ## Shell Restrictions
 

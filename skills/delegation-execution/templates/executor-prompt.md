@@ -1,6 +1,6 @@
 # Nested delegation execution
 
-<!-- Copy into generic executor prompt. Fill every required placeholder. Delete empty optional blocks and all comments. Keep exact paths, commands, errors, authority, and safety constraints. -->
+<!-- Copy into generic executor prompt. Fill every required placeholder. Delete empty optional blocks and all comments. Keep exact paths, commands, errors, authority, and safety constraints. Assess mission-relevant tools and skills before filling Skill assessment. -->
 
 ## Mission package
 
@@ -14,9 +14,10 @@
 **Stop when:** <missing input, authority boundary, repeated blocker, unexpected scope>
 **Return:** <compact evidence receipt below>
 
-## Skills
+## Tool assessment
 
-- Before planning, load `delegation` even when no child delegation is expected, plus <mission-specific skill names plus why, or `none`>. Required skill unavailable: return `blocked`.
+- **Load:** <mission-specific required skills and why, or `none`>. Load before planning. If child delegation is allowed, include `delegation`.
+- Required skill or tool unavailable: return `blocked`.
 
 ## Execution contract
 

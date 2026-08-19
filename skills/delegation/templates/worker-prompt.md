@@ -1,6 +1,6 @@
 # Delegated worker
 
-<!-- Copy only after delegation gate passes. Fill required placeholders. Delete comments and empty optional fields. Preserve exact paths, commands, errors, and constraints. If worker has stricter output contract, keep its payload shape and append status/gap. -->
+<!-- Copy only after delegation gate passes. Fill required placeholders. Delete comments and empty optional fields. Preserve exact paths, commands, errors, and constraints. Assess task-relevant tools and skills before filling Skill assessment. If worker has stricter output contract, keep its payload shape and append status/gap. -->
 
 ## Brief
 
@@ -12,9 +12,10 @@
 **Escalate when:** <stop trigger>
 **Return:** <requested payload and evidence>
 
-## Skills
+## Tool assessment
 
-- Before planning, load <skill names plus why, or `none`>. Required skill unavailable: return `blocked`.
+- **Load:** <required skills plus why, or `none`>. Load before planning.
+- Required skill or tool unavailable: return `blocked`.
 
 ## Contract
 
