@@ -5,8 +5,9 @@ IFS=$'\n\t'
 ##==================================================================================================
 ##	GLOBALS
 ##==================================================================================================
-# High-recall, low-precision candidate scan for vestige markers. Emits path:line:text.
-# Not a verdict — every hit needs the core-mechanic (zero-impact) judgment from SKILL.md.
+## Lexical-marker scan over text selected by installed scanner defaults; no structural signal.
+## Emits scanner-native matching rows, normally path:line:text.
+## Not a verdict; every hit needs core-mechanic zero-impact judgment from SKILL.md.
 declare -r MARKER_PATTERN='no longer|used to|previously|formerly|instead of|we removed|deprecated|note that .*(does not|doesn'"'"'t)|intentionally (not|omit)|deliberately avoid|superseded|legacy|historically|in the past|kept for'
 
 ##==================================================================================================
@@ -30,8 +31,8 @@ scanTarget() {
         grep -rn -H -i -E "$MARKER_PATTERN" -- "$target" || status=$?
     fi
 
-    # 1 = no matches (expected, high-recall scan may find nothing) — success.
-    # Any other nonzero status is a real scanner failure and must not look like a clean scan.
+    ## 1 = no lexical-marker matches; expected success.
+    ## Any other nonzero status is a real scanner failure and must not look like a clean scan.
     if (( status != 0 && status != 1 )); then
         die "Scan failed (exit $status): $target"
     fi

@@ -1,35 +1,43 @@
 # artifact-vestige-hunt
 
-Finds vestigial residue — leftovers of removed behavior that a from-scratch author would never have written in the first place.
+Finds residue that an author designing the current artifact from scratch would omit.
 
 ## Design intent
 
-"Vestige" tracks the giraffe recurrent laryngeal nerve intuition the skill is built on — routing that made sense for an ancestor, kept because nobody re-derives the whole animal from scratch each generation. An AI agent reworking a file behaves the same way: it edits around the old shape instead of re-deriving it, so old shape survives as scar tissue.
+Vestiges survive because maintainers edit around an inherited shape instead of deriving the shortest current path. A rule, code path, or rationale can leave the route from A, rejoin it later, and contribute nothing to reaching B. Removing that whole loop leaves the same endpoint and a clearer route.
 
-The core mechanic is a single test, not a pattern list: _if this were refactored to the same output with ≥90% of its essence retained, what would you cut with guaranteed zero impact?_ Anything that passes is a vestige. The taxonomy in `SKILL.md` exists only to prime the scan; the test is the actual judge, so the skill stays useful on residue that doesn't match any known shape.
+A bend is the same problem in a less obvious shape. One section pushes away from the intended result, then another section compensates and points back. The pair is vestigial only when both can disappear without changing behavior, output, purpose, or maintainability. If straightening the path needs redesign, it is ordinary refactoring and outside this skill.
 
-The `artifact-vestige-hunter` worker uses finding-per-line output: no praise, no preamble.
+A detour is different. A current constraint blocks the direct route, so the deviation prevents a concrete failure. Keep it, but state the obstacle and failure as a current constraint rather than an edit-history story. If the obstacle might be gone but the target does not prove that, report the detour as unresolved instead of guessing.
+
+Two nearby shapes need no new vocabulary in reports. A dead end consumes attention but contributes nothing; existing ghost-step and dead-scaffolding labels cover it. Parallel roads express the same rule twice; superseded wording covers that case. More road terms would add classification work without improving the zero-impact decision.
+
+The core test remains stricter than the analogy: remove a candidate only when outcome is unchanged and maintainability does not decline. Road direction must come from explicit artifact text, supplied context, or supplied behavior evidence, never from guessed design intent. If the endpoint or state equivalence is not established, the candidate remains unresolved. Path shapes help find candidates; the taxonomy in `SKILL.md` labels what the residue looks like. This boundary keeps vestige hunting separate from general simplification.
+
+The `artifact-vestige-hunter` worker uses one finding per line, without praise or preamble.
 
 ## When it triggers
 
 - Post-rework cleanup ("clean this up after the last change", "why is this still here")
-- Suspected negative documentation — comments/prose describing what something no longer does
+- Suspected negative documentation: comments or prose describing what something no longer does
 - Ghost steps in a numbered workflow whose entire content is their own obsolescence
 - Meta commentary in agent-directed text explaining the file's own edit history instead of instructing the executing agent
+- Rule or rationale paths that deviate, compensate, and return to the same outcome
 
 ## When it does NOT trigger
 
 - General code review, correctness checking, or style critique
-- Static dead-code / unused-import analysis — that's a linter's job; this skill targets what linters can't parse (prose, sequence, intent)
+- Static dead-code or unused-import analysis. Linters and compiler tooling own reachability and data-flow proof; this skill targets prose, sequence, and intent.
 - General refactor proposals with no vestige angle
-- Auditing whether an agent-directed artifact is internally aligned with its stated intent — that's `agent-evaluator`'s job. Vestige-hunt asks "is this line deletable with zero impact"; evaluator asks "is this artifact correct and consistent." Both can run on the same file for different questions.
+- Auditing whether an agent-directed artifact is internally aligned with its stated intent. `agent-evaluator` handles that question. Vestige hunting asks whether a segment is deletable with zero impact; evaluation asks whether the artifact is correct and consistent.
 
 ## Maintainer constraints
 
-- Never relocates cut material to a changelog/ADR. Cut, don't relocate — git history is the archive. If a future variant needs relocation behavior, that's a new decision, not a silent addition here.
-- Survivor class (inverse Chesterton's fence — a note preventing re-introduction of something that caused a real failure) stays narrow. If the worker or skill starts keeping things "just in case," that's scope creep against the plan; re-tighten the test, don't add exceptions.
-- `scripts/prefilter` is a marker-word grep only. High recall, low precision, no verdict. Resist adding scoring, config, or an ignore-file — that turns it into a pseudo-linter, which is an explicit non-goal.
+- Never relocates cut material to a changelog or ADR. Git history is the archive. Relocation would be a separate behavior, not a silent extension.
+- Survivor class stays narrow. Keep a detour only for a concrete current obstacle and failure mode. "Just in case" is not evidence.
+- `scripts/prefilter` is a marker-word scan only. Recall applies only to lexical history markers in text selected by installed scanner defaults; it cannot detect structural excursions or bends. Hits require contextual admission before becoming candidates. Scoring, config, and ignore files would turn it into the pseudo-linter this skill rejects.
+- Do not add bare `loop` triggers or prefilter markers. In code, that word usually means iteration, not an outcome-neutral excursion.
 
 ## See also
 
-- `agents/artifact-vestige-hunter.md` — bounded worker applying this skill with compressed output
+- `agents/artifact-vestige-hunter.md`: bounded worker applying this skill with compressed output

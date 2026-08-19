@@ -37,7 +37,7 @@ Non-trivial, in order:
    | skills, subagents, commands, agent artifacts | `agent-author` |
    | any `AGENTS.md` | `agent-agents-md` |
    | bulk file cleanup, dupes | `file-tidy` |
-   | post-rework leftover residue | `artifact-vestige-hunt` |
+   | post-rework residue, outcome-neutral instruction/rationale paths | `artifact-vestige-hunt` |
    | AI agent notes | `dods-write` |
 
 5. **Delegate.** Delegation considered, arranged, judged, or failed: also load `delegation`. Bounded locate, surgical edit, or diff review: also load `cavecrew` (aka "workcrew", "work-crew").
@@ -88,7 +88,7 @@ Forbidden commands = unavailable. No fallback, flag, workaround.
 After implementation:
 
 - Concise summary for user: report, reasoning, risks, validation.
-- Report changes and tasks. Caveman style. One line per element, format `🟢 <change>: <optional summary>`, `🟡 <risk or gap><reason>`, `🔴 <error, refused, unfeasible>: <details>`, `❓ <question, suggestion, unresolved authority>: <details>`.
+- Report changes and tasks. Caveman style. One line per element, single blockno empty line between, format `🟢 <change>: <optional summary>`, `🟡 <risk or gap><reason>`, `🔴 <error, refused, unfeasible>: <details>`, `❓ <question, suggestion, unresolved authority>: <details>`.
 - Suggest 0-3 next steps, one per line, non-trivial. `➡️ <next step>`.
 - Implementation complete, big success: keep state durable. `docs-write`, make note for cold fresh session.
 - Repo shape, entry points, or boundaries moved: `agent-agents-md` refresh the project `AGENTS.md` orientation facts.
