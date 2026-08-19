@@ -12,9 +12,9 @@ permission:
   task: deny
   bash:
     # Intentional local wildcard. Agent frontmatter merges AFTER the whole
-    # global bash ruleset, so this "*" outranks every global allow — this
-    # agent never runs shell commands, deny is absolute regardless of global config.
+    # global bash ruleset, so this "*" outranks every global allow.
     "*": deny
+    "git *": ask
 license: MIT
 ---
 
@@ -108,6 +108,8 @@ Return full report. Keep fields even when empty. When question supplied, answer 
 | Capability fit | ... | ... |
 | Line-wrap hygiene | ... | ... |
 | Density (ultra-compressed, unambiguous) | ... | ... |
+| Templates available to artifact (if any) | ... | ... |
+| Scripts available to artifact (if any) | ... | ... |
 
 ## Minimal revision shape
 - **Keep:** <load-bearing pieces>
