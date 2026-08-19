@@ -39,7 +39,7 @@ Non-trivial, in order:
    | any `AGENTS.md` | `agent-agents-md` |
    | bulk file cleanup, dupes | `file-tidy` |
    | post-rework residue, outcome-neutral instruction/rationale paths | `artifact-vestige-hunt` |
-   | AI agent notes | `dods-write` |
+   | AI agent notes | `docs-write` |
 
 5. **Delegate.** Delegation considered, arranged, judged, or failed: also load `delegation`. Bounded locate, surgical edit, or diff review: also load `cavecrew` (aka "workcrew", "work-crew").
 6. **Execute.** Report decisions as made. Validate before claiming done.

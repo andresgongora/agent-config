@@ -4,14 +4,16 @@
 [![AI Agent Config](https://img.shields.io/badge/AI_Agent-Config-orange)](https://github.com/andresgongora/agent-config)
 [![OpenCode](https://img.shields.io/badge/OpenCode-compatible-7c3aed)](https://opencode.ai)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Buy Me A Coffee](https://img.shields.io/badge/Buy_Me_A_Coffee-tip-yellow)](https://buymeacoffee.com/YOUR_USERNAME)
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy_Me_A_Coffee-tip-yellow)](https://buymeacoffee.com/andresgongora)
 
 Personal AI-agent ecosystem: cross-project rules, skills, subagents, and docs. Designed for [OpenCode](https://opencode.ai) but structured to work with any AGENTS.md-aware client.
 
 The goal is a sharp, lean agent, not a yes-man. It pushes back on weak requests, plans before executing, protects context by delegating isolatable work, and keeps state in durable git-tracked memory so a fresh session picks up cold.
 
 <!------------------------------------------------------------------------------------------------->
+
 ## Setup
+
 <!------------------------------------------------------------------------------------------------->
 
 ### OpenCode
@@ -50,7 +52,9 @@ Verify OpenCode picks up the skill list and subagents by checking the model sele
 - Subagents need client support for spawning named agents. Without it, the main agent absorbs all work.
 
 <!------------------------------------------------------------------------------------------------->
+
 ## Agent-directed instructions
+
 <!------------------------------------------------------------------------------------------------->
 
 ### Agent instructions (`deploy/AGENTS.md`)
@@ -142,7 +146,9 @@ Slash-commands: user-invoked shortcuts that run a fixed prompt.
 | `/plan-execute`    | Execute a durable plan document from `.agent/plan/`                                                     |                                                                         |
 
 <!------------------------------------------------------------------------------------------------->
+
 ## Details about this repo
+
 <!------------------------------------------------------------------------------------------------->
 
 ### Layout
@@ -161,14 +167,18 @@ tools/                  Ad-hoc scripts.
 ```
 
 <!------------------------------------------------------------------------------------------------->
+
 ## Donations
+
 <!------------------------------------------------------------------------------------------------->
 
 If you like this project and want to show your support,
 [buy me a coffee](https://buymeacoffee.com/andresgongora). Caffeine goes in, code comes out.
 
 <!------------------------------------------------------------------------------------------------->
+
 ## License
+
 <!------------------------------------------------------------------------------------------------->
 
 Original files in this repo are [MIT licensed](./LICENSE).
