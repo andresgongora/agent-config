@@ -20,7 +20,7 @@ permission:
     ".agent/plan/*.md": allow
     ".agent/plan/**/*.md": allow
   bash:
-    # Agent-local wildcard intentionally outranks global bash rules; this agent runs no shell commands.
+    ## Agent-local wildcard intentionally outranks global bash rules; this agent runs no shell commands.
     "*": deny
   task:
     "*": deny

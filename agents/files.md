@@ -4,24 +4,24 @@ mode: primary
 model: PERSONAL_LIGHT
 color: "#00BFFF"
 permission:
-  read: deny          # Hard deny — no text content via read tool.
+  read: deny          ## Hard deny — no text content via read tool.
   edit: deny
-  glob: allow         # Pattern matching on paths only, no content.
-  grep: deny          # Content search denied.
+  glob: allow         ## Pattern matching on paths only, no content.
+  grep: deny          ## Content search denied.
   list: allow
   webfetch: deny
   websearch: deny
   task: deny
   bash:
-    # Default deny: no unreviewed generic shell escape can read client data.
-    # Also intentional local wildcard — agent frontmatter merges AFTER the
-    # whole global bash ruleset, so this "*" outranks every global allow;
-    # this agent must re-declare each command it permits below.
+    ## Default deny: no unreviewed generic shell escape can read client data.
+    ## Also intentional local wildcard — agent frontmatter merges AFTER the
+    ## whole global bash ruleset, so this "*" outranks every global allow;
+    ## this agent must re-declare each command it permits below.
     "*": deny
     "exit": allow
     "exit *": allow
 
-    # Navigation and metadata — always allow.
+    ## Navigation and metadata — always allow.
     "ls": allow
     "ls *": allow
     "tree": allow
@@ -35,7 +35,7 @@ permission:
     "sha256sum *": allow
     "fdupes *": allow
     "czkawka_cli *": allow
-    # Permit byte reads only inside metadata/hash tools; output only metadata or digest.
+    ## Permit byte reads only inside metadata/hash tools; output only metadata or digest.
     "exiftool *": deny
     "identify *": deny
     "ffprobe *": deny
@@ -51,7 +51,7 @@ permission:
     "~/.config/opencode/skills/file-tidy/scripts/space-report": allow
     "~/.config/opencode/skills/file-tidy/scripts/space-report *": allow
 
-    # File operations — confirm before each.
+    ## File operations — confirm before each.
     "mv *": ask
     "cp *": ask
     "mkdir *": ask
@@ -59,7 +59,7 @@ permission:
     "trash": ask
     "trash *": ask
 
-    # Archive creation — confirm before each.
+    ## Archive creation — confirm before each.
     "zip *": ask
     "tar -c*": ask
     "tar --create *": ask
@@ -69,7 +69,7 @@ permission:
     "zstd *": ask
     "7z a *": ask
 
-    # Hard deny: content access, extraction, destructive ops.
+    ## Hard deny: content access, extraction, destructive ops.
     "cat *": deny
     "head *": deny
     "tail *": deny

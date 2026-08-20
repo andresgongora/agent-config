@@ -12,20 +12,20 @@ permission:
   websearch: deny
   task: deny
   bash:
-    # Global config (opencode.nix) already covers read-only inspection, shell
-    # no-ops, git read-only, formatters/linters, and skill-script paths. Only
-    # role-specific deltas below.
+    ## Global config (opencode.nix) already covers read-only inspection, shell
+    ## no-ops, git read-only, formatters/linters, and skill-script paths. Only
+    ## role-specific deltas below.
     "git submodule *": allow
     "curl *": allow
     "trash": allow
     "trash *": allow
 
-    # Skill scripts beyond the generic scripts/* shape.
+    ## Skill scripts beyond the generic scripts/* shape.
     "~/.config/opencode/skills/*/eval-viewer/*.py": allow
     "python -m scripts.*": allow
     "python3 -m scripts.*": allow
 
-    # Dev commands — allow.
+    ## Dev commands — allow.
     "npm *": allow
     "pnpm *": allow
     "yarn *": allow
@@ -60,7 +60,7 @@ permission:
     "docker compose config*": allow
     "docker compose ps*": allow
 
-    # Mutations — ask. No silent side effects.
+    ## Mutations — ask. No silent side effects.
     "git commit*": ask
     "git merge*": ask
     "git rebase*": ask
@@ -83,7 +83,7 @@ permission:
     "mkdir -p /*": allow
     "mv *": allow
 
-    # Hard denies — explicit; guard against rule-order shadowing of global.
+    ## Hard denies — explicit; guard against rule-order shadowing of global.
     "rm": deny
     "rm *": deny
     "rmdir": deny

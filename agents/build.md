@@ -12,15 +12,15 @@ permission:
   websearch: allow
   task: allow
   bash:
-    # Global config (opencode.nix) already covers read-only inspection, shell
-    # no-ops, git read-only, formatters/linters, and skill-script paths. Only
-    # role-specific deltas below.
+    ## Global config (opencode.nix) already covers read-only inspection, shell
+    ## no-ops, git read-only, formatters/linters, and skill-script paths. Only
+    ## role-specific deltas below.
     "curl *": allow
     "opencode *": allow
     "trash": allow
     "trash *": allow
 
-    # Agent-specific dev commands — allow.
+    ## Agent-specific dev commands — allow.
     "npm *": allow
     "pnpm *": allow
     "yarn *": allow
@@ -55,7 +55,7 @@ permission:
     "docker compose config*": allow
     "docker compose ps*": allow
 
-    # Mutating repo / system / deploy flows — ask.
+    ## Mutating repo / system / deploy flows — ask.
     "git commit*": ask
     "git merge*": ask
     "git rebase*": ask
@@ -72,13 +72,13 @@ permission:
     "nixos-rebuild *": ask
     "home-manager *": ask
 
-    # Project-local directory creation. Deletion uses `trash` from baseline.
+    ## Project-local directory creation. Deletion uses `trash` from baseline.
     "mkdir *": allow
     "mkdir ./*": allow
     "mkdir -p ./*": allow
     "mv *": ask
 
-    # Hard denies — explicit; guard against rule-order shadowing of global.
+    ## Hard denies — explicit; guard against rule-order shadowing of global.
     "rm": deny
     "rm *": deny
     "rmdir": deny

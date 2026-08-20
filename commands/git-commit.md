@@ -1,5 +1,5 @@
 ---
-description: Plan, show, approve, then create safe atomic Git commits; does not push
+description: "Plan, show, approve, then create safe atomic Git commits; does not push"
 ---
 Create reviewed commits for current repository changes. Apply loaded version-control safety constraints.
 

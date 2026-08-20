@@ -20,16 +20,16 @@ permission:
   skill: allow
   question: allow
   bash:
-    # Global config (opencode.nix) already covers read-only inspection, shell
-    # no-ops, git read-only, formatters/linters, and skill-script paths. Only
-    # role-specific deltas below.
+    ## Global config (opencode.nix) already covers read-only inspection, shell
+    ## no-ops, git read-only, formatters/linters, and skill-script paths. Only
+    ## role-specific deltas below.
     "false *": allow
     "true *": allow
     "opencode *": allow
     "trash": allow
     "trash *": allow
 
-    # Agent-specific system inspection.
+    ## Agent-specific system inspection.
     "ps *": allow
     "pgrep *": allow
     "top *": allow
@@ -47,7 +47,7 @@ permission:
     "systemctl list-*": allow
     "service * status*": allow
 
-    # Networking inspection.
+    ## Networking inspection.
     "ip *": allow
     "ss *": allow
     "netstat *": allow
@@ -59,7 +59,7 @@ permission:
     "traceroute *": allow
     "tracepath *": allow
 
-    # Dev commands.
+    ## Dev commands.
     "npm *": allow
     "pnpm *": allow
     "yarn *": allow
@@ -75,10 +75,10 @@ permission:
     "make *": allow
     "just *": allow
 
-    # Check a warm sudo timestamp only; no privileged command execution.
+    ## Check a warm sudo timestamp only; no privileged command execution.
     "sudo -n -v": allow
 
-    # Mutating / admin — ask.
+    ## Mutating / admin — ask.
     "mv *": ask
     "cp *": ask
     "mkdir *": ask
@@ -117,7 +117,7 @@ permission:
     "nixos-rebuild *": ask
     "home-manager *": ask
 
-    # Hard denies — explicit; guard against rule-order shadowing of global.
+    ## Hard denies — explicit; guard against rule-order shadowing of global.
     "rm": deny
     "rm *": deny
     "rmdir": deny

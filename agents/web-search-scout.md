@@ -21,9 +21,9 @@ permission:
   websearch: allow
   task: deny
   bash:
-    # Intentional local wildcard. Agent frontmatter merges AFTER the whole
-    # global bash ruleset, so this "*" outranks every global allow — this
-    # agent never runs shell commands, deny is absolute regardless of global config.
+    ## Intentional local wildcard. Agent frontmatter merges AFTER the whole
+    ## global bash ruleset, so this "*" outranks every global allow — this
+    ## agent never runs shell commands, deny is absolute regardless of global config.
     "*": deny
     "exit": allow
     "exit *": allow

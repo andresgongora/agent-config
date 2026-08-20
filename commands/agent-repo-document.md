@@ -1,5 +1,5 @@
 ---
-description: Document the repository itself (files, structure, dependencies, architecture, key entry points) as durable current-state memory
+description: "Document the repository itself (files, structure, dependencies, architecture, key entry points) as durable current-state memory"
 ---
 Document the REPOSITORY, not this session, not a diff, not chat history. Target: what files exist, how they're structured, what depends on what, the architecture, and which files matter most for a future agent to know about. `$ARGUMENTS` given: limit scan and output to that subdir or topic only. Absent: whole-repo scope.
 

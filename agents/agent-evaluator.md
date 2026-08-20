@@ -11,8 +11,8 @@ permission:
   websearch: deny
   task: deny
   bash:
-    # Intentional local wildcard. Agent frontmatter merges AFTER the whole
-    # global bash ruleset, so this "*" outranks every global allow.
+    ## Intentional local wildcard. Agent frontmatter merges AFTER the whole
+    ## global bash ruleset, so this "*" outranks every global allow.
     "*": deny
     "git *": ask
 ---
