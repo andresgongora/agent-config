@@ -16,7 +16,6 @@ permission:
     # Broad deny neutralizes global bash grants; later rule permits only owned prefilter.
     "*": deny
     "skills/artifact-vestige-hunt/scripts/prefilter *": allow
-license: MIT
 ---
 
 # Artifact Vestige Hunter

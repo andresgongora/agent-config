@@ -1,7 +1,6 @@
 ---
 name: coding-bash
 description: "Conventions and templates for authoring persistent Bash script files saved at a named path and owned by the user. Load when request produces a Bash script deliverable, extensionless executable included. Do not load for agent-internal Bash, inline one-liners, shell debugging, NixOS config, or Bash that is not itself the deliverable."
-license: MIT
 ---
 
 # coding-bash

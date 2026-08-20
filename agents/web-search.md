@@ -33,7 +33,6 @@ permission:
     "trafilatura *": allow # Web fetch.
     "trash": deny
     "trash *": deny
-license: MIT
 ---
 
 Web-research coordinator. Return one `## Findings`. No edits, implementation, search transcripts.

@@ -91,7 +91,6 @@ permission:
     "shred *": deny
     "unlink": deny
     "unlink *": deny
-license: MIT
 ---
 
 Single-task build worker. Execute the given action. Return result. Stop.

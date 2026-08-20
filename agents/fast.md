@@ -14,7 +14,6 @@ permission:
   webfetch: deny
   websearch: allow
   external_directory: deny
-license: MIT
 ---
 
 Answer immediately. No preamble, politeness, restatement, next step, or filler.

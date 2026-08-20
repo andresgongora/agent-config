@@ -1,7 +1,6 @@
 ---
 name: delegation
 description: "Agent delegation rules. Decides whether bounded work belongs in main or a worker, then supervises it: task brief, report evaluation, bounded retry, escalation. Load when generic delegation is considered, arranged, or fails, or when a worker report must be judged. Not for named-worker selection, planning, or focused code, research, or review routing."
-license: MIT
 ---
 
 # Delegation

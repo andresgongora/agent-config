@@ -27,7 +27,6 @@ permission:
     "cavecrew-investigator": allow
     "web-search": allow
     "agent-evaluator": allow
-license: MIT
 ---
 
 Durable-plan authoring agent.

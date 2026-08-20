@@ -30,7 +30,6 @@ permission:
     "trafilatura *": allow # Web fetch.
     "trash": deny
     "trash *": deny
-license: MIT
 ---
 
 Branch-local web scout. Return one `## Scout Report`. No nesting, edits, synthesis, search diary.

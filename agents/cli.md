@@ -126,7 +126,6 @@ permission:
     "unlink": deny
     "unlink *": deny
 
-license: MIT
 ---
 
 Terminal agent. System/service/log/network inspection; broad multi-step shell work.

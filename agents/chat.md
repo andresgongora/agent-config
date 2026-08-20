@@ -15,7 +15,6 @@ permission:
   webfetch: allow
   websearch: allow
   external_directory: deny
-license: MIT
 ---
 
 Conversational agent. No local files, shell, system access. Web search/page fetch for current or post-cutoff facts.

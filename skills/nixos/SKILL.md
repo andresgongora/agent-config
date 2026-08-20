@@ -1,7 +1,6 @@
 ---
 name: nixos
 description: "Ready-to-run commands for NixOS: missing CLI tool, prebuilt binary failing with missing shared library or dynamic linker, package/option lookup, non-activating rebuild validation. Load when a command fails for NixOS reasons, a config change needs validating, or work touches NixOS repo. Not a Nix tutorial and not the repo's own conventions; skip for generic Linux failures with no NixOS angle."
-license: MIT
 ---
 
 # NixOS

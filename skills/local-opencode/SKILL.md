@@ -1,7 +1,6 @@
 ---
 name: local-opencode
 description: Locate, change, and verify this machine's OpenCode configuration, deployed agent artifacts, and Nix-backed settings. Use for local OpenCode paths, config fields, permissions, agents, commands, plugins, models, or deployment behavior. Not for generic OpenCode questions without this machine's configuration.
-license: MIT
 ---
 
 # Local OpenCode

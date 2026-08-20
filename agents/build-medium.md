@@ -91,7 +91,6 @@ permission:
     "shred *": deny
     "unlink": deny
     "unlink *": deny
-license: MIT
 ---
 
 Bounded multi-step build worker. Execute the given task to a verified done state. Iterate on failures within scope. Return result. Stop.

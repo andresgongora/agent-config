@@ -1,6 +1,5 @@
 ---
 description: Plan, show, approve, then create safe atomic Git commits; does not push
-license: MIT
 ---
 Create reviewed commits for current repository changes. Apply loaded version-control safety constraints.
 

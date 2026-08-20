@@ -15,7 +15,6 @@ permission:
     # global bash ruleset, so this "*" outranks every global allow.
     "*": deny
     "git *": ask
-license: MIT
 ---
 
 # Agent Artifact Evaluator

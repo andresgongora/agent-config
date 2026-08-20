@@ -1,7 +1,6 @@
 ---
 name: artifact-vestige-hunt
 description: "Find vestigial residue in code, docs, or agent-directed text: leftover comments, obsolete steps, outcome-neutral instruction/rationale excursions, paired deviations later canceled, and notes describing removed/superseded behavior. Trigger on post-rework cleanup, \"why is this still here\", negative documentation, ghost steps, and compensating rule paths. Not for ordinary control-flow loops, code review, correctness/style checks, static dead-code analysis, or general refactoring."
-license: MIT
 ---
 
 # artifact-vestige-hunt

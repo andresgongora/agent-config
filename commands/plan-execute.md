@@ -1,6 +1,5 @@
 ---
 description: Execute a durable plan document from .agent/plan/
-license: MIT
 ---
 Plan path: `$ARGUMENTS`. If omitted, check if single plan exists in session, if not → list `.agent/plan/` and ask.
 

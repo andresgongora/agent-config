@@ -1,7 +1,6 @@
 ---
 name: obsidian-plugin
 description: Covers creating, editing, testing, and releasing Obsidian plugins — TypeScript plugin class, manifest.json/versions.json, esbuild pipeline, local vault install for manual testing, community-plugin submission requirements, GitHub release flow. Triggers on "obsidian plugin", manifest.json, main.ts extending Plugin, BRAT beta testing, community plugin review. Not for generic TypeScript/npm work with no Obsidian API involved, not for Obsidian note-taking/vault content itself.
-license: MIT
 ---
 
 # obsidian-plugin
