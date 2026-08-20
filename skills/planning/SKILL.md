@@ -13,7 +13,7 @@ User wording != real goal. Extract:
 - hard constraints, preferences, non-goals
 - assumptions, unknowns, success evidence
 
-Ask only outcome/cost/risk/approach-changing questions. Literal request misses better path: say so. Multiple material paths: give 2-3, one-line tradeoffs, recommendation, ask.
+Ask only outcome-, cost-, risk-, or approach-changing questions. If literal wording misses a better path, say so. For material forks, give 2-3 options with one-line tradeoffs, recommend one, ask.
 
 Lock one sentence before work:
 
@@ -23,18 +23,9 @@ Goal: <outcome>. Constraints: <hard limits>. Out: <non-goals>.
 
 ### Shape
 
-Plan 3-14 outcome milestones. Order: dependency, risk, value, question cost. Retire cheap unknowns early. No micro-steps before current milestone.
+Plan 3-14 outcome milestones. Order by dependency, risk, value, question cost. Retire cheap unknowns early. No micro-steps before current milestone.
 
 Every plan: observable success evidence, stated assumptions. Group mechanical work. "Wire module" beats "add import, save, lint".
-
-### Guardrails
-
-- Unrelated finding: follow-up, never silent work. Anti-drift load-bearing.
-- Low-risk reversible fork: decide, state why, continue.
-- High-risk, one-way, user-visible fork: recommend, ask.
-- Missing/ambiguous material requirement: propose interpretation, ask. Never guess.
-- Two failed blocker attempts: stop, summarize, re-plan. Third needs new evidence.
-- Discovery invalidates plan: show changed milestones/why; confirm material revision.
 
 ## Session path
 

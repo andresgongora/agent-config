@@ -6,6 +6,8 @@ hidden: true
 
 Agent definitions for OpenCode-compatible clients. Primary agents own a broad work mode; subagents handle bounded work and return compact results. Each Markdown file defines its role, model, tools, permissions, and operating rules.
 
+Permission maps resolve last match. Agents place broad `bash: "*": deny` or `ask` before exceptions; hard denies follow broad rules. Frontmatter comments are maintenance notes, not runtime instructions.
+
 ## Agent Evaluator
 
 `agent-evaluator.md` is a read-only subagent for static audits of agent-directed artifacts such as `AGENTS.md`, agent definitions, skills, and commands.

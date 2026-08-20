@@ -7,7 +7,7 @@ description: Locate, change, and verify this machine's OpenCode configuration, d
 
 ## Source map
 
-Never edit deployed paths. Edit source below; user deploys Nix changes.
+Never edit deployed paths; edit mapped source. Ask before deployment/rebuild.
 
 | Need | Editable source | Deployed path | Apply / verify |
 |---|---|---|---|
@@ -24,7 +24,7 @@ Never edit deployed paths. Edit source below; user deploys Nix changes.
 1. Run `opencode --version`. Version gates schema, CLI, defaults, and implementation facts.
 2. Select scope: runtime/TUI config, agent, skill/command/plugin, or project-local override.
 3. Check current field and value before editing. Use references below; do not guess from this skill.
-4. Edit source-map truth. Do not initiate deployment/rebuild.
+4. Edit source-map truth. Deploy or rebuild only after explicit user approval.
 5. Verify resolved state: `opencode debug config` for config; `opencode agent list` for agents and effective permissions.
 
 Project overrides live in project `opencode.json` and `.opencode/{agents,commands,plugins}/`. Check them before blaming global config.

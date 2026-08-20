@@ -21,7 +21,7 @@ Evaluate the work, not the question.
 
 Describe needed capability and output shape, not worker name.
 
-Nested delegation execution candidate: one complex self-contained mission, no open authority or user questions, broad judgment needed, implementation detail would pollute main context. Load `delegation-execution` before choosing executor or writing mission package.
+Nested execution candidate: one complex self-contained mission, no open authority or user questions, broad judgment needed, implementation detail would pollute main context. Route through nested delegation execution before choosing executor or writing mission package.
 
 ## 2. Brief
 

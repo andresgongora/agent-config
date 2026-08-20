@@ -29,7 +29,7 @@ Non-trivial, in order:
    | nested delegation execution, mission package | `delegation-execution` |
    | code, any language | `coding` |
    | unit tests, TDD, coverage | `coding-unit-test` |
-   | writing or editing markdown | `artifact-markdown` |
+   | writing, editing, finishing, or reviewing Markdown | `artifact-markdown` |
    | NixOS friction, nix rebuild | `nixos` |
    | git state mutation | `git` |
    | commit message | `caveman-commit` |
@@ -93,7 +93,7 @@ Forbidden commands = unavailable. No fallback, flag, workaround.
 After implementation:
 
 - Concise summary for user: report, reasoning, risks, validation.
-- Report changes and tasks. Caveman style. One line per element, single blockno empty line between, format `🟢 <change>: <optional summary>`, `🟡 <risk or gap><reason>`, `🔴 <error, refused, unfeasible>: <details>`, `❓ <question, suggestion, unresolved authority>: <details>`.
+- Report changes and tasks. Caveman style. One line per element, single block, no empty lines, format `🟢 <change>: <optional summary>`, `🟡 <risk or gap>: <reason>`, `🔴 <error, refused, unfeasible>: <details>`, `❓ <question, suggestion, unresolved authority>: <details>`.
 - Suggest 0-3 next steps, one per line, non-trivial. `➡️ <next step>`.
 - Implementation complete, big success: keep state durable. `docs-write`, make note for cold fresh session.
 - Repo shape, entry points, or boundaries moved: `agent-agents-md` refresh the project `AGENTS.md` orientation facts.

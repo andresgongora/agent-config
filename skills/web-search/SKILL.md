@@ -34,7 +34,7 @@ Coordinator fanout:
 - coordinator decides direct search vs scout fanout.
 - do not prescribe scout mechanics from main thread.
 
-Never create duplicate query branches to feel thorough.
+Fanout only when distinct branches improve recall or isolate web slop; never for thoroughness alone.
 
 ## Read `## Findings`
 
@@ -58,7 +58,3 @@ Never create duplicate query branches to feel thorough.
 - Use URLs, exact versions, dates, error strings, and caveats unchanged.
 - Dense output. No filler. Fragments OK. Preserve exact technical text.
 - If search target is ambiguous, ask user before delegation.
-
-## Why coordinator exists
-
-One bounded search often cheaper than fanout. Fanout wins only when branches differ enough to improve recall or isolate web slop. Coordinator owns that tradeoff; main agent owns final judgment.

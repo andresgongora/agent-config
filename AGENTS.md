@@ -12,17 +12,17 @@ Repo-local rules for agents authoring / editing skills, subagents, and docs in t
 
 - **Purpose**: personal AI-agent ecosystem — rules, skills, subagents, docs. Optimizes output quality vs token/context cost. Framework-agnostic — deployable to any AGENTS.md-aware AI-agent client.
 - **Consumers**: AI coding agents. No specific client assumed.
-- **Language**: markdown (skills, docs, subagents) + YAML frontmatter. JS in `plugins/`. Bash in `tools/`. Deploy wiring is client-specific and lives outside this repo.
+- **Language**: Markdown + YAML frontmatter; JavaScript/TypeScript in `plugins/`; Bash in `tools/`. External client/Nix deployment wiring lives outside this repo.
 - **Product entry point**: `deploy/AGENTS.md` — the deployed cross-project user-home rules.
 - **Repo entry points** (read first): `README.md`, `.agent/notes/design-principles.md`, `.agent/frontier.md`.
-- **Layout**: `deploy/` deployed user-global rules · `skills/<name>/SKILL.md` LLM-facing skills · `agents/` subagents · `commands/` slash-commands · `plugins/` client-specific JS · `tools/` ad-hoc scripts · `.agent/` durable repo knowledge · `spikes/` gitignored disabled experiments.
+- **Layout**: `deploy/` deployed user-global rules · `skills/<name>/SKILL.md` LLM-facing skills · `agents/` subagents · `commands/` slash-commands · `plugins/` client-specific JS/TypeScript · `tools/` ad-hoc scripts · `.agent/` durable repo knowledge · `spikes/` gitignored disabled experiments.
 - **Not source of truth**: `spikes/` (disabled artifacts, never loaded), `.agent/frontier.md` and `.agent/plan*` (gitignored machine-local state).
 
 ## Directives
 
-- Before adding / changing a skill or subagent: load agent-artifact authoring workflow. Non-negotiable.
+- Before adding / changing a skill, subagent, primary agent definition, or command: load agent-artifact authoring workflow. Non-negotiable.
 - Before touching any `AGENTS.md` (add / change / trim / audit / create): load AGENTS-maintenance workflow. Reject-first.
-- Before adding / restructuring docs under `.agent/`: load documentation workflow.
+- Before adding / restructuring docs under `.agent/`: load owning documentation workflow; discovery-only workflow does not own writes.
 - Before broad scan: check `.agent/frontier.md` for current repo state.
 - Update `.agent/frontier.md` when shape / done / in-progress / next / boundary shifts. Shape / entry-point / boundary moves also update the `## Info` block above.
 - `deploy/AGENTS.md` `## Workflow` step-4 routing table is a curated routing subset, not a complete index of `skills/`. Nothing validates it. Add / rename / delete / re-scope a skill → reconcile that table in the same change. Omission is legitimate when a parent skill routes the child or the skill is user-invoked only; record nothing, just do not let a listed row go stale.
@@ -61,22 +61,6 @@ Reject when:
 - Structure survives compression (headings, tables, frontmatter, code blocks). Only prose compresses.
 - Em dash for aside/appositive only; still avoid. Consequence, sequence, or state transition (condition → action, before → after, step → step): use `→`, not em dash.
 
-### File Placement
-
-- Skill (LLM-facing) → `skills/<name>/SKILL.md`.
-- Skill (human maintainer) → `skills/<name>/README.md`.
-- Skill references/templates → `skills/<name>/<asset>` (flat where possible).
-- Skill executable assets → `skills/<name>/scripts/`; create only when needed, never beside `SKILL.md`.
-- Subagent → `agents/<name>.md`.
-- Nested subagent family → `agents/<family>/`.
-- Cross-cutting design doc → `.agent/notes/<topic>.md`.
-- Task-scoped handoff → `.agent/progress/`.
-- Multi-session plan → `.agent/plan/`.
-- Bug attempts → `.agent/bugs/`.
-- Slash-command → `commands/<name>.md`.
-- Plugin (client-specific, e.g. JS) → `plugins/<name>/`.
-- Ad-hoc script → `tools/<name>`.
-
 ### Adding Artifacts
 
 Owning workflow first: agent-artifact authoring for skills / subagents / commands, documentation workflow for `.agent/` docs, AGENTS-maintenance for any `AGENTS.md`. Those own the procedure. Repo-specific deltas only:
@@ -95,5 +79,5 @@ Owning workflow first: agent-artifact authoring for skills / subagents / command
 
 ## Tools
 
-- **Deploy**: client-specific and out of scope for this repo. The maintainer symlinks / copies these files into their AI-agent client's config dir (see the outer dotfiles / infrastructure repo). Never agent-initiated.
-- **No build / test at repo level** — content is markdown + YAML. Markdown lint config lives in `.markdownlint.json`; formatter scope in `.prettierignore`.
+- **Deploy**: external client/Nix wiring is out of scope; ask before editing it. Repo-owned `tools/install-opencode` manages OpenCode links.
+- **No repository-wide build/test workflow** — Markdown lint config lives in `.markdownlint.json`; plugin packages may have local tooling; formatter scope in `.prettierignore`.
