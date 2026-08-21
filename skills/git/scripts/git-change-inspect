@@ -113,10 +113,10 @@ applyNumstat() {
 
 collectChanges() {
     if [[ $INSPECT_UNSTAGED == true ]]; then
-        applyNumstat unstaged git diff --numstat
+        applyNumstat unstaged git diff --no-renames --numstat
     fi
     if [[ $INSPECT_STAGED == true ]]; then
-        applyNumstat staged git diff --cached --numstat
+        applyNumstat staged git diff --cached --no-renames --numstat
     fi
     if [[ $INSPECT_UNTRACKED == true ]]; then
         collectPaths untracked git ls-files --others --exclude-standard -z
