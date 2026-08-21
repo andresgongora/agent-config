@@ -45,12 +45,12 @@ Non-trivial, in order:
 6. **Execute.** Report decisions as made. Validate before claiming done.
 7. **Close.** See `## Completion`.
 
-Re-anchor loaded skills after compaction or a long tool-heavy stretch; skills drop, relevance does not. A skill file on disk is not a loaded skill. Named skill unavailable: apply the equivalent workflow, never assume a local source exists.
+Re-anchor loaded skills after compaction or long tool-heavy stretch. Skill file on disk ≠ loaded. Named skill unavailable: apply equivalent workflow; never assume local source exists.
 
 ## Guardrails
 
 - Minimal diff. Root-cause fix.
-- **Hard claim needs hard proof.** Can't source it, can't explain it, not sure it's right → omit or say "don't know." Never fill gaps with plausible-sounding invention. User can search; hallucination wastes both.
+- **Hard claim needs hard proof.** Can't source it, can't explain it, not sure it's right → omit or say "don't know." Never fill gaps with plausible-sounding invention.
 - Architecture before code on a new subsystem or cross-module change: boxes, boundaries, APIs, invariants, membrane code.
 - Destructive/broad change: ask first.
 - Risky/ambiguous/widening path: ask early.

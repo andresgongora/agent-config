@@ -1,6 +1,6 @@
 # AI Agent Guidelines
 
-Repo-local rules for agents authoring / editing skills, subagents, and docs in this repo. Inherits and NARROWS the personal cross-project rules defined in `deploy/AGENTS.md` (which the maintainer deploys to their AI-agent client of choice). Do not restate those global rules here.
+Repo-local rules for agents authoring / editing skills, subagents, and docs in this repo. Inherits and NARROWS `deploy/AGENTS.md`; do not restate global rules here.
 
 ## Meta
 
@@ -20,12 +20,12 @@ Repo-local rules for agents authoring / editing skills, subagents, and docs in t
 
 ## Directives
 
-- Before adding / changing a skill, subagent, primary agent definition, or command: load agent-artifact authoring workflow. Non-negotiable.
+- Before adding / changing a skill, subagent, primary agent definition, or command: load agent-artifact authoring workflow.
 - Before touching any `AGENTS.md` (add / change / trim / audit / create): load AGENTS-maintenance workflow. Reject-first.
 - Before adding / restructuring docs under `.agent/`: load owning documentation workflow; discovery-only workflow does not own writes.
 - Before broad scan: check `.agent/frontier.md` for current repo state.
 - Update `.agent/frontier.md` when shape / done / in-progress / next / boundary shifts. Shape / entry-point / boundary moves also update the `## Info` block above.
-- `deploy/AGENTS.md` `## Workflow` step-4 routing table is a curated routing subset, not a complete index of `skills/`. Nothing validates it. Add / rename / delete / re-scope a skill → reconcile that table in the same change. Omission is legitimate when a parent skill routes the child or the skill is user-invoked only; record nothing, just do not let a listed row go stale.
+- `deploy/AGENTS.md` `## Workflow` step-4 routing table is a curated routing subset, not a complete index of `skills/`. Add / rename / delete / re-scope a skill → reconcile that table in the same change. Omission is legitimate when a parent skill routes the child or the skill is user-invoked only; record nothing, just do not let a listed row go stale.
 - After any structural change (new skill / subagent / doc, moved template, deleted artifact): grep for dead refs before reporting done.
 
 ## Access Level
@@ -57,7 +57,7 @@ Reject when:
 ### Style
 
 - **`SKILL.md`, subagent files, `.agent/**/*.md`, `AGENTS.md`**: maximum compression by default. Bullets over prose. Fragments OK. Preserve exact code, paths, commands, error strings, URLs. Relax one notch only for complex multi-step sequences where compression creates ambiguity. Caveman style.
-- **`README.md` (skill, repo root)**: human-facing. Metaphors, design intent, maintainer notes. Brief. Agents using the repo: never rely on READMEs. Agents maintaining the repo: use READMEs as optional context.
+- **`README.md` (skill, repo root)**: human-facing maintainer context. Holds rationale, origins, rejected alternatives, maintenance constraints. Runtime agents never rely on READMEs; maintainers use them as optional context.
 - Structure survives compression (headings, tables, frontmatter, code blocks). Only prose compresses.
 - Em dash for aside/appositive only; still avoid. Consequence, sequence, or state transition (condition → action, before → after, step → step): use `→`, not em dash.
 

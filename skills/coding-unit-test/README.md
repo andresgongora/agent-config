@@ -15,7 +15,7 @@ Inspect-first workflow: follow existing test idiom, choose honest test level, pr
 
 ## Trigger summary
 
-unit tests / TDD / testability / coverage / test framework choice / stable module boundary
+unit tests / TDD / testability / coverage / test framework choice
 
 ## Maintainer constraints
 

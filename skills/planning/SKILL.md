@@ -23,7 +23,7 @@ Goal: <outcome>. Constraints: <hard limits>. Out: <non-goals>.
 
 ### Shape
 
-Plan 3-14 outcome milestones. Order by dependency, risk, value, question cost. Retire cheap unknowns early. No micro-steps before current milestone.
+Plan outcome milestones. Order by dependency, risk, value, question cost. Retire cheap unknowns early. No micro-steps before current milestone.
 
 Every plan: observable success evidence, stated assumptions. Group mechanical work. "Wire module" beats "add import, save, lint".
 
@@ -52,7 +52,7 @@ Decompose only current complex milestone into todos. Mark done live; never batch
 | 2 failed tries, same blocker                | Stop. Summarize. Re-plan. Third try needs new evidence. |
 | Tempted to fix unrelated thing "since here" | STOP. Note as follow-up. Do not touch.                  |
 
-Anti-drift load-bearing: work only current-plan items. Unrelated finding: follow-up note, never silent extra work. Context contamination main enemy. Never make silent irreversible decision.
+Work only current-plan items. Unrelated finding: follow-up note; no silent extra work. Never make silent irreversible decision.
 
 ### Revise
 

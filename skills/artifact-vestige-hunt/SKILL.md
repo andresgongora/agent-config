@@ -5,7 +5,7 @@ description: "Find vestigial residue in code, docs, or agent-directed text: left
 
 # artifact-vestige-hunt
 
-Detect, list deletable residue. Vestige: thing a from-scratch author, never told about removed behavior, would not write. Detection the deliverable — once seen, removal trivial.
+Vestige: thing a from-scratch author, never told about removed behavior, would not write.
 
 ## Core mechanic
 

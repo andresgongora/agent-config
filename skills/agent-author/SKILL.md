@@ -144,16 +144,13 @@ Same-family exception: permit artifacts in one family (e.g. `cavecrew-*`, `agent
 
 | Risk | Mitigation |
 |---|---|
-| Hard-name coupling | Reference by behavior keyword; swap-test before shipping |
+| Hard-name coupling between unrelated skills | Reference by behavior keyword; swap-test before shipping |
 | Duplicate skill/agent | Grep before creating; extend or replace |
-| Verbose skill (marketing prose) | Enforce dense fragment style; reject if reads like a blog |
 | Wide bash allowlist in subagent | Narrow allowlist; default-deny + explicit allows |
 | Command allowlist ignores compound commands | Grant shell no-ops (`exit`, `true`, `continue`, `test`); clients match per sub-command |
 | Baseline grants copied into every primary agent or subagent | Baseline belongs in runtime config; each carries role deltas only |
 | Subagent spawns subagents by default | Scope `permission.task` to specific children only |
-| Skill without README | Always ship both for skills |
 | Inline template cue contradicts SKILL.md rule | Cues are pointers only; full rules stay in SKILL.md |
-| Dead ref after note/artifact deletion | Grep all inbound refs; fix in same change |
 
 ## Verification
 

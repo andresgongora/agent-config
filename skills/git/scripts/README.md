@@ -1,5 +1,11 @@
 # Git scripts
 
+Structured Git-skill helpers for preflight, staging, commits, scanning, re-signing, and maintenance.
+
+## Maintenance boundary
+
+Callers depend on each script's output, exit status, and safety blocks. Preserve those contracts; update affected existing callers, tests, and docs. Update `../SKILL.md` only when workflow, safety, or invocation guidance changes. Do not weaken approval, secret, partial-stage, or history-rewrite guards.
+
 ## git-repo-context
 
 Run from any repository subdirectory. Prints one preflight block: a fixed 6-line header (branch, upstream, remote name/url, ahead/behind counts, toplevel path, short HEAD), then one `STAGED-HINT` line per currently-staged path (or a single `STAGED-HINT\tNONE` line when nothing is staged). Silent otherwise. Never assumes `origin`/`main` — discovers them from the actual upstream/remote config.

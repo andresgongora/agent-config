@@ -36,6 +36,13 @@ Apply rules in this order:
 - Scope constraint honored when user specifies: "fix grammar," "improve flow," "keep structure," "light edit." Apply only what asked.
 - No constraint when user gives text without instruction, says "draft," "rough," or similar.
 
+## Drafting method
+
+1. Inventory supplied facts, decisions, constraints, and material unknowns.
+2. Arrange that material for the reader. Use `## Argument` for claims needing support and `## Paragraph construction` for substantive paragraphs; exempt forms skip paragraph structure only.
+3. Draft only from arranged material. Do not generate connective prose to hide missing support; omit, narrow, or ask under `## Priority and completion`.
+4. Diagnose semantic relationships after drafting. Verbs must fit their objects; modifiers must fit their nouns; comparisons and metaphors must preserve one intelligible relationship. Test figurative wording with a literal paraphrase, but keep it when the relationship remains coherent and it sharpens meaning. Otherwise rewrite it directly.
+
 ## Clarity and precision
 
 - Shortest wording preserving meaning, tone, precision. Main point first; optional context after.

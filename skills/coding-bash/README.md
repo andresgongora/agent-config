@@ -6,7 +6,7 @@ Distills the maintainer's bash scripting conventions into one starter template a
 
 Scripts in `~/Software/scripts/bash-scripts/` share a consistent structure — same shebang, same separator style, same section order, same `requireCommand` pattern. Without this skill, agents write bash that looks right but diverges in small ways that accumulate: unquoted expansions, missing `set -Eeuo pipefail`, wrong separator width, functions without verb prefixes, globals where params should be.
 
-The skill gives agents a single authoritative reference to consult before writing any bash.
+The skill gives agents one authoritative reference for persistent Bash script deliverables.
 
 ## Design intent
 

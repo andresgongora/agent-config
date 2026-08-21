@@ -5,11 +5,7 @@ description: "Agent delegation rules. Decides whether bounded work belongs in ma
 
 # Delegation
 
-Four questions, in order: delegate or not → brief → evaluate report → retry, tier up, or take over.
-
 ## 1. Decision gate
-
-Evaluate the work, not the question.
 
 | Task shape                                      | Delegate? |
 | ----------------------------------------------- | --------- |
@@ -39,7 +35,7 @@ Chain when each hop has a different done-condition. Same condition twice → one
 
 **Single-shot:** site known → skip locate, hand `path:line` directly.
 
-Each hop pays context transfer. Ensure net savings.
+Chain only for net context savings.
 
 ## 4. Report envelope
 

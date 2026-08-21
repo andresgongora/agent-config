@@ -5,8 +5,6 @@ description: "Discover existing repository knowledge cheaply before spending con
 
 # Skill: docs
 
-Discovery of repo knowledge. Find what repo already digested, skip costly re-exploration.
-
 ## Core Rules
 
 1. Cheap discovery first. Source beats docs; digested docs beat blind re-scan.
@@ -27,4 +25,4 @@ Once per session, unless already scanned:
 
 ## When to Switch to Writing
 
-Discovery reveals a gap AND this session produced (or can cheaply settle) durable high-value knowledge worth persisting for future sessions — settled research, hard-won architecture facts, root cause, accepted decision, cross-session handoff: load `docs-write` skill. A bare gap with nothing worth persisting yet does not trigger writing.
+Discovery gap plus settled high-value knowledge: load `docs-write`. Bare gap: do not write.

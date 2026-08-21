@@ -17,7 +17,7 @@ description: "Minimal Markdown completion checks. Load whenever writing, editing
    markdownlint-cli2 -- "$file"
    ```
 
-4. Writing, editing, or finishing: run `prettier --write "$file"` when human-facing format fails; fix lint findings, then rerun applicable checks. Read-only review: report findings; do not modify file.
+4. Writing, editing, or finishing: run `prettier --write "$file"` when human-facing format fails; fix lint, rerun checks. Read-only review: report; do not modify.
 5. Read final file. Check applicable frontmatter, headings, lists and code fences, link syntax, paths, and commands.
 
 ## Heading structure

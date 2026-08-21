@@ -5,8 +5,6 @@ description: "Cross-language coding conventions shared by all or most programmin
 
 # coding
 
-Language-agnostic conventions. Routes to matching child skills.
-
 ## Child skills (routing)
 
 Load matching child skills IN ADDITION to this one when task needs language, test, or design-specific rules.
@@ -22,15 +20,15 @@ When no child matches, apply this skill alone.
 
 ## Core rules
 
-- **Rules are not laws.** If following a rule produces worse code than ignoring it, ignore it. The remedy must not become the disease.
-- **Avoid wrong abstraction.** Prefer the simplest design that preserves clarity. Premature or forced abstraction adds indirection without leverage → wrong abstraction is worse than none.
-- **Minimize coupling.** Shared state and internal deps between components make change harder. Design for independence; coupling erases abstraction's benefit.
+- Ignore a rule that produces worse code.
+- **Avoid wrong abstraction.** Prefer simplest clear design; premature/forced abstraction adds indirection without leverage.
+- **Minimize coupling.** Shared state and internal deps impede change; design for independence.
 - **Name abstractions by concrete role.** Avoid generic buckets (`Base`, `Abstract`, `Utils`, `Manager`). Generic names conceal purpose and attract unrelated responsibilities.
 - **Single responsibility.** Each function does one thing. If a name needs "and" to describe it, split it.
 - **Shallow nesting.** When nesting forces the reader to track multiple simultaneous conditions, extract. Depth is a proxy → extract when readability demands it, not on a fixed count.
 - **Guard early, return early.** Prefer early exit over nested conditionals.
-- **Verbose intent-revealing names** over terse abbreviations. Reader decodes nothing.
-- **Comments explain why, not what.** Restatement is noise → delete it. Reserve comments for reasoning code can't express.
+- **Prefer intent-revealing names** over terse abbreviations.
+- **Comments explain rationale code cannot.** Delete restatement.
 
 ## Boundaries
 
