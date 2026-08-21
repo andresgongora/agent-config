@@ -15,7 +15,7 @@ description: "Agent delegation rules. Decides whether bounded work belongs in ma
 | Brief + report tokens > inline tokens           | No        |
 | Bounded scope, checkable result, compact return | Yes       |
 
-Describe needed capability and output shape, not worker name.
+Describe capability + output shape, not worker name.
 
 Nested execution candidate: one complex self-contained mission, no open authority or user questions, broad judgment needed, implementation detail would pollute main context. Route through nested delegation execution before choosing executor or writing mission package.
 

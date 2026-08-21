@@ -7,7 +7,7 @@ description: "Cross-language coding conventions shared by all or most programmin
 
 ## Child skills (routing)
 
-Load matching child skills IN ADDITION to this one when task needs language, test, or design-specific rules.
+Load every matching child skill for language, test, or design rules.
 
 | Language / target | Child skill |
 |---|---|
@@ -33,7 +33,6 @@ When no child matches, apply this skill alone.
 ## Boundaries
 
 - Defer language-specific rules (syntax, idiom, tooling) to the matching child skill.
-- New language-agnostic rules added only when durable patterns emerge — not speculatively.
 
 ## Verification
 

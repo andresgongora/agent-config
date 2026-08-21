@@ -15,7 +15,7 @@ User wording != real goal. Extract:
 
 Ask only outcome-, cost-, risk-, or approach-changing questions. If literal wording misses a better path, say so. For material forks, give 2-3 options with one-line tradeoffs, recommend one, ask.
 
-Lock one sentence before work:
+Before work, lock:
 
 ```text
 Goal: <outcome>. Constraints: <hard limits>. Out: <non-goals>.

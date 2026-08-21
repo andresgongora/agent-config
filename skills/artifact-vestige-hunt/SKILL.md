@@ -17,7 +17,7 @@ Establish current purpose, outcomes, constraints, and relevant state only from e
 - **Canceling bend**: rule, branch, or rationale pushes away from stated outcome; later material compensates and restores it. Test deviation plus compensation as one unit. If cutting both preserves every evidenced outcome/constraint with no maintainability loss, vestige. If straightening needs redesign, not this skill.
 - **Required detour**: current obstacle forces deviation. KEEP only when obstacle and failure caused by removing detour are concrete. Rewrite history as current-state constraint. Obstacle existence unknown → UNRESOLVED.
 
-Path shapes describe structure. Taxonomy labels describe residue manifestation; do not add a second label to findings.
+Shapes locate; taxonomy labels. One label per finding.
 
 ## Taxonomy
 
@@ -49,7 +49,7 @@ Third row narrow. Claim survivor only with current obstacle + concrete failure m
 Finding: `path:line — <label> — one-line why it passes zero-impact test`. Labels: `negative-doc`, `ghost-step`, `meta-residue`, `dead-scaffolding`, `superseded-wording`, `defensive-apology`.
 Survivor: `path:line — KEEP — current obstacle + concrete failure mode this segment prevents`.
 Can't classify admitted semantic candidate with evidence at hand: `path:line — UNRESOLVED — what's missing to decide`. Never force KEEP or vestige without concrete basis. Never silently drop admitted candidate; proven lexical false positive never enters classification.
-Zero findings: state plainly, don't force output.
+No findings: say so; do not force findings.
 
 ## Workflow
 
