@@ -63,7 +63,7 @@ printf 'path/a\0path/b\0' | ~/.config/opencode/skills/git/scripts/git-stage-grou
 ~/.config/opencode/skills/git/scripts/git-stage-group --paths-file paths.bin
 ```
 
-`--unstage-all` resets the index to HEAD. Before resetting (either mode), checks for partial-hunk staging: any path with BOTH staged and unstaged changes blocks with an explicit list and no override flag — that state means the user hand-staged specific hunks; they must fully stage or fully unstage the listed files outside this script, then retry. No globs; any path containing `*`/`?` or naming a directory is rejected. Stage mode verifies the resulting staged set exactly matches the requested set, or dies listing the mismatch and leaves the index clean. Structured success output only: one `OK:` line, nothing else. Never touches working-tree file content.
+`--unstage-all` resets the index to HEAD. Before resetting (either mode), checks for partial-hunk staging: any path with BOTH staged and unstaged changes blocks with an explicit list and no override flag — that state means the user hand-staged specific hunks; they must fully stage or fully unstage the listed files outside this script, then retry. No globs; any path containing `*`/`?` or naming a directory is rejected. Stage mode verifies the resulting staged set exactly matches the requested set, or dies listing the mismatch and leaves the index clean. Structured success output only: one `OK:` line, nothing else. Never touches working-tree file content. Submodule gitlinks are directory paths and must be staged separately with exact native `git add -- <submodule-path>` after the referenced submodule is clean.
 
 ## git-commit-group
 

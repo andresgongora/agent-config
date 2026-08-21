@@ -8,7 +8,7 @@ description: "Git safety constraints for state-mutating work: staging, committin
 ## Mutation guardrails
 
 1. Inspect repository state, current branch, recent history, and relevant diff before Git mutation.
-2. Stage exact intended file paths only, via `scripts/git-stage-group`. No directories, globs, `git add .`, `git add -u`, or `git commit -a`.
+2. Stage exact intended file paths only, via `scripts/git-stage-group`. Gitlinks are exception: after verifying referenced submodule clean, stage exact parent gitlink only with `git add -- <submodule-path>`. No other directories, globs, `git add .`, `git add -u`, or `git commit -a`.
 3. Dirty tree before branch movement, merge, or rebase: stop and assess.
 4. Pre-existing staged content is reversible input, not a blocker. Command-specific flow can unstage and restage it while forming groups. This skill only requires the partial-hunk guard below before any reset. Unrelated changes outside the task's own scope: stop and ask.
 5. Prefer reversible operations. No shared-history rewrite, destructive cleanup, or branch deletion without explicit user approval.
@@ -27,6 +27,13 @@ description: "Git safety constraints for state-mutating work: staging, committin
 - Identity findings: staged `$HOME`/`/home/$USER` paths and username are hard blocks. Full-name-like text is warning severity, but stop transaction until user explicitly accepts identity exposure; then rerun scanner with `--accept-identity-exposure`. `--skip-identity-scan` also requires explicit user approval.
 - Re-run detection and scan after any staged-content change.
 - Commit message: concise, imperative, project-consistent. Use a message-only workflow when requested; it does not own staging or commit execution.
+
+## Submodules
+
+- Before parent mutation, inspect all registered submodules recursively, then inspect initialized children. Do not initialize, update, fetch, reset, or discard them without explicit user request.
+- Uninitialized or conflicted submodule: stop, report, ask user what to do. Dirty submodule: ask whether to commit recursively, leave its changes and parent gitlink out, or cancel.
+- Recursive commit: complete child transactions deepest first, with child-specific inspection and approval. Parent commit begins only after referenced submodules are clean.
+- Gitlink is parent index entry, not file. Keep it in approved expected-path list and stage it only through exact native `git add -- <submodule-path>`; `scripts/git-stage-group` rejects directory paths.
 
 ## Commit transaction boundary
 
