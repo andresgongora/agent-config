@@ -3,8 +3,6 @@ name: docs
 description: "Discover existing repository knowledge cheaply before spending context on exploration. Load on non-trivial repo work: before a grep/glob/read sweep of an unfamiliar area, before answering how something works in this repo, when a past session may already have settled the question, when onboarding to a repo, or when a repo has an `.agent/` directory. Scans `.agent/` doc frontmatter via inventory script, full-reads only task-relevant docs, falls back to README. Not for writing, updating, or pruning docs; not for trivial one-answer requests or an already-known file path."
 ---
 
-# Skill: docs
-
 ## Core Rules
 
 1. Cheap discovery first. Source beats docs; digested docs beat blind re-scan.

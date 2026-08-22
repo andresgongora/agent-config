@@ -3,8 +3,6 @@ name: artifact-markdown
 description: "Minimal Markdown completion checks. Load whenever writing, editing, finishing, or reviewing Markdown files (`*.md`, `*.markdown`). Not for prose/content guidance or broader documentation workflow."
 ---
 
-# Local Markdown
-
 ## Finish
 
 1. Preserve nearest repository Markdown conventions and tool configuration.

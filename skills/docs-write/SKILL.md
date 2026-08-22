@@ -3,8 +3,6 @@ name: docs-write
 description: "Write side of repository knowledge: admit, shape, place, update, and prune durable `.agent/` docs. Load when a session has produced knowledge worth persisting because re-obtaining it later would be expensive — settled research conclusion, hard-won architecture or design fact, resolved root cause, accepted design decision, cross-session handoff, or bootstrapping a missing repo doc with a clear future consumer. Also load when starting or updating a costly-to-lose bug-attempt log (`.agent/bugs/`) or a task handoff note (`.agent/progress/`), or when a workflow needs the managed-doc frontmatter schema or `.agent/` placement rules. A bare documentation gap does not trigger this; establish the value first. Not for reading or discovery."
 ---
 
-# Skill: docs-write
-
 Persist session knowledge as durable `.agent/` docs. Two tiers: Tier 1 rules apply to every write; Tier 2 value bar gates creating a new note.
 
 ## Admission Gate
@@ -47,7 +45,6 @@ title: <clear title>
 description: <1-2 sentence why-this-exists; the routing line>
 status: draft|active|stale|resolved|archived|done
 updated: YYYY-MM-DD
-# External-source metadata — `source:` REQUIRED if any content came from outside:
 source: https://example.com
 references: https://example.com/spec   # optional supplementary
 ---

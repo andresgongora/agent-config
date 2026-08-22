@@ -3,8 +3,6 @@ name: file-tidy
 description: "Metadata-only file collection maintenance: disk-space inventory, safe duplicate and near-duplicate candidate detection, filename cleanup, review queues, collision-safe rename or move plans, and trash-based cleanup. Never load file content. Use for messy downloads, media libraries, duplicate files, reclaiming space, bulk naming, or sorting folders. If scope contains Git repositories, route Git space, health, or cleanup work to version-control workflow. Not disk hardware health, partitions, filesystem repair, Git mutation, code/document inspection, or irreversible deletion."
 ---
 
-# File Tidy
-
 ## Boundary
 
 - Never read, print, extract, search, preview, transcribe, or summarize file content.

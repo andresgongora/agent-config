@@ -3,8 +3,6 @@ name: agent-agents-md
 description: "Maintain any file named `AGENTS.md` at any scope: add, change, trim, audit, or create. Decide which scope in the inheritance chain owns a rule. Reject rules that belong elsewhere. Rewrite user wording into durable dense intent. Trigger: `AGENTS.md`, agent rule, agent policy file, repo/global agent instructions. Not for skill files, subagent files, primary agent definitions, slash commands, or general project docs."
 ---
 
-# Skill: agent-agents-md
-
 Specialization of the generic agent-artifact authoring workflow. That workflow's rules (reject-first, dense agent-facing style, no dead refs, no stubs, frontmatter/body split) still apply — not repeated here. This file covers only what is specific to `AGENTS.md`.
 
 `AGENTS.md` loads every session in its scope. Every line is a permanent tax on every future session. Admission bar is higher than any other artifact.

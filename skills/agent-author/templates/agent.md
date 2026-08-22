@@ -10,8 +10,6 @@ description: "<!-- One physical line. Primary agent: role boundary, not implemen
 # access narrow. Delegation: named children only, never broad grant.
 ---
 
-# <!-- Agent Name -->
-
 <!-- Define role, non-uses, structured output if needed, stopping/refusal conditions.
      Dense, imperative, exact prose. Replace/remove all placeholders, comments, empty
      sections, and examples. Ready non-trivial artifact: clean-context, read-only final

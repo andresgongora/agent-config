@@ -3,8 +3,6 @@ name: coding-python
 description: "Python development convention. Load when writing, editing, or reviewing Python code, Python packages, or Python project commands. Use alongside cross-language coding conventions. Not for agent-internal non-Python commands, non-Python deliverables, or Python test policy."
 ---
 
-# coding-python
-
 ## Core rules
 
 - Inspect project instructions, `pyproject.toml`, lockfiles, and existing commands before selecting tooling. Existing project tooling wins.

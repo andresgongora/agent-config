@@ -3,8 +3,6 @@ name: web-youtube
 description: "Fetches YouTube video or channel metadata, captions, transcripts, and transcript-based summaries with yt-dlp. Use for YouTube URLs, video transcripts, caption availability, or video summaries. Not for broad web research, unsupported-platform URLs, media downloads, or generating a transcript from audio."
 ---
 
-# web-youtube
-
 ## Core rules
 
 - Use `yt-dlp`; fetch metadata and captions without media download.

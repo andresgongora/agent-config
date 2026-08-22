@@ -3,8 +3,6 @@ name: agent-prompt
 description: Designs, rewrites, critiques, and teaches machine-facing AI prompts using explicit task contracts, bounded context, decision authority, examples, tool and source rules, structured returns, and verifiable completion. Use for prompt creation, prompt review, reusable prompt templates, evaluator prompts, or tool-using prompts. Also helps an owning workflow identify missing prompt-contract decisions when a materially underspecified request prevents safe or correct action; it does not own live task state, delegation supervision, agent artifact files, policy files, or human-facing prose.
 ---
 
-# Agent Prompt
-
 ## Core rules
 
 - Contract before wording. Define outcome, completion evidence, scope, inputs, constraints, authority, stop conditions, and return before polishing prose.

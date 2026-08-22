@@ -3,8 +3,6 @@ name: agent-author
 description: "Workflow for creating, editing, or reviewing agent ecosystem artifacts: skill files (SKILL.md), subagent files (agents/*.md), primary agent definitions, and slash commands (commands/*.md). Load when authoring or auditing any of these four file forms. Not for any file named `AGENTS.md` — rule policy, edits, audits, and creation all belong to the AGENTS.md-maintenance behavior. Not for prose writing, code, or general docs."
 ---
 
-# agent-author
-
 ## Core rules
 
 - Reject-first. Every new artifact must earn its place. Default answer: no. Bloat is the main failure mode.
@@ -16,6 +14,7 @@ description: "Workflow for creating, editing, or reviewing agent ecosystem artif
 - Steps, ordered instructions, warnings: apply STE100 (ASD Simplified Technical English) principles — one term per concept, active voice, short direct sentences — where ambiguity would cost the executing agent. Recommendation, not a gate: exact jargon or a denser precise term wins when STE100 phrasing would blur meaning. Skip for reference tables, frontmatter, and non-instructional prose.
 - WHAT + HOW in artifact; WHY → README. Exception: keep WHY in artifact when executing agent needs it to act correctly; keep routing-relevant WHY in frontmatter.
 - No stubs. Artifact holds only text the executing agent needs. Maintainer-facing meta — obsolete-decision residue, "no longer handles X", "removed per request", inverse rules with no active concern — goes to README, never the body.
+- Agent-directed artifacts omit H1. Frontmatter and path identify artifact; start body with directive or `##` section. Exception: literal output template requiring H1.
 - No dead refs. Every path, skill, tool named must exist at ship time.
 - Ship paired: every skill folder needs both `SKILL.md` (LLM-facing) and `README.md` (human/maintainer). Subagents do NOT need a README.
 - Check for duplicates before creating. Grep `skills/` and `agents/` first. Extend or replace; never add a competitor.
@@ -56,7 +55,7 @@ Frontmatter (see Frontmatter section):
 - `description`: third-person, ≤4 sentences, trigger phrases + explicit non-triggers. Routing truth lives here; do NOT repeat in body.
 
 Body rules:
-- One `#` title, shallow `##` sections only (no `###`).
+- Shallow `##` sections only (no `###`).
 - Flat bullets for policy; numbered lists only for ordered workflow.
 - ≤ ~500 lines total; bulky templates/examples → one-level-deep reference files, link from body.
 - Body = post-load behavior (workflow, boundaries, decision rules, output contract). Never trigger text.

@@ -17,8 +17,6 @@ permission:
     "git *": ask
 ---
 
-# Agent Artifact Evaluator
-
 Read-only static evaluator. Find source-evidenced severe misalignment, contradictory direction, unsound scope, and obvious execution gaps at minimum context cost. Cannot observe true intent, assembled runtime context, target-client behavior, or model execution. Brutally honest, evidence-led, no praise, no rewrite.
 
 ## Input

@@ -3,8 +3,6 @@ name: coding-bash
 description: "Conventions and templates for authoring persistent Bash script files saved at a named path and owned by the user. Load when request produces a Bash script deliverable, extensionless executable included. Do not load for agent-internal Bash, inline one-liners, shell debugging, NixOS config, or Bash that is not itself the deliverable."
 ---
 
-# coding-bash
-
 New scripts follow these conventions. Existing scripts retain established local conventions; edit only requested surface unless migration is requested.
 
 ## File shape

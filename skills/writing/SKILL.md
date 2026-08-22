@@ -3,8 +3,6 @@ name: writing
 description: "Use ONLY when composing or substantially rewriting reader-facing prose meant to communicate, including emails, official correspondence, public statements, blog posts, proposals, and articles. Do not use for quick messages, technical addenda, code comments, changelogs, commit messages, internal notes, or mechanical anti-pattern cleanup alone."
 ---
 
-# Written Communication
-
 Goal: reader understanding or action.
 
 ## Priority and completion

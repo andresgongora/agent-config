@@ -3,8 +3,6 @@ name: delegation-execution
 description: "Prepares nested delegation execution: decides whether one self-contained complex mission should move from main context into an existing generic subagent, closes material questions, builds a complete mission package, and selects that executor. Load for main-middle-subsub execution, context-firewall handoffs, or complex implementation chunks that need broad judgment plus optional leaf delegation. Not for ordinary bounded delegation, standalone focused-worker selection, unclear work, or missions needing user dialogue during execution."
 ---
 
-# Delegation Execution
-
 Nested delegation execution: main hands one frozen mission package to a generic executor. Executor owns implementation and local integration; may delegate bounded leaves when useful. Main keeps user intent, cross-mission decisions, and final acceptance.
 
 ## Admission gate
