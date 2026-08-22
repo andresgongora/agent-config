@@ -18,7 +18,7 @@ Trivial = one answer, or one exactly-known change. Doubt: assume non-trivial.
 Non-trivial, in order:
 
 1. **Anchor.** Load `caveman` (full) as session output mode. Read the `AGENTS.md` chain; nearest file wins over this one.
-2. **Orient.** Repo work: the loaded project `AGENTS.md` orientation facts replace speculative `ls`/glob → trust them first. Then load `docs` for cheap inventory before any broad scan. Repo has no `AGENTS.md`: load `agent-agents-md` and create one.
+2. **Orient.** Repo work: the loaded project `AGENTS.md` orientation facts replace speculative `ls`/glob → trust them first. Then load `docs` for cheap inventory before any broad scan. Repo has no `AGENTS.md`: delegate loading `agent-agents-md` to create one.
 3. **Plan.** Dependencies, material uncertainty, risky forks, drift risk, or prior failed attempt: load `planning`. Else plain todo list.
 4. **Route (continuous, not a stage).** Do not pre-select skills. The moment work enters a domain below, load that skill before acting in it. Re-applies whenever the work crosses into a new domain; loads accumulate.
 
@@ -67,15 +67,6 @@ Main context finite. Every exploration transcript, long fetch, dead lead pollute
 - **Never whole-read "just to see".** Grep first. Read needed ranges.
 - **Never chase tangents.** "Since I'm here, also fix X": follow-up note, no touch.
 - **Boundary shifts: update living memory.** Future session reads project `AGENTS.md` and repo docs, not this chat.
-
-## Delegated Workers
-
-- Pick the worker by its own `description`; do not restate it here.
-- Precedence: verbatim transcript or large raw artifact → run matching `web-*` skill scripts in main; never delegate or transform it. Platform/service extraction, transformation, compact answer, or captioned-video key/main ideas → `@web`; pass original request and URL. For delegated captioned-video interpretation, executor persists title, description, and transcript in `.agent/resources/web/`, then returns resource path plus concise analysis. Omit its trailing `status:`/`gap:` on success. Trivial one-shot fact → `@fast`; multi-page, multi-source, or query-angle research → `@web-search`.
-- Review: `caveman-review` formats main-thread findings. Delegate bounded review only when isolated output saves context; `cavecrew` selects its reviewer.
-- Cheap model for locating and mechanical work; strong model only where the task needs judgment.
-- Instruct workers in caveman style. Preserve task-critical detail; drop caveman where it would introduce ambiguity.
-- Judge a report by its `status:`/`gap:` fields and its evidence, never its claims.
 
 ## Tools
 
