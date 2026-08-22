@@ -42,7 +42,7 @@ Every managed `.agent/**/*.md` starts with:
 ```yaml
 ---
 title: <clear title>
-description: <1-2 sentence why-this-exists; the routing line>
+description: "<1-2 sentence why-this-exists; the routing line>"
 status: draft|active|stale|resolved|archived|done
 updated: YYYY-MM-DD
 source: https://example.com
@@ -50,7 +50,7 @@ references: https://example.com/spec   # optional supplementary
 ---
 ```
 
-- `description:`: written so a future agent decides read-or-skip without opening body. Same routing job as a skill's `description`; one physical line, dense, concrete. Value contains `: ` or starts with a YAML indicator: double-quote it. Never fold across lines.
+- `description:`: written so a future agent decides read-or-skip without opening body. One physical line, dense, concrete, double-quoted. Never fold across lines.
 - `updated:`: real date of last substantive change.
 - Any external-source content (web, manual, API, spec) MUST carry `source:`. `references:` never substitutes for it. No source = unverifiable claim.
 - Managed docs use canonical keys. Discovery tolerates aliases (`name`, `summary`, `lastmod`, `date`) on foreign files only.
