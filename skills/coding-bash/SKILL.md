@@ -11,9 +11,12 @@ New scripts follow these conventions. Existing scripts retain established local 
 - Line 2: `set -Eeuo pipefail` — line 3: `IFS=$'\n\t'`.
 - Indent: 4 spaces (never tabs).
 - Line width: 100 chars max.
-- Use decorator comments for sections:
-  - Section separators: `##` + 98 `=` chars (100 total), followed by `##<TAB><ALL CAPS>` header.
-  - Sub-section separators: `##` + 98 `-` chars (100 total), followed by `##<TAB>` title, closed by another `##` + 98 `-` chars line.
+- Use contiguous three-line decorator blocks immediately before section content:
+  - Section: `##` + 98 `=` chars → `##<TAB><ALL CAPS>` → the identical `=` separator.
+  - Sub-section: `##` + 98 `-` chars → `##<TAB><TITLE>` → the identical `-` separator.
+  - Keep the block itself free of blank lines. Put exactly one blank line immediately above its first separator and below its closing separator; this buffer is mandatory for top-level `=` blocks.
+  - Omit unused sections with their complete decorator block. Never omit the closing line or reuse one separator as two adjacent blocks' boundary.
+  - End the file with its final body or entry-point command, never a trailing separator.
 
 ## Names and scope
 
@@ -111,4 +114,9 @@ New scripts follow these conventions. Existing scripts retain established local 
 - Existing script:
   - [ ] Touched surface preserves established local naming, structure, and comment conventions.
   - [ ] No unrelated style migration or template boilerplate.
+- Decorators:
+  - [ ] Every section uses one contiguous separator → header → identical separator block; unused sections are omitted.
+  - [ ] Section headers use `##<TAB><ALL CAPS>`; sub-section titles use `##<TAB><TITLE>`.
+  - [ ] Every decorator block has exactly one empty line above and below; code never touches a separator directly.
+  - [ ] No separator follows the final section body or entry-point command.
 - All scripts: `bash -n "$script_path"` exits 0; `shellcheck` clean when available, otherwise gap reported.

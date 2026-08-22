@@ -1,12 +1,29 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -Eeuo pipefail
+IFS=$'\n\t'
 
+## Source path is computed from BASH_SOURCE; ShellCheck cannot resolve it.
+# shellcheck disable=SC1091
 source "${BASH_SOURCE[0]%/*}/common.bash"
+
+##==================================================================================================
+##	DEPENDENCY CHECKS
+##==================================================================================================
+
 require_commands find realpath wc
+
+##==================================================================================================
+##	GLOBALS
+##==================================================================================================
 
 show=false
 directory=.
 directory_set=false
+
+##==================================================================================================
+##	ARGUMENT PARSING
+##==================================================================================================
+
 while (($#)); do
   case $1 in
     --show) show=true ;;
@@ -18,11 +35,19 @@ while (($#)); do
 done
 root=$(scope_root "$directory")
 
+##==================================================================================================
+##	CORE FUNCTIONS
+##==================================================================================================
+
 is_reserved() {
   local base=${1%.*}
   case ${base^^} in CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9]) return 0 ;; esac
   return 1
 }
+
+##==================================================================================================
+##	MAIN
+##==================================================================================================
 
 files=0 invalid=0 reserved=0 long=0 dotty=0
 invalid_shown=0 reserved_shown=0 long_shown=0 dotty_shown=0
@@ -31,7 +56,7 @@ while IFS= read -r -d '' path; do
   name=${path##*/}
   byte_length=$(LC_ALL=C printf '%s' "$name" | wc -c)
   dots=${name//[^.]/}
-  if [[ $name =~ [[:cntrl:]] || $name == *'<'* || $name == *'>'* || $name == *':'* || $name == *'"'* || $name == *'\'* || $name == *'|'* || $name == *'?'* || $name == *'*'* || $name == *' ' || $name == *. ]]; then
+  if [[ $name =~ [[:cntrl:]] || $name == *'<'* || $name == *'>'* || $name == *':'* || $name == *'"'* || $name == *$'\\'* || $name == *'|'* || $name == *'?'* || $name == *'*'* || $name == *' ' || $name == *. ]]; then
     ((invalid += 1))
     [[ $show == true ]] && show_path "$invalid_shown" invalid "$path"
     ((invalid_shown += 1))

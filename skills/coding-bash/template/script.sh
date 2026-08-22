@@ -42,7 +42,7 @@ die() { printf '%s: %s\n' "$SCRIPT_NAME" "$1" >&2; exit "${2:-1}"; } # Exit with
 ## Core functions receive data via parameters — never read arg globals directly.
 
 ##--------------------------------------------------------------------------------------------------
-## Example
+##	Example
 ##--------------------------------------------------------------------------------------------------
 
 ## @brief Example function. Replace or remove.

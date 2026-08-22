@@ -38,19 +38,20 @@ Load when writing or extending a bash script as a deliverable. Not for debugging
 
 ## Conventions reference
 
-| Convention           | Value                                                              |
-| -------------------- | ------------------------------------------------------------------ |
-| Shebang              | `#!/usr/bin/env bash`                                              |
-| Error flags          | `set -Eeuo pipefail`                                               |
-| Separator width      | 100 characters total (`##` + 98 `=` chars), top-bottom             |
-| Section header style | `##<TAB><ALL CAPS>`                                                |
-| Variable naming      | Globals `SNAKE_CASE`; locals `snake_case`                          |
-| Function naming      | `camelCase` verb-first; contextual: `context_sub_camelCase()`      |
-| Dependency guard     | `requireCommand()` inline one-liner in DEPENDENCY CHECKS           |
-| Destructive file ops | `trash`, never `rm` or `rmdir`                                     |
-| `main()`             | Short glue; reads arg globals; called bare from SCRIPT ENTRY POINT |
-| Core functions       | Take parameters, not arg globals                                   |
-| Arg parsing          | Positional or `while case`; no `getopts`                           |
+| Convention           | Value                                                                              |
+| -------------------- | ---------------------------------------------------------------------------------- |
+| Shebang              | `#!/usr/bin/env bash`                                                              |
+| Error flags          | `set -Eeuo pipefail`                                                               |
+| Separator width      | 100 characters total (`##` + 98 `=` or `-` chars)                                  |
+| Decorator layout     | Blank line → separator → header → identical separator → blank line; never trailing |
+| Section header style | `##<TAB><ALL CAPS>`; sub-sections use `##<TAB><TITLE>`                             |
+| Variable naming      | Globals `SNAKE_CASE`; locals `snake_case`                                          |
+| Function naming      | `camelCase` verb-first; contextual: `context_sub_camelCase()`                      |
+| Dependency guard     | `requireCommand()` inline one-liner in DEPENDENCY CHECKS                           |
+| Destructive file ops | `trash`, never `rm` or `rmdir`                                                     |
+| `main()`             | Short glue; reads arg globals; called bare from SCRIPT ENTRY POINT                 |
+| Core functions       | Take parameters, not arg globals                                                   |
+| Arg parsing          | Positional or `while case`; no `getopts`                                           |
 
 ## How to update this skill
 
