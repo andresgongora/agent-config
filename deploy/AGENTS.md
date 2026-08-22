@@ -33,7 +33,9 @@ Non-trivial, in order:
    | NixOS friction, nix rebuild | `nixos` |
    | git state mutation | `git` |
    | commit message | `caveman-commit` |
-   | external facts, docs, errors | `web-search` |
+   | multi-page, multi-source external research or source verification | `web-search` |
+   | verbatim transcript or large raw web artifact | matching `web-*` skill; run scripts locally |
+   | platform/service extraction, transformation, or compact answer | `@web` |
    | human-facing prose | `writing` + `no-ai-slop` |
    | skills, subagents, commands, agent artifacts | `agent-author` |
    | any `AGENTS.md` | `agent-agents-md` |
@@ -69,7 +71,7 @@ Main context finite. Every exploration transcript, long fetch, dead lead pollute
 ## Delegated Workers
 
 - Pick the worker by its own `description`; do not restate it here.
-- Precedence: single obvious URL → inline `webfetch`; trivial one-shot fact → `@fast`; anything needing multiple pages, sources, or query angles → `@web-search`.
+- Precedence: verbatim transcript or large raw artifact → run matching `web-*` skill scripts in main; never delegate or transform it. Platform/service extraction, transformation, or compact answer → `@web`; pass original request and let it load matching `web-*` skill. Return its payload verbatim, omit its trailing `status:`/`gap:` on success. Trivial one-shot fact → `@fast`; multi-page, multi-source, or query-angle research → `@web-search`.
 - Review: `caveman-review` formats main-thread findings. Delegate bounded review only when isolated output saves context; `cavecrew` selects its reviewer.
 - Cheap model for locating and mechanical work; strong model only where the task needs judgment.
 - Instruct workers in caveman style. Preserve task-critical detail; drop caveman where it would introduce ambiguity.

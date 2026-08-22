@@ -1,0 +1,120 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+IFS=$'\n\t'
+
+requireCommand() {
+    command -v "$1" >/dev/null 2>&1 || {
+        printf 'Missing dependency: %s\n' "$1" >&2
+        exit 1
+    }
+}
+
+TEMP_DIR=""
+
+die() {
+    printf '%s\n' "$1" >&2
+    exit 1
+}
+
+cleanupTempdir() {
+    [[ -n "$TEMP_DIR" ]] && trash "$TEMP_DIR"
+}
+
+fetchMetadata() {
+    local url="$1"
+
+    yt-dlp --ignore-config --no-playlist --skip-download \
+        --print 'title=%(title)s' \
+        --print 'channel=%(channel)s' \
+        --print 'published=%(upload_date>%Y-%m-%d)s' \
+        --print 'duration=%(duration_string)s' \
+        --print 'description=%(description)s' \
+        -- "$url"
+}
+
+listTracks() {
+    local url="$1"
+
+    yt-dlp --ignore-config --no-playlist --skip-download --list-subs -- "$url"
+}
+
+fetchCaptions() {
+    local language="$1"
+    local tempdir="$2"
+    local url="$3"
+
+    [[ "$tempdir" == /tmp/* && -d "$tempdir" ]] || die "Temporary directory must be under /tmp"
+
+    yt-dlp --ignore-config --no-playlist --skip-download \
+        --write-subs --write-auto-subs \
+        --sub-langs "$language" --sub-format json3 \
+        -o "$tempdir/%(id)s.%(ext)s" -- "$url"
+}
+
+validateYoutubeUrl() {
+    local url="$1"
+
+    case "$url" in
+        https://youtube.com/*|https://www.youtube.com/*|https://m.youtube.com/*|https://music.youtube.com/*|https://youtu.be/*)
+            ;;
+        *)
+            die "Expected HTTPS YouTube URL"
+            ;;
+    esac
+}
+
+fetchTranscript() {
+    local language="$1"
+    local format="$2"
+    local url="$3"
+    local -a caption_files=()
+
+    TEMP_DIR="$(mktemp -d)"
+    fetchCaptions "$language" "$TEMP_DIR" "$url"
+    shopt -s nullglob
+    caption_files=("$TEMP_DIR"/*.json3)
+    [[ ${#caption_files[@]} -gt 0 ]] || die "No requested caption track downloaded"
+
+    case "$format" in
+        plain)
+            "$(dirname "$0")/caption-to-text" "${caption_files[0]}"
+            ;;
+        timestamps)
+            "$(dirname "$0")/caption-to-text" --timestamps "${caption_files[0]}"
+            ;;
+        *)
+            die "Transcript format must be plain or timestamps"
+            ;;
+    esac
+}
+
+main() {
+    requireCommand yt-dlp
+
+    case "${1:-}" in
+        metadata)
+            [[ $# -eq 2 ]] || die "Usage: youtube-captions metadata <url>"
+            validateYoutubeUrl "$2"
+            fetchMetadata "$2"
+            ;;
+        tracks)
+            [[ $# -eq 2 ]] || die "Usage: youtube-captions tracks <url>"
+            validateYoutubeUrl "$2"
+            listTracks "$2"
+            ;;
+        transcript)
+            [[ $# -eq 4 ]] || die "Usage: youtube-captions transcript <language> <plain|timestamps> <url>"
+            requireCommand trash
+            validateYoutubeUrl "$4"
+            trap cleanupTempdir EXIT
+            fetchTranscript "$2" "$3" "$4"
+            cleanupTempdir
+            TEMP_DIR=""
+            ;;
+        *)
+            die "Usage: youtube-captions <metadata|tracks|transcript> ..."
+            ;;
+    esac
+}
+
+main "$@"

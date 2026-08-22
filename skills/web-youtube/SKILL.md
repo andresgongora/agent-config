@@ -8,43 +8,43 @@ description: "Fetches YouTube video or channel metadata, captions, transcripts, 
 - Use `yt-dlp`; fetch metadata and captions without media download.
 - Require `yt-dlp` on `PATH`; report missing dependency, do not install it.
 - Captions are source material. Summary needs fetched captions; metadata or description alone cannot support a video summary.
-- Distinguish uploader captions from automatic captions. Preserve language, caption type, URL, and timestamps when available.
+- For metadata or summary, preserve language, caption type, URL, and timestamps when available. Transcript-only output follows its return contract.
 - Do not claim transcript exists when no requested caption track downloads. Audio transcription needs separate explicit tooling.
 - Do not download media unless user explicitly requests it.
 
 ## Workflow
 
+Transcript-only request: calling agent runs this skill's scripts directly. Never delegate or transform caption text before returning it.
+
+Interpretation request: calling agent delegates retrieval and analysis to a web executor. Pass original request and URL; executor returns compact result, not full transcript.
+
 1. Fetch metadata first:
 
    ```bash
-   yt-dlp --no-playlist --skip-download \
-     --print 'title=%(title)s' \
-     --print 'channel=%(channel)s' \
-     --print 'published=%(upload_date>%Y-%m-%d)s' \
-     --print 'duration=%(duration_string)s' \
-     --print 'description=%(description)s' \
-     "$url"
+    scripts/youtube-captions metadata "$url"
    ```
 
 2. Before transcript request, inspect tracks:
 
    ```bash
-   yt-dlp --no-playlist --skip-download --list-subs "$url"
+    scripts/youtube-captions tracks "$url"
    ```
 
-3. Download requested-language captions to temporary workspace. Request uploader captions plus automatic fallback. When language is absent, inspect tracks and choose platform's identified original-language track. `json3` preserves timed caption events.
+3. Download requested-language captions to a task-owned temporary workspace. Request uploader captions plus automatic fallback. When language is absent, inspect tracks and choose platform's identified original-language track. `json3` preserves timed caption events.
 
-   ```bash
-   yt-dlp --no-playlist --skip-download \
-     --write-subs --write-auto-subs \
-     --sub-langs "$language" --sub-format json3 \
-     -o "$tempdir/%(id)s.%(ext)s" "$url"
-   ```
+    ```bash
+    scripts/youtube-captions transcript "$language" plain "$url"
+    ```
 
-4. For "get transcript from <URL>": fetch metadata, inspect tracks, download best matching caption, then return transcript. Include timestamps unless user asks plain text. If no matching track, report unavailable; do not summarize description as video content.
-5. For "summarize <URL>": fetch transcript first. Summarize transcript only; label automatic captions. State caption language and omissions caused by unavailable captions.
+4. Replace `plain` with `timestamps` only when timestamps are requested. The helper extracts caption text from `json3` and cleans its task-owned workspace. Do not return raw JSON.
+5. For "get transcript from <URL>": fetch metadata, inspect tracks, download best matching caption, then return transcript text only. Include timestamps only when requested. If no matching track, report unavailable with available tracks; do not summarize description as video content.
+6. For "summarize <URL>": fetch transcript first. Summarize transcript only; label automatic captions. State caption language and omissions caused by unavailable captions.
 
 ## Return shape
+
+Transcript-only request: return caption text only. No title, headings, source, provenance, language, summary, or commentary. Preserve timestamps only when requested. Caption failure: return blocker and available tracks.
+
+Metadata or summary request:
 
 ```markdown
 ## Video
@@ -75,4 +75,4 @@ Omit unavailable fields. If captions fail, replace `## Transcript` with exact fa
 
 - Metadata command completes without media download.
 - Caption file exists before treating it as transcript source.
-- Response labels caption provenance and language.
+- Non-transcript-only response labels caption provenance and language.

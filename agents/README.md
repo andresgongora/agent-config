@@ -102,6 +102,13 @@ Permission maps resolve last match. Agents place broad `bash: "*": deny` or `ask
 - Inspects available context and writes one revisable execution plan under `.agent/plan/`.
 - Cannot implement changes or write outside the plan directory.
 
+## Web
+
+`web.md` is a low-cost executor for platform/service extraction and transformation.
+
+- Loads matching `web-*` skills for compact answers or transformed content.
+- Does not return verbatim large artifacts, perform multi-source research, access local files, or delegate.
+
 ## Web Search
 
 `web-search.md` coordinates non-trivial online research.

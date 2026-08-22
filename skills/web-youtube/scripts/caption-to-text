@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+IFS=$'\n\t'
+
+requireCommand() {
+    command -v "$1" >/dev/null 2>&1 || {
+        printf 'Missing dependency: %s\n' "$1" >&2
+        exit 1
+    }
+}
+
+die() {
+    printf '%s\n' "$1" >&2
+    exit 1
+}
+
+convertCaption() {
+    local caption_file="$1"
+    local timestamps="$2"
+
+    jq -er --argjson timestamps "$timestamps" '
+        def normalize:
+            gsub("\n"; " ")
+            | gsub("[[:space:]]+"; " ")
+            | sub("^ "; "")
+            | sub(" $"; "");
+        def pad2:
+            tostring | if length == 1 then "0" + . else . end;
+        def timestamp:
+            (. / 1000 | floor) as $seconds
+            | ($seconds / 3600 | floor) as $hours
+            | (($seconds % 3600) / 60 | floor) as $minutes
+            | ($seconds % 60) as $remainder
+            | if $hours > 0 then
+                "\($hours | pad2):\($minutes | pad2):\($remainder | pad2)"
+            else
+                "\($minutes | pad2):\($remainder | pad2)"
+            end;
+        [
+            .events[]?
+            | select(.segs)
+            | {
+                start: (.tStartMs // 0),
+                text: ([.segs[]?.utf8? | select(type == "string")] | join("") | normalize)
+            }
+            | select(.text != "")
+        ]
+        | if $timestamps then
+            .[] | "[\(.start | timestamp)] \(.text)"
+        else
+            map(.text) | join(" ")
+        end
+        | select(length > 0)
+    ' "$caption_file"
+}
+
+main() {
+    local timestamps=false
+
+    if [[ "${1:-}" == "--timestamps" ]]; then
+        timestamps=true
+        shift
+    fi
+
+    [[ $# -eq 1 ]] || die "Usage: caption-to-text [--timestamps] <caption.json3>"
+    [[ -r "$1" ]] || die "Caption file not found: $1"
+
+    requireCommand jq
+    convertCaption "$1" "$timestamps"
+}
+
+main "$@"
