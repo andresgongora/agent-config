@@ -1,6 +1,6 @@
 ---
 name: web-youtube
-description: "Fetches YouTube video or channel metadata, captions, transcripts, and transcript-based summaries with yt-dlp. Use for YouTube URLs, video transcripts, caption availability, or video summaries. Not for broad web research, unsupported-platform URLs, media downloads, or generating a transcript from audio."
+description: "Fetches YouTube video or channel metadata, captions, transcripts, and transcript-based summaries with yt-dlp. Use for YouTube URLs, video transcripts, caption availability, video summaries, or key/main ideas. Delegated interpretation preserves title, description, and transcript in a workspace resource. Not for broad web research, unsupported-platform URLs, media downloads, comments, or generating a transcript from audio."
 ---
 
 ## Core rules
@@ -16,9 +16,12 @@ description: "Fetches YouTube video or channel metadata, captions, transcripts, 
 
 Transcript-only request: calling agent runs this skill's scripts directly. Never delegate or transform caption text before returning it.
 
-Interpretation request: calling agent delegates retrieval and analysis to a web executor. Pass original request and URL; executor returns compact result, not full transcript.
+Interpretation request, including key or main ideas:
 
-1. Fetch metadata first:
+- Main caller: delegate retrieval and analysis to a web executor. Pass original request and URL.
+- Web executor: retrieve, persist source material, then analyze directly. Do not delegate. Return compact analysis plus resource path; never return full transcript.
+
+1. Fetch metadata first. Capture `id`, title, canonical URL, description, channel, published date, and duration:
 
    ```bash
     scripts/youtube-captions metadata "$url"
@@ -38,13 +41,14 @@ Interpretation request: calling agent delegates retrieval and analysis to a web 
 
 4. Replace `plain` with `timestamps` only when timestamps are requested. The helper extracts caption text from `json3` and cleans its task-owned workspace. Do not return raw JSON.
 5. For "get transcript from <URL>": fetch metadata, inspect tracks, download best matching caption, then return transcript text only. Include timestamps only when requested. If no matching track, report unavailable with available tracks; do not summarize description as video content.
-6. For "summarize <URL>": fetch transcript first. Summarize transcript only; label automatic captions. State caption language and omissions caused by unavailable captions.
+6. For delegated interpretation: create `.agent/resources/web/<safe-title>--<video-id>.md` before analysis. Use the executor's embedded resource contract: canonical frontmatter plus `Video`, `Description`, and `Transcript` sections. Include no comments, opinions, or external material unless explicitly requested.
+7. For "summarize <URL>" or "key/main ideas from <URL>": fetch transcript first. Analyze transcript only; label automatic captions. State caption language and omissions caused by unavailable captions.
 
 ## Return shape
 
 Transcript-only request: return caption text only. No title, headings, source, provenance, language, summary, or commentary. Preserve timestamps only when requested. Caption failure: return blocker and available tracks.
 
-Metadata or summary request:
+Metadata request:
 
 ```markdown
 ## Video
@@ -57,13 +61,24 @@ Metadata or summary request:
 ## Transcript
 - Captions: uploader | automatic.
 - Language: <language>.
-- Content: <timestamped transcript or requested excerpt>.
-
-## Summary
-<only when requested; transcript-based>
 ```
 
-Omit unavailable fields. If captions fail, replace `## Transcript` with exact failure and available caption tracks.
+Delegated interpretation:
+
+```markdown
+## Video
+- Title: <title>.
+- Source: <canonical URL>.
+
+## Resource
+- Path: `.agent/resources/web/<safe-title>--<video-id>.md`.
+- Captions: uploader | automatic; <language>.
+
+## Analysis
+<concise, transcript-grounded answer>
+```
+
+Omit unavailable fields. If captions fail, replace `## Transcript` or `## Resource` with exact failure and available caption tracks.
 
 ## Boundaries
 

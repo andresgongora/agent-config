@@ -35,7 +35,7 @@ Non-trivial, in order:
    | commit message | `caveman-commit` |
    | multi-page, multi-source external research or source verification | `web-search` |
    | verbatim transcript or large raw web artifact | matching `web-*` skill; run scripts locally |
-   | platform/service extraction, transformation, or compact answer | `@web` |
+   | platform/service extraction, transformation, compact answer, or captioned-video key/main ideas | `@web` |
    | human-facing prose | `writing` + `no-ai-slop` |
    | skills, subagents, commands, agent artifacts | `agent-author` |
    | any `AGENTS.md` | `agent-agents-md` |
@@ -71,7 +71,7 @@ Main context finite. Every exploration transcript, long fetch, dead lead pollute
 ## Delegated Workers
 
 - Pick the worker by its own `description`; do not restate it here.
-- Precedence: verbatim transcript or large raw artifact → run matching `web-*` skill scripts in main; never delegate or transform it. Platform/service extraction, transformation, or compact answer → `@web`; pass original request and let it load matching `web-*` skill. Return its payload verbatim, omit its trailing `status:`/`gap:` on success. Trivial one-shot fact → `@fast`; multi-page, multi-source, or query-angle research → `@web-search`.
+- Precedence: verbatim transcript or large raw artifact → run matching `web-*` skill scripts in main; never delegate or transform it. Platform/service extraction, transformation, compact answer, or captioned-video key/main ideas → `@web`; pass original request and URL. For delegated captioned-video interpretation, executor persists title, description, and transcript in `.agent/resources/web/`, then returns resource path plus concise analysis. Omit its trailing `status:`/`gap:` on success. Trivial one-shot fact → `@fast`; multi-page, multi-source, or query-angle research → `@web-search`.
 - Review: `caveman-review` formats main-thread findings. Delegate bounded review only when isolated output saves context; `cavecrew` selects its reviewer.
 - Cheap model for locating and mechanical work; strong model only where the task needs judgment.
 - Instruct workers in caveman style. Preserve task-critical detail; drop caveman where it would introduce ambiguity.

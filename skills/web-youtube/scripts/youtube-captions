@@ -24,11 +24,13 @@ fetchMetadata() {
     local url="$1"
 
     yt-dlp --ignore-config --no-playlist --skip-download \
+        --print 'id=%(id)s' \
         --print 'title=%(title)s' \
         --print 'channel=%(channel)s' \
         --print 'published=%(upload_date>%Y-%m-%d)s' \
         --print 'duration=%(duration_string)s' \
         --print 'description=%(description)s' \
+        --print 'url=%(webpage_url)s' \
         -- "$url"
 }
 
