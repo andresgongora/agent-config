@@ -19,6 +19,8 @@ dist/
 # Skills
 # no-ai-slop — upstream has no license yet; not redistributable until resolved
 skills/no-ai-slop/
+skills/poem-a/
+skills/poem-b/
 
 # Spikes (local experiments)
 spikes/
