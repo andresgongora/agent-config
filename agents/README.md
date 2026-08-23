@@ -102,6 +102,20 @@ Permission maps resolve last match. Agents place broad `bash: "*": deny` or `ask
 - Inspects available context and writes one revisable execution plan under `.agent/plan/`.
 - Cannot implement changes or write outside the plan directory.
 
+## QA Tester
+
+`qa-tester.md` runs one supplied skill against one supplied prompt.
+
+- Returns the skill's raw answer in a status envelope.
+- Runs independently; callers can start one instance per skill in parallel.
+
+## QA Judge
+
+`qa-judge.md` compares two completed tester outputs against their shared prompt.
+
+- Judges visible results only, not skill definitions or authors.
+- Returns which result appears better, or no clear winner.
+
 ## Web
 
 `web.md` is a low-cost executor for platform/service extraction and transformation.

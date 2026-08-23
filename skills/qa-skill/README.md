@@ -4,7 +4,7 @@ QA harness for comparing two agent skills through static analysis and matched su
 
 ## Design intent
 
-Static comparison alone cannot show runtime behavior. This skill turns the meaningful difference into one shared prompt, runs both skills independently, and preserves raw outputs for inspection.
+Static comparison alone cannot show runtime behavior. This skill turns the meaningful difference into one shared prompt, runs both skills independently, preserves raw outputs, and sends them to a separate judge.
 
 ## When it triggers
 
@@ -16,7 +16,7 @@ Ordinary code QA, single-skill review, general prompt testing, or tests that req
 
 ## Maintainer constraints
 
-Keep the comparison, prompt, worker, storage, and presentation contracts stable. Execution currently uses the runtime's generic subagent; a future QA-specific executor can replace it without changing those contracts.
+Keep the comparison, prompt, tester, judge, storage, and presentation contracts stable. Testers run in parallel; judging starts only after both complete.
 
 ## See also
 
