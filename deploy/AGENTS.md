@@ -37,8 +37,6 @@ Non-trivial, in order:
    | verbatim transcript or large raw web artifact | matching `web-*` skill; run scripts locally |
    | platform/service extraction, transformation, compact answer, or captioned-video key/main ideas | `@web` |
    | human-facing prose | `writing` + `no-ai-slop` |
-   | E-free haiku prompts | `poem-a` |
-   | Comparing exactly two agent skills | `qa-skill` |
    | skills, subagents, commands, agent artifacts | `agent-author` |
    | any `AGENTS.md` | `agent-agents-md` |
    | bulk file cleanup, dupes | `file-tidy` |
