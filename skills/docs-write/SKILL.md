@@ -29,6 +29,7 @@ Gate fails: write no file.
 - Link source or relevant existing doc. Do not copy large background.
 - Valuable misplaced doc: move. Duplicate or valueless doc: delete or archive.
 - Stale external claim: verify source before update.
+- Never lint `.agent/**.md` docs.
 
 ## Placement
 

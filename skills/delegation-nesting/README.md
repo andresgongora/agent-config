@@ -1,4 +1,4 @@
-# Delegation Execution
+# Delegation Nesting
 
 Prepares one complex, self-contained mission for execution by an existing generic subagent, with
 optional bounded child delegation.

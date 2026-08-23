@@ -1,73 +1,34 @@
 ---
 name: planning
-description: "Plan multi-step execution at runtime. Use for medium/complex work with dependencies, material uncertainty, risky forks, likely scope drift, or prior failed attempts. Builds shared scope, high-level milestones, native todo state, and revisable execution direction. Skip trivial answers, exact bounded changes, requested plan documents, and research with no intended decision or deliverable."
+description: "Plans medium or complex work in interactive sessions where user questions are possible. Establishes true desired outcome before route, creates ordered milestones with observable checkpoints in live task state, and replans from evidence. Use for dependencies, material uncertainty, risky forks, delegation seams, scope-drift risk, or failed attempts. Never load in delegated workers or subagents without user dialogue; skip exact low-risk work, durable plan-document authoring, and research without an intended decision or deliverable."
 ---
 
 ## Core
 
-### Scope
+- Plan = ordered milestones and checkpoints leading to defined outcome; keep route visible while working current part.
+- **Confirmation.** Before interactive question offering choices, explain each option's pros and cons plus recommendation in normal text. Ask before material outcome, scope, constraint, acceptance, approach, cost, or risk change; never guess.
+- User wording may name implementation, not desired result. Infer better path only as proposal.
+- Use runtime's native live task list; if absent, use equivalent visible plan board. Plan may be task list or standalone route, never stale chat recap.
 
-User wording != real goal. Extract:
+## Workflow
 
-- goal and expected outcome
-- hard constraints, preferences, non-goals
-- assumptions, unknowns, success evidence
+1. **Understand.** Inspect relevant current state. Establish desired outcome, observable success, hard constraints, preferences, non-goals, authority, assumptions, and unknowns. Resolve material user decisions before drafting. For material alternatives: offer 2–3 options. Resolve cheap facts now; costly discovery becomes early evidence milestone with conditional route. Multiple question rounds allowed if new gaps arise from prior answers.
+2. **Draft.** Lock stable intent before execution:
 
-Ask only outcome-, cost-, risk-, or approach-changing questions. If literal wording misses a better path, say so. For material forks, give 2-3 options with one-line tradeoffs, recommend one, ask.
+   ```text
+   Goal: <outcome>. Success: <evidence>. Constraints: <hard limits>. Out: <non-goals>.
+   ```
 
-Before work, lock:
+   Create ordered outcome milestones. Each has bounded result and observable checkpoint. Order dependency, uncertainty, risk, then value. Start next milestone only when prerequisites and prior checkpoint hold. State material assumptions. Add failure signal, fallback, or branch only when route or stopping behavior changes. Keep roadmap coarse; detail current milestone only.
+3. **Execute.** Keep one main-thread executable leaf active. Expand current complex milestone into child items; retain parent route. Child completion does not complete parent; parent checkpoint does. Complete item only when checkpoint holds; update plan state immediately. Before pause, record active leaf, passed checkpoints, pending delegation, and open decisions. On resume, reconcile plan state, pending delegation, and checkpoint evidence before activating work; stale or invalid evidence requires replan. Delegate only isolated, bounded child work with fixed input, authority, expected return, and integration point. Serial delegation follows prerequisite checkpoint. Parallelize only independent children; shared decision, file, mutable state, or ordered evidence stays serial.
+4. **Replan.** Pause when evidence invalidates assumption, milestone, order, method, or scope. Keep completed evidence; replace current and future route. State added, removed, or reordered milestones and why. Confirm material revision before resume. Sync plan state, then resume.
+5. **Close.** Verify outcome against success evidence and constraints. Completed actions without proven outcome are not success.
 
-```text
-Goal: <outcome>. Constraints: <hard limits>. Out: <non-goals>.
-```
+## Decision rules
 
-### Shape
-
-Plan outcome milestones. Order by dependency, risk, value, question cost. Retire cheap unknowns early. No micro-steps before current milestone.
-
-Every plan: observable success evidence, stated assumptions. Group mechanical work. "Wire module" beats "add import, save, lint".
-
-## Session path
-
-`SCOPE → PLAN → EXECUTE → REVISE → CLOSE`
-
-OpenCode `todowrite` owns state. Other clients: use equivalent live task list. Coarse-to-fine: roadmap first; decompose current milestone only when it starts.
-
-### Plan
-
-Show goal, non-goals, assumptions, 3-10 milestones, verification, open questions. Todos hold through-line without fake precision; group mechanical work. Material scope/path open: ask. Else start milestone.
-
-### Execute
-
-Decompose only current complex milestone into todos. Mark done live; never batch-close. Trivial cluster: one todo. Complex child: recurse (mini-scope, mini-plan). Exactly one active item. Apply adapt table per obstacle:
-
-| Situation                                   | Action                                                  |
-| ------------------------------------------- | ------------------------------------------------------- |
-| Missing info                                | Ask. No guess.                                          |
-| Ambiguous requirement                       | Propose interpretation, ask to confirm.                 |
-| Fork, low risk, reversible                  | Decide, state reasoning, continue.                      |
-| Fork, high risk or one-way door             | Present options, recommend, ask.                        |
-| Scope creep detected                        | Pause. Re-scope with user.                              |
-| Discovery invalidates plan                  | Update remaining milestones. Material change → confirm. |
-| 2 failed tries, same blocker                | Stop. Summarize. Re-plan. Third try needs new evidence. |
-| Tempted to fix unrelated thing "since here" | STOP. Note as follow-up. Do not touch.                  |
-
-Work only current-plan items. Unrelated finding: follow-up note; no silent extra work. Never make silent irreversible decision.
-
-### Revise
-
-Re-enter Plan: discovery invalidates milestone, user changes requirement, scope changes order, blocker hits twice. Show diff: dropped/added/reordered milestones + why. Confirm material change.
-
-### Close
-
-After implementation: report changes, validation, risk, deferred follow-ups. Suggest optional next step. Planning-only turn ends at open questions; no ceremonial recap, validation, state update without relevant change.
-
-## Boundaries
-
-- OpenCode `todowrite` or client equivalent owns session state.
-- Workflow only. Code style, tests, commits belong elsewhere.
-- If planning cost exceeds task risk, execute direct.
-
-## Durable plan document
-
-Big plan, worth surviving session end (cross-session, high-risk, architecture, migration): hand off to `agents/planning.md`, not this skill's session flow. That agent uses `templates/plan-document.md` (path relative to this skill dir) to write `.agent/plan/*.md`. This skill never writes plan documents itself.
+- Ambiguous material intent or requirement: ask; never silently choose.
+- Reversible low-risk fork within granted authority: decide, record, continue.
+- High-risk, irreversible, or authority-changing fork: recommend, ask.
+- Material scope expansion: pause; re-scope with user before resume.
+- Same blocker after two evidence-based attempts: stop, summarize evidence, choose new route or ask.
+- Unrelated finding: record follow-up; do not add or execute.

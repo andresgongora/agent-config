@@ -51,7 +51,7 @@ Plan file = compressed artifact, not chat channel. Write `.agent/plan/*.md` ultr
 
 1. Use OpenCode `todowrite`; other runtimes use equivalent live task list.
 2. Inventory plans. Reuse only same deliverable, boundary, active scope. Changed outcome or constraints: new plan; link predecessor only when useful.
-3. Load `planning` skill only to reach its `templates/plan-document.md` (see skill's "Durable plan document" section). Ignore skill's session PLAN/EXECUTE/REVISE flow — that is not this agent's job. Use template; adapt. Delete empty sections.
+3. Read `skills/planning/templates/plan-document.md`. Use template; adapt; delete empty sections. Session-planning workflow does not apply here.
 
 ## Document workflow
 

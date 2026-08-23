@@ -1,50 +1,36 @@
-# planning
+# Planning
 
-Plan before execute. Session planning skill; durable plans belong to planning agent.
-
-## What it does
-
-Structured session planning for multi-step work. Prevents two failure modes:
-
-1. **Wrong goal** — agent builds something user did not want.
-2. **Context contamination** — agent drifts into unrelated work mid-flight.
-
-Session workflow: scope, coarse roadmap, lazy `todowrite` decomposition, live adaptation, anti-drift. Never executes plan documents.
+Interactive runtime discipline: turn uncertain multi-step request into controlled, revisable execution.
 
 ## Design intent
 
-- **Plan → Execute → Revise loop.** Separated on purpose. Mid-execution exploration is what pollutes context.
-- **Coarse-to-fine.** Roadmap first; task detail begins only when current milestone starts. No fake precision upfront.
-- **Revision is first-class.** Plan rarely survives contact with reality. Revise openly, not silently.
-- **Scope first.** User words ≠ user goal. Lock it before any planning action.
-- **Anti-drift is load-bearing.** The "stop, do not fix unrelated things" rule is why this skill exists. Do not soften it.
-- **Delegation by role, not name.** Workers are optional bounded evidence sources; main owns live synthesis.
+Planning protects outcome, not literal wording or first route. Users often name activity, partial solution, or vague desire. Skill exposes underlying need before work commits to wrong target.
 
-## Primary planning agent
+Small verified checkpoints preserve route during disorienting, deep work. They permit safe pause, resumption, and independent delegation without pretending later unknown work is settled. Evidence outranks draft history; replanning preserves achieved evidence while replacing invalid future route.
 
-`agents/planning.md` creates or amends decision-grade `.agent/plan/<slug>.md` documents. It writes plans only; implementation session consumes them. Agent loads this skill to reach `templates/plan-document.md` — template belongs conceptually to the agent, but lives here because a skill's location is reliably discoverable at load time and an agent's own file path is not.
+## Runtime shape
 
-## Plan template
+Session plan has five states: understand, draft, execute, replan, close. Understand resolves user-controlled decisions and turns expensive factual uncertainty into evidence milestones. Draft creates coarse outcome milestones and observable checkpoints. Execution expands only current complex milestone. Replanning changes remaining route when evidence demands it. Closure proves outcome against success and constraints, not checklist exhaustion.
 
-`templates/plan-document.md` — planning agent uses conditionally. Remove sections with no decision value. Never write `none` filler.
+Runtime's native task list is preferred live representation. If unavailable, equivalent visible plan board suffices. Both are transient control state, not durable plan documents.
 
-## Structure
+## Interactive boundary
 
-- `SKILL.md` — LLM-facing session workflow.
-- `README.md` — this file. Human maintainer notes.
-- `templates/plan-document.md` — reusable plan document template.
+Skill requires session able to inspect, challenge, and ask user about material decisions. Before interactive choice, explain options, pros, cons, and recommendation in normal text; question records choice. Never use it in delegated workers or subagents unable to ask user questions. Those workers execute bounded briefs; they do not reinterpret user intent or own plan-level authority.
 
-## Revising this skill
+## Durable-plan template
 
-- Do not couple to any specific subagent set. Workers are behavior-referenced.
-- Do not couple to caveman. Style is separate.
-- Anti-drift rule is load-bearing. Do not soften it.
-- Session workflow must not create or amend plan docs, frontier churn, or implementation summaries by default.
-- Keep session workflow lean: scope questions, coarse todo list, alternatives, live adapt table.
-- Document agent boundary (write only `.agent/plan/*.md`) must be testable.
+`templates/plan-document.md` belongs to durable-plan authoring. `../../agents/planning.md` reads it directly when creating or amending reviewed, cross-session plan documents under `.agent/plan/`. Session workflow neither reads nor writes that template.
+
+## Maintainer constraints
+
+- Goal extraction precedes drafting; inferred goal stays proposal until material rewrite is confirmed.
+- User-controlled decisions never become silent assumptions. Large discovery remains explicit evidence milestone with conditional route.
+- Preserve coarse-to-fine decomposition, visible parent route, live state, evidence-driven replanning, and anti-drift rule.
+- Keep runtime state client-neutral and delegation capability-based.
+- Keep runtime instructions in `SKILL.md`; rationale and template ownership stay here.
 
 ## See also
 
-- `SKILL.md` — full LLM-facing instructions.
-- `templates/plan-document.md` — plan document shape.
-- `../../agents/planning.md` — primary durable-plan agent.
+- `../../agents/planning.md`: durable-plan authoring agent.
+- `../../commands/plan-execute.md`: durable-plan execution command.

@@ -457,6 +457,6 @@ These sources support the catalog's scoped claims. They do not prove one prompt 
 
 - `templates/prompt.md`: general copy-and-fill prompt scaffold with inline guidance.
 - `../delegation/templates/worker-prompt.md`: specialized brief for ordinary delegated work.
-- `../delegation-execution/templates/executor-prompt.md`: specialized mission package for nested execution.
+- `../delegation-nesting/templates/executor-prompt.md`: specialized mission package for nested execution.
 - `../agent-author/`: owning workflow for skills, agents, commands, and their templates.
 - `../planning/`: live task planning and revision, not prompt text design.

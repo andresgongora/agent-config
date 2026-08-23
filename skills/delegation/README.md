@@ -69,5 +69,5 @@ mission-package construction after nested delegation execution is selected.
 ## See also
 <!------------------------------------------------------------------------------------------------->
 
-- `../delegation-execution/README.md`: nested delegation execution and mission package design.
+- `../delegation-nesting/README.md`: nested delegation execution and mission package design.
 - `../../.agent/notes/design-principles.md`: context-pollution rationale.

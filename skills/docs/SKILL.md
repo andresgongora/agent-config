@@ -7,7 +7,7 @@ description: "Discover existing repository knowledge cheaply before spending con
 
 ## Discovery Workflow
 
-- Once per session, unless already scanned: run `scripts/inventory`.
+- From working repository root, once per session unless already scanned: run `scripts/inventory` (defaults to `./.agent`).
 - Full-read only docs with task-relevant description.
 - No docs found: fallback to closest `README.md`.
 

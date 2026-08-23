@@ -75,6 +75,14 @@ assertFailureStatus() {
 
 main() {
     cd "$REPOSITORY_DIRECTORY"
+    local default_inventory
+    local explicit_inventory
+
+    default_inventory="$("$SCRIPT_DIRECTORY/inventory")"
+    explicit_inventory="$("$SCRIPT_DIRECTORY/inventory" .agent)"
+    [[ "$default_inventory" == "$explicit_inventory" ]] || fail \
+        "Default inventory differs from .agent inventory"
+
     assertOutput "$EXPECTED_DIRECTORY/inventory.txt" \
         "$SCRIPT_DIRECTORY/inventory" "skills/docs/scripts/tests/fixtures/inventory"
     assertOutput "$EXPECTED_DIRECTORY/frontmatter.txt" \

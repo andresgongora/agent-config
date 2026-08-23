@@ -55,7 +55,6 @@ Frontmatter (see Frontmatter section):
 - `description`: third-person, ≤4 sentences, trigger phrases + explicit non-triggers. Routing truth lives here; do NOT repeat in body.
 
 Body rules:
-- Shallow `##` sections only (no `###`).
 - Flat bullets for policy; numbered lists only for ordered workflow.
 - ≤ ~500 lines total; bulky templates/examples → one-level-deep reference files, link from body.
 - Body = post-load behavior (workflow, boundaries, decision rules, output contract). Never trigger text.

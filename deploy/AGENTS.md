@@ -11,7 +11,7 @@
 
 - Explicitly load every skill whose description matches current work before acting; reassess when scope or evidence changes. Skill file on disk ≠ loaded.
 - Exact, low-risk work: execute directly without planning or delegation.
-- Non-trivial repo work: load `docs` and `planning`.
+- Non-trivial repo work: load `docs`; interactive session (can ask user) also load `planning`.
 - Bounded locate, 1–2-file edit, or diff-review delegation → `cavecrew`; all other delegation work → `delegation`.
 
 ## Guardrails
@@ -49,6 +49,6 @@ Before declaring work complete after changing files or running tools:
 
 After completion, use any explicit task output contract. Otherwise:
 
-1. Concise execution summary: report, reasoning, risks, validation. Only explanation user needs; omit empty or low-value data.
-2. High-impact dashboard: attention-worthy items only; one line each; no blank lines; `caveman` style; format `🟢 <change, complete-task>: <optional summary>`, `🟡 <risk, gap, suggestion>: <reason>`, `🔴 <error, refused, unfeasible>: <details>`, `❓ <question, unresolved authority>: <details>`.
+1. Execution summary: report, reasoning, risks, validation, key findings.
+2. High-impact dashboard: attention-worthy items only; one line each; no blank lines; `caveman` style; concise; format `🟢 <complete-task>: <optional summary>`, `🟡 <risk, gap, suggestion>: <reason>`, `🔴 <error, refused, unfeasible>: <details>`, `❓ <question, unresolved-authority>: <details>`.
 3. Optional non-trivial next steps, maximum three: `➡️ <next step>`.

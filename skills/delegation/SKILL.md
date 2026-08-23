@@ -5,71 +5,70 @@ description: "Agent delegation rules. Decides whether bounded work belongs in ma
 
 ## 1. Decision gate
 
-| Task shape                                      | Delegate? |
-| ----------------------------------------------- | --------- |
-| Needs existing context main already holds       | No        |
-| User decision or confirmation required          | No        |
-| Ambiguity resolution or risky action            | No        |
-| Brief + report tokens > inline tokens           | No        |
-| Bounded scope, checkable result, compact return | Yes       |
+| Task shape | Delegate? |
+| --- | --- |
+| Needs existing context main already holds | No |
+| User decision or confirmation required | No |
+| Ambiguity resolution or risky action  | No |
+| Brief + report tokens match/exceed main's inline-work tokens | No |
+| Bounded scope, checkable result, compact return | Yes |
 
-Describe capability + output shape, not worker name.
-
-Nested execution candidate: one complex self-contained mission, no open authority or user questions, broad judgment needed, implementation detail would pollute main context. Route through nested delegation execution before choosing executor or writing mission package.
+Candidate for `delegation-nesting` skill: one complex self-contained mission; no open authority or user questions; broad judgment needed; implementation detail would pollute main context.
 
 ## 2. Brief
 
-After gate returns yes, read `templates/worker-prompt.md`; fill required fields, delete empty optional fields. Template carries worker contract and report semantics unavailable from caller's loaded skill state.
+Read `templates/worker-prompt.md`. Fill every field, delete optional `Context` if left empty. Worker lacks caller-loaded rules; template supplies worker contract and report semantics.
 
-Send only context worker cannot derive. Files of interest need `path:line` plus reason. Worker owns method. Preserve stricter worker-specific output contracts; mandatory `status:` and `gap:` remain final lines.
+Send only context worker cannot derive. For known file sites, give `path:line` plus relevance. Worker owns method. Preserve stricter worker-specific return contracts; append `status:` and `gap:` as final lines.
 
 ## 3. Chaining
 
-Chain when each hop has a different done-condition. Same condition twice → one worker's job.
+- Chain only when each worker has a distinct completion condition. Do not pre-plan two workers for same completion condition; one worker's job.
+- Retries and escalation are not chains. Section 6 governs them.
+- Use a chain only when combined brief and report cost is lower than main doing delegated work inline.
 
-**Locate → act → verify:** worker finds sites → main picks targets → worker acts → optional audit.
+Patterns:
 
-**Parallel scout:** 2–3 workers, different angles, no shared state. Aggregate in main.
-
-**Single-shot:** site known → skip locate, hand `path:line` directly.
-
-Chain only for net context savings.
+- **Locate, act, verify:** worker A finds sites; main selects targets; worker B performs requested work; optional reviewer worker C verifies result.
+- **Parallel scout:** not a chain. Every worker can start independently. Workers examine different questions or evidence angles; no shared mutable state or worker-to-worker dependency. Main aggregates.
+- **Single-shot:** not a chain. One worker owns full task. Give `path:line` when site is known; otherwise worker locates it.
+- **Nested delegation:** main coordinates full task using `delegation-nesting` skill, hands over bounded subtask to worker (aka delegation executor), which may spawn sub-workers.
 
 ## 4. Report envelope
 
 Every worker report ends with two mandatory fields:
 
-- `status:` — one of `done` `partial` `blocked` `refused` `none`
-- `gap:` — in-scope work not finished, or `none`
+- `status:`: one of `done` `partial` `blocked` `refused` `none`.
+- `gap:`: unfinished in-scope work, or `none`.
 
-| Status    | Meaning                                        |
-| --------- | ---------------------------------------------- |
-| `done`    | full scope covered                             |
-| `partial` | some in-scope work unfinished; `gap` says what |
-| `blocked` | needs input, confirmation, or scope            |
-| `refused` | outside worker's scope or capability           |
-| `none`    | ran fully, found nothing                       |
+| Status    | Meaning  |
+| --- | --- |
+| `done`    | full scope covered |
+| `partial` | some in-scope work unfinished; name it in `gap` |
+| `blocked` | needs missing input, authority, or clarification |
+| `refused` | scope, capability, or safety boundary prohibits work |
+| `none`    | full search or check ran; found nothing |
 
-Status orthogonal to payload. Tests failed = `done` with failing result, not `partial`.
+Status records completion, not result quality. Failed test run: `done` with failure evidence, not `partial`.
 
 ## 5. Evaluate
 
-- Judge evidence, never claims. Evidence: `path:line`, command output, exit code, verbatim quote, URL.
-- Outcome asserted without evidence → `partial` regardless of declared status.
-- `gap: none` on work with visible gaps → unreliable, re-drive narrowed.
-- `none` is a result. Don't retry. Reconsider the question.
-- `refused` is routing signal. Re-route, don't retry.
+- Judge evidence, never claims. Evidence: `path:line`, command plus exit code, exact quote, or URL.
+- Claimed outcome lacks evidence: treat report as `partial`, regardless of declared status.
+- `gap: none` with visible gaps: treat report as unreliable. Narrow brief, or take over.
+- `none` settles searched scope. Do not rerun it; accept result or ask a different question.
+- `refused` is routing signal. Re-route; do not retry same worker.
 - Accept when evidence answers the brief. Extra polish is main's cost.
-- Main integrates conclusion + evidence. Never forward worker's full output to user.
+- Main gives user conclusion plus evidence. Never forward full worker output.
 
 ## 6. Escalate
 
-`blocked`: missing piece is scope/context main can supply → retry with it. Missing piece is user input/authority → stop and ask.
+`blocked`: main can supply missing facts or clarify existing scope: retry with it. User input or authority required: stop and ask.
 
-`partial` / failure ladder (never skip more than one rung):
+For `partial`, or failed work without a `blocked` status, use ladder one rung at a time. Advance only when current rung cannot change outcome:
 
-1. **Retry with changed input** — max two. Narrow scope, add context, add guidepost, or split. Identical re-spawn forbidden.
-2. **Tier up one model level** — same brief, stronger worker. Output shape right, judgment thin.
-3. **Take over in main** — blocker is context, authority, or ambiguity.
+1. **Retry with changed input**: at most twice while each brief targets a plausible new cause. Narrow scope, add context, give known location or failure evidence, or split work. Never re-spawn identical brief.
+2. **Tier up one model level**: same task, stronger worker. Use when no plausible changed brief remains, and return shape and evidence are sound but judgment is insufficient.
+3. **Take over in main**: blocker is context, authority, or ambiguity.
 
-Same blocker twice → stop, summarize, re-plan. Never bypass a safety or authority refusal.
+Same blocker twice: stop, summarize, re-plan. Never override safety or authority refusal.
