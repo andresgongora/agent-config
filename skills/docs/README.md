@@ -42,6 +42,25 @@ skills/docs/scripts/inventory [dir]
 - Sorted by `updated:` desc, path asc
 - Deps: `bash`, `yq`, `awk`, `find`, `sort`. `yq` parses YAML; no heuristic fallback
 
+### Why `inventory` requires `yq`
+
+Current managed `.agent/` frontmatter is flat scalar metadata, so an `awk` extractor would work
+today. It would not preserve this script's supported YAML contract or test coverage:
+
+- Folded multiline `summary: >` values.
+- Quoted scalar escapes such as `\t` and `\n`.
+- Nested mappings and lists, which `inventory` ignores safely while parsing requested keys.
+- Invalid-YAML rejection with a named source file.
+
+| Choice                  | Benefit                                                                                 | Cost                                                                                                                  |
+| ----------------------- | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| Keep `yq`               | Correct YAML parsing, stable behavior for third-party frontmatter, invalid-YAML errors. | One runtime dependency; unavailable environments cannot run `inventory`.                                              |
+| Use `awk`/`sed`         | Only standard shell tools.                                                              | Must restrict and enforce frontmatter to flat single-line scalars; loses current fixture support and YAML validation. |
+| Use another YAML parser | Could replace `yq` where a target guarantees it.                                        | Still adds a runtime dependency; changes installation and error behavior.                                             |
+
+Keep `yq` unless the frontmatter contract is intentionally narrowed. Do not silently replace it with
+heuristic extraction.
+
 ### `scripts/get-frontmatter`
 
 ```bash

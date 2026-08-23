@@ -50,7 +50,7 @@ Context is scarce. Write dense agent-facing instructions: imperative, exact, low
 ## See also
 
 - `AGENTS.md` (repo-local) — "Adding Artifacts" deltas; repo rules this skill implements
-- `deploy/AGENTS.md` — names skills at flow positions in its `## Workflow` step-4 routing table; trigger truth stays in each skill's frontmatter `description`
+- `deploy/AGENTS.md` — places description-driven skill loading in its workflow; routing truth stays in each skill's frontmatter `description`
 - `.agent/notes/design-principles.md` — broader ecosystem why (layer model, memory placement, context pollution)
 - `../agent-agents-md/` — same-family sibling owning `AGENTS.md` files
 - Docs discipline behavior — `.agent/` documentation conventions

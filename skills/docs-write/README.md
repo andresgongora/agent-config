@@ -12,7 +12,7 @@ The discovery skill loads on nearly every non-trivial repo session — it must s
 
 ## Design intent
 
-- **Two-tier gate.** Frontmatter/placement rules apply to any write. _Creating a new durable note_ additionally requires high-confidence, reuse-worthy knowledge. Handoff and bug logs clear the bar differently — not by being routine, but by being gated on costly-to-lose task state (session boundary, multiple failed attempts, explicit handoff): see "Bug-log and plan ownership" below.
+- **One admission gate.** Durable note needs settled, reuse-worthy knowledge with real recovery cost. Handoff and bug logs need costly-to-lose task state: session boundary, multiple failed attempts, or explicit handoff.
 - **No progress narration.** Work-in-flight context stays in the AI session. Persist only what is likely to be retained: settled research, hard-won architecture facts, root causes, decisions.
 - **`notes/` is the catch-all.** Architecture, research, philosophy, conventions all live in `.agent/notes/`. Content kind is the doc's job, not a directory's. No `research/`/`architecture/` folder sprawl.
 - **Frontmatter is the routing contract.** `description:` decides read-or-skip. Any external-sourced content requires `source:`; `references:` is optional supplementary only and never substitutes for a missing `source:`. No source = unverifiable claim.
@@ -44,7 +44,7 @@ Loads when persisting knowledge worth keeping (settled research, architecture/de
 - Do not couple to the discovery skill or any research skill by name. Reference by behavior only. The frontmatter schema is the one shared contract; this skill is its authority. Read-only consumers of that contract: the discovery discipline and the durable-planning capability's plan template. They read the schema; they never redefine it.
 - Do not add new `.agent/` folders for content kinds without real justification (reject-first).
 - Discovery scripts (`inventory`, `get-frontmatter`) live with the discovery skill, not here.
-- `scripts/check-frontmatter` validates this skill's managed-doc contract. Silent success; failures list only bad fields.
+- `scripts/check-frontmatter` checks required fields, `status`, `updated`, optional `source`. Silent success; failures list invalid fields.
 
 ## See also
 

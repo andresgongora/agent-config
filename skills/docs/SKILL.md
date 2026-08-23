@@ -1,26 +1,26 @@
 ---
 name: docs
-description: "Discover existing repository knowledge cheaply before spending context on exploration. Load on non-trivial repo work: before a grep/glob/read sweep of an unfamiliar area, before answering how something works in this repo, when a past session may already have settled the question, when onboarding to a repo, or when a repo has an `.agent/` directory. Scans `.agent/` doc frontmatter via inventory script, full-reads only task-relevant docs, falls back to README. Not for writing, updating, or pruning docs; not for trivial one-answer requests or an already-known file path."
+description: "Discover existing repository knowledge cheaply before spending context on exploration. Load on non-trivial repo work: before a grep/glob/read sweep of an unfamiliar area, before answering how something works in this repo, when a past session may already have settled the question, when onboarding to a repo, or when a repo has an `.agent/` directory. Not for writing, updating, or pruning docs; not for trivial one-answer requests or an already-known file path."
 ---
 
-## Core Rules
-
-1. Cheap discovery first. Source beats docs; digested docs beat blind re-scan.
-2. Frontmatter routes. `description:` decides if body worth reading.
-3. Discover, not write. Persisting new knowledge is separate gated discipline.
+`.agent/` folder: at repo root, contains durable AI-facing knowledge.
 
 ## Discovery Workflow
 
-Agent-directed documentation resides in `.agent/`.
+- Once per session, unless already scanned: run `scripts/inventory`.
+- Full-read only docs with task-relevant description.
+- No docs found: fallback to closest `README.md`.
 
-Once per session, unless already scanned:
+## Tools
 
-1. `.agent/` exists: run `scripts/inventory`. Scan rows, full-read only task-relevant doc.
-2. One file's full frontmatter, no body: `scripts/get-frontmatter <file>`.
-3. No relevant doc, `README.md` exists: read relevant section.
-4. Script fails: name file and reason.
-5. Inventory unavailable (no `yq`, denied, other failure): read README and targeted `.agent/` paths direct; report blocked.
+- `scripts/inventory`: scans repo `.agent/`, reports all doc frontmatters.
+- `scripts/get-frontmatter <file>`: retrieves only the frontmatter of a specified doc.
 
-## When to Switch to Writing
+## Guardrails
 
-Discovery gap plus settled high-value knowledge: load `docs-write`. Bare gap: do not write.
+- Script fails: name file and reason.
+- Inventory unavailable (no `yq`, denied, other failure): read README and targeted `.agent/` paths direct; report blocked.
+
+## Writing
+
+Discovery gap or settled high-value knowledge: load `docs-write` to preserve knowledge.

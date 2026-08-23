@@ -6,11 +6,9 @@
 
 Everywhere else in the repo, artifacts refer to each other by behavior rather than by name, so any one of them can be swapped for an equivalent. This file is the exception, and the only one. Because it is the single glue point, replacing one skill with another means editing here and nowhere else.
 
-## The routing table trade-off
+## Description-driven routing
 
-Step 4 of `## Workflow` maps a work domain to the skill that owns it. Frontmatter answers "what triggers this skill" but not "when during the work does it load". Step 4 answers the second question: load lazily, when work crosses into a domain, and accumulate loads as one task spans several. Cells are keywords, not rewritten descriptions.
-
-The cost has not gone away. Rename or remove a skill and the table drifts out of sync with `skills/`, and nothing catches it.
+Step 4 of `## Workflow` tells agents when to inspect available skill descriptions: throughout non-trivial work, before acting in a matching domain, and again when the task changes. Each skill's frontmatter remains the routing truth, without a second domain-to-skill index that can drift.
 
 ## Maintainer notes
 

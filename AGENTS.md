@@ -25,7 +25,6 @@ Repo-local rules for agents authoring / editing skills, subagents, and docs in t
 - Before adding / restructuring docs under `.agent/`: load owning documentation workflow; discovery-only workflow does not own writes.
 - Before broad scan: check `.agent/frontier.md` for current repo state.
 - Update `.agent/frontier.md` when shape / done / in-progress / next / boundary shifts. Shape / entry-point / boundary moves also update the `## Info` block above.
-- `deploy/AGENTS.md` `## Workflow` step-4 routing table is a curated routing subset, not a complete index of `skills/`. Add / rename / delete / re-scope a skill → reconcile that table in the same change. Omission is legitimate when a parent skill routes the child or the skill is user-invoked only; record nothing, just do not let a listed row go stale.
 - After any structural change (new skill / subagent / doc, moved template, deleted artifact): grep for dead refs before reporting done.
 
 ## Access Level
@@ -65,7 +64,7 @@ Reject when:
 
 Owning workflow first: agent-artifact authoring for skills / subagents / commands, documentation workflow for `.agent/` docs, AGENTS-maintenance for any `AGENTS.md`. Those own the procedure. Repo-specific deltas only:
 
-- **Skill**: grep `skills/` for overlap before creating. Routing truth is `SKILL.md` frontmatter `description`; reconcile the `deploy/AGENTS.md` step-4 routing table in the same change. Obsoletes an existing skill → delete the old one now, not later.
+- **Skill**: grep `skills/` for overlap before creating. Routing truth is `SKILL.md` frontmatter `description`; keep it precise enough for description-driven loading. Obsoletes an existing skill → delete the old one now, not later.
 - **Subagent**: grep `agents/` for name collision. `deploy/AGENTS.md` carries no worker table; add a line there only for delegation precedence the subagent's own `description` cannot express.
 - **Command**: grep `commands/` for name collision. No README, no frontmatter beyond `description`. Fits one screen or it is over-scoped.
 - **Doc**: check whether an existing `.agent/` doc can absorb the content instead of creating a file.
