@@ -34,6 +34,38 @@ die() {
 }
 
 ##==================================================================================================
+##	ARGUMENT PARSING
+##==================================================================================================
+
+printUsage() {
+    printf 'Usage:\n'
+    printf '  %s [directory]\n' "${BASH_SOURCE[0]##*/}"
+    printf '\n'
+    printf 'Run from the repository of interest'"'"'s working directory. With no\n'
+    printf 'argument, scans that repo'"'"'s own %s folder.\n' '.agent'
+    printf '\n'
+    printf 'Pass an explicit directory to inventory frontmatter elsewhere instead —\n'
+    printf 'for example, a submodule, a nested project, or any other %s folder\n' '.agent'
+    printf 'not at the current working directory.\n'
+    printf '\n'
+    printf 'Options:\n'
+    printf '  -h, --help            Show this message\n'
+    printf '\n'
+    printf 'Arguments:\n'
+    printf '  directory             Directory to scan recursively (default: .agent)\n'
+    printf '\n'
+    printf 'Examples:\n'
+    printf '  %s                    # scan ./.agent in the current repo\n' "${BASH_SOURCE[0]##*/}"
+    printf '  %s vendor/lib/.agent  # scan a submodule'"'"'s .agent folder\n' \
+        "${BASH_SOURCE[0]##*/}"
+}
+
+if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
+    printUsage
+    exit 0
+fi
+
+##==================================================================================================
 ##	CORE FUNCTIONS
 ##==================================================================================================
 

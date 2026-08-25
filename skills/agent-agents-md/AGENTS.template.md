@@ -23,7 +23,7 @@ Section picking:
 
 - Living doc. Evolves from repeated signal, not one-off taste.
 - Durable behavior only. Task logs → a progress-notes folder (e.g. `.agent/progress/`).
-- Nearest applicable `AGENTS.md` wins. Child narrows / overrides parent; never restates it.
+- Combines with parent `AGENTS.md` files while traversing upward; no runtime "nearest wins" mechanism. Never restate a parent rule — narrow or override it explicitly, or warn if it conflicts.
 - Style: dense, imperative, fragment OK. Reader is AI.
 - Verify referenced skills / tools / paths exist before saving.
 
@@ -95,14 +95,6 @@ Field guidance (pick what applies, add code-specific rows only if relevant):
 
 - <artifact type> → `<path>`
 - <artifact type> → `<path>`
-
-### Adding a New <Thing>
-
-<!-- Optional. Include when adding an item of some category is a recurring operation with several ordered steps. Otherwise cut. -->
-
-1. <step>
-2. <step>
-3. <validation>
 
 ## Boundaries
 

@@ -1,6 +1,6 @@
 ---
 name: docs-write
-description: "Write side of repository knowledge: admit, shape, place, update, and prune durable `.agent/` docs. Load when a session has produced knowledge worth persisting because re-obtaining it later would be expensive — settled research conclusion, hard-won architecture or design fact, resolved root cause, accepted design decision, cross-session handoff, or bootstrapping a missing repo doc with a clear future consumer. Also load when starting or updating a costly-to-lose bug-attempt log (`.agent/bugs/`) or a task handoff note (`.agent/progress/`), or when a workflow needs the managed-doc frontmatter schema or `.agent/` placement rules. A bare documentation gap does not trigger this; establish the value first. Not for reading or discovery."
+description: "Manage durable `.agent/` knowledge: admit, write, update, or prune. Before completion, load when preserving settled session knowledge saves costly future investigation. Also load for costly-to-lose bug logs, handoffs, or `.agent/` document placement/frontmatter. Not for reading, discovery, or bare documentation gaps."
 ---
 
 Persist knowledge future agents need, stored under repository `.agent/` folder.

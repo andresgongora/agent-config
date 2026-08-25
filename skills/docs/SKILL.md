@@ -1,19 +1,19 @@
 ---
 name: docs
-description: "Discover existing repository knowledge cheaply before spending context on exploration. Load on non-trivial repo work: before a grep/glob/read sweep of an unfamiliar area, before answering how something works in this repo, when a past session may already have settled the question, when onboarding to a repo, or when a repo has an `.agent/` directory. Not for writing, updating, or pruning docs; not for trivial one-answer requests or an already-known file path."
+description: "Discover existing repository knowledge cheaply before spending context on exploration. Load on non-trivial repo work: before a grep/glob/read sweep of an unfamiliar area, before answering how something works in this repo, when a past session may already have settled the question, when onboarding to a repo, or when a repo has an `.agent/` directory."
 ---
 
 `.agent/` folder: at repo root, contains durable AI-facing knowledge.
 
 ## Discovery Workflow
 
-- From working repository root, once per session unless already scanned: run `scripts/inventory` (defaults to `./.agent`).
-- Full-read only docs with task-relevant description.
-- No docs found: fallback to closest `README.md`.
+1. From working repository root, once per session unless already scanned: run `scripts/inventory` (defaults to `./.agent`).
+2. Full-read only docs with task-relevant description.
+3. No docs found: fallback to closest `README.md`.
 
 ## Tools
 
-- `scripts/inventory`: scans repo `.agent/`, reports all doc frontmatters.
+- `scripts/inventory [directory=$PWD/.agent]`: scan `.agent/` for doc frontmatters, report all. Optional arg: path to specific `.agent/` instead of cwd's own.
 - `scripts/get-frontmatter <file>`: retrieves only the frontmatter of a specified doc.
 
 ## Guardrails

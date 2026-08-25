@@ -1,6 +1,6 @@
 ---
 name: writing
-description: "Use ONLY when composing or substantially rewriting reader-facing prose meant to communicate, including emails, official correspondence, public statements, blog posts, proposals, and articles. Do not use for quick messages, technical addenda, code comments, changelogs, commit messages, internal notes, or mechanical anti-pattern cleanup alone."
+description: "Own the full authoring pass on reader-facing prose: purpose, audience, structure, argument, then wording. Load when composing new prose or rewriting existing prose substantially enough that its shape can change — emails, official correspondence, public statements, blog posts, proposals, articles. Do not load for quick messages, code comments, changelogs, commit messages, or internal notes."
 ---
 
 Goal: reader understanding or action.
