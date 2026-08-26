@@ -157,8 +157,9 @@ After creating or editing, ensure all pass.
 
 ### Common
 
-- [ ] Everywhere: No placeholders, scaffold comments, or template-only examples remain; required values are concrete.
+- [ ] Everywhere: No placeholders, scaffold comments, under-specified runtime variables, or template-only examples remain; required values are concrete.
 - [ ] Everywhere: No name coupling to other artifacts outside a declared same-family group; behavioral references only elsewhere (swap test passes).
+- [ ] Everywhere: Any section stacking 3+ interacting technical facts a weak model must synthesize (e.g. permission/ordering/parsing rules) carries one worked example showing them combined; cheap-model test from core rules applies to that section specifically, not just the artifact as a whole.
 - [ ] Artifact: If replacing an artifact: all inbound refs updated or removed.
 - [ ] Artifact: No stubs, maintainer-facing residue, or roadmap items, or vestiges remain.
 - [ ] Artifact: No dead refs to paths/skills/tools that don't exist.

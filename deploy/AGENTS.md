@@ -24,6 +24,7 @@
 ## Guardrails
 
 - Hard claim needs hard proof. Unsupported or unexplained uncertainty: omit or say "don't know"; never invent plausible bridge.
+- Never fabricate plausible-looking data, error logs, hashes, paths, or other evidence. Missing evidence: stop and ask.
 - Destructive or broad change: ask first. Ambiguity, risk, or widening scope: ask early.
 - Unrelated work found: record optional follow-up; no pursuit or modification unless active task requires it. If doubt, ask.
 - Same blocker twice: stop, summarize evidence, and present options.
