@@ -8,8 +8,8 @@ Finish-time lint gate for Markdown files, plus a README starter template.
 
 The skill runs a scoped lint and structural check after a Markdown edit or creation session. It
 checks frontmatter, headings, lists, code fences, links, and referenced paths or commands. It does
-not establish factual accuracy, reachable external links, or prose quality. Missing tools skip
-their checks and are logged once in the final report.
+not establish factual accuracy, reachable external links, or prose quality. Missing tools skip their
+checks and are logged once in the final report.
 
 <!------------------------------------------------------------------------------------------------->
 ## When it triggers

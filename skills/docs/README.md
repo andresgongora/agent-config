@@ -1,34 +1,56 @@
 # docs
 
-Read side of repository knowledge for AI agents. Cheap to discover, cheap to trust. The write side lives in the doc-writing discipline.
+Read side of repository knowledge for AI agents. Cheap to discover, cheap to trust. The write side
+lives in the doc-writing discipline.
 
+<!------------------------------------------------------------------------------------------------->
 ## What it does
+<!------------------------------------------------------------------------------------------------->
 
-Guides the agent to consult already-digested repo docs before broad re-exploration. Provides two cheap discovery scripts (`inventory`, `frontmatter`) that scan a whole `.agent/` folder in one bash call instead of many file reads.
+Guides the agent to consult already-digested repo docs before broad re-exploration. Provides two
+cheap discovery scripts (`inventory`, `frontmatter`) that scan a whole `.agent/` folder in one bash
+call instead of many file reads.
 
+<!------------------------------------------------------------------------------------------------->
 ## Why discovery-only
+<!------------------------------------------------------------------------------------------------->
 
-This skill loads on nearly every non-trivial repo session, so it must stay lean. Writing rules (frontmatter schema, `.agent/` placement, lifecycle, bootstrap, handoff, bug logs) belong to a separate doc-writing skill that loads only when knowledge is persisted. Discovery is the hot path; writing is the cold, gated path.
+This skill loads on nearly every non-trivial repo session, so it must stay lean. Writing rules
+(frontmatter schema, `.agent/` placement, lifecycle, bootstrap, handoff, bug logs) belong to a
+separate doc-writing skill that loads only when knowledge is persisted. Discovery is the hot path;
+writing is the cold, gated path.
 
 Design intent:
 
-- **Cheap discovery first.** One `inventory` call replaces N file reads. If discovery is expensive, agents skip docs; if agents skip docs, docs rot.
+- **Cheap discovery first.** One `inventory` call replaces N file reads. If discovery is expensive,
+  agents skip docs; if agents skip docs, docs rot.
 - **Route, don't dump.** Frontmatter + `description:` let the agent decide whether to read deeper.
-- **Read, don't write.** Persisting knowledge is a separate discipline with its own value gate. This skill never creates or edits docs.
-- **Not a subagent.** Discovery is a script the parent runs directly; the writing decisions that would follow need live parent context. Considered and rejected.
+- **Read, don't write.** Persisting knowledge is a separate discipline with its own value gate. This
+  skill never creates or edits docs.
+- **Not a subagent.** Discovery is a script the parent runs directly; the writing decisions that
+  would follow need live parent context. Considered and rejected.
 
+<!------------------------------------------------------------------------------------------------->
 ## How to invoke
+<!------------------------------------------------------------------------------------------------->
 
-Loads automatically for non-trivial repo work, or when the request mentions consulting docs / `.agent/` folder / architecture notes.
+Loads automatically for non-trivial repo work, or when the request mentions consulting docs /
+`.agent/` folder / architecture notes.
 
+<!------------------------------------------------------------------------------------------------->
 ## Structure
+<!------------------------------------------------------------------------------------------------->
 
-- `SKILL.md` — LLM-facing. Discovery workflow, what lives under `.agent/`, when to switch to writing.
+- `SKILL.md` — LLM-facing. Discovery workflow, what lives under `.agent/`, when to switch to
+  writing.
 - `README.md` — this file. Design intent, maintainer notes.
-- `scripts/inventory` — lists all Markdown docs in a tree with frontmatter, sorted by `updated:` desc.
+- `scripts/inventory` — lists all Markdown docs in a tree with frontmatter, sorted by `updated:`
+  desc.
 - `scripts/get-frontmatter` — prints the YAML frontmatter block of one Markdown file.
 
+<!------------------------------------------------------------------------------------------------->
 ## Scripts
+<!------------------------------------------------------------------------------------------------->
 
 ### `scripts/inventory`
 
@@ -67,23 +89,38 @@ heuristic extraction.
 skills/docs/scripts/get-frontmatter <file.md>
 ```
 
-- Prints the raw YAML frontmatter block of one file. Purpose: let the agent retrieve routing metadata without reading the file head, which would pull unwanted body context into the session.
+- Prints the raw YAML frontmatter block of one file. Purpose: let the agent retrieve routing
+  metadata without reading the file head, which would pull unwanted body context into the session.
 - Requires first-line `---` and a matching closing `---`.
-- Self-explaining failures for the calling agent: exit 2 = no opening fence, exit 3 = unclosed block, exit 4 = block is not valid YAML (parser reason included in the message). Each message names the file.
-- Deps: `bash`, `awk`. `yq` optional — used only to validate YAML and produce the exit-4 message; absent `yq` skips that check and prints the raw block.
+- Self-explaining failures for the calling agent: exit 2 = no opening fence, exit 3 = unclosed
+  block, exit 4 = block is not valid YAML (parser reason included in the message). Each message
+  names the file.
+- Deps: `bash`, `awk`. `yq` optional — used only to validate YAML and produce the exit-4 message;
+  absent `yq` skips that check and prints the raw block.
 
+<!------------------------------------------------------------------------------------------------->
 ## Revising this skill
+<!------------------------------------------------------------------------------------------------->
 
-- **Keep it caveman.** `SKILL.md` is read on nearly every trigger. Verbose prose = permanent token tax.
-- **Keep it read-only.** No write/placement/lifecycle rules here — those belong to the doc-writing discipline. If you find yourself documenting how to shape or place a doc, you are in the wrong skill.
+- **Keep it caveman.** `SKILL.md` is read on nearly every trigger. Verbose prose = permanent token
+  tax.
+- **Keep it read-only.** No write/placement/lifecycle rules here — those belong to the doc-writing
+  discipline. If you find yourself documenting how to shape or place a doc, you are in the wrong
+  skill.
 - **Do not add a subagent.** Discovery is a script; the parent runs it directly.
-- **Keep scripts correct.** `inventory` requires `yq`; never replace real YAML parsing with heuristic field extraction. `get-frontmatter` delimits the raw block and, when `yq` is present, validates it so malformed frontmatter explains itself to the calling agent.
-- **Frontmatter is a shared contract.** This skill only reads it; the doc-writing discipline is its authority. Third-party aliases are input compatibility, not an alternate managed schema.
+- **Keep scripts correct.** `inventory` requires `yq`; never replace real YAML parsing with
+  heuristic field extraction. `get-frontmatter` delimits the raw block and, when `yq` is present,
+  validates it so malformed frontmatter explains itself to the calling agent.
+- **Frontmatter is a shared contract.** This skill only reads it; the doc-writing discipline is its
+  authority. Third-party aliases are input compatibility, not an alternate managed schema.
 - **Do not couple to a compression skill.** Caveman is a style hint, not a dependency.
 - **Do not couple to research or writing skills by name.** Reference by behavior.
-- **When adding a new script**: add it to `scripts/`, mark executable, document dependency and tests here.
+- **When adding a new script**: add it to `scripts/`, mark executable, document dependency and tests
+  here.
 
+<!------------------------------------------------------------------------------------------------->
 ## See also
+<!------------------------------------------------------------------------------------------------->
 
 - Doc-writing discipline — write side: admission gate, frontmatter schema, placement, lifecycle.
 - `../../.agent/notes/design-principles.md` — cross-cutting agent philosophy, memory model.
