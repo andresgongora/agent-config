@@ -1,9 +1,7 @@
 ---
 name: writing
-description: "Own the full authoring pass on reader-facing prose: purpose, audience, structure, argument, then wording. Load when composing new prose or rewriting existing prose substantially enough that its shape can change — emails, official correspondence, public statements, blog posts, proposals, articles. Do not load for quick messages, code comments, changelogs, commit messages, or internal notes."
+description: "Load when composing or substantially rewriting reader-facing prose—emails, official correspondence, public statements, blog posts, proposals, or articles. Establish purpose, audience, structure, argument, then wording. Skip quick messages, code comments, changelogs, commit messages, and internal notes."
 ---
-
-Goal: reader understanding or action.
 
 ## Priority and completion
 
@@ -14,39 +12,23 @@ Apply rules in this order:
 4. Clarity and tone: use shortest natural wording that preserves meaning and relationship.
 5. Style guidance: structure, paragraph shape, and pattern minimization serve higher rules.
 
-- Return finished prose when supplied facts support it. Do not expose brackets, research notes, or process narration in a finished piece.
-- Never invent numbers, dates, quotes, sources, experience, consensus, or certainty. Never substitute confident tone for evidence.
-- Support material claims with dates, quantities, names, documents, direct observations, or sources.
-- Missing material fact: ask one concise question when omission would change reader action, legal meaning, safety, reputation, or core conclusion.
-- Draft asserts a problem, judgment, or recommendation without its mechanism or its impact ("the process is slow", "we should improve it"): ask for the missing mechanism and impact before rewriting. Never fill either from inference, and never ship the vague version polished.
-- Do not ask when any of these holds: user constrained scope to grammar, flow, structure, or light edit; user explicitly requested an incomplete draft or placeholders; the claim's reason is supplied and only outcome proof is missing; the vague claim is non-material to reader action. Handle each by the matching rule below instead.
-- One round of questions, batched. Answers supplied: rewrite using them and nothing more. Answers refused or unavailable: narrow the claim to what is supplied, or label it judgment.
-- Unsupported non-material detail: omit it. Do not ask merely to add color.
-- Overbroad factual claim with partial support: narrow it to supported scope.
-- Requested conclusion or recommendation with supplied reason but no outcome proof: label it judgment and give the reason. Do not ask for proof the user does not have.
-- User requests a draft with gaps, or explicitly requests placeholders: mark only missing material fact as `[confirm: ...]`.
-- Public fact needing support: verify with reliable current source when tools permit. Verification fails or doubt remains: apply the materiality rules above.
-- Private or company-specific fact unavailable: never infer.
+Do not invent unsupported facts, including numbers, dates, quotes, sources, experience, consensus, certainty, or unavailable private/company-specific details. 
+Support material claims with supplied evidence or reliable current sources. If a material claim lacks its mechanism or impact, ask one concise batch of questions unless the user requested a light edit, placeholders, or a judgment based on a supplied reason. Use answers only; if answers are refused or unavailable, narrow the claim or label it judgment. 
+Never ship a polished but materially vague claim.
 
 ## Input handling
 
-- Default: user text = draft. Raw material. Rework structure, wording, order freely to serve reader.
-- Scope constraint honored when user specifies: "fix grammar," "improve flow," "keep structure," "light edit." Apply only what asked.
-- No constraint when user gives text without instruction, says "draft," "rough," or similar.
+Treat user text as raw material unless they specify editing constraints; honor those constraints exactly.
 
 ## Drafting method
 
-1. Inventory supplied facts, decisions, constraints, and material unknowns.
-2. Arrange that material for the reader. Use `## Argument` for claims needing support and `## Paragraph construction` for substantive paragraphs; exempt forms skip paragraph structure only.
-3. Draft only from arranged material. Do not generate connective prose to hide missing support; omit, narrow, or ask under `## Priority and completion`.
-4. Diagnose semantic relationships after drafting. Verbs must fit their objects; modifiers must fit their nouns; comparisons and metaphors must preserve one intelligible relationship. Test figurative wording with a literal paraphrase, but keep it when the relationship remains coherent and it sharpens meaning. Otherwise rewrite it directly.
+Organize supplied material for the reader, draft only from it, expose or resolve missing support, and ensure semantic relationships remain coherent.
 
 ## Clarity and precision
 
-- Shortest wording preserving meaning, tone, precision. Main point first; optional context after.
-- Subject, action, reason, consequence in plain order. Prevent reasonable misunderstanding.
-- Vary sentence length. No long run of equally shaped sentences.
-- Familiar word when equally exact. Keep specialized term when more exact. Cut ceremony, indirect requests, redundant qualifiers, formality hiding action. Stock metaphors and phrases: cut unless they sharpen meaning.
+- Use the shortest precise wording. Lead with the main point; state subject, action, reason, and consequence plainly.
+- Vary sentence length and structure.
+- Prefer familiar exact words. Cut ceremony, hedging, indirectness, stock phrases, and metaphors that add no meaning.
 - Find the buried verb inside a noun (`establishment of`, `the removal of`) and use it directly, naming the actor. See `references/examples.md`.
 - Brevity never removes needed explanation, evidence, or context. Isolate optional detail instead.
 - Name the actual person, organization, document, date, product, policy, place, price, quantity, or identifier. Never a soft abstraction standing in for one.
@@ -54,37 +36,21 @@ Apply rules in this order:
 
 ## Reader relationship and tone
 
-- Reader: capable equal. Friendly, polite, confident. No deference, flattery, dominance, or unearned familiarity.
-- Requests direct. Disagreement plain and respectful. Decisions: reasons, not status. No performed authority or submission.
-- Formality only for audience, legal obligation, or real consequence. Never status theater. Active voice unless actor unknown or irrelevant. Natural contractions in conversational prose; no forced contractions in formal writing.
-- Emotional force: facts, stakes, concrete action. No foul language, insults, panic, helplessness, or borrowed motivational slogans.
-- Name problem. Confidence through preparation, competence, ownership, follow-through; never strength declarations.
-- Emotion proportionate to consequence. Write toward action and resilience, never despair or empty reassurance. No clichés: "we are stronger together," "this is a journey," "we will emerge stronger."
-- Peer-level request: name requested action, owner, reason, and deadline only when supplied or required.
+- Write to the reader as an equal: direct, polite, confident, and free of flattery, insults, or slogans.
+- Use only necessary formality. Make requests and disagreements explicit, with reasons and supplied ownership, deadlines, and actions.
+- Match emotional force and certainty to the facts and stakes. State what is known, unknown, and next; emphasize concrete action and follow-through.
 - Calibrated uncertainty: state what is known, unknown, and next action. Do not convert uncertainty into confidence or helplessness. See `references/examples.md`.
 
 ## Non-native or low-proficiency reader
 
 When user explicitly signals limited proficiency, accessibility need, translation need, or plain-language need (e.g. "keep it simple for non-native readers", "they struggle with English"):
 - Apply the STE100 rules (see `references/asd-ste100.md`) to the whole piece, not only its directive portions. This is the single exception to the directive-only scope below.
-- One idea per sentence.
-- Active voice.
-- No idioms, metaphors, or cultural references.
-- No phrasal verb with ambiguous meaning.
-- Shortest exact word. Cut ceremony entirely.
-- Condition before action. Consequence explicit; never implied.
 - Paragraph three-part form still holds. Vocabulary and sentence shape simplify; structure does not.
 - Politeness and deference rules from `## Reader relationship and tone` overridden: follow cultural register user describes. No guidance: default direct and warm, no idiom, no humor.
-- Never enumerate or guess cultural norms. User provides context; apply it.
 
 ## Whole-piece flow
 
-- Correspondence: open purpose, decision, request, or required action. End explicit next action, owner, deadline when applicable.
-- Public prose: open strongest supported claim or useful fact. End evidence-warranted conclusion, never generic encouragement.
-- Material surprise, risk, change, contradiction, decision, opportunity: lead the most consequential true fact, complete.
-- Curiosity from honest tension: unexpected result, apparent contradiction, material change, consequence needing explanation. Explain immediately after claim.
-- No clickbait, tease, vague shock, exaggeration, false urgency, withheld context, bait-and-switch framing, or rhetorical questions.
-- Routine news needs no hook. Lead purpose, status, decision, or requested action.
+- Lead with the reader’s most consequential supported fact—purpose, decision, request, change, risk, or claim—and state any needed action, owner, and deadline plainly. Use honest tension only when it clarifies; never use clickbait, false urgency, withheld context, or rhetorical bait.
 
 ## Argument
 
@@ -104,24 +70,15 @@ Every substantive paragraph carries three functions, in order:
 3. Closing: state the conclusion, consequence, or resulting action. When needed, introduce the idea developed in the next paragraph.
 
 - Three functions means three sentences minimum. Fewer sentences means a missing function; supply it or merge the paragraph into its neighbour.
-- Never pad to reach the count. Nothing supports development or closing: the material is not a substantive paragraph.
-- Upper bound is atomicity, not length: one core idea per paragraph. Second core idea appears, split. Fragment cannot stand alone, group it with the paragraph it serves. See `references/examples.md`.
 - Do not split one idea across paragraphs. A new paragraph must add distinct information or change reader need; a paragraph that only restates or continues its predecessor merges back.
-- Exempt structures, where the three-part form does not apply: headings, salutations, sign-offs, captions, list items, supplied quotations, standalone directives, transitions between sections, and a correspondence body that is only a decision, request, recommendation, or acknowledgment plus its supplied reason or required action.
-- Classify by function, not length: a paragraph that argues, explains, reports, or supports a claim is substantive. Unlisted structure, or genuine doubt: treat as substantive and give it the three functions.
 
 ## Structure and presentation
 
-- Prose for argument; lists for scan-heavy steps, options, requirements, dates, comparisons.
-- Public statement: known, unknown, next action, update date. Official correspondence: precise, restrained, complete. Professional email: direct, courteous, brief.
-- Avoid long inline enumerations. Give the exact list only when scope, legal meaning, or context requires every item; otherwise name the category or move short examples to sentence end.
-- Bullets earn space only when each item needs distinct detail or scan value. `(i)`, `(ii)`, and so on: only for 3–5 required multi-part concepts within one paragraph; never decorate simple noun lists.
+- Use prose for argument; use lists only when items need distinct detail or quick scanning. Keep public and professional writing direct, precise, restrained, and complete.
 
 ## Directive text
 
 - Instructions, commands, warnings, actionable items: read `references/asd-ste100.md` and run its `## Check`.
-- Apply only to directive portions. Never to general prose, email bodies, blog bodies, explanation, or argument. Sole exception: the low-proficiency reader branch above, which applies the rules piece-wide.
-- Text mixes both: isolate directives in list; keep context and rationale outside it.
 
 ## Avoid
 
@@ -135,18 +92,8 @@ Every substantive paragraph carries three functions, in order:
 ## Verification
 
 Check before returning:
-Whole piece:
-- [ ] Reader knows why this matters.
-- [ ] Claims have support proportionate to stakes.
-- [ ] Facts, names, dates, links, quotations, and numbers are accurate.
-- [ ] Request, decision, or conclusion is unmistakable.
-- [ ] Tone fits audience and consequences.
-
-Each substantive body paragraph:
-- [ ] Opens with its core idea, develops it, and closes with conclusion or consequence.
-- [ ] Carries one core idea; a second idea has been split out, a dependent fragment merged in.
-- [ ] Any paragraph under three sentences matches a listed exempt structure.
-
-When relevant:
-- [ ] Recurring composition pattern that obscured meaning was rewritten only where the rewrite improved clarity, precision, or natural tone.
-- [ ] Delegate a fresh-context check against `references/examples.md` patterns, bounded diff-review-style output.
+- [ ] Purpose, key action/decision, and conclusion are clear.
+- [ ] Claims have support proportionate to stakes; facts, names, dates, links, quotations, and numbers are accurate.
+- [ ] Tone fits the audience and consequences.
+- [ ] Each substantive paragraph develops one idea from point to consequence; split or merge where needed.
+- [ ] When relevant, rewrite recurring patterns only if clarity, precision, or natural tone improves; use a fresh-context diff review against `references/examples.md`.
