@@ -16,15 +16,21 @@ It stays a discipline, not a persona or a growth tactic. It is not a named-perso
 
 Substantial reader-facing prose pulls it in: correspondence, public statements, blog posts, proposals, and articles. Quick messages, technical addenda, code comments, changelogs, commit messages, internal notes, and mechanical anti-pattern cleanup do not. `SKILL.md` frontmatter remains the routing authority; this section is a summary of it, not a second source.
 
+## Agent roles
+
+`agents/writing.md` is the chat-first primary agent for reader-facing prose. It asks for material context, loads this skill and its references, then drafts or revises the text.
+
+`agents/writing-reviewer.md` is the read-only review agent. It returns corrections or a revised text with reasons, and reports a limitation when a safe revision is not possible.
+
 ## Design intent
 
 Prose becomes useful before it becomes elegant. The reader gets the material fact, the reason, the consequence, and the next action without ceremony, clickbait, invented authority, or false reassurance. Everything else in the skill exists to protect that.
 
 The drafting method gives the model a positive construction order instead of only a rejection list: inventory known material, arrange it with the existing argument and paragraph structures, then draft. Its diagnostic pass tests whether verbs, objects, modifiers, comparisons, and metaphors still describe one intelligible relationship without flattening coherent figurative language. Fluent connective prose cannot substitute for either support or meaning.
 
-The paragraph model is the load-bearing part, and it comes from how people actually read. Almost nobody reads a page linearly: one reader scans down the left edge collecting first sentences to find the paragraph worth stopping at, another skips to the ends hunting conclusions and actions. A paragraph therefore needs three functions — an opening that states its core idea, a body that develops it, and a closing that gives the consequence or takeaway. Serve both skimming paths and the linear reader gets a well-formed paragraph for free.
+The paragraph model is a useful default, and it comes from how people actually read. One reader scans down the left edge collecting first sentences to find the paragraph worth stopping at; another skips to the ends hunting conclusions and actions. When the reader needs them, an opening that states the core idea, a body that develops it, and a closing that gives the consequence or takeaway serve both skimming paths and the linear reader.
 
-The three-sentence minimum is a consequence of that structure, not a style preference. Three functions cannot fit in two sentences, so a two-sentence substantive paragraph is missing one of them — usually the closing, which is exactly what the takeaway skimmer was looking for. The rule is stated as a hard floor because earlier hedged phrasing ("often", "when the reader needs it") let the closing quietly disappear. Padding is still forbidden: material that cannot support development or a closing was never a paragraph, and should merge into its neighbour or become a list item.
+Substantive body paragraphs have at least three sentences: an opening, development, and a conclusion, consequence, or action. Short decisions, requests, transitions, and conclusions remain exempt.
 
 The upper bound is atomicity rather than length. One paragraph carries one core idea, so a second idea forces a split and a fragment that cannot stand alone gets grouped with the paragraph it serves. Length then takes care of itself, which is why no maximum sentence count appears anywhere in the skill.
 
@@ -37,12 +43,12 @@ Curiosity has to come from a complete, relevant fact that deserves explanation. 
 - Keep reader-facing, not a named-person voice profile.
 - Preserve direct peer-level tone and evidence proportional to stakes.
 - Add rules only when they change output behavior. Examples stay short and operational.
-- Keep the three-part paragraph rule unhedged; hedging lets the closing sentence vanish.
+- Keep the three-part paragraph structure and the three-sentence minimum for substantive body paragraphs; retain listed exemptions for short functional text.
 - `SKILL.md` carries WHAT and HOW only. Rationale lives here, including the skimming model behind the paragraph rule. Move any WHY that leaks back into the skill.
 - Keep the ask-for-mechanism-and-impact rule adjacent to the missing-fact rules. Removing it turns the skill into a polisher of vague claims, which is the failure it exists to prevent.
 - The ask rule needs its non-ask exits kept intact. Constrained edits, explicitly requested placeholders, supplied-reason judgments, and non-material vagueness each have their own handling; delete those exits and the skill starts interrogating the user over grammar fixes.
 - `references/asd-ste100.md` defaults to directive-only scope but defers to a caller that widens it. That deference is what lets the low-proficiency branch apply the rules piece-wide without the reference contradicting the skill.
-- Shorter paragraphs are allowed only through the listed exempt structures, never through a length preference. Grow that list reluctantly.
+- After the three-sentence minimum for substantive body paragraphs, paragraph length follows reader need and evidence.
 - `SKILL.md` owns the one STE100 scope exception (low-proficiency readers get the rules piece-wide; everything else is directive-only). Keep the reference file and this README consistent with it rather than restating the rule.
 - Examples must preserve stated facts. Demonstrate missing-fact handling with questions, omission, narrowed claim, judgment label, or explicitly requested draft markers; never add plausible detail.
 - Keep priority order and missing-fact return behavior explicit enough for a lightweight model to follow.
@@ -68,3 +74,5 @@ Curiosity has to come from a complete, relevant fact that deserves explanation. 
 - [`SKILL.md`](./SKILL.md)
 - [`references/examples.md`](./references/examples.md)
 - [`references/asd-ste100.md`](./references/asd-ste100.md)
+- [`../../agents/writing.md`](../../agents/writing.md)
+- [`../../agents/writing-reviewer.md`](../../agents/writing-reviewer.md)

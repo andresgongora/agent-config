@@ -137,3 +137,17 @@ Permission maps resolve last match. Agents place broad `bash: "*": deny` or `ask
 
 - Searches or fetches a specific source family, query angle, or URL lead.
 - Returns a compact `## Scout Report` for the web-research coordinator.
+
+## Writing
+
+`writing.md` is a chat-first primary agent for drafting and revising human-directed prose.
+
+- Uses supplied facts, asks for missing material context, and applies writing rules plus references.
+- Does not research, inspect local files, or handle code, configuration, structured data, or AI-directed text.
+
+## Writing Reviewer
+
+`writing-reviewer.md` is a read-only subagent for final review of supplied reader-facing prose.
+
+- Returns corrections or a revised text with reasons, or reports a bounded limitation.
+- Does not ask questions, research, edit files, or delegate.

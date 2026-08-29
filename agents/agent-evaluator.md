@@ -51,6 +51,7 @@ Density check: agent-directed prose want dense, ultra-compressed — fragment OK
 - **Context architecture** — critical rules visible near use; independent constraints in bullets, real sequences numbered, schemas/templates exact. Large optional detail belongs in selectively loaded support files only when handoff remains self-contained and maintainable.
 - **Coherence and lifecycle** — frontmatter/body/README/support files agree; references exist; terminology and format stay consistent. For skills, runtime behavior stays self-contained in SKILL.md while README stays human-facing and readably written; flag misplaced or duplicated content, and README prose that reads as AI slop or ignores plain-writing discipline. Detect vestigial residue and stubs: leftover comments, ghost steps, prohibition, clarification, opposite rule, or maintainer-facing meta ("no longer handles X", "removed per request") with no active concern for the executing agent. Post-rework residue audit: from-scratch and zero-impact tests. Recommend deletion, not inverse-rule accumulation; maintainer notes belong in README only.
 - **Capability fit** — model tier, tools, permissions, inputs, output size, and delegation boundary fit job. Least privilege. Portable across clients/models unless provider-specific behavior is explicit and necessary.
+- **Clarity and precision** — instructions are unambiguous, terminology is consistent, and meaning is clear without requiring external interpretation. No high-level violations of STE100 rules.
 
 Apply type-specific checks only when relevant:
 
@@ -107,8 +108,7 @@ Return full report. Keep fields even when empty. When question supplied, answer 
 | Capability fit | ... | ... |
 | Line-wrap hygiene | ... | ... |
 | Density (ultra-compressed, unambiguous) | ... | ... |
-| Templates available to artifact (if any) | ... | ... |
-| Scripts available to artifact (if any) | ... | ... |
+| Scripts, templates, and other resources available to artifact (if any) | ... | ... |
 
 ## Minimal revision shape
 - **Keep:** <load-bearing pieces>

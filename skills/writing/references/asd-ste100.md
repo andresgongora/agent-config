@@ -1,6 +1,6 @@
 # ASD-STE100 for Directives
 
-Adapted, simplified guidance. Not formal ASD-STE100 compliance. Default scope: directive portions only — steps, commands, warnings, and actionable items. The caller may widen that scope; the low-proficiency-reader branch applies these rules to a whole piece, and its own overrides win over anything here.
+Adapted, simplified guidance. Not formal ASD-STE100 compliance. Default scope: directive portions only; steps, commands, warnings, and actionable items. The caller may widen that scope; the low-proficiency-reader branch applies these rules to a whole piece, and its own overrides win over anything here.
 
 ## Core rules
 
@@ -26,4 +26,6 @@ Adapted, simplified guidance. Not formal ASD-STE100 compliance. Default scope: d
 - Each step states condition, action, and needed result or consequence.
 - Reader can follow order without inferring a missing action.
 
-Free official standard (do not paste it in full; it is copyrighted): https://asd-ste100.org
+## Resources
+
+Free official standard: https://asd-ste100.org
