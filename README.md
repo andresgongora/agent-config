@@ -103,7 +103,6 @@ automatically — the agent loads them when needed, then follows the workflow in
 | `artifact-vestige-hunt` | Find vestigial residue: leftover comments, steps, or notes describing removed/superseded behavior                             | Post-rework cleanup, "why is this still here", ghost steps in workflows                   |                                                                                                                              |
 | `local-opencode`        | Locate mapped OpenCode sources; inspect and verify deployed state                                                             | Local OpenCode config work                                                                |                                                                                                                              |
 | `nixos`                 | NixOS / Home Manager workflows and pitfall guide                                                                              | Any NixOS or Home Manager config work                                                     |                                                                                                                              |
-| `no-ai-slop`            | Rules for prose that does not read like AI output                                                                             | Writing human-facing docs, READMEs, copy                                                  | [realrossmanngroup/no_ai_slop_writing_rules](https://github.com/realrossmanngroup/no_ai_slop_writing_rules) (no license yet) |
 | `obsidian-plugin`       | Creating, editing, testing, and releasing Obsidian plugins — TypeScript, manifest, esbuild, BRAT, community submission        | Obsidian plugin work, manifest.json, BRAT beta, community plugin review                   |                                                                                                                              |
 | `planning`              | Plan-first session workflow: scope, live todos, coarse-to-fine execution                                                      | Multi-step tasks, ambiguous scope, risky forks                                            |                                                                                                                              |
 | `qa-skill`              | Static comparison and matched subagent QA for two agent skills                                                                | Comparing exactly two agent skills                                                        |                                                                                                                              |
@@ -138,6 +137,8 @@ so their transcripts stay isolated from main context.
 | `@web`                     | Low-cost executor for platform/service extraction and transformation                                   | Compact answer; captioned-video ideas persist source resource          |                                                                         |
 | `@web-search-scout`        | Single-query leaf for `@web-search` only; returns `## Scout Report`                                    | One isolated query angle within a research task                        |                                                                         |
 | `@web-search`              | Multi-page online research coordinator; returns `## Findings`                                          | Non-trivial research needing multiple sources                          |                                                                         |
+| `@writing`                 | Chat-first drafting and revision of human-directed prose                                               | Emails, correspondence, announcements, articles, reports, and copy     |                                                                         |
+| `@writing-reviewer`        | Read-only final prose review; returns corrections or revised text with reasons                         | Review a completed reader-facing draft                                  |                                                                         |
 
 ### Commands
 
@@ -148,7 +149,7 @@ Slash-commands: user-invoked shortcuts that run a fixed prompt.
 | `/agent-repo-init` | One-time bootstrap of agent-naive or agent-stale repo: `AGENTS.md`, durable memory, stale-artifact triage |                                                                         |
 | `/caveman-commit`  | Generate a terse caveman-style commit message for staged changes                                          | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) (MIT) |
 | `/caveman-review`  | Caveman-style code review — one-line findings with severity                                               | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) (MIT) |
-| `/caveman`         | Activate caveman compression mode (lite \| full | ultra | wenyan-lite | wenyan-full | wenyan-ultra | off) | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) (MIT) |
+| `/caveman`         | Activate caveman compression mode (lite \| full \| ultra \| wenyan-lite \| wenyan-full \| wenyan-ultra \| off) | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) (MIT) |
 | `/checkpoint`      | Validate work and capture durable state before a separate commit request                                  |                                                                         |
 | `/git-commit`      | Plan, show, approve, then create safe atomic Git commits; does not push                                   |                                                                         |
 | `/document`        | Update and prune durable repository documentation and current-state memory                                |                                                                         |
@@ -166,7 +167,7 @@ Slash-commands: user-invoked shortcuts that run a fixed prompt.
 ```
 deploy/AGENTS.md        Cross-project user-level rules (the main deployed file).
 AGENTS.md               Repo-local rules for agents maintaining this repo.
-agents/                 Subagent definitions, one file each.
+agents/                 Primary and subagent definitions, one file each.
 skills/                 Skills loadable on demand.
   <name>/SKILL.md       LLM-facing instructions.
   <name>/README.md      Human maintainer notes.

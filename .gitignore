@@ -17,8 +17,6 @@ build/
 dist/
 
 # Skills
-# no-ai-slop — upstream has no license yet; not redistributable until resolved
-skills/no-ai-slop/
 skills/poem-a/
 skills/poem-b/
 
@@ -35,3 +33,6 @@ model-aliases.json
 agents/delegation-coordinator.md
 commands/checkpoint.md
 commands/fanout.md
+
+# Local plugin experiment
+plugins/tool-stats/

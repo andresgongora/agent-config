@@ -1,7 +1,7 @@
 ---
 description: "Web-research coordinator. Use for one non-trivial online question needing multiple pages, sources, verification, or query angles. Direct-search narrow questions; otherwise spawn bounded parallel web-search-scout branches. Return one compact `## Findings`. Not local files, implementation, trivial one-shot lookups."
 mode: subagent
-model: POOL_MID
+model: PERSONAL_MID
 tools:
   read: true
   write: false

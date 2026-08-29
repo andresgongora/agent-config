@@ -16,6 +16,10 @@ description: "<!-- One physical line. Routing truth: what it does; when to load;
 
 <!-- Rules. -->
 
+## Resources
+
+<!-- If multiple tools, resources, scripts, etc available for this skills, list them here and explain their purpose, how to use them, arguments, etc. Create subsections if needed, or rename if only `Tools` available. Remove entirely if not needed. -->
+
 ## Workflow
 
 <!-- Ordered steps only when order matters. Ideally: enumerated list. -->

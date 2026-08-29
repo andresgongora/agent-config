@@ -1,6 +1,6 @@
 ---
 name: tool-bash
-description: "Bash command-execution preflight. Covers how to run a command safely. Load immediately before Bash tool use, shell command, terminal invocation, CLI call, or script execution, including read-only commands."
+description: "Bash command-execution preflight. Covers how to run a command safely. Load immediately before Bash tool use, shell command, terminal invocation, CLI call, or script execution, including read-only commands. Do not load for pre-existing skill-script execution."
 ---
 
 ## Rules

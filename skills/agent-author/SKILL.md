@@ -149,13 +149,20 @@ Slash commands are agent-directed instructions invoked by name. No model, no too
 4. Write or revise body first. Use form rules; dense agent-facing language. Write routing frontmatter last. Configure runtime fields against target-client schema, not template defaults.
 5. Trim: if body exceeds ~500 lines, extract reference file. Add `scripts/` only for owned executables. If replacing/obsoleting: grep inbound refs; update/remove same change.
 6. Run verification (checklist below), starting with the cheap-model test from core rules.
-7. Ready-to-ship artifact: delegate clean-context final review to a read-only artifact evaluator. Give target, intent, scope, and applicable rules. Incorporate justified findings; re-verify. Skip only trivial, mechanical edits; state skip reason.
+7. Return artifact.
+
+### Optional post-delivery deep-evaluation pass
+
+After artifact shipped, propose deep-evaluation for next-step. If user approves or requests directly:
+
+1. Delegate clean-context final review to a read-only artifact evaluator. Give target, intent, scope, and applicable rules.
+2. Incorporate justified findings (use normal workflow). Skip only trivial, mechanical edits; state skip reason.
+3. If substantial changes made: re-run deep-evaluation. If in doubt: re-offer deep-evaluation next-step.
+4. Return final artifact and summary of changes made.
 
 ## Verification
 
 After creating or editing, ensure all pass.
-
-### Common
 
 - [ ] Everywhere: No placeholders, scaffold comments, under-specified runtime variables, or template-only examples remain; required values are concrete.
 - [ ] Everywhere: No name coupling to other artifacts outside a declared same-family group; behavioral references only elsewhere (swap test passes).
