@@ -7,72 +7,79 @@ updated: YYYY-MM-DD
 
 # <work item> Plan
 
-<!-- Fill dense, low-token: fragments, bullets, no filler. Preserve exact paths/commands/code verbatim. Adapt headings; delete unused, never leave empty. -->
+<!-- Dense fragments. Preserve exact literals. Adapt headings; delete unused optional sections and placeholders. Keep goal, success, execution plan. -->
 
-## Goal
+## Intent
 
-<outcome, not activity>
+**Goal:** <outcome, not activity>.
 
-## Requirement rewrite
+**Need:** <underlying need; correct user framing if needed>.
 
-<real need; better path or rejected framing if any>
+### Hard constraints
 
-## Constraints
+- <must hold>.
 
-### Hard
+### Preferences
 
-- <must hold>
-
-### Soft
-
-- <prefer if cost/risk stays acceptable>
+- <prefer if cost/risk stays acceptable>.
 
 ## Non-goals
 
-- <explicit exclusion>
-
-## Locked decisions
-
-<omit if none. Standing invariants the whole plan must stay consistent with; the final-pass review verifies each holds everywhere with no leftover superseded wording. Not a changelog — that is Decisions / revisions.>
-
-- <decision, stated exactly as it must appear everywhere>
-
-## Assumptions to validate
-
-- <premise> — <validation method / decision impact>
+- <explicit exclusion>.
 
 ## Success criteria
 
-- <observable acceptance check — no "good", "complete", or "works well" without a check>
+- <observable acceptance check>.
+
+## Locked decisions
+
+<!-- Standing invariants. State exactly; final review checks every plan section still agrees. Not change history. Omit if none. -->
+
+- <decision/invariant>.
+
+## Evidence
+
+- <established fact> — <source/path/command/URL> — <plan impact>.
+
+## Assumptions to validate
+
+- <premise> — validate: <method> — if false: <replan point>.
 
 ## Risks and guardrails
 
-- <risk> — <trigger> — <mitigation or stop/replan action>
+- <risk> — signal: <trigger> — response: <mitigation, stop, or replan>.
 
-## Top-level AI execution plan
+## Execution context
 
-1. <milestone> — <outcome / dependency>.
-   - Use: <named discovered capability — trigger / expected output; omit if none>
-   - Delegate: <role/capability — bounded task / expected return / trigger / fallback; omit if main-thread work is cheaper or needs live synthesis>
+<!-- Shared execution facts only. Milestone-specific use/delegation stays beside milestone. Omit if none. -->
 
-## Execution capability notes
-
-- Runtime assumption: <shared capability or permission expected during execution — validation / fallback>
-- Setup: <one-time capability setup needed before affected milestones, or omit>
-- Research: <decision-blocking question — direct inspection | web research | review — why>
-- Lead: <current promising source/path and why, or omit>
-- Avoid: <capability/approach that wastes tokens, risks damage, or cannot answer question>
-
-Name capability role only when use changes execution. Milestone-specific use/delegation goes beside milestone; this section holds only shared assumptions, setup, fallback. Favour bounded workers for independent read-only mapping, focused review, known 1-2 file surgical edits; not for trivial work, broad refactors, or live-synthesis work.
+- Runtime assumption: <capability/permission> — validate: <method> — fallback: <route>.
+- Setup: <one-time prerequisite>.
+- Research: <decision-blocking question> — <inspection/research method> — <why>.
+- Lead: <promising source/path> — <why>.
+- Avoid: <wasteful, unsafe, or non-answering approach> — <why>.
 
 ## Open questions
 
-- <decision needed from user>
+- <user decision needed> — <why it blocks or changes route>.
 
-## Recommended final deliverable format
+## Execution plan
 
-- <format and acceptance shape>
+1. <verb + bounded object> — <dependency or outcome, if useful>.
+   - Result: <bounded outcome>.
+   - Check: <observable evidence>.
+   - Use: <capability — trigger — expected output — fallback; omit if none>.
+   - Delegate: <bounded task — required return evidence — fallback; omit if unsuitable>.
 
-## Decisions / revisions
+## Recommended final deliverable
 
-- YYYY-MM-DD — <decision/change; why>
+- <requested format and acceptance shape>.
+
+## Closeout actions
+
+- [ ] Validate: run all pertinent tests, linters, type checks, builds, and manual checks; record commands and results.
+- [ ] Document: update affected repository documentation; remove stale guidance.
+
+## Revisions
+
+- YYYY.MM.DD — <material change> — <evidence/reason>.

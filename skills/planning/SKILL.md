@@ -1,33 +1,48 @@
 ---
 name: planning
-description: "Plans medium-or-harder work in interactive sessions where the agent can ask the user mid-task. Establishes true desired outcome before route, creates ordered milestones with observable checkpoints in live task state, and replans from evidence. Load whenever a task exceeds a single quick step — signals include dependencies, material uncertainty, risky forks, delegation seams, scope-drift risk, a prior failed attempt, or deciding how to conduct an open-ended research or documentation effort. Do not load if question tool unavailable."
+description: "Plans medium-or-harder work in interactive sessions where the agent can ask the user mid-task. Establishes true desired outcome before route, creates ordered milestones with observable checkpoints in live task state, and replans from evidence. Load when using todo list tool (`todowrite`) for medium-or-harder work; signals of that threshold include dependencies, material uncertainty, risky forks, delegation seams, scope-drift risk, a prior failed attempt, or deciding how to conduct an open-ended research or documentation effort. Do not load for a single quick step, or if `question` tool unavailable."
 ---
 
-Mission: Author a multi-step plan with relevant checkpoints and ordered milestones to achieve requested goal. Skill's rules govern planning only; execution of the resulting plan is out of scope.
-
-Plan = ordered milestones and checkpoints leading to defined outcome; breaking task into smaller, observable steps.
+Author multi-step plan with checkpoints and ordered milestones to achieve intended goal, then maintain and replan as execution surfaces new evidence or obstacles.
 
 ## Rules
 
-- Deliverable plan takes form of a native tool task to-do list (preferred), plan file (only if instructed), or extensive and thorough chat message (fallback).
 - Before interactive question offering choices, explain each question-tool-option's pros and cons plus recommendation in normal text. Ask before material outcome, scope, constraint, acceptance, approach, cost, or risk change; never guess.
 - Use precise, unambiguous language for milestones, checkpoints, and evidence.
+- Output plan format: update native tool task to-do list, or use requested output format if provided; if doubt: ask.
 
-## Workflow
+## Planning workflow
 
-If a native task/todo tool is available, use it to track progress through this workflow itself (one entry per step below, updated as steps complete) — separate from the deliverable plan produced by the workflow. Fall back to tracking steps in-context if unavailable.
+1. **Goal-check**: Confirm desired outcome clear, actionable, realistic. User wording may name an implementation, not the desired result; infer true intent only as a proposal, confirm with user. Brainstorm viable alternatives; challenge a weak or unrealistic goal before locking direction.
+2. **Understand**: Inspect relevant current state. Establish observable success, hard constraints, preferences, non-goals, authority, assumptions, unknowns. Material or high-stakes goal: consult repo docs and run external research before locking intent. Resolve cheap facts now; costly discovery becomes an early evidence milestone with a conditional route. Ask user for material decisions; multiple question rounds allowed as new gaps surface from prior answers.
+3. **Lock stable intent**: `Goal: <outcome>. Success: <evidence>. Constraints: <hard limits>. Non-goal: <non-goals>`.
+4. **Draft plan**: Create ordered outcome milestones. Each has a bounded result and an observable checkpoint. Order by dependency, uncertainty, risk, then value. State material assumptions. Add a failure signal, fallback, or branch only when route or stopping behavior changes. Keep roadmap coarse; detail only the next milestone. Format: `<Milestone expressed as verb + object>. Success: <evidence>. Constraint: <hard limit, or omit>. Assume: <material assumption, or omit>.>`; omit empty categories, ultra condensed prose.
+5. **Verify**: Check draft against `## Verification`.
+6. **Iterate or finish**: New evidence invalidates goal, assumption, or ordering: return to the step it invalidates and revise from there only; do not redo unaffected work. When solid, return the plan (see `## Guardrails` for how to judge solidity and when to ask).
 
-1. **Goal-check.** Confirm desired outcome is clear, actionable, and realistic. User wording may name an implementation, not the desired result — infer true intent only as a proposal, confirm with user. Brainstorm viable alternatives; challenge a weak or unrealistic goal instead of accepting it; state pros/cons of each viable option plus a recommendation before locking direction.
-2. **Understand.** Inspect relevant current state. Establish observable success, hard constraints, preferences, non-goals, authority, assumptions, and unknowns. For a material or high-stakes goal, consult repo docs and run external research before locking intent — a single unverified pass is low-confidence. Resolve cheap facts now; costly discovery becomes an early evidence milestone with a conditional route. Ask user for material decisions; multiple question rounds allowed as new gaps surface from prior answers.
-3. **Draft.** Lock stable intent:
+## Execution upkeep
 
-   ```text
-   Goal: <outcome>. Success: <evidence>. Constraints: <hard limits>. Out: <non-goals>.
-   ```
+- Tick checklist item done right after it completes; no batching.
+- No parallel task execution unless each parallel branch runs via separate delegated subagent.
+- Milestone fails or unforeseen blocker hits: record evidence, notify user, propose alternate route, return to workflow step 6 (Iterate) to replan.
 
-   Create ordered outcome milestones. Each has a bounded result and an observable checkpoint. Order by dependency, uncertainty, risk, then value. State material assumptions. Add a failure signal, fallback, or branch only when route or stopping behavior changes. Keep roadmap coarse; detail only the next milestone.
-4. **Verify.** Check the draft against `## Verification`. An unproven or hand-waved plan is not a finished plan.
-5. **Iterate or finish.** If new evidence surfaced while drafting invalidates the goal, an assumption, or an ordering, return to the step it invalidates (goal-check, understand, or draft) and revise from there only; do not redo unaffected work. Keep iterating until the plan is solid. When solid, return the plan (see `## Guardrails` for how to judge solidity and when to ask).
+### Delegation
+
+If delegating a milestone execution:
+
+- Coarse to fine: delegating agent (not the subagent) executes full planning workflow on target task to create comprehensive sub-plan; same rules apply.
+- Completion differs: do not return the sub-plan to the user as final output; carry it into the delegation prompt instead.
+- Subagent does not load this skill; it must receive the finished sub-plan spelled out, not by reference.
+- Append verbatim to delegation prompt, substituting only the two placeholders (mission statement, milestones):
+  ```md
+  ## Execution plan
+
+  <Sub-mission statement, format as in Step 3 (Lock stable intent)>
+
+  - [ ] <One or more milestones, format as in Step 4 (Draft plan)>
+
+  Plan hits an unpredicted blocker or turns out not actionable: stop, do not improvise a new route, report evidence, report status (`blocked` or `partial`).
+  ```
 
 ## Guardrails
 
@@ -38,14 +53,15 @@ If a native task/todo tool is available, use it to track progress through this w
 - Same blocker after two evidence-based attempts: stop, summarize evidence, choose new route or ask.
 - Unrelated finding: record follow-up question; do not add to plan without user approval.
 - Plan solidity unclear: ask user whether to finalize or keep iterating; if clearly solid or clearly not, decide and continue iterating without asking.
+- External research tool unavailable on material or high-stakes goal: state gap, proceed on repo docs plus explicit low-confidence assumption flagged to user; never treat unverified pass as settled.
 
 ## Verification
 
-- [ ] Goal is clear, actionable, and realistic.
-- [ ] Every milestone maps to the stated outcome; no milestone is dead weight or scope creep.
-- [ ] Every milestone has a bounded result and an observable, verifiable checkpoint (not a vague feeling).
+- [ ] Goal clear, actionable, realistic.
+- [ ] Every milestone maps to stated outcome; none is dead weight or scope creep.
+- [ ] Every milestone has bounded result and observable, verifiable checkpoint.
 - [ ] Milestone order respects dependency, uncertainty, risk, then value.
-- [ ] Material assumptions are stated, not silently baked in.
-- [ ] Hard constraints and non-goals from the goal line are honored, none silently dropped or violated.
-- [ ] Material or high-stakes goal: repo docs/external research were actually consulted, not skipped.
-- [ ] Open material questions were asked, not guessed.
+- [ ] Material assumptions stated, not silently baked in.
+- [ ] Hard constraints and non-goals honored, none silently dropped or violated.
+- [ ] Material or high-stakes goal: repo docs/external research consulted, not skipped.
+- [ ] Open material questions asked, not guessed.

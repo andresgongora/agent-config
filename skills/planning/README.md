@@ -1,56 +1,66 @@
 # Planning
 
-Interactive runtime discipline: turn uncertain multi-step request into controlled, revisable execution.
+Interactive workflow for planning medium-or-harder work with live checkpoints and evidence-driven
+replanning.
 
 <!------------------------------------------------------------------------------------------------->
-
 ## Design intent
-
 <!------------------------------------------------------------------------------------------------->
 
-Planning protects outcome, not literal wording or first route. Users often name activity, partial solution, or vague desire. Skill exposes underlying need before work commits to wrong target.
+Planning protects the intended outcome rather than initial wording or first proposed route. It makes
+user-controlled choices explicit, turns expensive uncertainty into evidence milestones, and
+preserves validated work when later evidence changes the route.
 
-Small verified checkpoints preserve route during disorienting, deep work. They permit safe pause, resumption, and independent delegation without pretending later unknown work is settled. Evidence outranks draft history; replanning preserves achieved evidence while replacing invalid future route.
+Milestones stay coarse until execution approaches them. Observable checkpoints support safe pause,
+resumption, and bounded delegation without pretending that unresolved work is settled.
 
 <!------------------------------------------------------------------------------------------------->
+## When it triggers
+<!------------------------------------------------------------------------------------------------->
 
+Load for medium-or-harder work in an interactive session where the agent can ask and receive user
+replies mid-task. Typical signals: `todowrite`, dependencies, material uncertainty, risky forks,
+delegation seams, scope-drift risk, a prior failed attempt, or open-ended research or documentation
+planning.
+
+<!------------------------------------------------------------------------------------------------->
+## When it does NOT trigger
+<!------------------------------------------------------------------------------------------------->
+
+Do not load for a single quick step or where the `question` tool is unavailable. Bounded workers
+with fixed briefs execute the supplied plan; they do not reinterpret user intent or take plan-level
+authority.
+
+<!------------------------------------------------------------------------------------------------->
 ## Runtime shape
-
 <!------------------------------------------------------------------------------------------------->
 
-Workflow has five steps: goal-check, understand, draft, verify, iterate-or-finish. Goal-check confirms the desired outcome is clear, actionable, and realistic before any drafting effort — brainstorming, pushback, and pros/cons belong here. Understand resolves user-controlled decisions and turns expensive factual uncertainty into evidence milestones. Draft creates coarse outcome milestones and observable checkpoints. Verify checks the draft against the checklist in `SKILL.md`. Iterate-or-finish loops back to whichever step new evidence invalidates, repeating until the plan is solid, then returns it.
+The workflow validates the goal, inspects current state and uncertainty, locks stable intent, drafts
+ordered milestones, verifies them, then revises only the invalidated route when evidence changes. It
+maintains progress in the runtime task list and records blockers immediately.
 
-Skill authors the plan only. It does not supervise or execute the resulting plan; that is out of workflow scope by design.
-
-Runtime's native task list is preferred live representation for tracking workflow progress itself, separate from the deliverable plan. If unavailable, track steps in-context. Both are transient control state, not durable plan documents.
-
-<!------------------------------------------------------------------------------------------------->
-
-## Interactive boundary
+Delegated execution receives a completed sub-plan in its prompt. The planning agent retains planning
+authority; the delegated worker reports an unpredicted blocker instead of inventing a route.
 
 <!------------------------------------------------------------------------------------------------->
-
-Skill requires the ability to inspect, challenge, and ask the user about material decisions mid-task. Before interactive choice, explain options, pros, cons, and recommendation in normal text; question records choice. Do not load where no mid-task user reply is possible — e.g. a bounded worker executing a fixed brief with no dialogue turn. Such workers execute bounded briefs; they do not reinterpret user intent or own plan-level authority.
-
-<!------------------------------------------------------------------------------------------------->
-
 ## Durable-plan template
-
 <!------------------------------------------------------------------------------------------------->
 
-`templates/plan-document.md` belongs to durable-plan authoring. `../../agents/planning.md` reads it directly when creating or amending reviewed, cross-session plan documents under `.agent/plan/`. Session workflow neither reads nor writes that template.
+`templates/plan-document.md` supports reviewed, cross-session plan documents under `.agent/plan/`.
+Session planning keeps transient state in the runtime task list and neither reads nor writes that
+template.
 
 <!------------------------------------------------------------------------------------------------->
-
 ## Maintainer constraints
-
 <!------------------------------------------------------------------------------------------------->
 
-- Goal extraction precedes drafting; inferred goal stays proposal until material rewrite is confirmed.
-- User-controlled decisions never become silent assumptions. Large discovery remains explicit evidence milestone with conditional route.
-- Preserve coarse-to-fine decomposition, visible parent route, live state, evidence-driven iteration, and anti-drift rule.
-- Keep runtime state client-neutral; interactive requirement is capability-based (can the session ask and get a reply), not identity-based (no reliable "am I a subagent" signal at runtime).
-- Keep runtime instructions in `SKILL.md`; rationale and template ownership stay here.
+- Keep runtime instructions, workflow steps, guardrails, and verification in `SKILL.md`.
+- Keep this README human-facing: rationale, routing summary, template ownership, and durable
+  maintenance constraints only.
+- Preserve capability-based interactive routing; no reliable runtime identity test distinguishes a
+  subagent.
+- Keep goal extraction before drafting, explicit user-controlled decisions, coarse-to-fine
+  milestones, visible live state, and evidence-driven replanning.
 
 <!------------------------------------------------------------------------------------------------->
 
@@ -58,5 +68,6 @@ Skill requires the ability to inspect, challenge, and ask the user about materia
 
 <!------------------------------------------------------------------------------------------------->
 
-- `../../agents/planning.md`: durable-plan authoring agent.
-- `../../commands/plan-execute.md`: durable-plan execution command.
+- `templates/plan-document.md`: durable-plan document structure.
+- `../../agents/planning.md`: durable-plan authoring.
+- `../../commands/plan-execute.md`: durable-plan execution.
