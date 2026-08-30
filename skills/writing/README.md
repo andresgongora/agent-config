@@ -1,78 +1,75 @@
 # writing
 
-Reader-facing prose discipline for communication that must be understood and acted on.
+Guidance for reader-facing prose that is clear, accurate, and useful.
 
-## What it does
+<!------------------------------------------------------------------------------------------------->
+## Purpose
+<!------------------------------------------------------------------------------------------------->
 
-Shapes written communications around clear reader needs, including emails, official correspondence, public statements, blog posts, proposals, and articles. Main point comes first. Claims carry evidence. Causes, consequences, requests, and decisions remain visible.
+Write correspondence, public statements, blog posts, proposals, and articles around reader needs.
+Lead with the material point. Support claims. Make causes, consequences, requests, and decisions
+clear.
 
-It treats reader as capable equal. Tone stays friendly, polite, and confident without deference, dominance, or canned enthusiasm. It allows emotion when facts warrant it, then turns toward concrete action.
+Treat readers as capable equals. Use a direct, polite, confident tone. Let facts support emotion and
+action.
 
-## What it does not do
-
-It stays a discipline, not a persona or a growth tactic. It is not a named-person voice, a marketing framework, a clickbait generator, or a substitute for factual research. It will not invent precision, turn a routine message into suspense, or swap an exact technical term for vague plain language.
-
+<!------------------------------------------------------------------------------------------------->
 ## When it triggers
+<!------------------------------------------------------------------------------------------------->
 
-Substantial reader-facing prose pulls it in: correspondence, public statements, blog posts, proposals, and articles. Quick messages, technical addenda, code comments, changelogs, commit messages, internal notes, and mechanical anti-pattern cleanup do not. `SKILL.md` frontmatter remains the routing authority; this section is a summary of it, not a second source.
+Use it for material correspondence, public statements, blog posts, proposals, and articles.
 
-## Agent roles
+<!------------------------------------------------------------------------------------------------->
+## References
+<!------------------------------------------------------------------------------------------------->
 
-`agents/writing.md` is the chat-first primary agent for reader-facing prose. It asks for material context, loads this skill and its references, then drafts or revises the text.
+Use these references as editing aids. Most identify weak patterns to avoid; some give alternatives
+and exceptions. They help remove AI slop without losing clarity, evidence, or reader fit. Examples
+show how to revise without inventing facts.
 
-`agents/writing-reviewer.md` is the read-only review agent. It returns corrections or a revised text with reasons, and reports a limitation when a safe revision is not possible.
+- [`ai-writing-detection.md`](./references/ai-writing-detection.md): editing signals, not authorship
+  proof. Adapted from the [No AI slop skill][no-ai-slop-source].
+- [`no-ai-slop.md`](./references/no-ai-slop.md): vague, unsupported, generic, and filler prose, with
+  alternatives. Adapted from the [No AI slop skill][no-ai-slop-source].
+- [`patterns-to-minimize.md`](./references/patterns-to-minimize.md): conditional composition
+  guidance with signals, costs, rewrites, and exceptions. Repository-authored.
+- [`examples.md`](./references/examples.md): fact-preserving revisions for common writing decisions.
+  Repository-authored; cited sources appear with the relevant examples.
+- [`asd-ste100.md`](./references/asd-ste100.md): simplified technical English for directives.
+  Derived from woosal1337's [asd-ste100 skill][asd-ste100-source], which uses ASD-STE100 style.
 
+<!------------------------------------------------------------------------------------------------->
 ## Design intent
+<!------------------------------------------------------------------------------------------------->
 
-Prose becomes useful before it becomes elegant. The reader gets the material fact, the reason, the consequence, and the next action without ceremony, clickbait, invented authority, or false reassurance. Everything else in the skill exists to protect that.
+Start from known facts, then organise them around the reader's decision or action. Clear prose names
+its subject, action, reason, and consequence. It does not use polish to hide missing support or
+meaning. Ask for missing mechanism or impact when it changes the reader's action or the message's
+conclusion. Do not manufacture urgency, suspense, authority, or precision.
 
-The drafting method gives the model a positive construction order instead of only a rejection list: inventory known material, arrange it with the existing argument and paragraph structures, then draft. Its diagnostic pass tests whether verbs, objects, modifiers, comparisons, and metaphors still describe one intelligible relationship without flattening coherent figurative language. Fluent connective prose cannot substitute for either support or meaning.
+Build substantive paragraphs from an opening idea, development, and consequence or action. Keep one
+core idea per paragraph. This structure serves both skimmers and linear readers.
 
-The paragraph model is a useful default, and it comes from how people actually read. One reader scans down the left edge collecting first sentences to find the paragraph worth stopping at; another skips to the ends hunting conclusions and actions. When the reader needs them, an opening that states the core idea, a body that develops it, and a closing that gives the consequence or takeaway serve both skimming paths and the linear reader.
+<!------------------------------------------------------------------------------------------------->
+## Maintaining this skill
+<!------------------------------------------------------------------------------------------------->
 
-Substantive body paragraphs have at least three sentences: an opening, development, and a conclusion, consequence, or action. Short decisions, requests, transitions, and conclusions remain exempt.
+- Keep reader-facing prose, peer-level tone, and evidence proportional to stakes.
+- Keep `SKILL.md` to runtime rules; record rationale and source context here.
+- Keep `asd-ste100.md` directive-only by default. The low-proficiency-reader branch may widen its
+  scope.
+- Preserve supplied facts in examples. Use questions, omission, narrowed claims, judgments, or
+  requested draft markers for missing material.
+- Keep `patterns-to-minimize.md` short and conditional. Do not turn it into an exhaustive style
+  guide.
 
-The upper bound is atomicity rather than length. One paragraph carries one core idea, so a second idea forces a split and a fragment that cannot stand alone gets grouped with the paragraph it serves. Length then takes care of itself, which is why no maximum sentence count appears anywhere in the skill.
-
-Asking questions is what makes the rest of it possible. Given "our deployment process is slow, we should improve it", no amount of rewriting produces a good paragraph, because the mechanism and the impact simply are not in the room — and the one thing the model must never do is supply them from imagination. Told instead that deployment takes 40 minutes because test and build run sequentially on one CI runner, that this blocks same-day releases, and that the team wants to parallelise, the same model writes a paragraph that actually informs. So the skill treats a vague claim as a signal to ask rather than a signal to polish, and the no-invented-facts rule is what forces that choice.
-
-Curiosity has to come from a complete, relevant fact that deserves explanation. Withholding information or asking rhetorical questions buys attention the piece has not earned, and readers notice. The skill treats both as defects rather than techniques.
-
-## Maintainer constraints
-
-- Keep reader-facing, not a named-person voice profile.
-- Preserve direct peer-level tone and evidence proportional to stakes.
-- Add rules only when they change output behavior. Examples stay short and operational.
-- Keep the three-part paragraph structure and the three-sentence minimum for substantive body paragraphs; retain listed exemptions for short functional text.
-- `SKILL.md` carries WHAT and HOW only. Rationale lives here, including the skimming model behind the paragraph rule. Move any WHY that leaks back into the skill.
-- Keep the ask-for-mechanism-and-impact rule adjacent to the missing-fact rules. Removing it turns the skill into a polisher of vague claims, which is the failure it exists to prevent.
-- The ask rule needs its non-ask exits kept intact. Constrained edits, explicitly requested placeholders, supplied-reason judgments, and non-material vagueness each have their own handling; delete those exits and the skill starts interrogating the user over grammar fixes.
-- `references/asd-ste100.md` defaults to directive-only scope but defers to a caller that widens it. That deference is what lets the low-proficiency branch apply the rules piece-wide without the reference contradicting the skill.
-- After the three-sentence minimum for substantive body paragraphs, paragraph length follows reader need and evidence.
-- `SKILL.md` owns the one STE100 scope exception (low-proficiency readers get the rules piece-wide; everything else is directive-only). Keep the reference file and this README consistent with it rather than restating the rule.
-- Examples must preserve stated facts. Demonstrate missing-fact handling with questions, omission, narrowed claim, judgment label, or explicitly requested draft markers; never add plausible detail.
-- Keep priority order and missing-fact return behavior explicit enough for a lightweight model to follow.
-- Avoid long enumerations unless exact scope needs every item. Use bullets only when each item adds distinct detail; reserve `(i)`, `(ii)`, and so on for required multi-part concepts in one paragraph.
-- Keep `SKILL.md` dense. It serves AI agents, not human onboarding.
-- Keep `references/patterns-to-minimize.md` a short conditional composition aid, not a ban list, exhaustive style guide, or duplicate anti-pattern catalog.
-- Keep `references/asd-ste100.md` a scoped guide for directives, not formal ASD-STE100 compliance or a general-prose style.
-
-## Structure
-
-- `SKILL.md`: model-facing rules; frontmatter owns routing.
-- `references/examples.md`: fact-preserving worked pairs for high-judgment composition decisions.
-- `references/patterns-to-minimize.md`: final-pass patterns, costs, rewrites, and exceptions.
-- `references/asd-ste100.md`: simplified ASD-STE100-inspired rules for directives only.
-- `README.md`: human intent and maintainer constraints.
-
-## Provenance
-
-`references/asd-ste100.md` adapts selected instruction-writing principles from [woosal1337's STE writing skill](https://github.com/woosal1337/blog/blob/main/videos/ep01-the-cure-for-ai-slop/ste-writing-skill.md). It is intentionally less strict than ASD-STE100 and does not claim standard compliance.
-
+<!------------------------------------------------------------------------------------------------->
 ## See also
+<!------------------------------------------------------------------------------------------------->
 
 - [`SKILL.md`](./SKILL.md)
-- [`references/examples.md`](./references/examples.md)
-- [`references/asd-ste100.md`](./references/asd-ste100.md)
 - [`../../agents/writing.md`](../../agents/writing.md)
 - [`../../agents/writing-reviewer.md`](../../agents/writing-reviewer.md)
+
+[asd-ste100-source]: https://github.com/woosal1337/blog/tree/main/videos/ep01-the-cure-for-ai-slop/asd-ste100
+[no-ai-slop-source]: https://github.com/realrossmanngroup/no_ai_slop_writing_rules

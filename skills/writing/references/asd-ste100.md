@@ -1,3 +1,9 @@
+---
+name: asd-ste100
+description: "Adapted Simplified Technical English principles for unambiguous directive text; not formal ASD-STE100 compliance."
+source: "Derived from [asd-ste100](https://github.com/woosal1337/blog/tree/main/videos/ep01-the-cure-for-ai-slop/asd-ste100) by woosal1337; its style is ASD-STE100 Simplified Technical English."
+---
+
 # ASD-STE100 for Directives
 
 Adapted, simplified guidance. Not formal ASD-STE100 compliance. Default scope: directive portions only; steps, commands, warnings, and actionable items. The caller may widen that scope; the low-proficiency-reader branch applies these rules to a whole piece, and its own overrides win over anything here.

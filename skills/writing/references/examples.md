@@ -1,3 +1,8 @@
+---
+name: examples
+description: "Fact-preserving worked pairs for high-judgment composition decisions and missing-fact handling."
+---
+
 # Worked Examples
 
 Every Better, Ask, and draft output uses only facts stated in its "Given" line. Weak text may deliberately show unsupported invention or overstatement; never use it as source.

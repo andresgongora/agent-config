@@ -1,3 +1,8 @@
+---
+name: patterns-to-minimize
+description: "Conditional anti-pattern guide for clearer composition; includes costs, rewrites, and exceptions."
+---
+
 # Patterns to Minimize
 
 Composition editing reference. Not a ban list or lexical cleanup pass. Keep a pattern when it is clearest, most precise, or natural for reader and genre. Rewrite only when a clearer alternative exists.

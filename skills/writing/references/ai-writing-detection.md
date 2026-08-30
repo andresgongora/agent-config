@@ -1,7 +1,7 @@
 ---
 name: ai-writing-detection
 description: "Words, phrases, punctuation patterns, structural signals, and statistical measures associated with AI-generated text. Use as editing signals, not authorship proof."
-source: "Adapted from [No AI slop skill](https://github.com/realrossmanngroup/no_ai_slop_writing_rules). Sources: Grammarly (2025), Microsoft 365 Life Hacks (2025), GPTHuman (2025), Walter Writes (2025), Textero (2025), Plagiarism Today (2025), Rolling Stone (2025), MDPI Blog (2025), isgpt.org corpus analysis (2025), ACL hedging study (2024), Wikipedia AI content detection project (2025), Segmental entropy research (arxiv, 2025)"
+source: "Adapted from [No AI slop skill](https://github.com/realrossmanngroup/no_ai_slop_writing_rules); sources claimed: Grammarly (2025), Microsoft 365 Life Hacks (2025), GPTHuman (2025), Walter Writes (2025), Textero (2025), Plagiarism Today (2025), Rolling Stone (2025), MDPI Blog (2025), isgpt.org corpus analysis (2025), ACL hedging study (2024), Wikipedia AI content detection project (2025), Segmental entropy research (arxiv, 2025)."
 ---
 
 # AI writing detection
