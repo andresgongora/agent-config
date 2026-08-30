@@ -1,6 +1,6 @@
 ---
 name: agent-agents-md
-description: "Manage `AGENTS.md`: create, change, trim, or audit at any scope. Execute immediately after repo rules, shape, entry points, or boundaries change to update applicable files. Assign rules to correct scope; reject misplaced, duplicate, or weak rules. Trigger: `AGENTS.md`, agent rule, agent policy file, repo/global agent instructions."
+description: "Manages `AGENTS.md` and agent-rule files. Load when creating, changing, auditing, or updating repository agent instructions after rule or boundary changes. Trigger: `AGENTS.md`, agent rule, agent policy file, repo/global agent instructions."
 ---
 
 ## Admission gate

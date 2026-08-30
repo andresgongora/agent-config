@@ -1,6 +1,6 @@
 ---
 name: planning
-description: "Plans medium-or-harder work in interactive sessions where the agent can ask the user mid-task. Establishes true desired outcome before route, creates ordered milestones with observable checkpoints in live task state, and replans from evidence. Load when using todo list tool (`todowrite`) for medium-or-harder work; signals of that threshold include dependencies, material uncertainty, risky forks, delegation seams, scope-drift risk, a prior failed attempt, or deciding how to conduct an open-ended research or documentation effort. Do not load for a single quick step, or if `question` tool unavailable."
+description: "Plans medium-or-harder interactive work. Load when using todo list tool (`todowrite`) for work with dependencies, material uncertainty, risky forks, delegation seams, scope-drift risk, or open-ended research. Do not load for a single quick step, or if `question` tool unavailable."
 ---
 
 Author multi-step plan with checkpoints and ordered milestones to achieve intended goal, then maintain and replan as execution surfaces new evidence or obstacles.

@@ -1,6 +1,6 @@
 ---
 name: coding
-description: "Cross-language coding conventions shared by all or most programming languages: structure, naming discipline, function design, readability. Load whenever writing, editing, or reviewing code in any language, or when a language-specific coding skill would apply. Acts as parent router to language-specific skills (e.g. bash script authoring). Not for prose, docs, config files, or non-code deliverables."
+description: "Provides cross-language coding conventions. Load when writing, editing, or reviewing code, including work needing language-specific coding guidance."
 ---
 
 ## Child skills (routing)

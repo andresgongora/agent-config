@@ -1,6 +1,6 @@
 ---
 name: obsidian-plugin
-description: "Create, edit, test, and release Obsidian plugins — TypeScript class extending Plugin, Obsidian manifest.json/versions.json coupling, esbuild pipeline, local vault install for manual testing, community-plugin review rules, GitHub release flow. Load on work related to Obsidian Plugins."
+description: "Create, edit, test, and release Obsidian plugins. Load on work related to Obsidian Plugins."
 ---
 
 ## Core rules

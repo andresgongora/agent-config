@@ -1,6 +1,6 @@
 ---
 name: web-youtube
-description: "Fetches YouTube video or channel metadata, captions, transcripts, and transcript-based summaries with yt-dlp. Use for YouTube URLs, video transcripts, caption availability, video summaries, or key/main ideas. Delegated interpretation preserves title, description, and transcript in a workspace resource. Not for broad web research, unsupported-platform URLs, media downloads, comments, or generating a transcript from audio."
+description: "Fetches YouTube video or channel metadata, captions, transcripts, and transcript-based summaries. Load when fetching information from YouTube URLs."
 ---
 
 ## Core rules

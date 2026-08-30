@@ -69,7 +69,7 @@ Primary routing surface, always in scope. During runtime, this is sole informati
 - Explicit trigger conditions, e.g., "Load if A and B", "Load when C unless D". Broad conditions allowed only if accompanied by applicable context.
 - Highest-signal trigger words verbatim (filenames, error strings, domain terms).
 - Non-triggers when any credible and highly likely wrong-scope risk exists — i.e. accidental overlap the router could resolve incorrectly; skip when overlap is instead resolved by a declared same-family internal handoff (see Inter-artifact coupling). Only if risk exists, do not add non-triggers just to be exhaustive. When in doubt, sharpen the positive scope instead, prefer stating what artifact _is_ used for, not what it is _not_ used for.
-- ≤4-6 sentences.
+- Minimize length, hard cap ≤100 words.
 - Example: `"Discover existing repository knowledge cheaply before spending context on exploration. Load on non-trivial repo work: before a grep/glob/read sweep of an unfamiliar area, before answering how something works in this repo, when a past session may already have settled the question, when onboarding to a repo, or when a repo has an .agent/ directory."`
 
 **Skill body text**:

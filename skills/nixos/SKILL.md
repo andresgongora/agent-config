@@ -1,6 +1,6 @@
 ---
 name: nixos
-description: "Ready-to-run commands for NixOS: missing CLI tool, prebuilt binary failing with missing shared library or dynamic linker, package/option lookup, non-activating rebuild validation. Load when a command fails for NixOS reasons, a config change needs validating, work touches a NixOS/Nix flake repo (flake.nix, nixos/ dir present), or the environment is known to be NixOS (e.g. /etc/os-release ID=nixos)."
+description: "Ready-to-run  NixOS commands: missing CLI tool, prebuilt binary failing with missing shared library or dynamic linker, package/option lookup, non-activating rebuild validation. Load when work touches NixOS/Nix (flake, pkgs, home-manager) or command fails and environment is NixOS (e.g. /etc/os-release ID=nixos)."
 ---
 
 Symptom → command. No Nix theory. Unblock, do not mutate system state.

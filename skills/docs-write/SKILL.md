@@ -1,6 +1,6 @@
 ---
 name: docs-write
-description: "Manage durable `.agent/` knowledge: admit, write, update, or prune. Before completion, load when preserving settled session knowledge saves costly future investigation. Also load for costly-to-lose bug logs, handoffs, or `.agent/` document placement/frontmatter. Not for reading, discovery, or bare documentation gaps."
+description: "Manage durable `.agent/` knowledge. Load when preserving settled findings, bug logs, handoffs, or `.agent/` document will save future investigation; including significant information discovery or project mutation."
 ---
 
 Persist knowledge future agents need, stored under repository `.agent/` folder.

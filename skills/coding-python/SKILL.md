@@ -1,6 +1,6 @@
 ---
 name: coding-python
-description: "Python development convention. Load when writing, editing, or reviewing Python code, Python packages, or Python project commands. Use alongside cross-language coding conventions. Not for agent-internal non-Python commands, non-Python deliverables, or Python test policy."
+description: "Provides Python development conventions. Load when writing, editing, or reviewing Python code, packages, or project commands."
 ---
 
 ## Core rules

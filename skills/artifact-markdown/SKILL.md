@@ -1,6 +1,6 @@
 ---
 name: artifact-markdown
-description: "Mechanical lint gate for Markdown (`*.md`, `*.markdown`, `README.md`, `SKILL.md`, `AGENTS.md`). Load once at the end of a Markdown creation or edit session to validate formatting, headings, lists, tables, links, and frontmatter against the nearest repo config. Not a prose, tone, or content review; not a per-edit check."
+description: "Validates Markdown formatting and frontmatter against nearest repository config. Load when creating or editing Markdown files `*.md`, including `README.md`, `SKILL.md`, or `AGENTS.md`."
 ---
 
 ## Rules

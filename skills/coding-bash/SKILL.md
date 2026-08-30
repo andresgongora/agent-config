@@ -1,6 +1,6 @@
 ---
 name: coding-bash
-description: "Conventions and templates for authoring persistent Bash script files saved at a named path and owned by the user. Load when request produces a Bash script deliverable, extensionless executable included. Do not load for agent-internal Bash, inline one-liners, shell debugging, NixOS config, or Bash that is not itself the deliverable."
+description: "Guides authored Bash script deliverables. Load when creating or editing Bash scripts, including extensionless executables. Skip for agent bash tool use, one-liners, shell debugging, or Bash that is not itself the deliverable."
 ---
 
 New scripts follow these conventions. Existing scripts retain established local conventions; edit only requested surface unless migration is requested.

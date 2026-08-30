@@ -1,6 +1,6 @@
 ---
 name: writing
-description: "Write or materially revise reader-facing prose. Preserve supplied facts; match purpose, audience, and stakes. Handles decisions on clarity, tone, argument, structure, plain language, or evidence-backed claims. Addresses AI slop. Load when drafting or substantially revising external emails, correspondence, announcements, proposals, articles, blog posts, public statements, or similar human-facing text. Skip for quick messages, code comments, changelogs, commit messages, and internal notes."
+description: "Write or materially revise reader-facing prose, no AI slop. Load when drafting or substantially revising external emails, correspondence, announcements, proposals, articles, blog posts, public statements, or similar human-facing text. Skip for quick messages, code comments, changelogs, commit messages, and internal notes."
 ---
 
 ## Core Rules

@@ -1,6 +1,6 @@
 ---
 name: web-search
-description: "Web research, online docs, current facts, source verification, error lookup, web pages, APIs, release notes, known bugs, papers, or \"look this up/search online\". Use for any non-trivial external-information task needing more than one page, source, or query angle. Skip local-file answers, URL-only one-shot extraction, and questions needing user clarification first."
+description: "Web research, online docs, current facts, source verification, error lookup, web pages, APIs, release notes, known bugs, papers, or \"look this up/search online\". Load for non-trivial external-information task needing more than one page, source, or query angle. Skip local-file answers or URL-only one-shot extraction."
 ---
 
 ## Role split

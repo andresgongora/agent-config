@@ -1,6 +1,6 @@
 ---
 name: git
-description: "Git safety constraints for state-mutating work: staging, committing, branching, merge, rebase, conflict resolution, push, undo, or risky Git-state inspection. Also load for object-store space, connectivity checks, repacking, or merged-local-branch review. Skip conceptual Git questions and repository work with no Git action."
+description: "Guides safe Git state changes. Load for staging, commits, branches, merges, rebases, conflicts, pushes, undo, or Git maintenance."
 ---
 
 ## Mutation guardrails

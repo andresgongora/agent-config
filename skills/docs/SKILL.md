@@ -1,6 +1,6 @@
 ---
 name: docs
-description: "Discover existing repository knowledge cheaply before spending context on exploration. Load on non-trivial repo work: before a grep/glob/read sweep of an unfamiliar area, before answering how something works in this repo, when a past session may already have settled the question, when onboarding to a repo, or when a repo has an `.agent/` directory."
+description: "Discovers existing repository knowledge before exploration. Load before non-trivial unfamiliar-repo work (before a grep/glob/read of unfamiliar area), onboarding, answering how the repository works, or large repo task."
 ---
 
 `.agent/` folder: at repo root, contains durable AI-facing knowledge.
