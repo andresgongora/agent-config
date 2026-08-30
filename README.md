@@ -10,9 +10,7 @@ executing, protects context by delegating isolatable work, and records reusable 
 memory.
 
 <!------------------------------------------------------------------------------------------------->
-
 ## Setup
-
 <!------------------------------------------------------------------------------------------------->
 
 ### OpenCode
@@ -20,8 +18,8 @@ memory.
 Clone this repo, then preview and run installer:
 
 ```bash
-./tools/install-for-opencode --dry-run
-./tools/install-for-opencode
+./install/install-for-opencode --dry-run
+./install/install-for-opencode
 ```
 
 Creates symlinks under `${XDG_CONFIG_HOME:-$HOME/.config}/opencode/` for `AGENTS.md`, agent
@@ -47,6 +45,22 @@ installed links that still match installer manifest.
 
 Restart OpenCode, then verify installed agents, skills, commands, and plugins load.
 
+### Model aliases
+
+Agent definitions use model aliases and require bundled `opencode-model-alias` plugin. Without it, OpenCode receives aliases instead of provider/model IDs.
+
+The plugin reads `~/.config/opencode/model-aliases.json`; create aliases for available models. These deliberately fictitious examples show tiered alias naming only; replace every value with a provider/model ID from `opencode models`.
+
+```json
+{
+  "TEAM_FAST": "provider-alpha/fast-1",
+  "TEAM_LIGHT": "northstar-ai/light-2",
+  "TEAM_MID": "horizon-cloud/mid-3",
+  "TEAM_HEAVY": "nebula-router/heavy-4",
+  "LOCAL_LIGHT": "workbench-lab/compact-5"
+}
+```
+
 ### Other clients
 
 - `deploy/AGENTS.md` is the portable user-level instruction file. Deploy skill, agent, command, and plugin artifacts only when your client supports them.
@@ -54,9 +68,7 @@ Restart OpenCode, then verify installed agents, skills, commands, and plugins lo
 - Subagents need client support for spawning named agents. Without it, the main agent absorbs all work.
 
 <!------------------------------------------------------------------------------------------------->
-
 ## Agent-directed instructions
-
 <!------------------------------------------------------------------------------------------------->
 
 ### Agent instructions (`deploy/AGENTS.md`)
@@ -157,9 +169,7 @@ Slash-commands: user-invoked shortcuts that run a fixed prompt.
 | `/plan-execute`    | Execute a durable plan document from `.agent/plan/`                                                       |                                                                         |
 
 <!------------------------------------------------------------------------------------------------->
-
 ## Details about this repo
-
 <!------------------------------------------------------------------------------------------------->
 
 ### Layout
@@ -178,18 +188,14 @@ tools/                  Ad-hoc scripts.
 ```
 
 <!------------------------------------------------------------------------------------------------->
-
 ## Donations
-
 <!------------------------------------------------------------------------------------------------->
 
 If you like this project and want to show your support,
 [buy me a coffee](https://buymeacoffee.com/andresgongora). Caffeine goes in, code comes out.
 
 <!------------------------------------------------------------------------------------------------->
-
 ## License
-
 <!------------------------------------------------------------------------------------------------->
 
 Original files in this repo are [MIT licensed](./LICENSE).

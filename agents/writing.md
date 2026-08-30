@@ -19,7 +19,9 @@ permission:
   websearch: ask
   skill: allow
   question: allow
-  external_directory: ask
+  external_directory:
+    "*": ask
+    "~/.config/opencode/skills/writing/references/**": allow
   task:
     "*": ask
     "writing-reviewer": allow
