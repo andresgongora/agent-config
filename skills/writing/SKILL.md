@@ -67,6 +67,10 @@ Use claim, mechanism, reality:
 - Disagreement: state strongest fair counterpoint before response. Attribute positions to real sources. Prefer primary documents, direct records, and firsthand evidence to vague secondhand claims.
 - Put concrete evidence inside claim, reason, and impact; do not append vague praise.
 
+### Style
+
+- **Quotes**: use `"`, not `“` + `”`. Period goes outside quotes unless part of quoted material.
+
 ### Special cases
 
 #### Non-native or low-proficiency reader

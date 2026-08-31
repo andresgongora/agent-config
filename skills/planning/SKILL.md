@@ -1,6 +1,6 @@
 ---
 name: planning
-description: "Plans medium-or-harder interactive work. Load when using todo list tool (`todowrite`) for work with dependencies, material uncertainty, risky forks, delegation seams, scope-drift risk, or open-ended research. Do not load for a single quick step, or if `question` tool unavailable."
+description: "Plans non-trivial work interactively. Load for work with dependencies, material uncertainty, risky forks, delegation seams, scope-drift risk, open-ended research, or using todo list tool (`todowrite`). Do not load for a single quick step, or if `question` tool or user-chat unavailable"
 ---
 
 Author multi-step plan with checkpoints and ordered milestones to achieve intended goal, then maintain and replan as execution surfaces new evidence or obstacles.
