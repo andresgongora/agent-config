@@ -25,7 +25,7 @@ permission:
     "*": deny
   task:
     "*": deny
-    "cavecrew-investigator": allow
+    "minion-investigator": allow
     "web-search": allow
     "agent-evaluator": allow
 ---

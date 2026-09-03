@@ -27,7 +27,7 @@ description: "Workflow for creating, editing, or auditing agent-ecosystem artifa
 - **Name coupling**: inter AI artifact reference by literal identifier/filename. Brittle: breaks silently if the target is renamed, replaced, or merged.
 - **Behavioral reference**: reference by what the target does, not its name. Survives a swap to an equivalent artifact. Relies on runtime routing.
 
-Default: behavioral reference only. Use name coupling only if the referenced artifact is in a declared same-family group with this one (e.g. `agent-*`, `cavecrew-*`).
+Default: behavioral reference only. Use name coupling only if the referenced artifact is in a declared same-family group with this one (e.g. `agent-*`, `minion-*`).
 
 ### Markdown style
 
@@ -105,6 +105,9 @@ Primary routing surface, always in scope. During runtime, this is sole informati
 - Nested subagents: subagents default cannot spawn other subagents by default. Enable named children only explicitly.
 - Baseline grants belong in runtime harness-config, not copied into every primary agent or subagent definition; each artifact declares only its role deltas.
 
+**Agent body text**:
+- State role, rules, workflow, boundaries, output contract, success condition; skip unneeded ones.
+
 **Subagent specific rules**: `templates/subagent.md` ships an `## Output contract` section — fill it with real payload shapes, not just the envelope. Mandatory report envelope:
   - Every subagent report ends with:
     - `status:`: exactly one of `done` `partial` `blocked` `refused` `none`.
@@ -151,14 +154,14 @@ Slash commands are agent-directed instructions invoked by name. No model, no too
 6. Run verification (checklist below), starting with the cheap-model test from core rules.
 7. Return artifact.
 
-### Optional post-delivery deep-evaluation pass
+### Post-delivery deep-evaluation pass
 
-After artifact shipped, propose deep-evaluation for next-step. If user approves or requests directly:
+After artifact shipped, do NOT run evaluator; propose deep-evaluation for next-step and wait for approval. If approved or requested:
 
 1. Delegate clean-context final review to a read-only artifact evaluator. Give target, intent, scope, and applicable rules.
 2. Incorporate justified findings (use normal workflow). Skip only trivial, mechanical edits; state skip reason.
-3. If substantial changes made: re-run deep-evaluation. If in doubt: re-offer deep-evaluation next-step.
-4. Return final artifact and summary of changes made.
+3. Return final artifact and summary of changes made.
+4. If substantial changes made: ask to re-run deep-evaluation again, state why.
 
 ## Verification
 

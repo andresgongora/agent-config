@@ -8,6 +8,10 @@ Agent definitions for OpenCode-compatible clients. Primary agents own a broad wo
 
 Permission maps resolve last match. Agents place broad `bash: "*": deny` or `ask` before exceptions; hard denies follow broad rules. Frontmatter comments are maintenance notes, not runtime instructions.
 
+The `minion-*` family uses only `done`, `partial`, `blocked`, `refused`, and `none`. Every report ends with `status`, then `gap`; an optional preceding `issue` explains a block, refusal, or partial result.
+
+The Minion family was inspired by CaveCrew in [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman).
+
 ## Agent Evaluator
 
 `agent-evaluator.md` is a read-only subagent for static audits of agent-directed artifacts such as `AGENTS.md`, agent definitions, skills, and commands.
@@ -15,12 +19,19 @@ Permission maps resolve last match. Agents place broad `bash: "*": deny` or `ask
 - Finds source-evidenced contradictions, scope problems, and visible execution gaps.
 - Does not edit artifacts, run software, grade numerically, or review application code.
 
-## Artifact Vestige
+## Minion Vestige Hunter
 
-`artifact-vestige-hunter.md` is a read-only subagent that finds vestigial residue (leftover comments, steps, or notes describing removed/superseded behavior) in code, docs, or agent-directed text.
+`minion-vestige-hunter.md` is a read-only vestige hunter for a supplied file, directory, or repository area.
 
-- Judges each candidate by a zero-impact-refactor test, not pattern match alone; emits a terse finding-per-line list.
-- Does not edit, propose diffs, audit correctness/alignment of agent-directed artifacts, or perform static dead-code analysis.
+- Uses broader current context and a zero-impact test to find vestigial residue, ghost steps, and superseded wording.
+- Returns vestige, survivor, or unresolved evidence; does not edit, review correctness, or perform general style analysis.
+
+## Minion Fetcher
+
+`minion-fetcher.md` retrieves and distills bounded information from a supplied exact URL or local location.
+
+- Handles focused extraction such as video metadata or specific data within a supplied folder.
+- Does not discover sources, search the web, edit, or navigate repository code without a supplied path.
 
 ## Build
 
@@ -45,26 +56,26 @@ Permission maps resolve last match. Agents place broad `bash: "*": deny` or `ask
   scoped few-file refactor, iterating on verification failures within budget.
 - Refuses undefined scope, cross-cutting architecture work, or multi-turn dialogue needs.
 
-## Cavecrew Builder
+## Minion Builder
 
-`cavecrew-builder.md` makes one or two bounded edits to existing files.
+`minion-builder.md` makes one or two surgical edits to existing repository files.
 
-- Suited to typo fixes, mechanical renames, small rewrites, and format-preserving changes.
-- Refuses broader refactors, new features, and scopes of three or more files.
+- Suited to obvious typo fixes, mechanical renames, single-function rewrites, comment removal, and format-preserving tweaks.
+- Caller owns tests, builds, formatters, and other validation.
 
-## Cavecrew Investigator
+## Minion Investigator
 
-`cavecrew-investigator.md` is a read-only code locator.
+`minion-investigator.md` is a read-only repository locator for focused evidence collection.
 
-- Finds definitions, call sites, usages, and directory structure.
-- Returns compact `file:line` evidence without proposing fixes.
+- Finds definitions, call sites, usages, tests, imports, and directory structure.
+- Returns compact, verified path-based evidence without proposing changes.
 
-## Cavecrew Reviewer
+## Minion Reviewer
 
-`cavecrew-reviewer.md` reviews a bounded diff, branch, or file for defects and risks.
+`minion-reviewer.md` reviews a supplied diff or one bounded file for verified defects and risks.
 
-- Returns one terse, severity-tagged finding per line.
-- Does not edit code or perform broad codebase exploration.
+- Returns compact severity-tagged findings with emoji tiers.
+- Does not edit code, design refactors, or perform broad architecture review.
 
 ## Chat
 

@@ -33,8 +33,6 @@ equivalence is not established, the candidate remains unresolved. Path shapes he
 the taxonomy in `SKILL.md` labels what the residue looks like. This boundary keeps vestige hunting
 separate from general simplification.
 
-The `artifact-vestige-hunter` worker uses one finding per line, without praise or preamble.
-
 <!------------------------------------------------------------------------------------------------->
 ## When it triggers
 <!------------------------------------------------------------------------------------------------->
@@ -76,5 +74,3 @@ The `artifact-vestige-hunter` worker uses one finding per line, without praise o
 <!------------------------------------------------------------------------------------------------->
 ## See also
 <!------------------------------------------------------------------------------------------------->
-
-- `agents/artifact-vestige-hunter.md`: bounded worker applying this skill with compressed output

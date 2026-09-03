@@ -10,16 +10,17 @@ description: "<!-- One physical line. Routing truth: exact task, when to choose 
 
 <!-- Define role, non-uses, structured output, stopping/refusal conditions. Dense, imperative, exact prose. Replace/remove all placeholders, comments, empty sections, and examples. Ready non-trivial artifact: clean-context, read-only final evaluation, then re-verify. Reference other artifacts by behavior, not name, unless both are in a declared same-family group. -->
 
-## Scope
+## Rules
 
-<!-- Runtime self-scoping, not routing (routing already happened via frontmatter description). State: concrete in/out action list beyond the one-line identity above, ask-thresholds (what to escalate rather than do), and sibling handoff (what belongs to a different agent/tool instead). Remove only if the role line already covers all three with no loss. -->
+<!-- Runtime rules. State: concrete in/out action list beyond the one-line identity above, ask-thresholds (what to escalate rather than do), and sibling handoff (what belongs to a different agent/tool instead). Remove only if the role line already covers all three with no loss. -->
 
-## Input
+## Workflow
 
-<!-- Optional: what the caller must supply for this subagent to run (required fields, expected format, what happens on missing/malformed input). Skip if the caller's prompt is free-form and no structured intake exists. -->
+<!-- Explain in numbered lists steps that must be followed to complete subagent mission. Write geared towards success outcome. -->
 
 ## Boundaries
 
+<!-- Check on what the caller must supply for this subagent to run (required fields, expected format, what happens on missing/malformed input). Skip if the caller's prompt is free-form and no structured intake exists. -->
 <!-- Hard scope limits: what this subagent must never do, even if the caller asks. Refusal conditions; what tools/paths stay off-limits regardless of frontmatter grants. -->
 
 ## Output contract
@@ -28,16 +29,22 @@ description: "<!-- One physical line. Routing truth: exact task, when to choose 
 
 <!-- Mandatory envelope. Every report ends with these two fields, INSIDE this fenced template as its last two lines — a prose rule above the fence does not bind. Formatting may follow this agent's own style, token strings may not change. Map any refusal/terminal token this agent defines onto a status value; never restate the token's meaning. Fields: `status: <done | partial | blocked | refused | none>` and `gap: <in-scope work not done, or 'none'>`. `none` = ran fully, found nothing — distinct from `done`. -->
 
-```
+```md
 <!-- fill: real success-path payload shape -->
-status: done
-gap: none
+**status**: done
+**gap**: none
 ```
 
-<!-- Also ship a second fenced example for the empty-result or refusal path showing the literal non-done token. A success-only example teaches `done` as the default. -->
+<!--
+**status**
+- `done`: Completed requested task; usable result.
+- `none`: Completed task; no requested result/action exists.
+- `partial`: Produced usable partial result; named remainder in gap.
+- `blocked`: Cannot continue because required input, access, authorization, target, or dependency is absent.
+- `refused`: Request is outside worker authority/scope; different worker or main thread needed.
+- `failed`: Worker attempted valid in-scope work, but unexpected execution/tool/internal error prevented result.
 
-```
-<!-- fill: empty-result or refusal payload shape -->
-status: none
-gap: <what was not covered, or none>
-```
+**gap**: List in-scope work not done and explain why. Never desired improvements. `none` if all covered.
+**issue**: Optional field for caller to explain why the request failed or was refused. Do not use for normal partial results.
+**coverage**: Broadly inspected targets and repository areas, not detailed file list. `repository-wide` if all inspected.
+-->
