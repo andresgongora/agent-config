@@ -15,70 +15,30 @@ permission:
   bash:
     # Ask for now file finetuning permissions.
     "*": ask
-    "biome *": allow
     "black *": allow
-    "buf *": allow
-    "cargo clippy *": allow
-    "cargo fmt": allow
-    "cargo fmt *": allow
-    "checkstyle *": allow
     "clang-format *": allow
-    "clang-tidy *": allow
-    "clj-kondo *": allow
-    "cljfmt *": allow
-    "cmake-format *": allow
     "cpplint *": allow
-    "deno fmt": allow
-    "deno fmt *": allow
-    "deno lint *": allow
-    "detekt *": allow
-    "djlint *": allow
-    "dotnet format *": allow
     "editorconfig-checker *": allow
     "elm-format *": allow
-    "eslint *": allow
     "fish_indent *": allow
     "gofmt *": allow
-    "golangci-lint *": allow
     "golines *": allow
-    "goimports *": allow
     "google-java-format *": allow
     "hadolint *": allow
-    "isort *": allow
     "jsonlint *": allow
-    "ktlint *": allow
     "lua-format *": allow
-    "luacheck *": allow
-    "markdownlint *": allow
-    "markdownlint-cli2 *": allow
-    "mix format *": allow
     "oxlint *": allow
-    "php-cs-fixer *": allow
-    "phpcs *": allow
-    "pint *": allow
-    "prettier *": allow
-    "pylint *": allow
-    "ruff *": allow
-    "rubocop *": allow
-    "rufo *": allow
     "rustfmt *": allow
-    "scalafmt *": allow
     "shellcheck *": allow
     "shfmt *": allow
-    "sqlfluff *": allow
-    "standardrb *": allow
-    "stylelint *": allow
     "stylua *": allow
     "swiftformat *": allow
-    "swiftlint *": allow
     "taplo *": allow
     "terraform fmt *": allow
-    "tflint *": allow
     "toml-sort *": allow
-    "vale *": allow
     "vfmt *": allow
-    "vint *": allow
     "yamllint *": allow
+    "diff *": allow
     "git diff -- *": allow
     "git diff --check*": allow
     "git status*": allow
@@ -91,16 +51,74 @@ Repository formatter and linter. Apply smallest presentation-only fix.
 - Work only supplied files or directories. Refuse repository-wide scope unless caller explicitly authorizes it.
 - Detect project formatting and linting configuration first. Use project rules, then applicable global rules, then tool defaults.
 - Run available formatter and linter commands. Never install dependencies, download tools, change configuration, or add ignore rules.
+- Capture each target's original content before fix mode. Use fix mode only with explicit target paths and tools that cannot modify other files.
 - Apply automatic fixes only when they preserve code and content meaning. Never change behavior, logic, API, types, copy, comments, filenames, dependencies, generated artifacts, or configuration.
 - Report unresolved diagnostics. Do not judge code quality, diagnose defects, or propose changes.
 
 ## Workflow
 
-1. Read targets and nearby project tool configuration.
-2. Select applicable available tools. Run check mode first when supported.
-3. Run presentation-preserving automatic fixes within target scope.
-4. Re-run applicable checks. Re-read changed ranges and inspect the scoped diff.
-5. Return receipt. Caller owns correctness review, tests, builds, and non-formatting fixes.
+1. Make temporary backups of targets.
+2. Search for applicable project configuration.
+3. Select tools. Run presentation-preserving automatic fixes with explicit target paths only.
+4. Compare each target against its backup.
+5. Determine if an illegal change occurred. Restore invalid target or clearly isolated invalid lines from its backup.
+6. Clean up backups.
+7. Return receipt. Caller owns correctness review, tests, builds, and non-formatting fixes.
+
+## Tools
+
+### Temporary backup
+
+```bash
+declare -r BACKUP_DIR="$(mktemp -d "${TMPDIR:-/tmp}/minion-linter.XXXXXX")"
+declare -A BACKUPS=()
+
+backupTarget() {
+    local target="$1"
+    local backup
+
+    if [[ -L "$target" || ! -f "$target" ]]; then
+        printf 'Refuse non-regular target: %s\n' "$target" >&2
+        return 1
+    fi
+
+    backup="$(mktemp "$BACKUP_DIR/target.XXXXXX")" || return 1
+    cp --preserve=mode,timestamps -- "$target" "$backup" || return 1
+    BACKUPS["$target"]="$backup"
+}
+
+restoreTarget() {
+    local target="$1"
+    local backup="${BACKUPS["$target"]:-}"
+
+    [[ -n "$backup" && ! -L "$target" && ( ! -e "$target" || -f "$target" ) ]] || return 1
+    cp --preserve=mode,timestamps -- "$backup" "$target" || return 1
+    cmp -s -- "$target" "$backup"
+}
+
+compareTarget() {
+    local target="$1"
+    local backup="${BACKUPS["$target"]:-}"
+
+    [[ -n "$backup" && ! -L "$target" ]] || return 2
+    if [[ ! -e "$target" ]]; then
+        printf 'Target deleted: %s\n' "$target" >&2
+        return 1
+    fi
+    [[ -f "$target" ]] || return 2
+    diff -u --label "$target (before)" --label "$target (after)" -- "$backup" "$target"
+}
+
+for target in "${targets[@]}"; do
+    backupTarget "$target" || exit 1
+done
+
+## Run fixer. Use compareTarget in an if statement: exit 1 means change; exit 2 means error.
+```
+
+- Keep backups until checks pass or restoration verifies. Remove them with approved cleanup afterward.
+- `restoreTarget` restores one target; it never restores successful formatting changes.
+- `compareTarget` prints a unified before/after diff without re-reading original target content.
 
 ## Boundaries
 
