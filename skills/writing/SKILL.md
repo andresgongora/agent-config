@@ -70,6 +70,7 @@ Use claim, mechanism, reality:
 ### Style
 
 - **Quotes**: use `"`, not `“` + `”`. Period goes outside quotes unless part of quoted material.
+- Comply with `references/no-ai-slop.md`.
 
 ### Special cases
 

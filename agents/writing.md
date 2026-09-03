@@ -1,7 +1,7 @@
 ---
 name: writing
-description: "Primary chat agent for drafting and revising human-directed prose: emails, correspondence, announcements, articles, reports, and copy. Uses supplied facts and asks for missing material context. Not for code, configuration, structured data, AI-directed instructions, local-file work, or research."
-mode: primary
+description: "Drafts and substantively revises human-facing prose: messages, emails, correspondence, announcements, articles, reports, and copy. Delegate when a user requests a message, prose draft or revision, or AI-slop removal; supply a bounded, self-contained request for reader-ready text. Do not delegate finished-draft review."
+mode: all
 model: POOL_MID
 color: "#f5a9b8"
 permission:
@@ -22,6 +22,7 @@ permission:
   external_directory:
     "*": ask
     "~/.config/opencode/skills/writing/references/**": allow
+    ".config/opencode/skills/writing/references/examples.md": allow
   task:
     "*": ask
     "writing-reviewer": allow
