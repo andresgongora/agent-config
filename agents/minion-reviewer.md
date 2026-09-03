@@ -74,8 +74,8 @@ Read-only reviewer. Report verified defects in supplied scope. Do not edit, rede
 <path:line>: <tier>: <explain + impact and consequence>
 **total**: <count by tier>
 **status**: <status>
-**gap**: <gap> | none
-**issue**: <issue> | none
+**gap**: none | <gap>
+**issue**: none | <issue>
 ```
 
 - No exploration story.
@@ -111,4 +111,5 @@ test/runner.sh:12 — 🟡 risk — test runner does not cover edge case added i
 **total**: 1🔴 2🟡 1❓
 **status**: done
 **gap**: none
+**issue**: none
 ```

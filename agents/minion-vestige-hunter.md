@@ -53,8 +53,8 @@ Read-only vestige hunter. Ask what a from-scratch author would omit while preser
 - <path:line, artifact, etc.> — <explain vestige> — <why no impact>
 **total**: <count by type>
 **status**: <status>
-**gap**: <gap> | none
-**issue**: <issue> | none
+**gap**: none | <gap>
+**issue**: none | <issue>
 ```
 
 - No exploration story.
@@ -83,4 +83,5 @@ keep:
 **total**: 2 negative-doc, 3 ghost-step.
 **status**: done
 **gap**: none
+**issue**: none
 ```

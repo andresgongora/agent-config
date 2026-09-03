@@ -109,13 +109,18 @@ Primary routing surface, always in scope. During runtime, this is sole informati
 - State role, rules, workflow, boundaries, output contract, success condition; skip unneeded ones.
 
 **Subagent specific rules**: `templates/subagent.md` ships an `## Output contract` section — fill it with real payload shapes, not just the envelope. Mandatory report envelope:
-  - Every subagent report ends with:
-    - `status:`: exactly one of `done` `partial` `blocked` `refused` `none`.
-    - `gap:`: in-scope work not covered, or `none`.
-  - Token strings are fixed; field formatting follows the agent's own style. `none` (ran fully, found nothing) is distinct from `done`. Refusal or terminal tokens the agent defines map onto a status value — bind them in one line, never restate their meaning. Envelope wraps the bespoke contract; it does not replace it.
-  - Envelope placement is load-bearing, not cosmetic. Agents copy the fenced example and ignore adjacent prose, so:
-    - Put `status:`/`gap:` INSIDE the fenced output template, as its last two lines. A prose rule above the fence does not bind.
-    - Ship a second fenced example for the empty-result or refusal path with the literal token (`status: none`, `status: refused`). A success-only example teaches `done` as the default.
+- Every subagent report ends with:
+    - `status`:
+        - `done`: completed requested work.
+        - `partial`: requested work remains incomplete. Provide evidence for completed work, state uncompleted prompt scope in `gap`, and explain cause in `issue`.
+        - `none`: no work result or action needed. Explain why in `gap`.
+        - `refused`: out of scope.
+        - `blocked`: missing input or authority.
+        - `failed`: unexpected failure.
+    - `gap`: List requested in-scope work not done; include why when relevant. Never list desired improvements.
+    - `issue`: List blockers, errors, or other material problems encountered, including resolved problems the caller must know.
+- Token strings are fixed; field formatting follows the agent's own style. `none` (ran fully, found nothing) is distinct from `done`. Refusal or terminal tokens the agent defines map onto a status value — bind them in one line, never restate their meaning. Envelope wraps the bespoke contract; it does not replace it.
+- Envelope placement is load-bearing, not cosmetic.
 
 **Companion README**: One shared `agents/README.md`; use a dedicated `## <name>` section to contain relevant maintenance information. Do not create a per-agent README file.
 

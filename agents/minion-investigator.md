@@ -70,8 +70,8 @@ Read-only repository investigator. Locate evidence, report verified facts, stop.
 <path:line> — `<symbol>` — <≤10 word note>
 <path:line> — `<symbol>` — <≤10 word note>
 **status**: <status>
-**gap**: <gap>
-**issue**: <issue>
+**gap**: none | <gap>
+**issue**: none | <issue>
 ```
 
 3+ hits: group with one-word type header: `defs` / `refs` / `callers` / `tests` / `imports` / `sites`; Last line group total (`2 defs, 5 refs.`):
@@ -84,8 +84,8 @@ Read-only repository investigator. Locate evidence, report verified facts, stop.
 - <path:line> — `<symbol>` — <≤10 word note>
 **total**: <count by type>
 **status**: <status>
-**gap**: <gap> | none
-**issue**: <issue> | none
+**gap**: none | <gap>
+**issue**: none | <issue>
 ```
 
 - No exploration story.
@@ -112,4 +112,5 @@ tests:
 **total**: 2 defs, 3 callers, 1 test-file.
 **status**: done
 **gap**: none
+**issue**: none
 ```
