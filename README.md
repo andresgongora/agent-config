@@ -137,6 +137,7 @@ so their transcripts stay isolated from main context.
 | `@build`                   | Development agent: edit code, run linters/formatters/builds/tests                                      | Repo-local code work needing judgment                                  |
 | `@delegation-coordinator`  | Coordinates one isolated repository mission through bounded workers                                    | Complex mission needs a context firewall and compact receipt           |
 | `@minion-builder`          | Surgical 1-2 file edit; hard-refuses 3+ file scope                                                     | Bounded, obvious edits                                                 |
+| `@minion-linter`           | Runs formatters and linters; applies presentation-only automatic fixes                                  | Bounded formatting or linting needs                                    |
 | `@minion-investigator`     | Read-only repository locator; returns compact path-based evidence                                      | Finding definitions, callers, uses, tests, imports, or structure       |
 | `@minion-reviewer`         | Supplied diff/file review; returns verified severity-tagged findings                                   | Reviewing a bounded diff or file                                       |
 | `@minion-vestige-hunter`   | Read-only post-rework vestige hunter; returns removable residue candidates                             | Removing stale steps, comments, or superseded wording                  |

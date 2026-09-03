@@ -63,6 +63,13 @@ The Minion family was inspired by CaveCrew in [JuliusBrussee/caveman](https://gi
 - Suited to obvious typo fixes, mechanical renames, single-function rewrites, comment removal, and format-preserving tweaks.
 - Caller owns tests, builds, formatters, and other validation.
 
+## Minion Linter
+
+`minion-linter.md` runs applicable formatting and linting tools on supplied repository files or directories.
+
+- Applies only presentation-preserving automatic fixes and reports unresolved diagnostics.
+- Does not change code or content, install dependencies, review correctness, or perform feature work.
+
 ## Minion Investigator
 
 `minion-investigator.md` is a read-only repository locator for focused evidence collection.
