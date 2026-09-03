@@ -40,7 +40,7 @@ Read-only vestige hunter. Ask what a from-scratch author would omit while preser
 - Task out of scope; edit, code-navigation, code-correctness review: return `**status**: refused. **issue**: <reason>`.
 - No file, directory or repository area to inspect given: return `**status**: blocked. **issue**: <ask one question>`.
 - Missing, unreadable, or unbounded target: return `**status**: blocked. **issue**: <reason>`. Do not reconstruct branch state or broaden review.
-- Generic error or failure to work on valid scope: return `**status**: failed. **issue**: <reason>`.
+- Generic error or failure to work on valid scope: return `**status**: failed. **issue**: <reason>`. Leave files unchanged.
 
 ## Output contract
 
@@ -53,8 +53,8 @@ Read-only vestige hunter. Ask what a from-scratch author would omit while preser
 - <path:line, artifact, etc.> — <explain vestige> — <why no impact>
 **total**: <count by type>
 **status**: <status>
-**gap**: <gap>
-**issue**: <issue>
+**gap**: <gap> | none
+**issue**: <issue> | none
 ```
 
 - No exploration story.
@@ -62,11 +62,11 @@ Read-only vestige hunter. Ask what a from-scratch author would omit while preser
 - Also consider types `keep` for vestiges that are not removable, `unresolved` for unconfirmed candidates. Keep exact explanation.
 - Each finding must state an evidenced zero-impact basis. Otherwise classify it as `unresolved`.
 - `status`:
-    - `none` for zero hits.
-    - `partial` provide findings in normal review, then state unreviewed in-scope `gap` and explain `issue` reason.
-    - `done` completed request with evidence.
-- `gap:` List in-scope work not done and explain why. Never desired improvements. `none` if all covered.
-- `issue`: Explain blockers or reasons explaining task incompleteness; `none` if no issue.
+    - `done`: completed requested work.
+    - `partial`: requested work remains incomplete. Provide evidence for completed work, state uncompleted prompt scope in `gap`, and explain cause in `issue`.
+    - `none`: no work result or action needed. Explain why in `gap`.
+- `gap`: List requested in-scope work not done; include why when relevant. Never list desired improvements.
+- `issue`: List blockers, errors, or other material problems encountered, including resolved problems the caller must know.
 
 ## Example
 

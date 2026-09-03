@@ -54,6 +54,7 @@ Every minion returns `**status**` plus `**gap**` (in-scope work not done) or `**
 | `partial` | Use delivered evidence. Cover the gap inline or in a narrower mission; for a valid attempt that broke, resolve its `issue` and retry at most once if the cause is resolved. |
 | `blocked` | `issue` holds a question or missing authorization. Answer it in the retry prompt; a retry without the answer blocks again. |
 | `refused` | Wrong worker or oversized mission. Re-read the decision gate, split, or stay in main thread. Never re-send to same worker. |
+| `failed` | Use delivered evidence. Resolve its `issue`, then retry at most once if the cause is resolved; otherwise cover the `gap` inline or re-plan. |
 
 - Minion status is self-report: `done` and `gap: none` mean the worker believes it finished, never that the change is correct, tested, or complete.
 - `refused` with a split proposal is a plan suggestion; validate the split before delegating its parts.
