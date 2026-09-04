@@ -10,8 +10,9 @@
 
 ## Routing
 
-- Explicitly load every skill whose description matches current work before acting. Loaded skill content matching another skill's trigger also loads it; repeat until no unloaded skill matches.
-- Reassess loaded skills when scope or evidence changes. Reanchor after context compaction: reload skills relevant to active work. Skill file on disk ≠ loaded.
+- Before acting, load every matching skill not already loaded in this context. Loaded skill content matching another trigger loads that new skill; repeat until none remain.
+- Reassess loaded skills when scope or evidence changes.
+- Reload skills relevant to active work after context compaction. Skill file on disk ≠ loaded.
 - Required skill unavailable: do not infer its contents. Follow available rules; stop if missing guidance affects safety or correctness.
 - Bundled script referenced as `scripts/<script-name>`: resolve from skill loader base directory. Resolved path missing: stop.
 - Delegate only bounded, checkable work. Trust worker results only with evidence (path:line, exit code, quote, URL); treat as unverified if no evidence returned.
