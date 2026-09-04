@@ -14,9 +14,7 @@ Choose by needed evidence and authority, not convenience.
 | Format or lint supplied targets with safe automatic fixes | `minion-linter` |
 | Find defects in a supplied diff or one bounded file | `minion-reviewer` |
 | Find removable residue after rework in a supplied area | `minion-vestige-hunter` |
-| Execute a frozen, bounded multi-step repository mission | `minion-master` |
 | Locate code plus suggest fixes, explain architecture, or diagnose an unknown defect | Main thread or general exploration capability |
-| Deliver a feature, coupled 3+ file change, or cross-cutting refactor | Plan in main thread; use `minion-master` only after scope, authority, and proof are frozen |
 | Give broad review, design advice, or general feedback | Main thread or a suitable review capability |
 | Run tests, builds, or installs; conduct external research; handle unclear or risky work | Main thread or a capability with required tools |
 | Answer already known in one line | Main thread; do not delegate |
