@@ -1,6 +1,6 @@
 ---
 name: minion-delegation
-description: "Pick and drive bounded minion workers: locate code, edit, lint, review, cleanup, or execute a frozen multi-step mission. Load for any multi-step or context-heavy repository task, feature and refactor work, before choosing inline versus delegated work, or minion subagent delegation. Skip single-step answers and non-repository work."
+description: "Pick and drive bounded minion workers: locate code, edit, lint, review, cleanup, or execute a frozen multi-step mission. Load for any multi-step or context-heavy repository task, to-do item list execution, feature and refactor work, before choosing inline versus delegated work, or minion subagent delegation. Skip single-step answers and non-repository work."
 ---
 
 ## Decision Gate
@@ -23,13 +23,13 @@ Choose by needed evidence and authority, not convenience.
 
 ## Rules
 
-- Delegate one bounded, independent step per minion. Calling thread owns integration and final judgment; `minion-master` owns local integration inside its frozen mission.
+- Delegate one bounded, independent step per minion. Calling thread owns integration and final judgment.
 - Give target, outcome, scope, and authoritative context. Omit only irrelevant fields.
 - Choose smallest worker whose authority and output complete next step.
 - Delegate when the step costs more context to run than to describe: a search whose target file set is unknown, a review of a diff you would otherwise read whole, or an edit whose surrounding file you do not need in context. Do it inline when the target is one known file and one known range, or when writing the mission takes as long as the work.
 - Treat minion output as evidence, not a replacement for inspection, validation, or user-facing explanation.
 - Pass only results, targets, and constraints next worker needs.
-- Calling thread owns integration: after any minion edit, inspect the diff and run relevant validation before a later worker. `minion-master` performs this locally inside its frozen mission.
+- Calling thread owns integration: after any minion edit, inspect the diff and run relevant validation before a later worker.
 - Parallel minions only on non-overlapping tasks. Spawned as multiple task calls in one message, then aggregate before choosing the next worker.
 
 ### Delegation prompt
@@ -65,12 +65,6 @@ Every minion returns `**status**` plus `**gap**` (in-scope work not done) or `**
 - Same status twice on one mission: stop delegating, do the step inline.
 
 ## Minions
-
-### minion-master
-
-- Use only for one self-contained, bounded planning milestone with complete mission, scope, authority, context, validation, and receipt requirements.
-- It loads this workflow, makes or follows an internal subplan, selects eligible leaf minions, integrates their work, and verifies the mission.
-- Do not use for user dialogue, unresolved design, open-ended discovery, deploy/publish work, or recursive coordination.
 
 ### minion-investigator
 
@@ -128,15 +122,8 @@ Every minion returns `**status**` plus `**gap**` (in-scope work not done) or `**
 1. After validation, give touched area and current-purpose context to `minion-vestige-hunter`.
 2. Treat candidates as proposals. Main thread verifies removal safety before any edit.
 
-### Frozen multi-step mission
-
-1. Main thread resolves user decisions and produces a complete mission package.
-2. Dispatch `minion-master` only when scope, authority, validation, and receipt are frozen.
-3. Master follows this workflow for leaf work, local integration, and proof; caller judges the receipt.
-
 ## Boundaries
 
 - If next worker lacks target, outcome, or authoritative context, resolve it in main thread. Do not delegate an incomplete mission.
 - If evidence reveals coupled change beyond worker scope, stop chain and re-plan in main thread. Do not split a coupled refactor to fit two-file limit.
 - If no decision-gate row fits, do not use a minion. Select another capability or continue in the main thread.
-- `minion-master` delegates only named leaf minions. Never use it to delegate another coordinator or itself.
