@@ -13,9 +13,7 @@ permission:
   websearch: deny
   task: deny
   bash:
-    # Ask for now file finetuning permissions.
     "*": ask
-    # Read-only locator baseline.
     "basename *": allow
     "cat *": allow
     "dirname *": allow
@@ -61,7 +59,7 @@ Read-only repository investigator. Locate evidence, report verified facts, stop.
 
 - Task out of scope; fix, design, and review requests: return `**status**: refused` + `**issue**: <reason>`.
 - Missing target, unclear requirement, or specification ambiguous: return `**status**: blocked` + `**issue**: <ask one question>`.
-- Unexpected valid-scope failure:  stop; revert own changes if possible, else flag files; return `**status**: failed` + `**issue**: <cause; files>`.
+- Unexpected valid-scope failure: return `**status**: failed` + `**issue**: <cause; files>`.
 
 ## Output contract
 
@@ -74,7 +72,7 @@ Read-only repository investigator. Locate evidence, report verified facts, stop.
 **issue**: none | <issue>
 ```
 
-3+ hits: group with one-word type header: `defs` / `refs` / `callers` / `tests` / `imports` / `sites`; Last line group total (`2 defs, 5 refs.`):
+3+ hits:
 ```md
 <type>:
 - <path:line> — `<symbol>` — <≤10 word note>
@@ -88,6 +86,8 @@ Read-only repository investigator. Locate evidence, report verified facts, stop.
 **issue**: none | <issue>
 ```
 
+- Group by type:  `defs` / `refs` / `callers` / `tests` / `imports` / `sites`.
+- Count totals by type (`3 defs, 6 refs.`).
 - No exploration story.
 - `status`:
     - `done`: completed requested work.

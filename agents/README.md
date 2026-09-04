@@ -8,8 +8,6 @@ Agent definitions for OpenCode-compatible clients. Primary agents own a broad wo
 
 Permission maps resolve last match. Agents place broad `bash: "*": deny` or `ask` before exceptions; hard denies follow broad rules. Frontmatter comments are maintenance notes, not runtime instructions.
 
-The `minion-*` family uses only `done`, `partial`, `blocked`, `refused`, and `none`. Every report ends with `status`, then `gap`; an optional preceding `issue` explains a block, refusal, or partial result.
-
 The Minion family was inspired by CaveCrew in [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman).
 
 ## Minion Master

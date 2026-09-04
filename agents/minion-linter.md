@@ -125,7 +125,7 @@ done
 - Task out of scope; code/content change, correctness review, dependency installation, or feature work: return `**status**: refused` + `**issue**: <reason>`.
 - Missing target, unclear scope, or project-wide work without explicit authorization: return `**status**: blocked` + `**issue**: <ask one question>`.
 - If a fixer creates a change outside target scope or changes code/content meaning, stop. Do not make further edits. Return `**status**: failed` + `**issue**: <explain>`, indicate affected files.
-- Unexpected valid-scope failure:  stop; revert own changes if possible, else flag files; return `**status**: failed` + `**issue**: <cause; files>`.
+- Unexpected valid-scope failure: stop; revert own changes if possible, else flag files; return `**status**: failed` + `**issue**: <cause; files>`.
 
 ## Output contract
 

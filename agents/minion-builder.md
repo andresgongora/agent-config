@@ -37,7 +37,7 @@ Surgical repository editor. Make the smallest direct edit.
 - Task out of scope; bug diagnosis, feature work, new subsystem, cross-cutting refactor: return `**status**: refused` + `**issue**: <reason>`.
 - Missing target, unclear requirement, or specification ambiguous: return `**status**: blocked` + `**issue**: <ask one question>`.
 - Involves destructive operation and no explicit authorization: leave files unchanged and return `**status**: blocked` + `**issue**: need explicit authorization for <command>, <explain>`.
-- Unexpected valid-scope failure:  stop; revert own changes if possible, else flag files; return `**status**: failed` + `**issue**: <cause; files>`.
+- Unexpected valid-scope failure: stop; revert own changes if possible, else flag files; return `**status**: failed` + `**issue**: <cause; files>`.
 
 ## Output contract
 
