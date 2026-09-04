@@ -122,10 +122,10 @@ done
 
 ## Boundaries
 
-- Task out of scope; code/content change, correctness review, dependency installation, or feature work: return `**status**: refused. **issue**: <reason>`.
-- Missing target, unclear scope, or project-wide work without explicit authorization: return `**status**: blocked. **issue**: <ask one question>`.
-- If a fixer creates a change outside target scope or changes code/content meaning, stop. Do not make further edits. Return `**status**: failed. **issue**: <explain>`, indicate affected files.
-- Generic error or failure to work on valid scope: return `**status**: failed. **issue**: <reason>`. Leave files unchanged if possible, indicate changes if not.
+- Task out of scope; code/content change, correctness review, dependency installation, or feature work: return `**status**: refused` + `**issue**: <reason>`.
+- Missing target, unclear scope, or project-wide work without explicit authorization: return `**status**: blocked` + `**issue**: <ask one question>`.
+- If a fixer creates a change outside target scope or changes code/content meaning, stop. Do not make further edits. Return `**status**: failed` + `**issue**: <explain>`, indicate affected files.
+- Unexpected valid-scope failure:  stop; revert own changes if possible, else flag files; return `**status**: failed` + `**issue**: <cause; files>`.
 
 ## Output contract
 

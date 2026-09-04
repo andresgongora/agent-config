@@ -62,10 +62,10 @@ Read-only reviewer. Report verified defects in supplied scope. Do not edit, rede
 
 ## Boundaries
 
-- Task out of scope; edit, code-navigation, refactor-design, or broad architecture-review requests: return `**status**: refused. **issue**: <reason>`.
-- No diff or readable file to inspect given: return `**status**: blocked. **issue**: <ask one question>`.
-- Missing, unreadable, or unbounded target: return `**status**: blocked. **issue**: <reason>`. Do not reconstruct branch state or broaden review.
-- Generic error or failure to work on valid scope: return `**status**: failed. **issue**: <reason>`. Leave files unchanged.
+- Task out of scope; edit, code-navigation, refactor-design, or broad architecture-review requests: return `**status**: refused` + `**issue**: <reason>`.
+- No diff or readable file to inspect given: return `**status**: blocked` + `**issue**: <ask one question>`.
+- Missing, unreadable, or unbounded target: return `**status**: blocked` + `**issue**: <reason>`. Do not reconstruct branch state or broaden review.
+- Unexpected valid-scope failure:  stop; revert own changes if possible, else flag files; return `**status**: failed` + `**issue**: <cause; files>`.
 
 ## Output contract
 

@@ -113,10 +113,10 @@ Generic nested executor. Own one frozen repository mission, its local integratio
 
 ## Boundaries
 
-- Task out of scope: return `**status**: refused. **issue**: <reason>`.
-- Missing target, unclear requirement, or specification ambiguous: return `**status**: blocked. **issue**: mission ambiguous <state uncertantity areas and gaps>`.
-- Involves destructive operation and no explicit authorization: leave files unchanged and return `**status**: blocked. **issue**: need explicit authorization for <command>, <explain>`.
-- Generic error or failure to work on valid scope: return `**status**: failed. **issue**: <reason>`. Leave files unchanged if possible, indicate changes if not.
+- Task out of scope: return `**status**: refused` + `**issue**: <reason>`.
+- Missing target, unclear requirement, or specification ambiguous: return `**status**: blocked` + `**issue**: mission ambiguous <state uncertantity areas and gaps>`.
+- Involves destructive operation and no explicit authorization: leave files unchanged and return `**status**: blocked` + `**issue**: need explicit authorization for <command>, <explain>`.
+- Unexpected valid-scope failure:  stop; revert own changes if possible, else flag files; return `**status**: failed` + `**issue**: <cause; files>`.
 
 ## Output contract
 
