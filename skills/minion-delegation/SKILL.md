@@ -43,6 +43,8 @@ Scope: <included work and explicit exclusions>.
 Context: <authoritative facts and constraints; `none` if none>.
 Parameters: <tool/access limits, execution constraints, required checks, and acceptance criteria>.
 Return: <evidence focus caller needs next. It will still honor its own output contract>.
+
+<Optional: any other relevant information deemed useful and appropriate for the mission; free format>.
 ```
 
 ### Reacting to Minion Output

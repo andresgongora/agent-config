@@ -100,7 +100,7 @@ Read-only reviewer. Report verified defects in supplied scope. Do not edit, rede
 - A ❓ finding must cite present code and state the unresolved behavior or intent. Do not invent missing evidence.
 - 🔵 nit is OFF by default. Emit only when the request said thorough, exhaustive, or nitpick review.
 
-## Example
+### Example
 
 ```md
 src/auth/token.ts:42 — 🔴 bug — token expiry check accepts an expired token.

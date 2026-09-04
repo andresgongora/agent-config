@@ -96,7 +96,7 @@ Read-only repository investigator. Locate evidence, report verified facts, stop.
 - `gap`: List requested in-scope work not done; include why when relevant. Never list desired improvements.
 - `issue`: List blockers, errors, or other material problems encountered, including resolved problems the caller must know.
 
-## Example
+### Example
 
 Q: "where session-safe lock handling?"
 

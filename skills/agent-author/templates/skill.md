@@ -16,6 +16,23 @@ description: "<!-- One physical line. Routing truth: what it does; when to load;
 
 <!-- Rules. -->
 
+<!-- Optional delegation prompt template, somewhere in the skill. Example:
+    ### Delegation prompt
+
+    Give each minion a bounded mission:
+
+    ```md
+    Task: <one bounded outcome>.
+    Target: <paths, symbols, supplied diff, or repository area>.
+    Scope: <included work and explicit exclusions>.
+    Context: <authoritative facts and constraints; `none` if none>.
+    Parameters: <tool/access limits, execution constraints, required checks, and acceptance criteria>.
+    Return: <evidence focus caller needs next. It will still honor its own output contract>.
+
+    <Optional: any other relevant information deemed useful and appropriate for the mission; free format>.
+    ```
+-->
+
 ## Resources
 
 <!-- If multiple tools, resources, scripts, etc available for this skills, list them here and explain their purpose, how to use them, arguments, etc. Create subsections if needed, or rename if only `Tools` available. Remove entirely if not needed. -->

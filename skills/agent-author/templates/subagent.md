@@ -13,15 +13,23 @@ description: "<!-- One physical line. Routing truth: exact task, when to choose 
 ## Rules
 
 <!-- Runtime rules. State: concrete in/out action list beyond the one-line identity above, ask-thresholds (what to escalate rather than do), and sibling handoff (what belongs to a different agent/tool instead). Remove only if the role line already covers all three with no loss. -->
+<!-- Rules can be positive or negative. Treat rules as different from boundaries: rules are what to do or avoid during normal runtime and throughout the normal workflow; boundaries are exceptions that require stopping, refusal, and/or escalation and lead to early termination. -->
 
 ## Workflow
 
-<!-- Explain in numbered lists steps that must be followed to complete subagent mission. Write geared towards success outcome. -->
+<!-- Explain, in numbered lists, the steps required to complete the subagent mission. Write for the successful outcome. -->
 
 ## Boundaries
 
 <!-- Check on what the caller must supply for this subagent to run (required fields, expected format, what happens on missing/malformed input). Skip if the caller's prompt is free-form and no structured intake exists. -->
 <!-- Hard scope limits: what this subagent must never do, even if the caller asks. Refusal conditions; what tools/paths stay off-limits regardless of frontmatter grants. -->
+<!-- Example:
+    - Task out of scope: return `**status**: refused` + `**issue**: <reason>`.
+    - Missing target, unclear requirement, or ambiguous specification: return `**status**: blocked` + `**issue**: mission ambiguous; state uncertain areas and gaps`.
+    - Involves destructive operation and no explicit authorization: leave files unchanged and return `**status**: blocked` + `**issue**: need explicit authorization for <command>, <explain>`.
+    - Unexpected valid-scope failure: stop; revert own changes if possible, else flag files; return `**status**: failed` + `**issue**: <cause; files>`.
+-->
+<!-- No "input contract": there is no utility in stating the conditions to the caller in the subagent's own body; once called it's too late. Instead, enforce input contract by returning early with a clear explanation of the issue. -->
 
 ## Output contract
 
@@ -48,3 +56,7 @@ description: "<!-- One physical line. Routing truth: exact task, when to choose 
 **gap**: List in-scope work not done and explain why. Never desired improvements. `none` if all covered.
 **issue**: Report blockers, errors, or material resolved problems; `none` when absent.
 -->
+
+### Example
+
+<!-- Example of what the output contract might look like, sometimes accompanied by Q: <query>. VERY optional and often best to leave out -->
