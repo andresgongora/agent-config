@@ -1,6 +1,6 @@
 # minion-delegation
 
-Decision guide. Load before summoning a minion-\* subagent instead of doing work inline.
+Decision guide. Load before summoning a `minion-*` subagent; bounded work defaults to delegation.
 
 ## What it does
 
@@ -19,7 +19,7 @@ Six subagents:
 | `minion-reviewer` | Diff/file review | One-line findings with severity tier |
 | `minion-vestige-hunter` | Post-rework cleanup | Stale comments, ghost steps, superseded wording |
 
-Use a general exploration or review capability when you want prose, architecture commentary, or rationale. Use main thread directly for one-line answers, user decisions, and scope discovery; summon `minion-master` after a planning milestone becomes a complete mission package.
+Use a general exploration or review capability when you want prose, architecture commentary, or rationale. Use main thread directly for one-line answers, user decisions, scope discovery, tests, builds, installs, external research, or unclear/risky work; delegate other standalone bounded work by default. Summon `minion-master` after a planning milestone becomes a complete mission package.
 
 This skill is a decision guide, not a slash command. It activates before summoning any minion: bounded code locating, editing, linting, diff review, cleanup, and frozen-mission execution.
 

@@ -18,15 +18,15 @@ Choose by needed evidence and authority, not convenience.
 | Locate code plus suggest fixes, explain architecture, or diagnose an unknown defect | Main thread or general exploration capability |
 | Deliver a feature, coupled 3+ file change, or cross-cutting refactor | Plan in main thread; use `minion-master` only after scope, authority, and proof are frozen |
 | Give broad review, design advice, or general feedback | Main thread or a suitable review capability |
-| Run tests, builds, formatters, installs, or external research | Main thread or a capability with required tools |
+| Run tests, builds, or installs; conduct external research; handle unclear or risky work | Main thread or a capability with required tools |
 | Answer already known in one line | Main thread; do not delegate |
 
 ## Rules
 
-- Delegate one bounded, independent step per minion. Calling thread owns integration and final judgment.
+- Spawn a minion for each bounded, independent step that matches a delegation row. Calling thread owns integration and final judgment.
 - Give target, outcome, scope, and authoritative context. Omit only irrelevant fields.
 - Choose smallest worker whose authority and output complete next step.
-- Delegate when the step costs more context to run than to describe: a search whose target file set is unknown, a review of a diff you would otherwise read whole, or an edit whose surrounding file you do not need in context. Do it inline when the target is one known file and one known range, or when writing the mission takes as long as the work.
+- Do not keep matching work inline because a file, range, or command is known. Use context cost as a delegation benefit, not a gate; keep work inline only when no bounded worker fits or it is a one-line answer.
 - Treat minion output as evidence, not a replacement for inspection, validation, or user-facing explanation.
 - Pass only results, targets, and constraints next worker needs.
 - Calling thread owns integration: after any minion edit, inspect the diff and run relevant validation before a later worker.
@@ -49,7 +49,7 @@ Return: <evidence focus caller needs next. It will still honor its own output co
 
 ### Reacting to Minion Output
 
-Every minion returns `**status**` plus `**gap**` (in-scope work not done) or `**issue**` (why it stopped). Act on status; do not re-prompt blindly.
+Every minion returns `**status**`, `**gap**` (in-scope work not done), and `**issue**` (why it stopped). Act on status; do not re-prompt blindly.
 
 | `status` | Main-thread response |
 | --- | --- |
@@ -81,6 +81,7 @@ Every minion returns `**status**` plus `**gap**` (in-scope work not done) or `**
 ### minion-linter
 
 - Prompt with explicit files or directories and permission for presentation-only automatic fixes.
+- Dispatch `minion-linter` for supplied files or directories before main manually selects formatter or linter commands.
 - Selects project tools, preserves semantics, and reports each check. It never installs dependencies or changes configuration.
 
 ### minion-reviewer
