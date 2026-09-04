@@ -84,9 +84,7 @@ Primary routing surface, always in scope. During runtime, this is sole informati
 - Human-facing, readable, no AI slop.
 - One-line what, design intent, trigger summary, maintainer constraints, see-also.
 
-### primary agent and Subagent
-
-**Template**: `templates/primary-agent.md` and `templates/subagent.md`.
+### Primary Agent and Subagent
 
 **Frontmatter `description`**: Primary routing truth. Specificity governs delegation correctness. Design goal is to ensure consistent behavior:
 - Exact task statement.
@@ -105,24 +103,37 @@ Primary routing surface, always in scope. During runtime, this is sole informati
 - Nested subagents: subagents default cannot spawn other subagents by default. Enable named children only explicitly.
 - Baseline grants belong in runtime harness-config, not copied into every primary agent or subagent definition; each artifact declares only its role deltas.
 
-**Agent body text**:
+**Companion README**: One shared `agents/README.md`; use a dedicated `## <name>` section to contain relevant maintenance information. Do not create a per-agent README file.
+
+#### Agent specific
+
+**Template**: `templates/primary-agent.md`.
+
+**Agent body**:
 - State role, rules, workflow, boundaries, output contract, success condition; skip unneeded ones.
 
-**Subagent specific rules**: `templates/subagent.md` ships an `## Output contract` section — fill it with real payload shapes, not just the envelope. Mandatory report envelope:
-- Every subagent report ends with:
+#### Subagent specific
+
+**Template**: `templates/subagent.md`.
+
+**Subagent body**:
+- Start with a one-line role statement. Use `## Rules`, `## Workflow`, `## Boundaries`, and `## Output contract`; add `## Tools` only for a real tool-selection or safety protocol.
+- Give one bounded role. Rules state included work, excluded work, and any evidence limit. Workflow ends with a compact receipt; caller owns integration and broader validation unless role explicitly includes it.
+- Boundaries distinguish: out-of-scope request = `refused`; missing target, scope, input, or authority = `blocked`; unexpected valid-scope execution failure = `failed`. State whether files remain unchanged or identify unavoidable changes.
+
+**Subagent output contract**: `templates/subagent.md` ships an `## Output contract` section — fill it with real payload shapes, not just the envelope.
+- Lead with role evidence: path/line findings, changed paths, check results, or equivalent. Add fields such as `total`, `checks`, `verified`, or `coverage` only when the caller needs them. No exploration story.
+- Every report ends with, in order:
     - `status`:
         - `done`: completed requested work.
-        - `partial`: requested work remains incomplete. Provide evidence for completed work, state uncompleted prompt scope in `gap`, and explain cause in `issue`.
-        - `none`: no work result or action needed. Explain why in `gap`.
+        - `partial`: requested work remains incomplete. Provide completed-work evidence, state uncompleted prompt scope in `gap`, and explain cause in `issue`.
+        - `none`: completed requested work; no requested result or action exists. Explain why in `gap`.
         - `refused`: out of scope.
         - `blocked`: missing input or authority.
         - `failed`: unexpected failure.
     - `gap`: List requested in-scope work not done; include why when relevant. Never list desired improvements.
-    - `issue`: List blockers, errors, or other material problems encountered, including resolved problems the caller must know.
-- Token strings are fixed; field formatting follows the agent's own style. `none` (ran fully, found nothing) is distinct from `done`. Refusal or terminal tokens the agent defines map onto a status value — bind them in one line, never restate their meaning. Envelope wraps the bespoke contract; it does not replace it.
-- Envelope placement is load-bearing, not cosmetic.
-
-**Companion README**: One shared `agents/README.md`; use a dedicated `## <name>` section to contain relevant maintenance information. Do not create a per-agent README file.
+    - `issue`: List blockers, errors, or other material problems encountered, including resolved problems the caller must know. Use `none` when absent.
+- Token strings are fixed; field formatting follows the agent's style. `none` is distinct from `done`. Refusal or terminal tokens the agent defines map to a status value; bind them in one line, never restate their meaning. Envelope placement and order are load-bearing; it wraps the bespoke contract, never replaces it.
 
 ### Command
 
@@ -181,8 +192,8 @@ After creating or editing, ensure all pass.
 - [ ] Frontmatter: YAML parses cleanly, each field is one physical line (no wrapped values), and all required fields present. No empty values.
 - [ ] Frontmatter: `description` dense with correlated keywords. Routing truth; no trigger phrases duplicated in body.
 - [ ] Skill: Owned resources referenced correctly (`scripts/foo`), no `<skill-root>` placeholder, no hardcoded absolute deploy path.
-- [ ] Subagent: Report ends with `status:` (one of `done` `partial` `blocked` `refused` `none`) and `gap:`; every refusal or terminal token maps to a status and is payload, not a replacement.
-- [ ] Subagent: Envelope sits inside the fenced output template, and a second fence shows the empty-result or refusal path with a literal non-`done` token.
+- [ ] Subagent: Report ends with `status:` (one of `done` `partial` `blocked` `refused` `none` `failed`), `gap:`, and `issue:`; every refusal or terminal token maps to a status and is payload, not a replacement.
+- [ ] Subagent: Output contract has a real success payload and explicit empty-result, refusal, block, partial, and failure behavior.
 - [ ] Command: Fits one screen, `$ARGUMENTS` handled, dense/compressed phrasing throughout.
 - [ ] Command: `Delegate:` per-step delegation tags present only where a real tradeoff exists, never forced on a trivial command.
 - [ ] README: created or updated alongside artifact. Human-facing, readable, no AI slop.

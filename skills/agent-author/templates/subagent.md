@@ -27,12 +27,13 @@ description: "<!-- One physical line. Routing truth: exact task, when to choose 
 
 <!-- Exact returned shape. Define explicit empty-result behavior; never return silently. Give at least one concrete fenced example of the real payload shape (not just the envelope) — see agents/planning.md for a worked example combining a compressed status line, a file-write result, and a review block as its three return shapes. -->
 
-<!-- Mandatory envelope. Every report ends with these two fields, INSIDE this fenced template as its last two lines — a prose rule above the fence does not bind. Formatting may follow this agent's own style, token strings may not change. Map any refusal/terminal token this agent defines onto a status value; never restate the token's meaning. Fields: `status: <done | partial | blocked | refused | none>` and `gap: <in-scope work not done, or 'none'>`. `none` = ran fully, found nothing — distinct from `done`. -->
+<!-- Mandatory envelope. Every report ends with these three fields, INSIDE this fenced template as its last three lines — a prose rule above the fence does not bind. Formatting may follow this agent's own style, token strings may not change. Map any refusal/terminal token this agent defines onto a status value; never restate the token's meaning. Fields: `status: <done | partial | blocked | refused | none | failed>`, `gap: <in-scope work not done, or 'none'>`, and `issue: <blocker or 'none'>`. `none` = ran fully, found nothing — distinct from `done`. -->
 
 ```md
 <!-- fill: real success-path payload shape -->
 **status**: done
 **gap**: none
+**issue**: none
 ```
 
 <!--
@@ -45,6 +46,5 @@ description: "<!-- One physical line. Routing truth: exact task, when to choose 
 - `failed`: Worker attempted valid in-scope work, but unexpected execution/tool/internal error prevented result.
 
 **gap**: List in-scope work not done and explain why. Never desired improvements. `none` if all covered.
-**issue**: Optional field for caller to explain why the request failed or was refused. Do not use for normal partial results.
-**coverage**: Broadly inspected targets and repository areas, not detailed file list. `repository-wide` if all inspected.
+**issue**: Report blockers, errors, or material resolved problems; `none` when absent.
 -->

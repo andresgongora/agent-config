@@ -12,6 +12,14 @@ The `minion-*` family uses only `done`, `partial`, `blocked`, `refused`, and `no
 
 The Minion family was inspired by CaveCrew in [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman).
 
+## Minion Master
+
+`minion-master.md` is the high-capability executor for one frozen, bounded multi-step repository mission.
+
+- Builds or follows an internal subplan, dispatches eligible leaf minions, integrates their work, and validates the outcome.
+- Cannot talk to the user; incomplete scope, authority, or proof requirements stop with a structured receipt.
+- Exists because planning milestones need one integration owner while leaf minions retain small, reusable contracts.
+
 ## Agent Evaluator
 
 `agent-evaluator.md` is a read-only subagent for static audits of agent-directed artifacts such as `AGENTS.md`, agent definitions, skills, and commands.
@@ -26,35 +34,12 @@ The Minion family was inspired by CaveCrew in [JuliusBrussee/caveman](https://gi
 - Uses broader current context and a zero-impact test to find vestigial residue, ghost steps, and superseded wording.
 - Returns vestige, survivor, or unresolved evidence; does not edit, review correctness, or perform general style analysis.
 
-## Minion Fetcher
-
-`minion-fetcher.md` retrieves and distills bounded information from a supplied exact URL or local location.
-
-- Handles focused extraction such as video metadata or specific data within a supplied folder.
-- Does not discover sources, search the web, edit, or navigate repository code without a supplied path.
-
 ## Build
 
 `build.md` is the primary development agent for repository-local work.
 
 - Edits code, manages dependencies, and runs validation such as tests, linters, formatters, and builds.
 - Does not own broad system administration or deploy and publishing workflows.
-
-## Build Fast
-
-`build-fast.md` is a low-cost subagent for one mechanical development command.
-
-- Runs one supplied test, lint, format, dependency, script, or type-check action.
-- Returns command output, exit code, and pass or fail status.
-- Refuses ambiguous, multi-step, or judgment-dependent work.
-
-## Build Medium
-
-`build-medium.md` is a mid-cost subagent for one bounded multi-step development task.
-
-- Implements a small feature slice, fixes a failing test/bug with a known repro, or applies a
-  scoped few-file refactor, iterating on verification failures within budget.
-- Refuses undefined scope, cross-cutting architecture work, or multi-turn dialogue needs.
 
 ## Minion Builder
 

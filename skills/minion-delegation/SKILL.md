@@ -1,6 +1,6 @@
 ---
 name: minion-delegation
-description: "Pick and drive bounded minion workers: locate code, obvious 1-2-file edits, review of a supplied diff or file, post-rework vestige hunt. Delegation keeps search noise and diff detail out of main context. Load early on any multi-step or context-heavy repository task, feature and refactor work included, before choosing inline versus delegated, and whenever a returned worker status must be acted on. Skip single-step answers and non-repository work."
+description: "Pick and drive bounded minion workers: locate code, edit, lint, review, cleanup, or execute a frozen multi-step mission. Load for any multi-step or context-heavy repository task, feature and refactor work, before choosing inline versus delegated work, or minion subagent delegation. Skip single-step answers and non-repository work."
 ---
 
 ## Decision Gate
@@ -11,23 +11,25 @@ Choose by needed evidence and authority, not convenience.
 | --- | --- |
 | Locate focused definitions, callers, usages, tests, imports, or structure | `minion-investigator` |
 | Make an obvious change in one or two known files | `minion-builder` |
+| Format or lint supplied targets with safe automatic fixes | `minion-linter` |
 | Find defects in a supplied diff or one bounded file | `minion-reviewer` |
 | Find removable residue after rework in a supplied area | `minion-vestige-hunter` |
+| Execute a frozen, bounded multi-step repository mission | `minion-master` |
 | Locate code plus suggest fixes, explain architecture, or diagnose an unknown defect | Main thread or general exploration capability |
-| Deliver a feature, coupled 3+ file change, or cross-cutting refactor | Main thread; plan first when scope is uncertain |
+| Deliver a feature, coupled 3+ file change, or cross-cutting refactor | Plan in main thread; use `minion-master` only after scope, authority, and proof are frozen |
 | Give broad review, design advice, or general feedback | Main thread or a suitable review capability |
 | Run tests, builds, formatters, installs, or external research | Main thread or a capability with required tools |
 | Answer already known in one line | Main thread; do not delegate |
 
 ## Rules
 
-- Delegate one bounded, independent step per minion. Main thread owns integration and final judgment.
+- Delegate one bounded, independent step per minion. Calling thread owns integration and final judgment; `minion-master` owns local integration inside its frozen mission.
 - Give target, outcome, scope, and authoritative context. Omit only irrelevant fields.
 - Choose smallest worker whose authority and output complete next step.
 - Delegate when the step costs more context to run than to describe: a search whose target file set is unknown, a review of a diff you would otherwise read whole, or an edit whose surrounding file you do not need in context. Do it inline when the target is one known file and one known range, or when writing the mission takes as long as the work.
 - Treat minion output as evidence, not a replacement for inspection, validation, or user-facing explanation.
 - Pass only results, targets, and constraints next worker needs.
-- Main thread owns integration: after any minion edit, inspect the diff and run relevant validation before a later worker.
+- Calling thread owns integration: after any minion edit, inspect the diff and run relevant validation before a later worker. `minion-master` performs this locally inside its frozen mission.
 - Parallel minions only on non-overlapping tasks. Spawned as multiple task calls in one message, then aggregate before choosing the next worker.
 
 ### Delegation prompt
@@ -39,7 +41,7 @@ Task: <one bounded outcome>.
 Target: <paths, symbols, supplied diff, or repository area>.
 Scope: <included work and explicit exclusions>.
 Context: <authoritative facts and constraints; `none` if none>.
-Success: <what constitutes a successful outcome>.
+Parameters: <tool/access limits, execution constraints, required checks, and acceptance criteria>.
 Return: <evidence focus caller needs next. It will still honor its own output contract>.
 ```
 
@@ -62,6 +64,12 @@ Every minion returns `**status**` plus `**gap**` (in-scope work not done) or `**
 
 ## Minions
 
+### minion-master
+
+- Use only for one self-contained, bounded planning milestone with complete mission, scope, authority, context, validation, and receipt requirements.
+- It loads this workflow, makes or follows an internal subplan, selects eligible leaf minions, integrates their work, and verifies the mission.
+- Do not use for user dialogue, unresolved design, open-ended discovery, deploy/publish work, or recursive coordination.
+
 ### minion-investigator
 
 - Prompt with symbols, strings, paths, or repository area; say whether you need definitions, callers, usages, tests, imports, or a directory map.
@@ -73,6 +81,11 @@ Every minion returns `**status**` plus `**gap**` (in-scope work not done) or `**
 - Prompt with exact target file or files, desired change, and constraints. Explicitly authorize any new file or destructive operation. Limit scope to one or two files.
 - Adds no comments, abstractions, or drive-by refactors. Returns a small edit receipt after re-reading changed files.
 - Do not use before the edit sites are known; investigate first if needed.
+
+### minion-linter
+
+- Prompt with explicit files or directories and permission for presentation-only automatic fixes.
+- Selects project tools, preserves semantics, and reports each check. It never installs dependencies or changes configuration.
 
 ### minion-reviewer
 
@@ -113,8 +126,15 @@ Every minion returns `**status**` plus `**gap**` (in-scope work not done) or `**
 1. After validation, give touched area and current-purpose context to `minion-vestige-hunter`.
 2. Treat candidates as proposals. Main thread verifies removal safety before any edit.
 
+### Frozen multi-step mission
+
+1. Main thread resolves user decisions and produces a complete mission package.
+2. Dispatch `minion-master` only when scope, authority, validation, and receipt are frozen.
+3. Master follows this workflow for leaf work, local integration, and proof; caller judges the receipt.
+
 ## Boundaries
 
 - If next worker lacks target, outcome, or authoritative context, resolve it in main thread. Do not delegate an incomplete mission.
 - If evidence reveals coupled change beyond worker scope, stop chain and re-plan in main thread. Do not split a coupled refactor to fit two-file limit.
 - If no decision-gate row fits, do not use a minion. Select another capability or continue in the main thread.
+- `minion-master` delegates only named leaf minions. Never use it to delegate another coordinator or itself.
