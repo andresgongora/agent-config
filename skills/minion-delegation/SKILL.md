@@ -24,7 +24,6 @@ Choose by needed evidence and authority, not convenience.
 - Spawn a minion for each bounded, independent step that matches a delegation row. Calling thread owns integration and final judgment.
 - Give target, outcome, scope, and authoritative context. Omit only irrelevant fields.
 - Choose smallest worker whose authority and output complete next step.
-- Do not keep matching work inline because a file, range, or command is known. Use context cost as a delegation benefit, not a gate; keep work inline only when no bounded worker fits or it is a one-line answer.
 - Treat minion output as evidence, not a replacement for inspection, validation, or user-facing explanation.
 - Pass only results, targets, and constraints next worker needs.
 - Calling thread owns integration: after any minion edit, inspect the diff and run relevant validation before a later worker.
@@ -42,7 +41,7 @@ Context: <authoritative facts and constraints; `none` if none>.
 Parameters: <tool/access limits, execution constraints, required checks, and acceptance criteria>.
 Return: <evidence focus caller needs next. It will still honor its own output contract>.
 
-<Optional: any other relevant information deemed useful and appropriate for the mission; free format>.
+<Optional: any other relevant information deemed useful and appropriate for the mission; free format: text, bullet lists, checklists, etc.>.
 ```
 
 ### Reacting to Minion Output
