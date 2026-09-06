@@ -9,6 +9,8 @@ permission:
     "*": ask
     "skills/writing/SKILL.md": allow
     "skills/writing/references/**.md": allow
+    "~/.config/opencode/skills/writing/references/**": allow
+    ".config/opencode/skills/writing/references/**": allow
   edit: deny
   write: ask
   glob: ask
@@ -22,7 +24,7 @@ permission:
   external_directory:
     "*": ask
     "~/.config/opencode/skills/writing/references/**": allow
-    ".config/opencode/skills/writing/references/examples.md": allow
+    ".config/opencode/skills/writing/references/**": allow
   task:
     "*": ask
     "writing-reviewer": allow
