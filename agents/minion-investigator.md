@@ -2,7 +2,7 @@
 name: minion-investigator
 description: "Read-only repository locator for focused definitions, call sites, usages, tests, imports, and directory maps. Returns compact path-based evidence. Use for code navigation or evidence collection; not fixes, design, or review."
 mode: subagent
-model: POOL_LIGHT
+model: MINION
 permission:
   read: allow
   edit: deny

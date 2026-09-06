@@ -2,7 +2,7 @@
 name: minion-vestige-hunter
 description: "Read-only vestige hunter for a supplied file, directory, or repository area. Finds vestigial residue, ghost steps, and superseded wording that a from-scratch author would omit. Use for post-rework cleanup with broader context; not implementation, correctness review, dead-code analysis, or general style linting."
 mode: subagent
-model: POOL_MID
+model: MINION
 permission:
   read: allow
   edit: deny

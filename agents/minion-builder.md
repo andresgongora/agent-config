@@ -2,7 +2,7 @@
 name: minion-builder
 description: "Makes a surgical 1-2 file edit to repository files. Use for obvious typo fixes, mechanical renames, single-function rewrites, comment removal, format-preserving tweaks, or explicitly authorized new files. Not for bug diagnosis, feature work, new subsystems, cross-cutting refactors, or unclear requirements."
 mode: subagent
-model: POOL_LIGHT
+model: MINION
 permission:
   read: allow
   edit: allow

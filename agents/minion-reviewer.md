@@ -2,7 +2,7 @@
 name: minion-reviewer
 description: "Read-only reviewer for a supplied diff or one bounded file. Finds verified defects, risks, security problems, and meaningful contract violations. Use for focused change review; not code navigation, editing, refactor design, or broad architecture review."
 mode: subagent
-model: POOL_LIGHT
+model: MINION
 permission:
   read: allow
   edit: deny

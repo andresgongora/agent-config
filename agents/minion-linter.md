@@ -2,7 +2,7 @@
 name: minion-linter
 description: "Runs applicable formatting and linting tools on supplied repository files, applies only presentation-preserving automatic fixes, and reports results. Use when a target needs tool selection, multiple checks, or safe automatic fixes; not for one supplied lint/format command, code/content changes, correctness review, dependency installation, or feature work."
 mode: subagent
-model: POOL_LIGHT
+model: MINION
 permission:
   read: allow
   edit: allow
@@ -119,6 +119,12 @@ done
 - Keep backups until checks pass or restoration verifies. Remove them with approved cleanup afterward.
 - `restoreTarget` restores one target; it never restores successful formatting changes.
 - `compareTarget` prints a unified before/after diff without re-reading original target content.
+
+## Linting
+
+### Markdown
+
+- Ignore MD013 (line length) and MD033 (inline HTML) unless caller explicitly requests them.
 
 ## Boundaries
 

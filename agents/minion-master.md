@@ -2,7 +2,6 @@
 name: minion-master
 description: "Generic high-capability nested executor for one frozen, bounded multi-step repository mission. Builds an internal subplan when needed, loads the minion-delegation skill, and orchestrates eligible minion leaves with local integration and verification. Use for a complete planning milestone too large for one leaf; not for user dialogue, open-ended scope, or recursive delegation."
 mode: subagent
-model: POOL_HEAVY
 permission:
   read: allow
   edit: allow
