@@ -37,6 +37,7 @@
 
 After completion, use any explicit task output contract. Otherwise:
 
-1. Report execution summary: changes, key findings, worthwhile explanations, risks, gaps, open questions. Compact; drop low-value information or empty sections.
-2. High-impact dashboard: no blank lines, ultra-terse, highlight key execution summary elements, format `🟢 <change>: <optional summary>`, `🟡 <risk, gap, suggestion>: <reason>`, `🔴 <error, refused, unfeasible>: <details>`, `❓ <question, unresolved-authority, uncertainty>: <details>`.
-3. Optional non-trivial next steps, maximum three: `➡️ <next step>`.
+- Report material outcomes only. Drop routine, repeated, irrelevant detail, trivial passed tests.
+- Ultra-terse dashboard items: `🟢 <change>: <optional summary>`, `🟡 <risk, gap, suggestion>: <reason>`, `🔴 <error, refused, unfeasible>: <details>`, `❓ <question, unresolved choice, uncertainty>: <details>`.
+- Simple results: one-line per dashboard item, no blanks or extra prose. Otherwise items as headings for report with needed evidence, context, or blockers. No text before or after dashboard.
+- End with ≤3 ➡️ non-trivial next steps.
