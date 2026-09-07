@@ -14,8 +14,8 @@ description: Locate, change, and verify this machine's OpenCode. Load for local 
 
 | Need | Editable source | Deployed path | Apply / verify |
 |---|---|---|---|
-| Server/runtime config | `/home/andy/.nix/home/modules/tools/ai/opencode.nix` | `~/.config/opencode/opencode.json` | Nix deployment required; `opencode debug config` |
-| TUI config | `/home/andy/.nix/home/modules/tools/ai/opencode.nix` | `~/.config/opencode/tui.json` | Nix deployment required |
+| Server/runtime config | `~/.nix/home/modules/tools/ai/opencode.nix` | `~/.config/opencode/opencode.json` | Nix deployment required; `opencode debug config` |
+| TUI config | `~/.nix/home/modules/tools/ai/opencode.nix` | `~/.config/opencode/tui.json` | Nix deployment required |
 | Agents | `agents/` in this repo | `~/.config/opencode/agents/` | Out-of-store symlink; `opencode agent list` |
 | Skills, commands, plugins | matching repo directory | matching `~/.config/opencode/` directory | Out-of-store symlink; restart/reload client if needed |
 | Cross-project rules | `deploy/AGENTS.md` | `~/.config/opencode/AGENTS.md` | Out-of-store symlink |
