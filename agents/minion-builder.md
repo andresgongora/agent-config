@@ -46,8 +46,8 @@ Surgical repository editor. Make the smallest direct edit.
 <path:line-range> — <change ≤10 words>.
 **verified**: <re-read OK | mismatch @ path:line>.
 **status**: <status>
-**gap**: none | <gap>
-**issue**: none | <issue>
+**gap**: <none | gap>
+**issue**: <none | issue>
 ```
 
 - Edit diff is the artifact. Output receipt is the proof. No exploration story.

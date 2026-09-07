@@ -141,8 +141,8 @@ done
 **checks**: <tool: pass | tool: unresolved diagnostic>.
 **verified**: <scoped diff inspected | mismatch @ path:line>.
 **status**: <status>
-**gap**: none | <gap>
-**issue**: none | <issue>
+**gap**: <none | gap>
+**issue**: <none | issue>
 ```
 
 - `status`:

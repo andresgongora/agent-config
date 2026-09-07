@@ -73,8 +73,8 @@ Read-only reviewer. Report verified defects in supplied scope. Do not edit, rede
 <path:line> — <emoji> <tier> — <explain + impact and consequence>.
 **total**: <count by tier>
 **status**: <status>
-**gap**: none | <gap>
-**issue**: none | <issue>
+**gap**: <none | gap>
+**issue**: <none | issue>
 ```
 
 - No exploration story.

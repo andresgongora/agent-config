@@ -129,8 +129,8 @@ changed: <files | none>.
 verification:
 - `<command>` — <pass | fail> (exit <code>).
 **status**: <status>
-**gap**: none | <gap>
-**issue**: none | <issue>
+**gap**: <none | gap>
+**issue**: <none | issue>
 ```
 
 - `status`:

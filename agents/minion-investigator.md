@@ -82,8 +82,8 @@ Read-only repository investigator. Locate evidence, report verified facts, stop.
 - <path:line> — `<symbol>` — <≤10 word note>
 **total**: <count by type>
 **status**: <status>
-**gap**: none | <gap>
-**issue**: none | <issue>
+**gap**: <none | gap>
+**issue**: <none | issue>
 ```
 
 - Group by type:  `defs` / `refs` / `callers` / `tests` / `imports` / `sites`.
