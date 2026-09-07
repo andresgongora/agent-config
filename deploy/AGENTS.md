@@ -37,7 +37,8 @@
 
 After completion, use any explicit task output contract. Otherwise:
 
-- Report material outcomes only. Drop routine, repeated, irrelevant detail, trivial passed tests.
-- Ultra-terse dashboard items: `🟢 <change>: <optional summary>`, `🟡 <risk, gap, suggestion>: <reason>`, `🔴 <error, refused, unfeasible>: <details>`, `❓ <question, unresolved choice, uncertainty>: <details>`.
-- Simple results: one-line per dashboard item, no blanks or extra prose. Otherwise items as headings for report with needed evidence, context, or blockers. No text before or after dashboard.
-- End with ≤3 ➡️ non-trivial next steps.
+- High-impact dashboard: material outcomes and execution results only; omit routine detail and trivial passes.
+- Items: `🟢 <change>: <optional summary>`, `🟡 <risk, gap>: <reason>`, `🔴 <error, refused, unfeasible>: <details>`, `❓ <question, unresolved choice, uncertainty>: <details>`, `🔵 <suggestion>`.
+- Simple items: one-line each, no blanks between. Detailed items: indent evidence and information below.
+- End with ≤3 `➡️ <next step>`.
+- Nothing outside dashboard.
