@@ -13,6 +13,8 @@ Use for Chinese-market hardware, Chinese-only docs, Chinese-dominant software co
 - Run English and Chinese variants
 - Vendor Chinese name + model
 - `site:csdn.net <term>` or source-specific equivalent
+- `site:zhihu.com <term>` — expert/practitioner Q&A, distinct register from CSDN tutorials
+- `site:gitee.com <term>` — Chinese-mirrored/forked repos, parallels `github-debug` mechanics for a separately indexed ecosystem
 - Preserve useful Chinese terms verbatim:
   - `报错` `解决方案` `教程` `原理` `实现` `踩坑` `使用`
   - `文档` `资料` `模块` `芯片` `电路`

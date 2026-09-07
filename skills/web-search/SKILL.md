@@ -3,53 +3,61 @@ name: web-search
 description: "Web research, online docs, current facts, source verification, error lookup, web pages, APIs, release notes, known bugs, papers, or \"look this up/search online\". Load for non-trivial external-information task needing more than one page, source, or query angle. Skip local-file answers or URL-only one-shot extraction."
 ---
 
-## Role split
+## Decision Gate
 
-- Main agent: frame question; judge final result.
+- Main agent: frame question; judge final result. Inline only if one obvious source or one trivial fact needs one lookup.
 - `@web-search`: coordinator. Search directly or fan out; return `## Findings`.
-- `@web-search-scout`: coordinator-only leaf. Search one branch; return `## Scout Report`.
+- `@web-search-scout`: coordinator-only leaf. Search one branch; return `## Scout Report`. Search noise dies below main context. Do not invoke scout from main thread.
 
-Search noise dies below main context. Do not invoke scout from main thread.
+## Rules
 
-## Route
+- One `@web-search` coordinator per question; wait for all before synthesis.
+- Run multiple parallel delegations only for independent user questions or unrelated research tasks.
 
-Inline only if one obvious source or one trivial fact needs one lookup.
+### Delegation prompt
 
-Otherwise call `@web-search` once per research question. Give:
-- **Question:** exact thing to establish.
-- **Context:** 1-3 lines; version, product, error, date, constraints.
-- **Decision:** why answer matters; answer vs lead vs verification.
-- **Mode:** `concise-answer` default | `lead-hunt` | `verify-claim` | `broad-scan`.
+```md
+Question: <exact thing to establish>.
+Context: <1-3 lines; version, product, error, date, constraints>.
+Decision: <why answer matters; answer vs lead vs verification>.
+Mode: <concise-answer | lead-hunt | verify-claim | broad-scan>.
 
-No raw pages, result dumps, or search diary in prompt.
+Additional evidence:
+- <exact URL, version, date, or error>.
+- <exact URL, version, date, or error>.
+- <exact URL, version, date, or error>.
+```
 
-## Parallelism
+- `mode`:
+    - `concise-answer`: enough supported answer; stop.
+    - `lead-hunt`: authoritative or promising leads acceptable.
+    - `verify-claim`: support, refute, or leave unestablished.
+    - `broad-scan`: survey distinct source families; depth still capped.
 
-Main-thread sibling calls:
-- use only for independent user questions or unrelated research tasks.
-- one coordinator per question; wait for all before synthesis.
+### Reacting to `## Findings`
 
-Coordinator fanout:
-- same question; independent source families or genuinely distinct query angles.
-- coordinator decides direct search vs scout fanout.
-- do not prescribe scout mechanics from main thread.
+When `@web-search` returns `## Findings`, it includes:
 
-Fanout only when distinct branches improve recall or isolate web slop; never for thoroughness alone.
-
-## Read `## Findings`
-
+- `Question`, `Mode`, `Strategy`: coordinator interpretation and route used.
+- `Branches run`: each researched angle and whether it produced an answer, lead, or none.
 - `Best answer`: supported answer, or `not established`.
 - `Best sources`: evidence worth using now.
 - `Useful leads`: promising targets, not established facts.
 - `Confidence`: answer certainty, not source attractiveness.
+- `Why this confidence`: compact supporting evidence and caveats.
 - `Dead angles`: do not retry without new information.
+- `Caveats`: ambiguity, contradiction, or staleness affecting the result.
 - `Recommended next move`: coordinator advice; main agent still decides.
-- `Status`/`Gap`: `none` means ran fully, found nothing — do not retry it; `partial` means `Gap` names an unanswered slice.
+- `status`: `done` found an answer or useful lead; `partial` leaves in-scope work; `none` found neither answer nor useful lead.
+- `gap`: in-scope work not done, or `none`.
+- `issue`: blocker, error, or material resolved problem, or `none`.
 
-`high`: multiple authoritative or convergent strong sources.
-`medium`: one authoritative source or convergent partial evidence.
-`low`: weak, stale, single, or contradictory evidence. Do not state as fact.
-`none`: no reliable answer. Reformulate only with a new angle; otherwise report failure.
+## Workflow
+
+Search loop for each separate `@web-search` delegation:
+1. Construct search prompt.
+2. Call `@web-search` with constructed prompt.
+3. Inspect `## Findings`. Retry if valid `gap` remains, or if `status` is `partial` and `issue` is resolvable. Otherwise, stop. Max 1 retry.
 
 ## Boundaries
 
@@ -57,4 +65,4 @@ Fanout only when distinct branches improve recall or isolate web slop; never for
 - Do not turn one uncertain claim into certainty.
 - Use URLs, exact versions, dates, error strings, and caveats unchanged.
 - Dense output. No filler. Fragments OK. Preserve exact technical text.
-- If search target is ambiguous, ask user before delegation.
+- If ambiguity is harmless, choose a reasonable interpretation and state it in `Caveats`. If missing decision-critical scope or fact would change the result, ask one question and block before delegation.

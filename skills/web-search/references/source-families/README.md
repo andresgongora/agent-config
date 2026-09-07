@@ -12,7 +12,6 @@ Each module contains source-specific query patterns, preference order, and rejec
 |---|---|
 | `academic-papers.md` | original papers, citations, formal specs, benchmarks |
 | `chinese-tech.md` | Chinese-market hardware, Chinese-only docs, Chinese-dominant communities |
-| `general-web.md` | blogs, news, comparisons, community sentiment, engineering practice |
 | `github-debug.md` | known bugs, exact errors, version breakage, workarounds, maintainer trail |
 | `stackoverflow.md` | programming Q&A, API usage, syntax, standard-library behavior |
 
