@@ -105,7 +105,7 @@ Actions: `allow`, `ask`, `deny`. Pattern maps resolve last matching entry, so br
 permission:
   task:
     "*": deny
-    "web-search-scout": allow
+    "web-search": allow
   bash:
     "*": ask
     "git diff*": allow
