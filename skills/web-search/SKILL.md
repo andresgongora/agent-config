@@ -1,68 +1,54 @@
 ---
 name: web-search
-description: "Web research, online docs, current facts, source verification, error lookup, web pages, APIs, release notes, known bugs, papers, or \"look this up/search online\". Load for non-trivial external-information task needing more than one page, source, or query angle. Skip local-file answers or URL-only one-shot extraction."
+description: "Research bounded external questions and return compact, source-backed findings. Load before delegating web-search agents, when task needs current external facts or source-grounded technical evidence, and research context is not material to main-thread work. Skip for trivial one-source lookups or URL-only extraction."
 ---
 
 ## Decision Gate
 
-- Main agent: frame question; judge final result. Inline only if one obvious source or one trivial fact needs one lookup.
-- `@web-search`: coordinator. Search directly or fan out; return `## Findings`.
-- `@web-search-scout`: coordinator-only leaf. Search one branch; return `## Scout Report`. Search noise dies below main context. Do not invoke scout from main thread.
+- Delegate when the answer can be framed as a bounded question and main thread needs only a compact, sourced result; this confines search noise to the researcher.
+- Do not delegate when research findings, source selection, or the search path must inform main-thread exploration, synthesis, or decisions. Return to main-thread research.
+- One obvious source expected or trivial fact: search inline without this skill.
 
 ## Rules
 
-- One `@web-search` coordinator per question; wait for all before synthesis.
-- Run multiple parallel delegations only for independent user questions or unrelated research tasks.
+- Parallel `@web-search` delegation for independent questions or unrelated tasks. One subagent per separate question.
+- Carry returned URLs, versions, dates, error strings, and `Caveats` into main-thread work unchanged.
+- Keep returned uncertainty as uncertainty. Report a hedged or unestablished finding as such; never restate it as settled.
 
-### Delegation prompt
+## Delegation prompt
+
+Template for `@web-search` delegation prompt:
 
 ```md
-Question: <exact thing to establish>.
-Context: <1-3 lines; version, product, error, date, constraints>.
-Decision: <why answer matters; answer vs lead vs verification>.
-Mode: <concise-answer | lead-hunt | verify-claim | broad-scan>.
-
-Additional evidence:
-- <exact URL, version, date, or error>.
-- <exact URL, version, date, or error>.
-- <exact URL, version, date, or error>.
+Question: <exact fact, claim, or lead to establish>.
+Task context: <larger task and why this answer is needed; 1-2 lines>.
+Needed result: <direct answer | source-backed verification | qualified lead | comparison>; <required answer shape or decision it supports>.
+Known constraints: <product/version/date/region/error/compatibility/cutoff, plus any evidence already established; `none`>.
+Starting points: <known URLs, docs, search terms, maintainers, issue IDs, or hypotheses; `none`>.
+Exclude or treat cautiously: <known wrong versions, source types, claims, dates, paywalls, or misleading terms; `none`>.
+Additional context: <relevant helpful evidence or constraints, or `none`>.
 ```
 
-- `mode`:
-    - `concise-answer`: enough supported answer; stop.
-    - `lead-hunt`: authoritative or promising leads acceptable.
-    - `verify-claim`: support, refute, or leave unestablished.
-    - `broad-scan`: survey distinct source families; depth still capped.
+- Subagent has no main-thread context. Supply every relevant detail inline.
+- Fields set to `none` can be omitted.
 
-### Reacting to `## Findings`
+## Delegation Workflow
 
-When `@web-search` returns `## Findings`, it includes:
+1. Split the need into bounded questions. Keep a question in the main thread when its search path, not just its answer, must inform reasoning.
+2. Write one delegation prompt per question.
+3. Dispatch one `@web-search` per question, in parallel; wait for all before synthesis.
+4. Read each `## Findings`. Retry once only when `gap` or `issue` names unfinished in-scope work that new evidence, a corrected constraint, or a fresh lead can address.
 
-- `Question`, `Mode`, `Strategy`: coordinator interpretation and route used.
-- `Branches run`: each researched angle and whether it produced an answer, lead, or none.
-- `Best answer`: supported answer, or `not established`.
-- `Best sources`: evidence worth using now.
-- `Useful leads`: promising targets, not established facts.
-- `Confidence`: answer certainty, not source attractiveness.
-- `Why this confidence`: compact supporting evidence and caveats.
-- `Dead angles`: do not retry without new information.
-- `Caveats`: ambiguity, contradiction, or staleness affecting the result.
-- `Recommended next move`: coordinator advice; main agent still decides.
-- `status`: `done` found an answer or useful lead; `partial` leaves in-scope work; `none` found neither answer nor useful lead.
-- `gap`: in-scope work not done, or `none`.
-- `issue`: blocker, error, or material resolved problem, or `none`.
+## Resources
 
-## Workflow
-
-Search loop for each separate `@web-search` delegation:
-1. Construct search prompt.
-2. Call `@web-search` with constructed prompt.
-3. Inspect `## Findings`. Retry if valid `gap` remains, or if `status` is `partial` and `issue` is resolvable. Otherwise, stop. Max 1 retry.
+`references/source-families/` contains optional search hints:
+- `academic-papers.md`: original papers, citations, formal specs, benchmarks.
+- `chinese-tech.md`: Chinese-market hardware, Chinese-only docs, Chinese-dominant communities.
+- `github-debug.md`: known bugs, exact errors, version breakage, workarounds, maintainer trail.
+- `stackoverflow.md`: programming Q&A, API usage, syntax, standard-library behavior.
 
 ## Boundaries
 
-- Research only. No local-file inspection, implementation, or design work.
-- Do not turn one uncertain claim into certainty.
-- Use URLs, exact versions, dates, error strings, and caveats unchanged.
-- Dense output. No filler. Fragments OK. Preserve exact technical text.
-- If ambiguity is harmless, choose a reasonable interpretation and state it in `Caveats`. If missing decision-critical scope or fact would change the result, ask one question and block before delegation.
+- Missing decision-critical scope or fact that would change the result: ask the user one question and block before dispatch.
+- Harmless ambiguity: pick a reasonable reading, state it in the delegation prompt's `Known constraints`, and flag it when folding the answer back.
+- Returned `## Findings` still insufficient after the one allowed retry: report the gap to the user; do not fill it with assumption.
