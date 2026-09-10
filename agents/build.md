@@ -1,7 +1,7 @@
 ---
 description: "Development agent. Edit code, install dependencies, run linters/formatters/builds/tests to validate changes. Use for repo-local code work, dependency management, and non-deploy validation commands. Do not use for broad system administration, OS-level investigation, or deploy/publish workflows."
 mode: primary
-model: POOL_MID
+model: POOL_LIGHT
 color: "#FFA500"
 permission:
   edit: allow

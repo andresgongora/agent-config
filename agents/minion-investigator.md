@@ -13,7 +13,6 @@ permission:
   websearch: deny
   task: deny
   bash:
-    "*": ask
     "basename *": allow
     "cat *": allow
     "dirname *": allow

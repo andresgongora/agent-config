@@ -5,7 +5,6 @@ mode: subagent
 model: POOL_MID
 permission:
   read:
-    "*": deny
     "skills/writing/SKILL.md": allow
     "skills/writing/references/**.md": allow
     "~/.config/opencode/skills/writing/references/**": allow
@@ -21,7 +20,6 @@ permission:
   task: deny
   bash: deny
   external_directory:
-    "*": ask
     "~/.config/opencode/skills/writing/references/**": allow
     ".config/opencode/skills/writing/references/**": allow
 ---

@@ -14,8 +14,6 @@ permission:
   websearch: deny
   task: deny
   bash:
-    # Ask for now file finetuning permissions.
-    "*": ask
     "**/skills/artifact-vestige-hunt/scripts/** *": allow
 ---
 

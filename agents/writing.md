@@ -2,11 +2,10 @@
 name: writing
 description: "Drafts and substantively revises human-facing prose: messages, emails, correspondence, announcements, articles, reports, and copy. Delegate when a user requests a message, prose draft or revision, or AI-slop removal; supply a bounded, self-contained request for reader-ready text. Do not delegate finished-draft review."
 mode: all
-model: POOL_MID
+model: POOL_LIGHT
 color: "#f5a9b8"
 permission:
   read:
-    "*": ask
     "skills/writing/SKILL.md": allow
     "skills/writing/references/**.md": allow
     "~/.config/opencode/skills/writing/references/**": allow
@@ -22,7 +21,6 @@ permission:
   skill: allow
   question: allow
   external_directory:
-    "*": ask
     "~/.config/opencode/skills/writing/references/**": allow
     ".config/opencode/skills/writing/references/**": allow
   task:

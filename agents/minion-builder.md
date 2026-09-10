@@ -12,7 +12,6 @@ permission:
   webfetch: deny
   websearch: deny
   task: deny
-  bash: deny
 ---
 
 Surgical repository editor. Make the smallest direct edit.

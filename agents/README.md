@@ -128,16 +128,10 @@ The Minion family was inspired by CaveCrew in [JuliusBrussee/caveman](https://gi
 
 `web-search.md` coordinates non-trivial online research.
 
-- Searches and fetches multiple sources, using bounded scout fanout when useful.
+- Searches and fetches multiple sources, using bounded parallel branch fanout when useful.
+- Delegation gate is deliberately direct-search-biased: fanout requires all three ordered checks (angles known before searching, angles independent, reading expensive). Plural sources alone no longer justify fanout.
 - Returns a compact `## Findings` report.
 - Does not perform local-file work or implementation.
-
-## Web Search Scout
-
-`web-search-scout.md` is a leaf subagent for one isolated research angle.
-
-- Searches or fetches a specific source family, query angle, or URL lead.
-- Returns a compact `## Scout Report` for the web-research coordinator.
 
 ## Writing
 

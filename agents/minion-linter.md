@@ -13,8 +13,6 @@ permission:
   websearch: deny
   task: deny
   bash:
-    # Ask for now file finetuning permissions.
-    "*": ask
     "black *": allow
     "clang-format *": allow
     "cpplint *": allow
