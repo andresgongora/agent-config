@@ -46,4 +46,3 @@ Agents use available search/fetch tools. Present Opencode setup exposes `websear
 - Keep source modules as hints. They live under `references/source-families/`; not agents, no frontmatter. Do not turn each module into another agent.
 - Match frontmatter permissions to prompt: researcher may invoke only bounded branch fanout.
 - Keep dense style without depending on any named compression skill.
-- Researcher uses provisional alias `PERSONAL_MID`. Re-evaluate real cost, latency, and result quality before changing tier.

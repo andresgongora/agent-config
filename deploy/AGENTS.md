@@ -21,6 +21,7 @@
 
 - Architecture and structure before implementation. New subsystem or cross-module change: settle boundaries, APIs, and invariants before code.
 - Broad exploration: search first; read only needed ranges for active task. Whole-read only if correct completion requires artifact-wide semantics.
+- Trust but verify. If evidence missing, ask. If evidence contradicts, stop and ask.
 - Ask about risky, blocking, unclear decisions. Good understanding mandatory; bundle questions; explain options; use interactive question tool when available. Decide low-risk or clear non-blockers; report decisions affecting outcome, risk, or scope.
 
 ## Guardrails
@@ -37,8 +38,9 @@
 
 After completion, use any explicit task output contract. Otherwise:
 
-- High-impact dashboard: material outcomes and execution results only; omit routine detail and trivial passes.
-- Items: `🟢 <change>: <optional summary>`, `🟡 <risk, gap>: <reason>`, `🔴 <error, refused, unfeasible>: <details>`, `❓ <question, unresolved choice, uncertainty>: <details>`, `🔵 <suggestion>`.
-- Simple items: one-line each, no blanks between. Detailed items: indent evidence and information below.
+- Report material outcomes and task results only; omit routine.
+- High-impact headers: terse, max 60 chars, no blanks between, format `🟢 <completed task>`, `🟡 <remaining risk or gap>`, `🔴 <error, refused, unfeasible>`, `🔵 <suggestion, nit pick>`, `❓ <question, user choice, uncertainty>`.
+- Under headers: required evidence and meaningful info.
+- No verification report unless failed.
 - End with ≤3 `➡️ <next step>`.
 - Nothing outside dashboard.

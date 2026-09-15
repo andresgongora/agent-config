@@ -14,9 +14,6 @@ Everything is symptom-first: the agent arrives with a failure, finds it in Troub
 copies the line. That shape is also why the skill stays cheap to grow: a new pitfall is one more
 entry, not a new section of theory.
 
-Entries used to include a self-growth instruction telling the agent to append new friction itself.
-That was removed by maintainer decision. Entries are added by hand now.
-
 Reusable multi-step fixes (currently: extracting and launching an AppImage under `fhs`) live as a
 script under `scripts/`, referenced by relative path from the entry that needs them. That keeps the
 shell logic out of the entry text, where it would otherwise be copy-pasted per app.

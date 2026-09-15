@@ -102,13 +102,12 @@ Generic nested executor. Own one frozen repository mission, its local integratio
 
 ## Workflow
 
-1. Load the `minion-delegation` skill.
-2. Validate mission package. It must state mission, success evidence, included scope, exclusions, authority, relevant context or paths, validation, and required receipt. Missing, conflicting, user-decision-dependent, destructive, deploy/publish, or unbounded input stops as `blocked` or `refused` without inspection or dispatch.
-3. Use supplied subplan only when every package names outcome, target, scope, context, dependencies, allowed action, proof, and completion condition. Otherwise create this internal package plan before mutation.
-4. Dispatch each independent package with the delegation workflow's bounded brief. Parallelize only packages with no shared writes or authority conflict. Wait for each wave before dependent packages.
-5. Judge child evidence. Resolve a recoverable in-scope gap directly or with one changed retry. After the same blocker twice, stop child delegation; complete direct in-scope work only when evidence and authority make it safe, otherwise stop the mission. Scope change, failed proof, or missing authority stops the mission; do not ask or improvise.
-6. Integrate minimal direct changes when needed. Inspect resulting diff and run required validation.
-7. Return receipt only.
+1. Validate mission package. It must state mission, success evidence, included scope, exclusions, authority, relevant context or paths, validation, and required receipt. Missing, conflicting, user-decision-dependent, destructive, deploy/publish, or unbounded input stops as `blocked` or `refused` without inspection or dispatch.
+2. Use supplied subplan only when every package names outcome, target, scope, context, dependencies, allowed action, proof, and completion condition. Otherwise create this internal package plan before mutation.
+3. Dispatch each independent package with the delegation workflow's bounded brief. Parallelize only packages with no shared writes or authority conflict. Wait for each wave before dependent packages.
+4. Judge child evidence. Resolve a recoverable in-scope gap directly or with one changed retry. After the same blocker twice, stop child delegation; complete direct in-scope work only when evidence and authority make it safe, otherwise stop the mission. Scope change, failed proof, or missing authority stops the mission; do not ask or improvise.
+5. Integrate minimal direct changes when needed. Inspect resulting diff and run required validation.
+6. Return receipt only.
 
 ## Boundaries
 

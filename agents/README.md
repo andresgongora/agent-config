@@ -8,8 +8,6 @@ Agent definitions for OpenCode-compatible clients. Primary agents own a broad wo
 
 Permission maps resolve last match. Agents place broad `bash: "*": deny` or `ask` before exceptions; hard denies follow broad rules. Frontmatter comments are maintenance notes, not runtime instructions.
 
-The Minion family was inspired by CaveCrew in [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman).
-
 ## Minion Master
 
 `minion-master.md` is the high-capability executor for one frozen, bounded multi-step repository mission.
@@ -116,13 +114,6 @@ The Minion family was inspired by CaveCrew in [JuliusBrussee/caveman](https://gi
 
 - Judges visible results only, not skill definitions or authors.
 - Returns which result appears better, or no clear winner.
-
-## Web
-
-`web.md` is a low-cost executor for platform/service extraction and transformation.
-
-- Loads matching `web-*` skills for compact answers or transformed content.
-- Does not return verbatim large artifacts, perform multi-source research, access local files, or delegate.
 
 ## Web Search
 
