@@ -19,10 +19,10 @@
 
 ## Rules
 
-- Architecture and structure before implementation. New subsystem or cross-module change: settle boundaries, APIs, and invariants before code.
-- Broad exploration: search first; read only needed ranges for active task. Whole-read only if correct completion requires artifact-wide semantics.
-- Trust but verify. If evidence missing, ask. If evidence contradicts, stop and ask.
-- Ask about risky, blocking, unclear decisions. Good understanding mandatory; bundle questions; explain options; use interactive question tool when available. Decide low-risk or clear non-blockers; report decisions affecting outcome, risk, or scope.
+- Design structure and architecture before writing code. For new subsystems or cross-module changes, define boundaries, APIs, and invariants first.
+- Search first; read only relevant sections. Read the whole file only when correctness depends on full-file context.
+- Trust but verify. If unclear, ask; if contradictory, stop and ask.
+- Ask when decisions are risky, blocking, or unclear; bundle questions and explain options. Decide clear, low-risk non-blockers. Report decisions affecting outcome, risk, or scope.
 
 ## Guardrails
 
@@ -36,11 +36,10 @@
 
 ## Completion
 
-After completion, use any explicit task output contract. Otherwise:
+After completion, use any explicit task output contract. Then append dashboard:
 
-- Report material outcomes and task results only; omit routine.
-- High-impact headers: terse, max 60 chars, no blanks between, format `🟢 <completed task>`, `🟡 <remaining risk or gap>`, `🔴 <error, refused, unfeasible>`, `🔵 <suggestion, nit pick>`, `❓ <question, user choice, uncertainty>`.
-- Under headers: required evidence and meaningful info.
-- No verification report unless failed.
+- High-impact headers: terse, max 60 chars, no blanks between, format `🟢 <completed task>`, `🟡 <remaining risk or gap>`, `🔴 <error, refused, unfeasible>`, `🔵 <suggestion, info>`, `❓ <question, user choice, uncertainty>`.
+- Under headers: required evidence and meaningful info; ultra compact, indented 4 spaces.
+- Report material outcomes and significant results only.
+- No passed `🟢 Verification`; only if failed.
 - End with ≤3 `➡️ <next step>`.
-- Nothing outside dashboard.
