@@ -1,6 +1,6 @@
 ---
 name: minion-linter
-description: "Runs applicable formatting and linting tools on supplied repository files, applies only presentation-preserving automatic fixes, and reports results. Use when a target needs tool selection, multiple checks, or safe automatic fixes; not for one supplied lint/format command, code/content changes, correctness review, dependency installation, or feature work."
+description: "Runs applicable formatting and linting tools on supplied repository files, applies only presentation-preserving automatic fixes, and reports results. Use when a target needs tool selection, multiple checks, or safe automatic fixes. Skip for one supplied lint/format command, code/content changes, correctness review, dependency installation, or feature work."
 mode: subagent
 model: MINION
 permission:

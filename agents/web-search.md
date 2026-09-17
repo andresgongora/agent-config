@@ -16,12 +16,9 @@ permission:
   edit: deny
   read:
     "skills/web-search/references/**": allow
-    "~/.config/opencode/skills/web-search/references/source-families/**": allow
-    "~/.nix/home/*/dotfiles/tools/agent-config/skills/web-search/references/source-families/**": allow
   external_directory:
     "*": deny
-    "~/.config/opencode/skills/web-search/references/source-families/**": allow
-    "~/.nix/home/*/dotfiles/tools/agent-config/skills/web-search/references/source-families/**": allow
+    "skills/web-search/references/source-families/**": allow
   webfetch: allow
   websearch: allow
   task:

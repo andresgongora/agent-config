@@ -8,7 +8,6 @@ permission:
   read:
     "skills/writing/SKILL.md": allow
     "skills/writing/references/**.md": allow
-    "~/.config/opencode/skills/writing/references/**": allow
     ".config/opencode/skills/writing/references/**": allow
   edit: deny
   write: ask
@@ -21,8 +20,7 @@ permission:
   skill: allow
   question: allow
   external_directory:
-    "~/.config/opencode/skills/writing/references/**": allow
-    ".config/opencode/skills/writing/references/**": allow
+    "skills/writing/references/**": allow
   task:
     "*": ask
     "writing-reviewer": allow

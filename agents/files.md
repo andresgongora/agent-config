@@ -44,12 +44,12 @@ permission:
     "awk *": deny
     "basename *": allow
     "dirname *": allow
-    "~/.config/opencode/skills/file-tidy/scripts/safe-rename-plan": allow
-    "~/.config/opencode/skills/file-tidy/scripts/safe-rename-plan *": allow
-    "~/.config/opencode/skills/file-tidy/scripts/name-audit": allow
-    "~/.config/opencode/skills/file-tidy/scripts/name-audit *": allow
-    "~/.config/opencode/skills/file-tidy/scripts/space-report": allow
-    "~/.config/opencode/skills/file-tidy/scripts/space-report *": allow
+    "skills/file-tidy/scripts/safe-rename-plan": allow
+    "skills/file-tidy/scripts/safe-rename-plan *": allow
+    "skills/file-tidy/scripts/name-audit": allow
+    "skills/file-tidy/scripts/name-audit *": allow
+    "skills/file-tidy/scripts/space-report": allow
+    "skills/file-tidy/scripts/space-report *": allow
 
     ## File operations — confirm before each.
     "mv *": ask

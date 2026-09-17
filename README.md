@@ -47,9 +47,12 @@ Restart OpenCode, then verify installed agents, skills, commands, and plugins lo
 
 ### Model aliases
 
-Agent definitions use model aliases and require bundled `opencode-model-alias` plugin. Without it, OpenCode receives aliases instead of provider/model IDs.
+Agent definitions use model aliases and require bundled `opencode-model-alias` plugin. Without it,
+OpenCode receives aliases instead of provider/model IDs.
 
-The plugin reads `~/.config/opencode/model-aliases.json`; create aliases for available models. These deliberately fictitious examples show tiered alias naming only; replace every value with a provider/model ID from `opencode models`.
+The plugin reads `~/.config/opencode/model-aliases.json`; create aliases for available models. These
+deliberately fictitious examples show tiered alias naming only; replace every value with a
+provider/model ID from `opencode models`.
 
 ```json
 {
@@ -63,9 +66,12 @@ The plugin reads `~/.config/opencode/model-aliases.json`; create aliases for ava
 
 ### Other clients
 
-- `deploy/AGENTS.md` is the portable user-level instruction file. Deploy skill, agent, command, and plugin artifacts only when your client supports them.
-- Skills load on demand through a `skill` tool call. Clients without that tool can use relevant `SKILL.md` content as instruction context.
-- Subagents need client support for spawning named agents. Without it, the main agent absorbs all work.
+- `deploy/AGENTS.md` is the portable user-level instruction file. Deploy skill, agent, command, and
+  plugin artifacts only when your client supports them.
+- Skills load on demand through a `skill` tool call. Clients without that tool can use relevant
+  `SKILL.md` content as instruction context.
+- Subagents need client support for spawning named agents. Without it, the main agent absorbs all
+  work.
 
 <!------------------------------------------------------------------------------------------------->
 ## Agent-directed instructions
@@ -121,7 +127,9 @@ automatically — the agent loads them when needed, then follows the workflow in
 
 ### Subagents
 
-Named workers the main agent can delegate to. Most have narrow tool sets; `@minion-master` has full repository capability for a frozen mission. All return defined output shapes, so transcripts stay isolated from main context.
+Named workers the main agent can delegate to. Most have narrow tool sets; `@minion-master` has full
+repository capability for a frozen mission. All return defined output shapes, so transcripts stay
+isolated from main context.
 
 | Subagent                   | What it does                                                                                           | Use when                                                               |
 |----------------------------|--------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------|

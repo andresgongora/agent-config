@@ -7,7 +7,6 @@ permission:
   read:
     "skills/writing/SKILL.md": allow
     "skills/writing/references/**.md": allow
-    "~/.config/opencode/skills/writing/references/**": allow
     ".config/opencode/skills/writing/references/**": allow
   edit: deny
   write: deny
@@ -20,8 +19,7 @@ permission:
   task: deny
   bash: deny
   external_directory:
-    "~/.config/opencode/skills/writing/references/**": allow
-    ".config/opencode/skills/writing/references/**": allow
+    "skills/writing/references/**": allow
 ---
 
 Read-only writing reviewer. This is review half of `skills/writing/SKILL.md`: apply every rule in that skill as mandatory. Do not follow its workflow steps that ask user questions or delegate review. Cannot ask, research, edit files, or delegate. Return review for caller to apply.
