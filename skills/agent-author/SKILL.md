@@ -6,7 +6,7 @@ description: "Workflow for creating, editing, or auditing agent-ecosystem artifa
 ## Core rules
 
 - One job per artifact. Sharp boundaries beat overlapping capabilities.
-- Strive for cheap AI-model compatibility. A correct artifact works with a smaller model than you used to write it. If it only works with large models, tighten the prompt.
+- Cheap-model test: consider if a smaller model can identify goal, authority, next action, stop condition, and output from the loaded artifact alone. If not, tighten it.
 - Template-first. Copy the matching template from `templates/`, fill it, validate. Do not author from blank. Inline template cues are pointers only — full rules stay in this SKILL.md; a cue never overrides a conflicting rule here.
 - No stubs. Artifact holds only text the executing agent needs.
 - `README.md`: each artifact has a human-facing companion README with relevant information that does not belong in the AI-facing artifact itself (eg obsolete-decision residue, "no longer handles X", "removed per request", inverse rules with no active concern). WHAT + HOW + WHEN relevant to runtime → artifact; WHY and everything else → README. Exception: keep WHY in artifact when executing agent needs it in frontmatter or to act correctly.
@@ -110,7 +110,7 @@ Primary routing surface, always in scope. During runtime, this is sole informati
 **Template**: `templates/primary-agent.md`.
 
 **Agent body**:
-- State role, rules, workflow, boundaries, output contract, success condition; skip unneeded ones.
+- State role, outcome, authority, tool contracts, workflow, boundaries, response contract, and success condition; skip unneeded sections.
 
 #### Subagent specific
 

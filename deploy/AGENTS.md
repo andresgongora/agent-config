@@ -39,7 +39,6 @@
 After completion, use any explicit task output contract. Then append dashboard:
 
 - High-impact headers: terse, max 60 chars, no blanks between, format `🟢 <completed task>`, `🟡 <remaining risk or gap>`, `🔴 <error, refused, unfeasible>`, `🔵 <suggestion, info>`, `❓ <question, user choice, uncertainty>`.
-- Under headers: required evidence and meaningful info; ultra compact, indented 4 spaces.
-- Report material outcomes and significant results only.
-- No passed `🟢 Verification`; only if failed.
+- Under headers: required evidence and meaningful info; ultra compact, indented 3 spaces. No nested header. No blank lines.
+- Report material outcomes and significant results only. Mute passed verification check.
 - End with ≤3 `➡️ <next step>`.

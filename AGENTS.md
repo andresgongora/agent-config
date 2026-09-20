@@ -12,7 +12,8 @@ Repo-local routing and boundaries for this agent ecosystem. Narrows `deploy/AGEN
 
 - Before authoring or auditing skills, agents, primary definitions, or commands: load owning artifact workflow.
 - Before touching `AGENTS.md`: load AGENTS-maintenance workflow; reject first.
-- Before writing or restructuring `.agent/` docs: load owning documentation workflow.
+- Before writing or restructuring `.agent/` docs: load owning documentation workflow. `.agent/logbook/` entries use the repository logbook workflow, not durable-document admission.
+- For major repository work, load the repository logbook workflow before the first material action; update its entry at each material outcome and before final response unless `.agent/logbook/` writes are unauthorized.
 - Structural artifact change → check for dead refs before completion.
 
 ## Access Level
@@ -26,6 +27,7 @@ Repo-local routing and boundaries for this agent ecosystem. Narrows `deploy/AGEN
 ### Admission
 
 - Persistent artifact or rule must be concrete, durable, non-overlapping, and reference only existing artifacts. Default no; bloat is failure.
+- Logbook entries are an explicit exception: retain major-task process evidence even when redundant or temporary; do not apply durable-document admission.
 - Replace or extend overlap; delete an obsolete replacement now.
 - Skill: search `skills/`; routing lives in precise `SKILL.md` frontmatter description. Agent/command: check name collision. Doc: absorb into existing doc when possible.
 
