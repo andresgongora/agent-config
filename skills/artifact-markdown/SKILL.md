@@ -42,6 +42,13 @@ description: "Validates Markdown formatting and frontmatter against nearest repo
 - Skip decorators entirely on agent-facing (lint-only) files unless the file already uses them.
 - Never retrofit this style onto a repo whose Markdown already has an established heading convention.
 
+## Linting
+
+- Run `markdownlint-cli2 --fix -- "$file"` until clean.
+- Run `prettier --check -- "$file"` when configured.
+- Validate frontmatter with workflow `awk`/`yq` command.
+- Missing tool: skip; never install.
+
 ## Boundaries
 
 - Format/lint checks do not prove factual accuracy, reachable external links, or good prose quality.

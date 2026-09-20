@@ -92,6 +92,11 @@ New scripts follow these conventions. Existing scripts retain established local 
 8. `bash -n "$script_path"` — syntax check.
 9. If available, `shellcheck "$script_path"` — fix code; suppress only documented proven false positives. If unavailable, report validation gap; do not install it unasked.
 
+## Linting
+
+- Run `bash -n "$script_path"`; run `shellcheck "$script_path"` and `shfmt -d "$script_path"` when available.
+- Missing tool: skip; never install.
+
 ## Boundaries
 
 - Not for: NixOS config, Python/other languages, debugging running processes, editor/LSP wiring.
