@@ -16,6 +16,19 @@ Permission maps resolve last match. Agents place broad `bash: "*": deny` or `ask
 - Cannot talk to the user; incomplete scope, authority, or proof requirements stop with a structured receipt.
 - Exists because planning milestones need one integration owner while leaf minions retain small, reusable contracts.
 
+## Minion Repomaster
+
+`minion-repomaster.md` is the handoff target for repository and Git work that would otherwise burn main-thread context.
+
+- Covers commit-message authoring and commit transactions, careful reverts and recovery, history summaries and commit comparisons, secret and pre-commit preflight, and ignore-rule correctness.
+- Reads Git output in full and returns a distilled receipt; that context absorption is the main reason it exists.
+- Can ask the user, because commit grouping, message wording, and discard decisions are genuinely the user's.
+- Refuses push, tag, rebase, merge, remote reconfiguration, history rewriting, and `git clean` at the permission layer as well as in its rules. It edits only `.gitignore`, `.gitattributes`, and explicitly named paths.
+- Its rules deliberately stay short. Git technique lives in the Git safety skill, which the agent must load before its first command; restating that technique here would duplicate it and rot separately. The rules cover only what the skill does not: this agent's scope, edit limits, authority, delegation, and reporting.
+- Bash permissions grant the Git skill's read-only helper scripts, gate its staging and commit scripts behind `ask`, and deny its history-rewrite and housekeeping scripts. Permissions, not prose, are the real enforcement layer.
+- Folds in the earlier `spikes/agents/minion-steward.md` change-set closeout role, which stays disabled.
+- No `model` field is set by hand; it resolves to the shared `MINION` alias. That is a light model, which is the other reason the rules stay few and sharp.
+
 ## Agent Evaluator
 
 `agent-evaluator.md` is a read-only subagent for static audits of agent-directed artifacts such as `AGENTS.md`, agent definitions, skills, and commands.

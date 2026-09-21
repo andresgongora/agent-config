@@ -9,11 +9,13 @@ Choose by needed evidence and authority, not convenience.
 
 | Task step | Delegate to |
 | --- | --- |
-| Locate focused definitions, callers, usages, tests, imports, or structure | `minion-investigator` |
-| Make an obvious change in one or two known files | `minion-builder` |
-| Format or lint supplied targets with safe automatic fixes | `minion-linter` |
-| Find defects in a supplied diff or one bounded file | `minion-reviewer` |
-| Find removable residue after rework in a supplied area | `minion-vestige-hunter` |
+| Locate focused definitions, callers, usages, tests, imports, or structure | `@minion-investigator` |
+| Make an obvious change in one or two known files | `@minion-builder` |
+| Format or lint supplied targets with safe automatic fixes (batched: end of large chunk or pre-commit) | `@minion-linter`  |
+| Find defects in a supplied diff or one bounded file after finished code edit | `@minion-reviewer` |
+| Find removable residue after long session or long rework in a supplied area | `@minion-vestige-hunter` |
+| Drive a Git or repository operation | `@minion-repomaster` |
+| Read one quick `git status` or `git diff` to orient | Main thread; do not delegate |
 | Locate code plus suggest fixes, explain architecture, or diagnose an unknown defect | Main thread or general exploration capability |
 | Give broad review, design advice, or general feedback | Main thread or a suitable review capability |
 | Run tests, builds, or installs; conduct external research; handle unclear or risky work | Main thread or a capability with required tools |
@@ -65,60 +67,75 @@ Every minion returns `**status**`, `**gap**` (in-scope work not done), and `**is
 
 ### minion-investigator
 
-- Prompt with symbols, strings, paths, or repository area; say whether you need definitions, callers, usages, tests, imports, or a directory map.
-- Returns compact path-based evidence. Use its sites to narrow a later edit or review.
-- Reports repository evidence only. Analysis beyond that evidence needs a general exploration capability.
+- **What**: read-only locator. Returns definitions, callers, usages, tests, imports, or a directory map as path-based evidence.
+- **When**: edit or review sites are unknown, or several independent lookups can run at once.
+- **How**: give symbols, strings, paths, or an area, and name the evidence kind wanted.
+- **Not when**: fix suggestions, architecture explanation, or defect diagnosis are wanted; it reports sites, not conclusions.
 
 ### minion-builder
 
-- Prompt with exact target file or files, desired change, and constraints. Explicitly authorize any new file or destructive operation. Limit scope to one or two files.
-- Adds no comments, abstractions, or drive-by refactors. Returns a small edit receipt after re-reading changed files.
-- Do not use before the edit sites are known; investigate first if needed.
+- **What**: applies one decided change across at most two known files. Returns an edit receipt after re-reading them.
+- **When**: target files and intended change are both already known.
+- **How**: give exact paths, the change, and constraints. Authorize new files and destructive operations explicitly; silence means no.
+- **Not when**: sites are unknown (investigate first), the change needs design decisions, or coupling spreads past two files.
 
 ### minion-linter
 
-- Prompt with explicit files or directories and permission for presentation-only automatic fixes.
-- Dispatch `minion-linter` for supplied files or directories before main manually selects formatter or linter commands.
-- Selects project tools, preserves semantics, and reports each check. It never installs dependencies or changes configuration.
+- **What**: selects project formatters and linters for supplied targets, applies presentation-only automatic fixes, reports each check. Handles repository-wide targets in one pass.
+- **When**: batched at the end of a large chunk of work or right before a commit, so one pass covers every touched file.
+- **How**: give explicit files, directories, or the repository area and permission to auto-fix.
+- **Not when**: between small steps of an ongoing change; per-edit lint passes cost more than the single batched run. Never for behavior changes, dependency installs, or tool-config edits.
 
 ### minion-reviewer
 
-- Prompt with a supplied diff or one bounded readable file, review focus, and whether nits are requested.
-- Returns verified, severity-tagged findings and any unreviewed in-scope area. Empty findings are valid.
-- Reports correctness defects in the supplied target. Design rationale, alternatives, and broad architecture opinion go elsewhere.
-- Reviewer findings and coverage inform acceptance, never approval.
+- **What**: read-only defect check of one supplied diff or one bounded file. Returns severity-tagged verified findings plus any in-scope area left unreviewed.
+- **When**: default after every `@minion-builder` edit, once main has inspected the diff and run validation.
+- **How**: supply the diff or file, the review focus, and whether nits are wanted.
+- **Not when**: design rationale, alternatives, or broad architecture opinion are wanted. Empty findings are a valid result, and no finding is an approval.
 
 ### minion-vestige-hunter
 
-- Prompt with changed files, directory, or repository area plus enough current-purpose context to distinguish a vestige from an active constraint.
-- Returns removable candidates, their zero-impact basis, and inspection coverage.
-- Reports residue and zero-impact dead code. Correctness analysis goes elsewhere.
-- Vestige candidates are proposals. Verify removal safety in main thread before any edit.
+- **What**: read-only residue scan of a supplied area. Returns removal candidates, the zero-impact basis for each, and inspection coverage.
+- **When**: after a long session or large rework lands, when accumulated leftovers are likely.
+- **How**: give changed files, directory, or area plus current-purpose context so an active constraint is not read as residue.
+- **Not when**: after each single edit, or when correctness analysis is the real need. Candidates are proposals; main thread verifies removal safety before any edit.
 
-## Delegation Chainning
+### minion-repomaster
+
+- **What**: owns a whole Git or repository operation. Absorbs large Git output and returns a distilled receipt: commit-message proposal and commit transaction, revert or recovery plan and execution, history summary or commit comparison, secret and pre-commit preflight, `.gitignore`/`.gitattributes` correctness.
+- **When**: the step needs many Git commands, approval back-and-forth, or Git output large enough to contaminate main context.
+- **How**: give the mission kind, scope, and explicit authority for any state change. Silence means read-only.
+- **Not when**: one quick `git status` or `git diff` is enough to orient; run that in main thread. It never pushes, tags, rebases, merges, rewrites history, or edits source files.
+
+## Delegation Chaining
 
 ### Locate, fix, verify
 
-1. `minion-investigator` returns sites for a focused question.
-2. Main thread selects one or two known edit sites and gives `minion-builder` an exact prompt.
+1. `@minion-investigator` returns sites for a focused question.
+2. Main thread selects one or two known edit sites and gives `@minion-builder` an exact prompt.
 3. Main thread inspects the diff and runs relevant validation.
-4. Give the resulting diff to `minion-reviewer` when an independent defect check earns its cost.
+4. Give the resulting diff to `@minion-reviewer`.
 
 ### Parallel investigation
 
 1. Split non-overlapping questions, such as definitions, callers, and tests.
-2. Spawn two or three `minion-investigator` workers in parallel.
+2. Spawn two or three `@minion-investigator` workers in parallel.
 3. Aggregate evidence in the main thread before selecting a change or another worker.
 
 ### Direct edit
 
-1. When exact edit sites and outcome are already known, give `minion-builder` the prompt directly.
-2. Main thread validates the resulting diff. Review it independently when risk warrants.
+1. When exact edit sites and outcome are already known, give `@minion-builder` the prompt directly.
+2. Main thread validates the resulting diff, then gives it to `@minion-reviewer`.
 
-### Cleanup after change
+### Batched cleanup
 
-1. After validation, give touched area and current-purpose context to `minion-vestige-hunter`.
-2. Treat candidates as proposals. Main thread verifies removal safety before any edit.
+1. At the end of a large chunk of work or right before a commit, give `@minion-linter` every touched path in one pass.
+2. After a long session or large rework, give the touched area and current-purpose context to `@minion-vestige-hunter`.
+
+### Git commit
+
+1. Run `Bached cleanup` to ensure the repository is clean and all presentation-only fixes are applied.
+2. If commit explicitly allowed, give `@minion-repomaster` the scope and commit authority.
 
 ## Boundaries
 

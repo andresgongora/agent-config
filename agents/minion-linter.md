@@ -14,6 +14,9 @@ permission:
   task: deny
   bash:
     "black *": allow
+    "ruff *": allow
+    "mypy *": allow
+    "bandit *": allow
     "clang-format *": allow
     "cpplint *": allow
     "editorconfig-checker *": allow
@@ -40,6 +43,7 @@ permission:
     "git diff -- *": allow
     "git diff --check*": allow
     "git status*": allow
+    "skills/minion-delegation/scripts/linting-backup.sh *": allow
 ---
 
 Repository formatter and linter. Apply smallest presentation-only fix.
@@ -67,56 +71,10 @@ Repository formatter and linter. Apply smallest presentation-only fix.
 
 ### Temporary backup
 
-```bash
-declare -r BACKUP_DIR="$(mktemp -d "${TMPDIR:-/tmp}/minion-linter.XXXXXX")"
-declare -A BACKUPS=()
-
-backupTarget() {
-    local target="$1"
-    local backup
-
-    if [[ -L "$target" || ! -f "$target" ]]; then
-        printf 'Refuse non-regular target: %s\n' "$target" >&2
-        return 1
-    fi
-
-    backup="$(mktemp "$BACKUP_DIR/target.XXXXXX")" || return 1
-    cp --preserve=mode,timestamps -- "$target" "$backup" || return 1
-    BACKUPS["$target"]="$backup"
-}
-
-restoreTarget() {
-    local target="$1"
-    local backup="${BACKUPS["$target"]:-}"
-
-    [[ -n "$backup" && ! -L "$target" && ( ! -e "$target" || -f "$target" ) ]] || return 1
-    cp --preserve=mode,timestamps -- "$backup" "$target" || return 1
-    cmp -s -- "$target" "$backup"
-}
-
-compareTarget() {
-    local target="$1"
-    local backup="${BACKUPS["$target"]:-}"
-
-    [[ -n "$backup" && ! -L "$target" ]] || return 2
-    if [[ ! -e "$target" ]]; then
-        printf 'Target deleted: %s\n' "$target" >&2
-        return 1
-    fi
-    [[ -f "$target" ]] || return 2
-    diff -u --label "$target (before)" --label "$target (after)" -- "$backup" "$target"
-}
-
-for target in "${targets[@]}"; do
-    backupTarget "$target" || exit 1
-done
-
-## Run fixer. Use compareTarget in an if statement: exit 1 means change; exit 2 means error.
-```
-
-- Keep backups until checks pass or restoration verifies. Remove them with approved cleanup afterward.
-- `restoreTarget` restores one target; it never restores successful formatting changes.
-- `compareTarget` prints a unified before/after diff without re-reading original target content.
+- Use `skills/minion-delegation/scripts/linting-backup.sh backup SOURCE BACKUP` before a fixer; it refuses symlinks and non-regular sources.
+- Use `skills/minion-delegation/scripts/linting-backup.sh compare BACKUP TARGET` after a fixer; exit `0` means unchanged, exit `1` prints the diff, other failure prints help.
+- Use `skills/minion-delegation/scripts/linting-backup.sh restore BACKUP TARGET` only to undo an invalid formatter change; it verifies the restored content.
+- Keep each backup until checks pass or restoration verifies. Once checks pass, run `skills/minion-delegation/scripts/linting-backup.sh cleanup BACKUP`.
 
 ## Linting
 
