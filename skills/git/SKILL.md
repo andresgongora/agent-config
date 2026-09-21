@@ -12,8 +12,6 @@ description: "Guides safe Git state changes. Load before Git mutations or risky 
 - Run project lint, format, tests, or builds only when the caller requests them or repository policy requires them.
 - Do not make commit-only workers run unrelated project validation.
 
-## Body
-
 ### Changes
 
 - Inspect status, branch, active operations, conflicts, upstream, and relevant diffs.
