@@ -12,5 +12,5 @@ description: "Provides Python development conventions. Load when writing, editin
 
 ## Linting
 
-- Project lint commands win. Else, if available, run `ruff check .` and `ruff format --check .`.
+- Project lint commands win; else run `ruff check`, `ruff format --check`, `mypy`, and `bandit -r` on actual project source paths only, excluding virtualenv, cache, VCS, and similar.
 - Missing tool: skip; never install.

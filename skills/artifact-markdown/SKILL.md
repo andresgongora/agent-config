@@ -44,9 +44,7 @@ description: "Validates Markdown formatting and frontmatter against nearest repo
 
 ## Linting
 
-- Run `markdownlint-cli2 --fix -- "$file"` until clean.
-- Run `prettier --check -- "$file"` when configured.
-- Validate frontmatter with workflow `awk`/`yq` command.
+- `markdownlint-cli2 --fix -- "$file"; prettier --check -- "$file"; awk 'NR==1{if($0!="---")exit 2;next}/^---$/{exit 0}{print}' "$file" | yq -e 'type == "!!map"'`
 - Missing tool: skip; never install.
 
 ## Boundaries
