@@ -20,9 +20,6 @@ permission:
   skill: allow
   question: allow
   bash:
-    ## Global config (opencode.nix) already covers read-only inspection, shell
-    ## no-ops, git read-only, formatters/linters, and skill-script paths. Only
-    ## role-specific deltas below.
     "false *": allow
     "true *": allow
     "opencode *": allow

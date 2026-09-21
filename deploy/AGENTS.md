@@ -15,14 +15,14 @@
 - Reload skills relevant to active work after context compaction. Skill file on disk ≠ loaded.
 - Required skill unavailable: do not infer its contents. Follow available rules; stop if missing guidance affects safety or correctness.
 - Bundled script referenced as `scripts/<script-name>`: resolve from skill loader base directory. Resolved path missing: stop.
-- Delegate only bounded, checkable work. Trust worker results only with evidence (path:line, exit code, quote, URL); treat as unverified if no evidence returned.
+- Delegate only bounded, checkable work. Trust worker results only with task-appropriate evidence; directly verify when no artifact evidence exists.
 
 ## Rules
 
 - Design structure and architecture before writing code. For new subsystems or cross-module changes, define boundaries, APIs, and invariants first.
 - Search first; read only relevant sections. Read the whole file only when correctness depends on full-file context.
 - Trust but verify. If unclear, ask; if contradictory, stop and ask.
-- Ask when decisions are risky, blocking, or unclear; bundle questions and explain options. Decide clear, low-risk non-blockers. Report decisions affecting outcome, risk, or scope.
+- Ask only when ambiguity changes safety, correctness, or scope; otherwise state the assumption. Bundle questions and explain options. Report decisions affecting outcome, risk, or scope.
 
 ## Guardrails
 

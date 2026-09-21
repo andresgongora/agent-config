@@ -13,10 +13,6 @@ permission:
   websearch: deny
   task: deny
   bash:
-    ## Default deny: no unreviewed generic shell escape can read client data.
-    ## Also intentional local wildcard — agent frontmatter merges AFTER the
-    ## whole global bash ruleset, so this "*" outranks every global allow;
-    ## this agent must re-declare each command it permits below.
     "*": deny
     "exit": allow
     "exit *": allow

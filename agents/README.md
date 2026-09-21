@@ -26,7 +26,6 @@ Permission maps resolve last match. Agents place broad `bash: "*": deny` or `ask
 - Refuses push, tag, rebase, merge, remote reconfiguration, history rewriting, and `git clean` at the permission layer as well as in its rules. It edits only `.gitignore`, `.gitattributes`, and explicitly named paths.
 - Its rules deliberately stay short. Git technique lives in the Git safety skill, which the agent must load before its first command; restating that technique here would duplicate it and rot separately. The rules cover only what the skill does not: this agent's scope, edit limits, authority, delegation, and reporting.
 - Bash permissions grant the Git skill's read-only helper scripts, gate its staging and commit scripts behind `ask`, and deny its history-rewrite and housekeeping scripts. Permissions, not prose, are the real enforcement layer.
-- Folds in the earlier `spikes/agents/minion-steward.md` change-set closeout role, which stays disabled.
 - No `model` field is set by hand; it resolves to the shared `MINION` alias. That is a light model, which is the other reason the rules stay few and sharp.
 
 ## Agent Evaluator

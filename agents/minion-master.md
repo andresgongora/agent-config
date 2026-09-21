@@ -111,6 +111,7 @@ Generic nested executor. Own one frozen repository mission, its local integratio
 
 ## Boundaries
 
+- Missions requiring Git state changes are not eligible; return them to the caller for repository-steward handling.
 - Task out of scope: return `**status**: refused` + `**issue**: <reason>`.
 - Missing target, unclear requirement, or specification ambiguous: return `**status**: blocked` + `**issue**: mission ambiguous <state uncertantity areas and gaps>`.
 - Involves destructive operation and no explicit authorization: leave files unchanged and return `**status**: blocked` + `**issue**: need explicit authorization for <command>, <explain>`.

@@ -118,8 +118,8 @@ Every minion returns `**status**`, `**gap**` (in-scope work not done), and `**is
 
 ### Parallel investigation
 
-1. Split non-overlapping questions, such as definitions, callers, and tests.
-2. Spawn two or three `@minion-investigator` workers in parallel.
+1. Split independent bounded questions, such as definitions, callers, and tests.
+2. Parallelize each independent bounded question, batching only when available worker capacity requires it.
 3. Aggregate evidence in the main thread before selecting a change or another worker.
 
 ### Direct edit
@@ -141,4 +141,5 @@ Every minion returns `**status**`, `**gap**` (in-scope work not done), and `**is
 
 - If next worker lacks target, outcome, or authoritative context, resolve it in main thread. Do not delegate an incomplete mission.
 - If evidence reveals coupled change beyond worker scope, stop chain and re-plan in main thread. Do not split a coupled refactor to fit two-file limit.
+- A nested `@minion-master` cannot perform or hand off Git state-changing work under its current authority; route it back to caller.
 - If no decision-gate row fits, do not use a minion. Select another capability or continue in the main thread.
