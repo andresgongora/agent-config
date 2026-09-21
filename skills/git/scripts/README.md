@@ -28,7 +28,7 @@ Run from any repository subdirectory. Prints one `CHANGE` line per deduplicated 
 ~/.config/opencode/skills/git/scripts/git-change-inspect --types
 ```
 
-Default scope supports `/git-commit` preflight before grouping. `--staged` supports the per-commit staged integrity gate. `--types` is opt-in (shells out to `file --brief` per path); omit unless a type column is actually needed. It does not replace repository-specific test, typecheck, build, or formatter commands, and does not replace `git-lint-changed`.
+Default scope supports `/git-commit` preflight before grouping. `--staged` supports the per-commit staged integrity gate. `--types` is opt-in (shells out to `file --brief` per path); omit unless a type column is actually needed. It does not replace repository-specific test, typecheck, build, or formatter commands.
 
 ## git-change-digest
 
@@ -40,18 +40,6 @@ Run from any repository subdirectory. Bounded per-file change digest for delegat
 ```
 
 Feed exact paths from `git-change-inspect`; no globs, no "all files" mode.
-
-## git-lint-changed
-
-Run from any repository subdirectory. Lints changed `.md`/`.markdown` files with `markdownlint-cli2`. Silent on success (no output, exit 0); skips entirely, exit 0, when no changed Markdown files exist. Failure prints lint output and exits nonzero. Missing `markdownlint-cli2` exits nonzero with an install hint.
-
-```bash
-~/.config/opencode/skills/git/scripts/git-lint-changed
-~/.config/opencode/skills/git/scripts/git-lint-changed --staged
-~/.config/opencode/skills/git/scripts/git-lint-changed --worktree
-```
-
-Called once by `/git-commit` before grouping. Not part of `git-change-inspect`.
 
 ## git-stage-group
 

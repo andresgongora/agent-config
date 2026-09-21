@@ -50,8 +50,7 @@ Options:
   -h, --help  Show this message.
 
 Default scope: unstaged + staged + untracked. Silent beyond the change
-lines and (with --context) one REPO line. Does not lint or gate; see
-git-lint-changed for Markdown lint.
+lines and (with --context) one REPO line. Does not lint or gate.
 USAGE
 }
 

@@ -64,7 +64,6 @@ permission:
     "**/skills/git/scripts/git-change-inspect*": allow
     "**/skills/git/scripts/git-change-digest*": allow
     "**/skills/git/scripts/git-secret-scan*": allow
-    "**/skills/git/scripts/git-lint-changed*": allow
     "**/skills/git/scripts/git-stage-group*": allow
     "**/skills/git/scripts/git-commit-group*": allow
     "**/skills/git/scripts/git-resign-from*": deny

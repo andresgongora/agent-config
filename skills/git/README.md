@@ -56,7 +56,6 @@ Git action.
 - `scripts/git-repo-context`
 - `scripts/git-change-inspect`
 - `scripts/git-change-digest`
-- `scripts/git-lint-changed`
 - `scripts/git-stage-group`
 - `scripts/git-commit-group`
 - `scripts/git-secret-scan`
