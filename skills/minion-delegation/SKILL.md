@@ -134,8 +134,8 @@ Every minion returns `**status**`, `**gap**` (in-scope work not done), and `**is
 
 ### Git commit
 
-1. Run `Bached cleanup` to ensure the repository is clean and all presentation-only fixes are applied.
-2. If commit explicitly allowed, give `@minion-repomaster` the scope and commit authority.
+1. When the caller or repository policy requires project validation, run each applicable check once over the coherent work package: use `@minion-linter` for presentation-only lint/format, and use the main thread or a capability with the required tools for tests, typecheck, or build. Run no checks by default for commit-only missions.
+2. Give `@minion-repomaster` the exact scoped Git transaction and commit authority.
 
 ## Boundaries
 

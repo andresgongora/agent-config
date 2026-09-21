@@ -8,7 +8,9 @@ description: "Guides safe Git state changes. Load before Git mutations or risky 
 - Inspect before changing state.
 - Preserve unrelated work and identify intended paths.
 - Prefer narrow, reversible changes.
-- Use repository helpers and relevant project checks.
+- Always run the Git safety and secret checks required by the commit flow.
+- Run project lint, format, tests, or builds only when the caller requests them or repository policy requires them.
+- Do not make commit-only workers run unrelated project validation.
 
 ## Body
 

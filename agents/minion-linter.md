@@ -28,6 +28,7 @@ permission:
     "hadolint *": allow
     "jsonlint *": allow
     "lua-format *": allow
+    "markdownlint-cli2 *": allow
     "oxlint *": allow
     "rustfmt *": allow
     "shellcheck *": allow

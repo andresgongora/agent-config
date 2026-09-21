@@ -14,38 +14,9 @@ permission:
   websearch: deny
   task: deny
   bash:
-    "basename *": allow
-    "cat *": allow
-    "cut *": allow
-    "echo *": allow
-    "find *": allow
     "git diff*": allow
     "git log *": allow
-    "git ls-files*": allow
     "git show *": allow
-    "git status*": allow
-    "grep *": allow
-    "head *": allow
-    "ls": allow
-    "ls *": allow
-    "rg *": allow
-    "sed *": allow
-    "sort *": allow
-    "tail *": allow
-    "wc *": allow
-
-    # Trash — explicit ask; survives future block reshuffles.
-    "trash": ask
-    "trash *": ask
-
-    # Hard denies — must come after wildcard ask to win last-match evaluation.
-    "rm": deny
-    "rm *": deny
-    "rmdir": deny
-    "rmdir *": deny
-    "shred *": deny
-    "unlink": deny
-    "unlink *": deny
 ---
 
 Read-only reviewer. Report verified defects in supplied scope. Do not edit, redesign, or pad output.

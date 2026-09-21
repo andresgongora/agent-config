@@ -3,7 +3,7 @@ description: "Review and approve exact atomic groups, then create safe Git commi
 ---
 Commit current repository changes. Apply trailing injected instructions when present unless they conflict with version-control safety constraints.
 
-Use only these helpers: `git-repo-context`, `git-change-inspect`, `git-stage-group`, `git-secret-scan`, `git-commit-group`. No delegation, ad-hoc scripts, inline code, Python, or `git-change-digest`. Native read-only Git inspection, exact `git add -- <approved-clean-gitlink>`, and ordinary temporary files for helper inputs or approval snapshots allowed.
+Use only these helpers: `git-repo-context`, `git-change-inspect`, `git-stage-group`, `git-secret-scan`, `git-commit-group`. The bounded Git transaction may be delegated to the repository/Git steward only when the caller grants exact scope and authority. No ad-hoc scripts, inline code, Python, or `git-change-digest`. Native read-only Git inspection, exact `git add -- <approved-clean-gitlink>`, and ordinary temporary files for helper inputs or approval snapshots allowed.
 
 1. Run `git-repo-context`, `git-change-inspect`, and native Git checks for active operations and unresolved entries. Active operation or unresolved path: report, stop. No changes: report, stop.
 2. Inspect all registered submodules recursively with native read-only Git, then inspect every initialized child. Uninitialized or conflicted submodule: report, stop, ask user what to do. Never initialize, update, fetch, reset, or discard a submodule.
