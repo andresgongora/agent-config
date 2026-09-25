@@ -7,22 +7,23 @@ Author multi-step plan with checkpoints and ordered milestones to achieve intend
 
 ## Rules
 
-- Before interactive question offering choices, explain each question-tool-option's pros and cons plus recommendation in normal text. Ask before material outcome, scope, constraint, acceptance, approach, cost, or risk change; never guess.
+- Before interactive question offering a material or non-obvious choice, explain consequential options and recommendation in normal text. Ask before material outcome, scope, constraint, acceptance, approach, cost, or risk change; never guess.
 - Use precise, unambiguous language for milestones, checkpoints, and evidence.
 - Output plan format: update native tool task to-do list, or use requested output format if provided; if doubt: ask.
+- One task-list item equals one milestone; keep substeps in the milestone unless they need independent tracking or replanning.
 
 ## Planning workflow
 
 1. **Goal-check**: Confirm desired outcome clear, actionable, realistic. User wording may name an implementation, not the desired result; infer true intent only as a proposal, confirm with user. Brainstorm viable alternatives; challenge a weak or unrealistic goal before locking direction.
-2. **Understand**: Inspect relevant current state. Establish observable success, hard constraints, preferences, non-goals, authority, assumptions, unknowns. Material or high-stakes goal: consult repo docs and run external research before locking intent. Resolve cheap facts now; costly discovery becomes an early evidence milestone with a conditional route. Ask user for material decisions; multiple question rounds allowed as new gaps surface from prior answers.
+2. **Understand**: Inspect relevant current state. Establish observable success, hard constraints, preferences, non-goals, authority, assumptions, unknowns. Material or high-stakes goal: consult repo docs; research external facts only when they affect a decision. Resolve cheap facts now; costly discovery becomes an early evidence milestone with a conditional route. Ask user for material decisions; multiple question rounds allowed as new gaps surface from prior answers.
 3. **Lock stable intent**: `Goal: <outcome>. Success: <evidence>. Constraints: <hard limits>. Non-goal: <non-goals>`.
-4. **Draft plan**: Create ordered outcome milestones. Each has a bounded result and an observable checkpoint. Order by dependency, uncertainty, risk, then value. State material assumptions. Add a failure signal, fallback, or branch only when route or stopping behavior changes. Keep roadmap coarse; detail only the next milestone. Format: `<Milestone expressed as verb + object>. Success: <evidence>. Constraint: <hard limit, or omit>. Assume: <material assumption, or omit>.>`; omit empty categories, ultra condensed prose.
+4. **Draft plan**: Create ordered outcome milestones. Each has a bounded result and an observable checkpoint. Order by dependency, uncertainty, risk, then value. State material assumptions. Add a failure signal, fallback, or branch only when route or stopping behavior changes. Use enough milestones to make material dependencies, uncertainty, risk, and deliverables visible. Format: `<verb + bounded object>. Success: <evidence>. Constraint: <hard limit, if any>. Assume: <material assumption, if any>.`; omit empty categories, ultra condensed prose.
 5. **Verify**: Check draft against `## Verification`.
 6. **Iterate or finish**: New evidence invalidates goal, assumption, or ordering: return to the step it invalidates and revise from there only; do not redo unaffected work. When solid, return the plan (see `## Guardrails` for how to judge solidity and when to ask).
 
 ## Execution upkeep
 
-- Tick checklist item done right after it completes; no batching.
+- Tick milestone task-list item done right after it completes; no batching.
 - No parallel task execution unless each parallel branch runs via separate delegated subagent.
 - Milestone fails or unforeseen blocker hits: record evidence, notify user, propose alternate route, return to workflow step 6 (Iterate) to replan.
 
@@ -53,7 +54,7 @@ If delegating a milestone execution:
 - Same blocker after two evidence-based attempts: stop, summarize evidence, choose new route or ask.
 - Unrelated finding: record follow-up question; do not add to plan without user approval.
 - Plan solidity unclear: ask user whether to finalize or keep iterating; if clearly solid or clearly not, decide and continue iterating without asking.
-- External research tool unavailable on material or high-stakes goal: state gap, proceed on repo docs plus explicit low-confidence assumption flagged to user; never treat unverified pass as settled.
+- Needed external research unavailable: state gap, proceed on repo docs plus explicit low-confidence assumption flagged to user; never treat unverified pass as settled.
 
 ## Verification
 
@@ -61,7 +62,8 @@ If delegating a milestone execution:
 - [ ] Every milestone maps to stated outcome; none is dead weight or scope creep.
 - [ ] Every milestone has bounded result and observable, verifiable checkpoint.
 - [ ] Milestone order respects dependency, uncertainty, risk, then value.
+- [ ] Milestones expose all material dependencies, uncertainties, risks, and deliverables.
 - [ ] Material assumptions stated, not silently baked in.
 - [ ] Hard constraints and non-goals honored, none silently dropped or violated.
-- [ ] Material or high-stakes goal: repo docs/external research consulted, not skipped.
+- [ ] Material or high-stakes goal: repo docs consulted; decision-blocking external facts researched or explicitly flagged.
 - [ ] Open material questions asked, not guessed.

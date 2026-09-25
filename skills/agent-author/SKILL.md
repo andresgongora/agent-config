@@ -9,7 +9,7 @@ description: "Workflow for creating, editing, or auditing agent-ecosystem artifa
 - Cheap-model test: consider if a smaller model can identify goal, authority, next action, stop condition, and output from the loaded artifact alone. If not, tighten it.
 - Template-first. Copy the matching template from `templates/`, fill it, validate. Do not author from blank. Inline template cues are pointers only — full rules stay in this SKILL.md; a cue never overrides a conflicting rule here.
 - No stubs. Artifact holds only text the executing agent needs.
-- `README.md`: skills have a local human-facing companion README; agents and commands use the shared README sections specified below. Keep relevant information there that does not belong in the AI-facing artifact itself (eg obsolete-decision residue, "no longer handles X", "removed per request", inverse rules with no active concern). WHAT + HOW + WHEN relevant to runtime → artifact; WHY and everything else → README. Exception: keep WHY in artifact when executing agent needs it in frontmatter or to act correctly.
+- `README.md`: each artifact has a human-facing companion README with relevant information that does not belong in the AI-facing artifact itself (eg obsolete-decision residue, "no longer handles X", "removed per request", inverse rules with no active concern). WHAT + HOW + WHEN relevant to runtime → artifact; WHY and everything else → README. Exception: keep WHY in artifact when executing agent needs it in frontmatter or to act correctly.
 
 ### Language
 
@@ -152,7 +152,7 @@ Slash commands are agent-directed instructions invoked by name. No model, no too
 **Command body text**:
 - Imperative dense prose or a numbered list when order matters. No headers.
 - State what to do, in what order, under what conditions. No narration, no filler.
-- Use `$ARGUMENTS` when the command accepts user-supplied input; omit it when unused. Handle missing input gracefully (fallback or ask).
+- Use `$ARGUMENTS` for user-supplied input. Handle missing gracefully (fallback or ask). If no need for user input, place `$ARGUMENTS` on the very last line.
 - No output contract section — command body IS the contract.
 - Target length: fits on one screen. Long commands signal over-scoping; split or trim.
 - Multi-step command with real delegation tradeoffs: add a minimal per-step `Delegate: allow|encourage|prohibit — reason` line. Skip entirely on a short/simple command — do not force it.
@@ -163,7 +163,7 @@ Slash commands are agent-directed instructions invoked by name. No model, no too
 ## Workflow
 
 1. Classify request: create, edit, or read-only audit. Identify file form, target client, intended reader, and success evidence.
-2. For creation, assess if warranted: check if the feature is already covered by an existing artifact, a new artifact is justified, or the feature could be added to an existing artifact. If not warranted, push back: present the match and grep evidence, and ask the user to choose — extend/replace the existing artifact, or confirm a new one is truly warranted — before proceeding. For edit/audit, read the current artifact first; never replace it with a fresh template. Audits always report a result, including an explicit empty result when no findings exist.
+2. Assess if warranted: check if feature already covered by existing artifact, new artifact is justified, or feature could be added to an existing artifact. If not warranted, push back: present the match and grep evidence, and ask the user to choose — extend/replace the existing artifact, or confirm a new one is truly warranted — before proceeding. For edit/audit, read current artifact first; never replace it with a fresh template.
 3. Create: choose location per file-placement table, copy that artifact type's template (see core rules: template-first). A new skill also copies `templates/skill-readme.md` to `README.md` alongside it. Edit: change smallest affected surface. Audit: make no mutations; collect `path:line` evidence, impact, and fix direction.
 4. Write or revise body first. Use form rules; dense agent-facing language. Write routing frontmatter last. Configure runtime fields against target-client schema, not template defaults.
 5. Trim: if body exceeds ~500 lines, extract reference file. Add `scripts/` only for owned executables. If replacing/obsoleting: grep inbound refs; update/remove same change.
@@ -196,4 +196,4 @@ After creating or editing, ensure all pass.
 - [ ] Subagent: Output contract has a real success payload and explicit empty-result, refusal, block, partial, and failure behavior.
 - [ ] Command: Fits one screen, `$ARGUMENTS` handled, dense/compressed phrasing throughout.
 - [ ] Command: `Delegate:` per-step delegation tags present only where a real tradeoff exists, never forced on a trivial command.
-- [ ] README: For skills, create or update a local human-facing README; for agents and commands, update their dedicated sections in the shared README. Keep each README readable and free of AI slop.
+- [ ] README: created or updated alongside artifact. Human-facing, readable, no AI slop.

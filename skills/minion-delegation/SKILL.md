@@ -111,26 +111,25 @@ Every minion returns `**status**`, `**gap**` (in-scope work not done), and `**is
 
 ### Locate, fix, verify
 
-1. `@minion-investigator` returns sites for a focused question.
-2. Main thread selects one or two known edit sites and gives `@minion-builder` an exact prompt.
-3. Main thread inspects the diff and runs relevant validation.
-4. Give the resulting diff to `@minion-reviewer`.
+Direct workflow for bounded operations:
+1. `@minion-investigator` returns sites for a focused question. Spawn multiple investigators when investigation is broad (different angles: defs vs callers vs tests). Aggregate in main thread.
+2. Main thread selects one or two known edit sites and gives `@minion-builder` an exact prompt. Dispatch multiple independent edits in parallel if they do not overlap.
+3. Give the resulting diff to `@minion-reviewer`.
 
 ### Parallel investigation
 
-1. Split independent bounded questions, such as definitions, callers, and tests.
-2. Parallelize each independent bounded question, batching only when available worker capacity requires it.
-3. Aggregate evidence in the main thread before selecting a change or another worker.
+When investigation is broad:
+- Spawn multiple `@minion-investigator` calls in one message with different angles (eg: defs vs callers vs tests). Aggregate in main thread.
 
-### Direct edit
+### Single-shot edit
 
-1. When exact edit sites and outcome are already known, give `@minion-builder` the prompt directly.
-2. Main thread validates the resulting diff, then gives it to `@minion-reviewer`.
+When site is already known:
+- Skip investigator in `Locate, fix, verify`. Hand exact path:line to `@minion-builder` directly.
 
 ### Batched cleanup
 
-1. At the end of a large chunk of work or right before a commit, give `@minion-linter` every touched path in one pass.
-2. After a long session or large rework, give the touched area and current-purpose context to `@minion-vestige-hunter`.
+- At the end of a large chunk of work or right before a commit, give `@minion-linter` every touched path in one pass.
+- After a long session or large rework, give the touched area and current-purpose context to `@minion-vestige-hunter`.
 
 ### Git commit
 

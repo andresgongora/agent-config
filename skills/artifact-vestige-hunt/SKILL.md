@@ -25,6 +25,7 @@ Shapes locate; taxonomy labels. One label per finding.
 4. **Dead scaffolding** — visible scaffold whose own comment or prose explicitly frames it around an absent consumer. Proving consumer absence through call-graph, data-flow, or compiler analysis is out of scope.
 5. **Superseded wording** — old phrasing beside replacement, two sources of truth. Ex: rule restated two ways same file, one stale.
 6. **Defensive apology** — "intentionally does not X" / "deliberately avoid Y", no live decision behind it — no one risks re-adding X/Y, no ambiguity without note.
+7. **Leaked implementation detail** — internal code, prose, or comment exposed in the public contract with no external benefit, where removing the exposure preserves the documented behavior and API.
 
 ## Runtime vs maintenance
 
@@ -44,7 +45,7 @@ Third row narrow. Claim survivor only with current obstacle + concrete failure m
 
 ## Output contract
 
-Finding: `path:line — <label> — one-line why it passes zero-impact test`. Labels: `negative-doc`, `ghost-step`, `meta-residue`, `dead-scaffolding`, `superseded-wording`, `defensive-apology`.
+Finding: `path:line — <label> — one-line why it passes zero-impact test`. Labels: `negative-doc`, `ghost-step`, `meta-residue`, `dead-scaffolding`, `superseded-wording`, `defensive-apology`, `leaked-implementation-detail`.
 Survivor: `path:line — KEEP — current obstacle + concrete failure mode this segment prevents`.
 Can't classify admitted semantic candidate with evidence at hand: `path:line — UNRESOLVED — what's missing to decide`. Never force KEEP or vestige without concrete basis. Never silently drop admitted candidate; proven lexical false positive never enters classification.
 No findings: say so; do not force findings.

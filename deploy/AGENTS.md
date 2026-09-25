@@ -36,9 +36,9 @@
 
 ## Completion
 
-After completion, use any explicit task output contract. Then append dashboard:
+After completion, if no explicit task output contract exists, append dashboard:
 
 - High-impact headers: terse, max 60 chars, no blanks between, format `🟢 <completed task>`, `🟡 <remaining risk or gap>`, `🔴 <error, refused, unfeasible>`, `🔵 <suggestion, info>`, `❓ <question, user choice, uncertainty>`.
-- Under headers: required evidence and meaningful info; ultra compact, indented 3 spaces. No nested header. No blank lines.
+- Under headers: required evidence and meaningful info; ultra compact, indented 3 spaces. No nested header.
 - Report material outcomes and significant results only. Mute passed verification check.
 - End with ≤3 `➡️ <next step>`.
