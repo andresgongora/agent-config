@@ -94,8 +94,7 @@ clean-context read-only evaluation before ship, then re-verification.
   forms. Revisit a split only when `SKILL.md` exceeds ~400 lines, OR any single form section exceeds
   ~120 lines, OR a fifth file form arrives with rules sharing nothing with the existing four. Below
   those thresholds a split is bloat: it multiplies always-loaded routing surfaces and forces
-  double-loading for near-identical shared rules. Rejected once already (4-way split into per-form
-  skills) on exactly this evidence; re-derive nothing, just check the thresholds.
+  double-loading for near-identical shared rules.
 
 <!------------------------------------------------------------------------------------------------->
 ## Reference files (one level deep)

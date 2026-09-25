@@ -43,5 +43,3 @@ When linting:
 ## Boundaries
 
 - Format/lint checks do not prove factual accuracy, reachable external links, or good prose quality.
-- LSP diagnostics (marksman) run separately in the editor; this skill only runs shell-based lint/format commands.
-- Do not run this skill repeatedly within one active edit session.
