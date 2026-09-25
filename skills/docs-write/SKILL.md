@@ -1,23 +1,21 @@
 ---
 name: docs-write
-description: "Manage durable `.agent/` knowledge. Load when preserving settled findings, bug logs, handoffs, or `.agent/` document will save future investigation; including significant information discovery or project mutation."
+description: "Manage durable `.agent/` docs: admit, place, update, prune, and validate notes, costly handoffs or bug logs, and plan metadata."
 ---
 
 Persist knowledge future agents need, stored under repository `.agent/` folder.
 
 ## Admission Gate
 
-Create durable note only when all hold:
+Create or expand a durable note only when all hold:
 
-1. Claim settled. Facts have matching evidence; decisions have accepted scope, rationale, and owner/source.
+1. Information high-value and settled. Facts have matching evidence; decisions have accepted scope, rationale, and owner/source.
 2. Recovery cost real. Future session would repeat costly research, exploration, debugging, or decision work.
 3. Reuse survives session.
 
-Handoff or bug log: create only when task state is costly to lose. Prompt/todo holds all other in-flight state.
+Create a handoff or bug log only when task state is costly to lose. Prompt/todo holds all other in-flight state.
 
-Do not create: chat transcript, raw log, speculative note, duplicate, one-shot trivia, routine progress narration.
-
-Gate fails: write no file.
+Do not create: chat transcript, raw log, speculative durable note, duplicate, one-shot trivia, routine progress narration. Bug logs may record hypotheses only when labeled as hypotheses.
 
 ## Core Rules
 
@@ -25,19 +23,23 @@ Gate fails: write no file.
 - Keep `.agent/` small, factual, discoverable.
 - Every managed doc follows placement and frontmatter contract.
 - Facts state evidence. Never write hypothesis as fact.
-- One doc, one topic. Split only at natural topic boundary.
+- One doc, one topic. Split independent high-value topics at a natural boundary. Update an existing doc when new durable information fits its topic.
 - Link source or relevant existing doc. Do not copy large background.
 - Valuable misplaced doc: move. Duplicate or valueless doc: delete or archive.
 - Stale external claim: verify source before update.
-- Never lint `.agent/**.md` docs.
+- Do not run Markdown lint or formatting on `.agent/**.md`; run only `scripts/check-frontmatter`.
+- Update: source drift, architecture/design change, or new durable information that fits an existing topic.
+- Prune stale, duplicate, noisy, or wrong docs: correct, archive, or delete; move reusable content to `notes/` first.
+- This skill owns plan placement, frontmatter, and lifecycle. The durable-plan workflow owns content and shape.
+- No Revisions log, leads to cumulative meta residue.
 
 ## Placement
 
 | Destination | Content | Lifecycle |
 |---|---|---|
-| `.agent/notes/` | Durable design, architecture, reference, decisions, settled research | Inactive: archive if reference survives; else delete |
+| `.agent/notes/` | Durable design, architecture, reference, decisions, settled research; include title, purpose, durable facts/decisions, non-obvious conventions, source links | Inactive: archive if reference survives; else delete |
 | `.agent/progress/` | Handoff at task pause/stop/session boundary | Task ends: delete; reusable conclusion moves to `notes/` |
-| `.agent/bugs/` | Debug evidence, failed attempts, root cause | Resolved: extract reusable root cause to `notes/`, delete execution-only attempt log; else delete whole |
+| `.agent/bugs/` | Debug evidence, failed attempts, root cause; per attempt include symptom, hypothesis, tried, result, next. | Resolved: extract reusable lessons to `notes/`, delete bug note. |
 | `.agent/plans/` | Decision-grade implementation plan | Decision ends: reusable decision moves to `notes/`; else delete |
 
 ## Frontmatter
@@ -55,18 +57,9 @@ updated: YYYY-MM-DD
 
 - `description:` decides read-or-skip. One physical line, dense, concrete, double-quoted.
 - `updated:` is date of last substantive change.
+- `draft`: incomplete note or plan. `active`: current handoff, investigation, or plan. `stale`: source or relevance needs review. `resolved`: fixed bug. `archived`: inactive retained reference. `done`: completed task doc pending deletion or extraction.
 - External-source content needs `source: <canonical URL>`. `references:` is optional; never replaces `source:`.
-- Run `scripts/check-frontmatter <file.md>` before finish. It checks required fields, `status`, `updated`, optional `source`; manually check remaining rules.
-
-## When To Write
-
-- Durable note: settled design, architecture, reference, decision, research, root cause; include title, purpose, durable facts/decisions, non-obvious conventions, source links.
-- Handoff: task pauses, stops, or crosses session boundary; include goal, done, next step, blockers, touch points.
-- Bug log: failed-attempt state risks loss; per attempt include symptom, hypothesis, tried, result, next. Resolution records root cause and fix.
-- Plan: only placement, frontmatter, lifecycle here; plan-authoring workflow defines shape.
-- Bootstrap repo doc: repo root, no existing coverage, non-trivial task, clear future reader.
-- Update: source drift, architecture/design change, repeated exploration exposes durable gap.
-- Prune: duplicate, low-value stale doc, scan noise, concluded task doc. Reusable conclusion moves to `notes/` before task doc deletion.
+- Run `scripts/check-frontmatter <managed-doc.md>` before finish. It checks required fields, `status`, `updated`, optional `source`; manually check remaining rules.
 
 ## Boundaries
 
