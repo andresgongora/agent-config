@@ -38,7 +38,7 @@ Gate fails: write no file.
 | `.agent/notes/` | Durable design, architecture, reference, decisions, settled research | Inactive: archive if reference survives; else delete |
 | `.agent/progress/` | Handoff at task pause/stop/session boundary | Task ends: delete; reusable conclusion moves to `notes/` |
 | `.agent/bugs/` | Debug evidence, failed attempts, root cause | Resolved: extract reusable root cause to `notes/`, delete execution-only attempt log; else delete whole |
-| `.agent/plan/` | Decision-grade implementation plan | Decision ends: reusable decision moves to `notes/`; else delete |
+| `.agent/plans/` | Decision-grade implementation plan | Decision ends: reusable decision moves to `notes/`; else delete |
 
 ## Frontmatter
 
@@ -67,3 +67,7 @@ updated: YYYY-MM-DD
 - Bootstrap repo doc: repo root, no existing coverage, non-trivial task, clear future reader.
 - Update: source drift, architecture/design change, repeated exploration exposes durable gap.
 - Prune: duplicate, low-value stale doc, scan noise, concluded task doc. Reusable conclusion moves to `notes/` before task doc deletion.
+
+## Boundaries
+
+- Never write absolute home paths or usernames in `.agent/**` docs. Use `~/`.

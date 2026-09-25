@@ -110,7 +110,7 @@ Permission maps resolve last match. Agents place broad `bash: "*": deny` or `ask
 
 `planning.md` is the primary durable-planning agent.
 
-- Inspects available context and writes one revisable execution plan under `.agent/plan/`.
+- Inspects available context and writes one revisable execution plan under `.agent/plans/`.
 - Cannot implement changes or write outside the plan directory.
 
 ## QA Tester

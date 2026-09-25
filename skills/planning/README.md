@@ -46,7 +46,7 @@ authority; the delegated worker reports an unpredicted blocker instead of invent
 ## Durable-plan template
 <!------------------------------------------------------------------------------------------------->
 
-`templates/plan-document.md` supports reviewed, cross-session plan documents under `.agent/plan/`.
+`templates/plan-document.md` supports reviewed, cross-session plan documents under `.agent/plans/`.
 Session planning keeps transient state in the runtime task list and neither reads nor writes that
 template.
 

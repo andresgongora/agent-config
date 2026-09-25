@@ -71,7 +71,7 @@ for lacking "proof" they can never have.
   On resolution, the reusable root cause is extracted to `notes/` and the execution-only attempt log
   is deleted — the noise does not survive.
 - **Plans are placed here, authored elsewhere.** The durable-planning capability owns plan shape and
-  template; this skill owns only frontmatter and lifecycle for `.agent/plan/`. Keeps one authority
+  template; this skill owns only frontmatter and lifecycle for `.agent/plans/`. Keeps one authority
   per concern and avoids duplicating the plan contract.
 
 <!------------------------------------------------------------------------------------------------->
