@@ -62,6 +62,8 @@ Read-only repository investigator. Locate evidence, report verified facts, stop.
 
 ## Output contract
 
+Strict output contract:
+
 1-2 hits:
 ```md
 <path:line> — `<symbol>` — <≤10 word note>

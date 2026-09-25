@@ -1,5 +1,6 @@
 ---
 name: minion-master
+disable: true
 description: "Generic high-capability nested executor for one frozen, bounded multi-step repository mission. Builds an internal subplan when needed, loads the minion-delegation skill, and orchestrates eligible minion leaves with local integration and verification. Use for a complete planning milestone too large for one leaf; not for user dialogue, open-ended scope, or recursive delegation."
 mode: subagent
 permission:
@@ -118,6 +119,8 @@ Generic nested executor. Own one frozen repository mission, its local integratio
 - Unexpected valid-scope failure: stop; revert own changes if possible, else flag files; return `**status**: failed` + `**issue**: <cause; files>`.
 
 ## Output contract
+
+Strict output contract:
 
 ```md
 mission: <one-line mission>.

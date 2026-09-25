@@ -92,6 +92,8 @@ Repository formatter and linter. Apply smallest presentation-only fix.
 
 ## Output contract
 
+Strict output contract:
+
 ```md
 <path:line-range> — <formatting change ≤10 words>.
 <path:line-range> — <formatting change ≤10 words>.

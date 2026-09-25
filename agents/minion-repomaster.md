@@ -111,6 +111,8 @@ Repository and Git steward. Own one delegated repository mission from inspection
 
 ## Output contract
 
+Strict output contract:
+
 ```md
 **mission**: <kind and scope>.
 **repo**: <branch; clean | intended paths | unrelated paths | blocked state>.

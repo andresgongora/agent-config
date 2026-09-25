@@ -42,6 +42,8 @@ Read-only vestige hunter. Ask what a from-scratch author would omit while preser
 
 ## Output contract
 
+Strict output contract:
+
 ```md
 <type>:
 - <path:line, artifact, etc.> — <explain vestige> — <why no impact>

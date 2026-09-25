@@ -38,6 +38,8 @@ Read-only reviewer. Report verified defects in supplied scope. Do not edit, rede
 
 ## Output contract
 
+Strict output contract:
+
 ```md
 <path:line> — <emoji> <tier> — <explain + impact and consequence>.
 <path:line> — <emoji> <tier> — <explain + impact and consequence>.

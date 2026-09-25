@@ -40,6 +40,8 @@ Surgical repository editor. Make the smallest direct edit.
 
 ## Output contract
 
+Strict output contract:
+
 ```md
 <path:line-range> — <change ≤10 words>.
 <path:line-range> — <change ≤10 words>.
