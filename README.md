@@ -145,7 +145,7 @@ isolated from main context.
 | `@cli`                     | Broad Linux/CLI access for system, service, network diagnostics                                        | Commands outside the repo                                              |
 | `@fast`                    | Cheap one-shot common-knowledge answer or quick web search                                             | Trivial facts, simple comparisons, definitions                         |
 | `@files`                   | Filesystem navigation and metadata inspection; never reads file text                                   | Duplicates, renames, moves, space usage                                |
-| `@planning`                | Dialogue and inspection; outputs one revisable plan in `.agent/plans/`; cannot implement                | Decision-grade pre-implementation plans                                |
+| `@planning`                | Dialogue and inspection; outputs one revisable plan in `.agent/plans/`; cannot implement               | Decision-grade pre-implementation plans                                |
 | `@qa-tester`               | Runs one supplied skill against one supplied prompt and returns raw output in a status envelope        | Parallel behavior tests for two agent skills                           |
 | `@qa-judge`                | Judges two tester outputs against their shared prompt                                                  | Selecting the better result after parallel skill tests                 |
 | `@web-search`              | Multi-page online research coordinator; returns `## Findings`                                          | Non-trivial research needing multiple sources                          |
@@ -161,7 +161,7 @@ Slash-commands: user-invoked shortcuts that run a fixed prompt.
 | `/agent-repo-document` | Update and prune durable repository documentation and current-state memory                                |
 | `/agent-repo-init`     | One-time bootstrap of agent-naive or agent-stale repo: `AGENTS.md`, durable memory, stale-artifact triage |
 | `/git-commit`          | Plan, show, approve, then create safe atomic Git commits; does not push                                   |
-| `/plan-execute`        | Execute a durable plan document from `.agent/plans/`                                                       |
+| `/plan-execute`        | Execute a durable plan document from `.agent/plans/`                                                      |
 
 <!------------------------------------------------------------------------------------------------->
 ## Details about this repo

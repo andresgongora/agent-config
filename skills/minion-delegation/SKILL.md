@@ -15,6 +15,7 @@ Choose by needed evidence and authority, not convenience.
 | Find defects in a supplied diff or one bounded file after finished code edit | `@minion-reviewer` |
 | Find removable residue after long session or long rework in a supplied area | `@minion-vestige-hunter` |
 | Drive a Git or repository operation | `@minion-repomaster` |
+| Hand off a frozen, independent multi-step mission | `@minion-master` only when main context is already costly and the prompt carries all needed context; load `minion-master` skill |
 | Read one quick `git status` or `git diff` to orient | Main thread; do not delegate |
 | Locate code plus suggest fixes, explain architecture, or diagnose an unknown defect | Main thread or general exploration capability |
 | Give broad review, design advice, or general feedback | Main thread or a suitable review capability |
