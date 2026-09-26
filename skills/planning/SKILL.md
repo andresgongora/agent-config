@@ -11,6 +11,7 @@ Author multi-step plan with checkpoints and ordered milestones to achieve intend
 - Use precise, unambiguous language for milestones, checkpoints, and evidence.
 - Output plan format: update native tool task to-do list, or use requested output format if provided; if doubt: ask.
 - One task-list item equals one milestone; keep substeps in the milestone unless they need independent tracking or replanning.
+- Use milestones as useful checkpoints: actions, research, decisions, validation, or resolved uncertainty. No maximum count; uncertain paths need fewer, broader milestones, while clear paths may use more, narrower ones.
 
 ## Planning workflow
 

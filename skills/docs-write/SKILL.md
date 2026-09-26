@@ -19,7 +19,7 @@ Do not create: chat transcript, raw log, speculative durable note, duplicate, on
 
 ## Core Rules
 
-- Target audience: AI agents. Write ultra-condensed, preserve technical details.
+- Target audience: AI agents. Write ultra-condensed, terse, avoid unnecessary item enumerations, preserve technical details.
 - Keep `.agent/` small, factual, discoverable.
 - Every managed doc follows placement and frontmatter contract.
 - Facts state evidence. Never write hypothesis as fact.
@@ -27,7 +27,7 @@ Do not create: chat transcript, raw log, speculative durable note, duplicate, on
 - Link source or relevant existing doc. Do not copy large background.
 - Valuable misplaced doc: move. Duplicate or valueless doc: delete or archive.
 - Stale external claim: verify source before update.
-- Do not run Markdown lint or formatting on `.agent/**.md`; run only `scripts/check-frontmatter`.
+- Never lint `.agent/**.md` docs; run only `scripts/check-frontmatter` and address its findings.
 - Update: source drift, architecture/design change, or new durable information that fits an existing topic.
 - Prune stale, duplicate, noisy, or wrong docs: correct, archive, or delete; move reusable content to `notes/` first.
 - This skill owns plan placement, frontmatter, and lifecycle. The durable-plan workflow owns content and shape.
