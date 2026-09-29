@@ -7,10 +7,10 @@ description: "Write or materially revise reader-facing prose, no AI slop. Load w
 
 - Treat user text as raw draft unless they specify constraints; honor them exactly.
 - Honor requested scope and limits, such as grammar-only, light edit, or keep structure; otherwise revise whole draft.
-- Preserve supplied facts. Do not invent support, including numbers, dates, quotes, sources, experience, consensus, certainty, or unavailable private or company-specific details.
+- Preserve supplied facts. Do not invent facts, quotes, sources, consensus, experience, or certainty.
 - Support material claims with supplied evidence or reliable sources; never ship a polished but materially vague claim.
 - Verify public facts with reliable current sources when tools permit. Never infer unavailable private or company-specific facts.
-- Keep wording required by quotations, titles, code, established terminology, genre, house style, or clearer prose. Do not let a stylistic remedy worsen accuracy, clarity, or fit.
+- Keep wording fixed by source material, convention, genre, or clarity. Do not let a stylistic remedy worsen accuracy, clarity, or fit.
 
 ## Writing guidelines
 
@@ -19,11 +19,11 @@ Meaning, factual accuracy, user constraints, and required form outrank these gui
 ### Clarity and precision
 
 - Use the shortest precise wording. State subject, action, reason, and consequence plainly. Keep needed explanation, evidence, and context; clarity beats brevity.
-- Prefer familiar exact words. Cut ceremony, hedging, indirectness, stock phrases, and empty metaphors.
+- Prefer familiar exact words. Cut ceremony, hedging, and stock or figurative filler.
 - Replace buried noun-verbs ("establishment of", "the removal of") with direct verbs; name the actor.
-- Avoid passive voice when the actor is known and relevant.
-- Name the actual person, organization, document, date, product, policy, place, price, quantity, or identifier.
-- Show experience or scale through work, time, scope, or result; do not use unsupported "experienced," "skilled," "significant," or "widespread."
+- No passive voice when the actor is known and relevant.
+- Name the specific entity, date, or figure, not a generic label.
+- Show experience or scale through concrete work or results, not unsupported evaluative adjectives ("experienced, skilled, widespread).
 
 ### Reader relationship and tone
 
@@ -34,7 +34,7 @@ Meaning, factual accuracy, user constraints, and required form outrank these gui
 
 ### Message structure and presentation
 
-- Lead with the reader’s most consequential supported fact—purpose, decision, request, change, risk, or claim—and state any needed action, owner, and deadline plainly. Use honest tension only when it clarifies; never use clickbait, false urgency, withheld context, or rhetorical bait.
+- Lead with the reader’s most consequential supported point, then state any needed action, owner, and deadline plainly. Use honest tension only when it clarifies; never manufacture suspense or urgency.
 - Use prose for the message; use lists only for distinct detail or quick scanning.
 - Let sentence and paragraph length follow evidence and reader need; avoid repeated sentence shapes or paragraph structures for reasons unrelated to message content.
 

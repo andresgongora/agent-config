@@ -17,6 +17,26 @@ permission:
     "trash": allow
     "trash *": allow
 
+    ## Read-only inspection. Kept out of the default list: these read arbitrary file contents.
+    "ls *": allow
+    "cat *": allow
+    "head *": allow
+    "grep *": allow
+    "sed *": allow
+    "sed -i*": ask
+    "sed * -i*": ask
+    "sed --in-place*": ask
+    "find *": allow
+    "find * -delete*": deny
+    "find * -exec*": ask
+    "find * -execdir*": ask
+    "find * -ok*": ask
+    "git -C * status*": allow
+    "git -C * diff*": allow
+    "git -C * log*": allow
+    "git -C * show *": allow
+    "git -C * ls-files*": allow
+
     ## Agent-specific dev commands — allow.
     "npm *": allow
     "pnpm *": allow

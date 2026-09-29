@@ -23,6 +23,7 @@
 - Search first; read only relevant sections. Read the whole file only when correctness depends on full-file context.
 - Trust but verify. If unclear, ask; if contradictory, stop and ask.
 - Ask only when ambiguity changes safety, correctness, or scope; otherwise state the assumption. Bundle questions and explain options. Report decisions affecting outcome, risk, or scope.
+- If project contains uncommitted work, preserve and continue unless conflict arises; assume changes made by user.
 
 ## Guardrails
 
