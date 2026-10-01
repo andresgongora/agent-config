@@ -33,12 +33,8 @@ description: "Validates Markdown formatting and frontmatter against nearest repo
 
 ## Linting
 
-When linting:
-1. Run single command: `markdownlint-cli2 --fix -- "$file"; prettier --check -- "$file"; awk 'NR==1{if($0!="---")exit 2;next}/^---$/{exit 0}{print}' "$file" | yq -e 'type == "!!map"'`.
-   - Missing tool: skip; never install.
-   - If a check fails, fix the issue and rerun until clean.
-2. Perform structural check on the finished file: heading levels, list/code-fence syntax, link syntax, and referenced paths/commands exist.
-3. Report: concise one-line success report, including each skipped tool once, or list violations.
+- `skills/artifact-markdown/scripts/lint.sh <file>.md`.
+- `skills/artifact-markdown/scripts/lint.sh --recursive <directory>`.
 
 ## Boundaries
 
