@@ -11,7 +11,9 @@ permission:
   grep: deny
   list: deny
   bash: deny
-  task: deny
+  task:
+    "*": deny
+    web-search: allow
   webfetch: allow
   websearch: allow
   external_directory: deny

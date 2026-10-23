@@ -15,6 +15,7 @@ Forbidden commands: unavailable; never bypass. Use listed alternative; if unavai
 | --- | --- |
 | `rm`, `rmdir` | `trash` |
 | `timeout <cmd>` | Tool-native timeout parameter |
+| `python`, `python3` | `uv` |
 
 ## Guardrails
 

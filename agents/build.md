@@ -71,6 +71,14 @@ permission:
     "docker inspect *": allow
     "docker compose config*": allow
     "docker compose ps*": allow
+    "prettier *": allow
+    "black *": allow
+    "eslint *": allow
+    "flake8 *": allow
+    "mypy *": allow
+    "shellcheck *": allow
+    "markdownlint *": allow
+    "markdownlint-cli2 *": allow
 
     ## Mutating repo / system / deploy flows — ask.
     "git commit*": ask

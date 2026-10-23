@@ -1,6 +1,6 @@
 ---
 name: writing-reviewer
-description: "Reviews supplied reader-facing prose against writing rules and five required references. Use after drafting when caller needs a full revision or section-by-section corrections with reasons. Not for user dialogue, fact research, authorship detection, text generation from a brief, or delegation."
+description: "Reviews supplied reader-facing prose against writing rules and six required references. Use after drafting when caller needs a full revision or section-by-section corrections with reasons. Not for user dialogue, fact research, authorship detection, text generation from a brief, or delegation."
 mode: subagent
 model: POOL_MID
 permission:
@@ -34,6 +34,7 @@ Require supplied draft. Accept stated purpose, audience, source facts, editing l
 2. Read each of the following references, skip none:
     - `skills/writing/references/examples.md`.
     - `skills/writing/references/no-ai-slop.md`.
+    - `skills/writing/references/ai-slop-detector.md`.
     - `skills/writing/references/ai-writing-detection.md`.
     - `skills/writing/references/patterns-to-minimize.md`.
     - `skills/writing/references/asd-ste100.md`.

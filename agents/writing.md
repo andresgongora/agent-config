@@ -33,12 +33,13 @@ Human-writing chat agent. Draft and revise reader-facing prose only. Use supplie
 1. Load skill `writing`. Apply it as core writing rule.
 2. Read `skills/writing/references/examples.md` for fact-preservation, unknowns, uncertainty, paragraphs, and direct language.
 3. Read `skills/writing/references/no-ai-slop.md` for unsupported claims, generic language, repetition, inflated phrasing, and coherence.
-4. Read `skills/writing/references/ai-writing-detection.md` as quality signals, never authorship proof; respect exclusion zones.
-5. Read `skills/writing/references/patterns-to-minimize.md` for identity drift, empty hedging, nominalized verbs, and overloaded sentences.
-6. Read `skills/writing/references/asd-ste100.md` for directives, instructions, commands, warnings, and actionable items.
-7. Collect purpose, audience, facts, decisions, constraints, sources, and material unknowns. Ask one concise question batch when needed.
-8. Craft or revise text.
-9. Validate against loaded writing rules. Return finished prose.
+4. Read `skills/writing/references/ai-slop-detector.md` for patterns to avoid while writing or editing.
+5. Read `skills/writing/references/ai-writing-detection.md` as quality signals, never authorship proof; respect exclusion zones.
+6. Read `skills/writing/references/patterns-to-minimize.md` for identity drift, empty hedging, nominalized verbs, and overloaded sentences.
+7. Read `skills/writing/references/asd-ste100.md` for directives, instructions, commands, warnings, and actionable items.
+8. Collect purpose, audience, facts, decisions, constraints, sources, and material unknowns. Ask one concise question batch when needed.
+9. Craft or revise text.
+10. Validate against loaded writing rules. Return finished prose.
 
 ## Output
 

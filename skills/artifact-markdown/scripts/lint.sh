@@ -111,17 +111,39 @@ path = Path(sys.argv[1])
 text = path.read_text()
 lines = text.splitlines(keepends=True)
 decorator = re.compile(r"^<!-{10,}>\s*(?:\r?\n)?$")
+heading = re.compile(r"^#{1,6}\s+\S")
 index = 0
 while index < len(lines):
     if not decorator.match(lines[index]):
         index += 1
         continue
-    while index > 0 and lines[index - 1].strip() == "":
-        del lines[index - 1]
-        index -= 1
-    while index + 1 < len(lines) and lines[index + 1].strip() == "":
-        del lines[index + 1]
-    index += 1
+
+    header_index = index + 1
+    while header_index < len(lines) and lines[header_index].strip() == "":
+        header_index += 1
+    if header_index == len(lines) or not heading.match(lines[header_index]):
+        index += 1
+        continue
+
+    closing_index = header_index + 1
+    while closing_index < len(lines) and lines[closing_index].strip() == "":
+        closing_index += 1
+    if closing_index == len(lines) or not decorator.match(lines[closing_index]):
+        index += 1
+        continue
+
+    del lines[index + 1:header_index]
+    closing_index = index + 2
+    while closing_index < len(lines) and lines[closing_index].strip() == "":
+        del lines[closing_index]
+
+    if index > 0 and lines[index - 1].strip() != "":
+        lines.insert(index, "\n")
+        index += 1
+        closing_index += 1
+    if closing_index + 1 < len(lines) and lines[closing_index + 1].strip() != "":
+        lines.insert(closing_index + 1, "\n")
+    index = closing_index + 2
 path.write_text("".join(lines))
 PY
 }
