@@ -31,7 +31,7 @@ Run without installing:
 
 Load FHS environment if: `error while loading shared libraries`, missing interpreter/dynamic linker, or `No such file or directory` on an ELF that exists.
 
-- Preferred solution: `fhs -c "CMD ARGS"`
+- Preferred solution: `fhs -c "CMD ARGS"`. Example for `uv` (don't use python directly): `fhs -c "uv run ..."`.
 - Fallback if `fhs` fails: `nix run nixpkgs#steam-run -- CMD ARGS`.
 - Still failing on one specific library: add it to that module's `targetPkgs` only if the need is persistent.
 
