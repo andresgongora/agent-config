@@ -285,6 +285,20 @@ lintFile() {
         "$file_path"
 }
 
+lintGit() {
+    local inside_work_tree
+    if ! command -v git >/dev/null 2>&1; then
+        recordSkippedTool git
+        printf 'SKIP git diff --check: git unavailable\n'
+        return
+    fi
+    if ! inside_work_tree="$(git rev-parse --is-inside-work-tree 2>&1)" ||
+        [[ "$inside_work_tree" != true ]]; then
+        return
+    fi
+    runCheck git-diff-check git diff --check
+}
+
 ##==================================================================================================
 ##	MAIN
 ##==================================================================================================
@@ -306,12 +320,7 @@ main() {
     for file_path in "${INPUT_FILES[@]}"; do
         lintFile "$file_path"
     done
-    if command -v git >/dev/null 2>&1; then
-        runCheck git-diff-check git diff --check
-    else
-        recordSkippedTool git
-        printf 'SKIP git diff --check: git unavailable\n'
-    fi
+    lintGit
     if ((${#SKIPPED_TOOLS[@]} > 0)); then
         skipped_tools="$(
             IFS=', '

@@ -25,6 +25,12 @@
 - Ask only when ambiguity changes safety, correctness, or scope; otherwise state the assumption. Bundle questions and explain options. Report decisions affecting outcome, risk, or scope.
 - If project contains uncommitted work, preserve and continue unless conflict arises; assume changes made by user.
 
+## When to stop
+
+- When a step doesn't need user input, keep going.
+- Put status notes in the same message as the result.
+- Stop and ask only if you can't continue without user input or before anything destructive: deleting data, touching anything outside the working directory, etc.
+
 ## Guardrails
 
 - Hard claim needs hard proof. Unsupported or unexplained uncertainty: omit or say "don't know"; never invent plausible bridge.

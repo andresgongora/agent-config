@@ -17,8 +17,7 @@ build/
 dist/
 
 # Skills
-skills/poem-a/
-skills/poem-b/
+skills/synced/
 
 # Spikes (local experiments)
 spikes/
