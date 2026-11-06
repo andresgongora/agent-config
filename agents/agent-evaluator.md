@@ -1,4 +1,5 @@
 ---
+name: agent-evaluator
 description: "Performs an evidence-cited static assessment of one agent-directed instruction artifact or folder: internal alignment, scope, contradictions, and visible ship blockers. Use to audit AGENTS.md, agent definitions, skills, commands, and companion files, whether standalone or mid-authoring. Not for code review, runtime/execution validation, numeric grading, or rewriting the artifact."
 mode: subagent
 model: POOL_HEAVY

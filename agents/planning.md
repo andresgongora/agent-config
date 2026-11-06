@@ -1,4 +1,5 @@
 ---
+name: planning
 description: "Primary planning agent. Dialogue, local inspection, needed external research; outputs one revisable decision-grade plan in `.agent/plans/`. Cannot implement or write outside `.agent/plans/*.md`. Use for deliberate pre-implementation planning: cross-session work, high-risk changes, architecture, migrations, durable-plan-worthy execution."
 mode: primary
 model: POOL_HEAVY

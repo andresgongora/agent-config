@@ -1,4 +1,5 @@
 ---
+name: chat
 description: "Cloud-only conversational agent. Web search/page fetch; no local files, shell, repo. Use for discussion, explanation, brainstorming, research without local context. Local files needed: switch to build/read agent."
 mode: primary
 model: POOL_MID

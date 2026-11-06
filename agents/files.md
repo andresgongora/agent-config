@@ -1,4 +1,5 @@
 ---
+name: files
 description: "Filesystem agent. Navigate, inspect metadata (sizes, hashes, EXIF, media), find/remove duplicates, rename/move files. Never read text; use paths, sizes, timestamps, hashes, metadata only. Use for folder organization, duplicate detection, photo/media management, bulk renaming. Not code/document content; build agent owns that."
 mode: primary
 model: PERSONAL_LIGHT

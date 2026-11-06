@@ -1,4 +1,5 @@
 ---
+name: web-search
 description: "Web researcher. Use for one non-trivial online question needing multiple pages, sources, verification, web crawling, or query angles. Skip for trivial one-shot lookups."
 mode: subagent
 model: PERSONAL_MID

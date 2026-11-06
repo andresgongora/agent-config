@@ -1,4 +1,5 @@
 ---
+name: cli
 description: "General terminal agent. Broad Linux/CLI access: system, service, network diagnostics; complex shell workflows. Use for commands outside repo: state, logs, services, networking, packages. Not pure code editing; build agent owns that."
 mode: primary
 model: POOL_MID
