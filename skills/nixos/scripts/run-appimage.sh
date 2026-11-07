@@ -22,7 +22,11 @@ EXTRA_PKGS=("$@")
 
 [[ -f "$APPIMAGE_PATH" ]] || die "appimage not found: $APPIMAGE_PATH"
 
-EXTRACT_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/appimage-extracted/$(basename -- "$APPIMAGE_PATH")"
+# Cache key covers full path plus mtime and size, so a same-named AppImage at another path or
+# after an update never reuses a stale extraction.
+APPIMAGE_STAMP="$(stat -c '%Y-%s' -- "$APPIMAGE_PATH")"
+APPIMAGE_KEY="$(printf '%s\n%s' "$APPIMAGE_PATH" "$APPIMAGE_STAMP" | sha256sum | cut -c1-16)"
+EXTRACT_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/appimage-extracted/$(basename -- "$APPIMAGE_PATH")-${APPIMAGE_KEY}"
 
 extract() {
     [[ -x "${EXTRACT_DIR}/AppRun" ]] && return 0
@@ -33,7 +37,10 @@ extract() {
     work_dir="$(mktemp -d)"
     (cd "$work_dir" && fhs -c "'${APPIMAGE_PATH}' --appimage-extract" >/dev/null)
     mkdir -p "$(dirname -- "$EXTRACT_DIR")"
+    # Clear partial target first: mv into an existing directory would nest squashfs-root.
+    rm -rf -- "$EXTRACT_DIR"
     mv "${work_dir}/squashfs-root" "$EXTRACT_DIR"
+    rm -rf -- "$work_dir"
 }
 
 launch() {

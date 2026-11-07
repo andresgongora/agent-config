@@ -84,15 +84,19 @@ printDiffLines() {
     local path=$2
     local shown_lines=0
     local remaining_lines=0
+    local in_hunk=false
     local -a diff_arguments=(--no-ext-diff --unified=0)
     local line
 
     [[ $state == staged ]] && diff_arguments=(--cached "${diff_arguments[@]}")
 
+    ## Only hunk bodies carry content; file headers (`--- a/`, `+++ b/`) precede the first `@@`.
     while IFS= read -r line; do
         case "$line" in
-        '+++'* | '---'*) continue ;;
+        '@@'*) in_hunk=true ;;
+        'diff '*) in_hunk=false ;;
         '+'* | '-'*)
+            [[ $in_hunk == true ]] || continue
             if ((shown_lines < MAX_LINES)); then
                 printf 'LINE\t%s\n' "$line"
                 ((shown_lines += 1))

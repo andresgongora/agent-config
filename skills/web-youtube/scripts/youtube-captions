@@ -18,6 +18,8 @@ requireCommand() {
 ##==================================================================================================
 
 TEMP_DIR=""
+SCRIPT_DIRECTORY="$(dirname -- "$(readlink -f -- "${BASH_SOURCE[0]}")")"
+declare -r SCRIPT_DIRECTORY
 
 ##==================================================================================================
 ##	UTILITIES
@@ -33,7 +35,9 @@ die() {
 ##==================================================================================================
 
 cleanupTempdir() {
-    [[ -n "$TEMP_DIR" ]] && trash "$TEMP_DIR"
+    if [[ -n "$TEMP_DIR" ]]; then
+        trash "$TEMP_DIR"
+    fi
 }
 
 fetchMetadata() {
@@ -95,10 +99,10 @@ fetchTranscript() {
 
     case "$format" in
         plain)
-            "$(dirname "$0")/caption-to-text" "${caption_files[0]}"
+            "$SCRIPT_DIRECTORY/caption-to-text" "${caption_files[0]}"
             ;;
         timestamps)
-            "$(dirname "$0")/caption-to-text" --timestamps "${caption_files[0]}"
+            "$SCRIPT_DIRECTORY/caption-to-text" --timestamps "${caption_files[0]}"
             ;;
         *)
             die "Transcript format must be plain or timestamps"

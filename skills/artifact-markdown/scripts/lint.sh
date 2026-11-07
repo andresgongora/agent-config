@@ -26,6 +26,9 @@ declare -a INPUT_FILES=()
 declare -a SKIPPED_TOOLS=()
 declare -a WARNINGS=()
 declare -A SKIPPED_TOOL_SET=()
+declare -a CHECKS_RUN=()
+FIX_MODE=false # true only with --fix; default is check-only
+DIFF_CHECK_STATUS=not-run
 
 ##==================================================================================================
 ##	UTILITIES
@@ -37,8 +40,12 @@ die() {
 }
 
 printUsage() {
-    printf 'Usage: %s <file.md>\n       %s --recursive <directory>\n' \
+    printf 'Usage: %s [--fix] <file.md>\n       %s [--fix] --recursive <directory>\n' \
         "$SCRIPT_NAME" "$SCRIPT_NAME"
+}
+
+recordCheck() {
+    CHECKS_RUN+=("$1")
 }
 
 recordSkippedTool() {
@@ -100,9 +107,11 @@ resolveMarkdownlintConfig() {
 
 ##--------------------------------------------------------------------------------------------------
 
+## Arguments: file_path, mode (check|fix). Check mode exits 1 when spacing differs.
 formatDecorators() {
     local file_path="$1"
-    python3 - "$file_path" <<'PY'
+    local mode="$2"
+    python3 - "$file_path" "$mode" <<'PY'
 from pathlib import Path
 import re
 import sys
@@ -144,7 +153,11 @@ while index < len(lines):
     if closing_index + 1 < len(lines) and lines[closing_index + 1].strip() != "":
         lines.insert(closing_index + 1, "\n")
     index = closing_index + 2
-path.write_text("".join(lines))
+formatted = "".join(lines)
+if sys.argv[2] == "fix":
+    path.write_text(formatted)
+elif formatted != text:
+    sys.exit(1)
 PY
 }
 
@@ -159,12 +172,15 @@ checkMarkdownlint() {
         return
     fi
     markdownlint_config="$(resolveMarkdownlintConfig "$file_path")"
-    if [[ -n "$markdownlint_config" ]]; then
-        runCheck markdownlint-cli2 markdownlint-cli2 --fix --config \
-            "$markdownlint_config" -- "$file_path"
-    else
-        runCheck markdownlint-cli2 markdownlint-cli2 --fix -- "$file_path"
+    local -a markdownlint_arguments=()
+    if [[ "$FIX_MODE" == true ]]; then
+        markdownlint_arguments+=(--fix)
     fi
+    if [[ -n "$markdownlint_config" ]]; then
+        markdownlint_arguments+=(--config "$markdownlint_config")
+    fi
+    runCheck markdownlint-cli2 markdownlint-cli2 "${markdownlint_arguments[@]}" -- "$file_path"
+    recordCheck markdownlint
 }
 
 ##--------------------------------------------------------------------------------------------------
@@ -177,12 +193,32 @@ checkPrettier() {
         return
     fi
     runCheck prettier prettier --check -- "$file_path"
+    recordCheck prettier
 }
 
 ##--------------------------------------------------------------------------------------------------
 
+## Managed paths require frontmatter; other files skip the check unless they open with `---`.
+isFrontmatterManaged() {
+    local file_path="$1"
+    case "$file_path" in
+        README.md | */README.md) return 1 ;;
+        .agent/* | */.agent/* | SKILL.md | */SKILL.md | agents/* | */agents/* | commands/* | */commands/*)
+            return 0
+            ;;
+    esac
+    return 1
+}
+
 checkFrontmatter() {
     local file_path="$1"
+    local first_line
+    IFS= read -r first_line <"$file_path" || true
+    if [[ "$first_line" != --- ]]; then
+        isFrontmatterManaged "$file_path" || return 0
+        printf 'FAIL check=frontmatter file=%s\nmissing frontmatter\n' "$file_path" >&2
+        return 1
+    fi
     if ! command -v yq >/dev/null 2>&1; then
         recordSkippedTool yq
         printf 'SKIP yq: frontmatter check unavailable\n'
@@ -194,6 +230,7 @@ checkFrontmatter() {
         printf 'FAIL check=frontmatter file=%s\n%s\n' "$file_path" "$output" >&2
         return 1
     fi
+    recordCheck frontmatter
 }
 
 ##--------------------------------------------------------------------------------------------------
@@ -248,7 +285,10 @@ def analyzeHeadings(lines):
 def analyzeLocalLinks(markdown, markdown_path):
     reports = []
     for destination in re.findall(r"!?\[[^\]]*\]\(([^)]+)\)", markdown):
-        destination = destination.strip().split(maxsplit=1)[0].strip("<>")
+        destination_parts = destination.strip().split(maxsplit=1)
+        if not destination_parts:
+            continue
+        destination = destination_parts[0].strip("<>")
         if not destination or re.match(r"^[a-z][a-z0-9+.-]*:", destination, re.IGNORECASE):
             continue
         local_path = destination.split("#", 1)[0].split("?", 1)[0]
@@ -260,7 +300,7 @@ visible_lines, unclosed_fence = removeCodeFences(text)
 reports = analyzeHeadings(visible_lines)
 if unclosed_fence is not None:
     reports.append("Unclosed code fence.")
-reports.extend(analyzeLocalLinks(text, path))
+reports.extend(analyzeLocalLinks("\n".join(visible_lines), path))
 print("\n".join(reports))
 PY
     )"
@@ -276,27 +316,47 @@ PY
 
 lintFile() {
     local file_path="$1"
+    local warnings_before="${#WARNINGS[@]}"
+    local checks_joined
+    CHECKS_RUN=()
     checkMarkdownlint "$file_path"
     checkPrettier "$file_path"
     checkFrontmatter "$file_path"
     analyzeStructure "$file_path"
-    formatDecorators "$file_path"
-    printf 'PASS file=%s checks=markdownlint,prettier,frontmatter,structure,decorators\n' \
-        "$file_path"
+    recordCheck structure
+    if [[ "$FIX_MODE" == true ]]; then
+        formatDecorators "$file_path" fix
+    elif ! formatDecorators "$file_path" check; then
+        WARNINGS+=("$file_path: decorator spacing differs from canonical form")
+        printf 'WARN decorators file=%s issue="spacing differs; rerun with --fix"\n' "$file_path"
+    fi
+    recordCheck decorators
+    checks_joined="$(
+        IFS=,
+        printf '%s' "${CHECKS_RUN[*]}"
+    )"
+    if ((${#WARNINGS[@]} > warnings_before)); then
+        printf 'WARN file=%s checks=%s\n' "$file_path" "$checks_joined"
+    else
+        printf 'PASS file=%s checks=%s\n' "$file_path" "$checks_joined"
+    fi
 }
 
 lintGit() {
     local inside_work_tree
     if ! command -v git >/dev/null 2>&1; then
         recordSkippedTool git
+        DIFF_CHECK_STATUS=unavailable
         printf 'SKIP git diff --check: git unavailable\n'
         return
     fi
     if ! inside_work_tree="$(git rev-parse --is-inside-work-tree 2>&1)" ||
         [[ "$inside_work_tree" != true ]]; then
+        DIFF_CHECK_STATUS=not-worktree
         return
     fi
     runCheck git-diff-check git diff --check
+    DIFF_CHECK_STATUS=pass
 }
 
 ##==================================================================================================
@@ -306,16 +366,42 @@ lintGit() {
 main() {
     local file_path
     local skipped_tools
-    if [[ $# -eq 2 && "$1" == --recursive ]]; then
-        [[ -d "$2" ]] || die "Not a directory: $2"
-        getMarkdownFiles "$2"
-    elif [[ $# -eq 1 && "$1" != --* ]]; then
-        [[ -f "$1" ]] || die "Not a file: $1"
-        [[ "$1" == *.md ]] || die "Expected a .md file: $1"
-        INPUT_FILES+=("$1")
+    local recursive_directory=""
+    local -a file_arguments=()
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --fix) FIX_MODE=true ;;
+            --recursive)
+                [[ $# -ge 2 ]] || {
+                    printUsage >&2
+                    exit 2
+                }
+                recursive_directory="$2"
+                shift
+                ;;
+            --*)
+                printUsage >&2
+                exit 2
+                ;;
+            *) file_arguments+=("$1") ;;
+        esac
+        shift
+    done
+    if [[ -n "$recursive_directory" ]]; then
+        if ((${#file_arguments[@]} > 0)); then
+            printUsage >&2
+            exit 2
+        fi
+        [[ -d "$recursive_directory" ]] || die "Not a directory: $recursive_directory"
+        getMarkdownFiles "$recursive_directory"
     else
-        printUsage >&2
-        exit 2
+        if ((${#file_arguments[@]} != 1)); then
+            printUsage >&2
+            exit 2
+        fi
+        [[ -f "${file_arguments[0]}" ]] || die "Not a file: ${file_arguments[0]}"
+        [[ "${file_arguments[0]}" == *.md ]] || die "Expected a .md file: ${file_arguments[0]}"
+        INPUT_FILES+=("${file_arguments[0]}")
     fi
     for file_path in "${INPUT_FILES[@]}"; do
         lintFile "$file_path"
@@ -329,8 +415,8 @@ main() {
     else
         skipped_tools=none
     fi
-    printf 'DONE files=%d structure_warnings=%d skipped=%s diff_check=pass\n' \
-        "${#INPUT_FILES[@]}" "${#WARNINGS[@]}" "$skipped_tools"
+    printf 'DONE files=%d warnings=%d skipped=%s diff_check=%s\n' \
+        "${#INPUT_FILES[@]}" "${#WARNINGS[@]}" "$skipped_tools" "$DIFF_CHECK_STATUS"
 }
 
 ##==================================================================================================

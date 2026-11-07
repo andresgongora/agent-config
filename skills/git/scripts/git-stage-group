@@ -206,8 +206,8 @@ main() {
     fi
 
     ensureNoPartialStaging
-    resetIndex
     validateRequestedPaths
+    resetIndex
     stageRequestedPaths
     verifyStagedPaths
     printf 'OK: staged %d path(s)\n' "${#REQUESTED_PATHS[@]}"

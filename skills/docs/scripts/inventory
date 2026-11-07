@@ -79,7 +79,8 @@ extractMetadata() {
     local updated
     local frontmatter_status
 
-    if raw_frontmatter="$("$FRONTMATTER_SCRIPT" "$file" 2>/dev/null)"; then
+    # Helper stderr is captured, not shown; the status mapping below supplies the message.
+    if raw_frontmatter="$("$FRONTMATTER_SCRIPT" "$file" 2>&1)"; then
         :
     else
         frontmatter_status=$?
@@ -101,7 +102,7 @@ extractMetadata() {
             (.status // "" | tostring | sub("\\t"; " ") | sub("\\n"; " ") | sub("\\r"; " ") | sub("\\|"; " ") | trim),
             (.updated // .lastmod // .date // "0000-00-00" | tostring | sub("\\t"; " ") | sub("\\n"; " ") | sub("\\r"; " ") | sub("\\|"; " ") | trim)
         ] | join("|")
-    ' 2>/dev/null)"; then
+    ' 2>&1)"; then
         die "Invalid YAML frontmatter: $file"
     fi
 

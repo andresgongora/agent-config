@@ -128,7 +128,7 @@ printRepoContext() {
     local toplevel branch head_sha
     toplevel=$(git rev-parse --show-toplevel)
     branch=$(git symbolic-ref --quiet --short HEAD || printf 'HEAD-detached')
-    head_sha=$(git rev-parse --short HEAD 2>/dev/null || printf 'no-commits')
+    head_sha=$(git rev-parse --verify -q --short HEAD || printf 'no-commits')
     printf 'REPO\t%s\tBRANCH\t%s\tHEAD\t%s\n' "$toplevel" "$branch" "$head_sha"
 }
 

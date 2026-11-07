@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"baseUrl": ".",
+		"module": "ESNext",
+		"target": "ES6",
+		"moduleResolution": "node",
+		"lib": ["DOM", "ES5", "ES6", "ES7"],
+		"noImplicitAny": true,
+		"strictNullChecks": true,
+		"isolatedModules": true,
+		"importHelpers": true
+	},
+	"include": ["src/**/*.ts"]
+}

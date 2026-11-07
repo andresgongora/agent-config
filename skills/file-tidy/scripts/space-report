@@ -56,6 +56,6 @@ done < <(find -P "$root" -type f -print0)
 
 printf 'SUMMARY\tfiles=%d\tbytes=%d\thuman=%s\n' "$files" "$total" "$(bytes_human "$total")"
 printf 'DIRECTORIES\n'
-for key in "${!directories[@]}"; do printf '%020d\t%s\n' "${directories[$key]}" "$key"; done | sort -rn | while IFS=$'\t' read -r size key; do printf '%s\t%s\n' "$(bytes_human "$((10#$size))")" "$key"; done | head -n "$top"
+for key in "${!directories[@]}"; do printf '%020d\t%s\n' "${directories[$key]}" "$key"; done | sort -rn | while IFS=$'\t' read -r size key; do printf '%s\t%s\n' "$(bytes_human "$((10#$size))")" "$key"; done | sed -n "1,${top}p"
 printf 'EXTENSIONS\n'
-for key in "${!extensions[@]}"; do printf '%020d\t%s\n' "${extensions[$key]}" "$key"; done | sort -rn | while IFS=$'\t' read -r size key; do printf '%s\t%s\n' "$(bytes_human "$((10#$size))")" "$key"; done | head -n "$top"
+for key in "${!extensions[@]}"; do printf '%020d\t%s\n' "${extensions[$key]}" "$key"; done | sort -rn | while IFS=$'\t' read -r size key; do printf '%s\t%s\n' "$(bytes_human "$((10#$size))")" "$key"; done | sed -n "1,${top}p"

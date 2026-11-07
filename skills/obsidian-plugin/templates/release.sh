@@ -60,8 +60,9 @@ verifyAndBuild() {
 ##--------------------------------------------------------------------------------------------------
 
 ## @brief Bump the npm/manifest version (patch) via the project's own version script.
+## Unprefixed tag: community plugin releases require tag == version (no `v`).
 bumpVersion() {
-    (cd "$SCRIPT_DIR" && npm version patch)
+    (cd "$SCRIPT_DIR" && npm version patch --tag-version-prefix="")
 }
 
 ## @brief Push the current branch and its tags to origin.

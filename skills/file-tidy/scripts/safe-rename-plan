@@ -58,6 +58,19 @@ tidy_stem() {
   printf '%s' "$stem"
 }
 
+is_portable_name() {
+  local name=$1 base
+  local LC_ALL=C
+  local portable_pattern='^[A-Za-z0-9._ -]+$'
+
+  [[ $name =~ $portable_pattern ]] || return 1
+  [[ $name != *' ' && $name != *. ]] || return 1
+  ((${#name} <= 240)) || return 1
+  base=${name%%.*}
+  base=${base^^}
+  [[ ! $base =~ ^(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])$ ]] || return 1
+}
+
 tidy_name() {
   local name=$1 stem extension=''
   if [[ $name == *.* && $name != .* ]]; then
@@ -68,6 +81,7 @@ tidy_name() {
   fi
   stem=$(tidy_stem "$stem")
   [[ -n $stem ]] || return 1
+  is_portable_name "$stem$extension" || return 1
   printf '%s%s' "$stem" "$extension"
 }
 

@@ -30,7 +30,7 @@ convertCaption() {
     local caption_file="$1"
     local timestamps="$2"
 
-    jq -er --argjson timestamps "$timestamps" '
+    jq -r --argjson timestamps "$timestamps" '
         def normalize:
             gsub("\n"; " ")
             | gsub("[[:space:]]+"; " ")
@@ -82,7 +82,10 @@ main() {
     [[ -r "$1" ]] || die "Caption file not found: $1"
 
     requireCommand jq
-    convertCaption "$1" "$timestamps"
+    local caption_text
+    caption_text="$(convertCaption "$1" "$timestamps")"
+    [[ -n "$caption_text" ]] || die "no caption text: $1"
+    printf '%s\n' "$caption_text"
 }
 
 ##==================================================================================================
