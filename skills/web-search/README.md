@@ -42,7 +42,7 @@ Agents use available search/fetch tools. Present Opencode setup exposes `websear
 - Keep skill as main-thread routing layer. Do not move researcher internals into it.
 - Keep researcher as policy/aggregation layer. Do not let it become final truth engine.
 - Keep parallel branches scoped to one question. No broad synthesis or URL dumps.
-- Update both templates and all callers when contract fields change.
+- Update `SKILL.md`, `../../agents/web-search.md`, and all callers when contract fields change.
 - Keep source modules as hints. They live under `references/source-families/`; not agents, no frontmatter. Do not turn each module into another agent.
 - Match frontmatter permissions to prompt: researcher may invoke only bounded branch fanout.
 - Keep dense style without depending on any named compression skill.

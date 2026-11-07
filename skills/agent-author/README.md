@@ -104,7 +104,7 @@ clean-context read-only evaluation before ship, then re-verification.
 - `templates/skill-readme.md`: required companion README skeleton
 - `templates/primary-agent.md`: fillable primary-agent scaffold, optional `## Scope`, `##
   Boundaries`, light-touch `## Output contract` reminder
-- `templates/subagent.md`: fillable subagent scaffold, optional `## Scope`/`## Input`, `## Boundaries`, `## Output contract`, concrete role receipts, and the mandatory `status`/`gap`/`issue` ending
+- `templates/subagent.md`: fillable subagent scaffold with `## Rules`, `## Workflow`, `## Boundaries`, `## Output contract`, a concrete payload example, and the mandatory `status`/`gap`/`issue` ending
 - `templates/command.md`: fillable slash-command scaffold
 
 <!------------------------------------------------------------------------------------------------->

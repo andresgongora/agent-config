@@ -20,4 +20,4 @@ Keep the comparison, prompt, tester, judge, storage, and presentation contracts 
 
 ## See also
 
-`skills/agent-prompt/SKILL.md` for prompt-contract principles. `skills/delegation/SKILL.md` for bounded worker execution.
+`skills/agent-author/SKILL.md` for prompt-contract principles. `skills/minion-delegation/SKILL.md` for bounded worker execution.

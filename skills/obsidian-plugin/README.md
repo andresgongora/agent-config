@@ -49,7 +49,7 @@ settings unrelated to plugin testing. Obsidian usage/note-taking questions.
 ## See also
 <!------------------------------------------------------------------------------------------------->
 
-- `templates/manifest.json`, `templates/versions.json`, `templates/esbuild.config.mjs`,
+- `templates/manifest.json`, `templates/versions.json`, `templates/tsconfig.json`, `templates/esbuild.config.mjs`,
   `templates/version-bump.mjs`, `templates/release.sh`: scaffold files.
 - `resources/community-plugin-submission.md`: one-time community-store submission process.
 - `resources/first-submission-checklist.md`: minimal step list for the initial submission only.

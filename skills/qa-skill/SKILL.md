@@ -38,7 +38,7 @@ description: Compare and QA-test exactly two agent skills by analyzing their sta
    ```
 
 5. Run one `qa-tester` per skill in parallel. Supply each target package and the same task prompt.
-6. Require both tester envelopes to be valid, `status: done`, and non-empty. Generate a unique run ID such as `20260823-143012-a7c9`. Store complete responses in `.agent/qa/<run-id>/skill-a-output.md` and `skill-b-output.md`.
+6. Require both tester envelopes to be valid, `status: done`, and non-empty. Generate a unique run ID such as `20260823-143012-a7c9`. Store complete responses in `.agent/qa/<run-id>/skill-a-output.md` and `skill-b-output.md`. `.agent/` is machine-local and gitignored; these results are not shared across machines.
 7. Send the difference, hypothesis, shared prompt, and both tester responses to one `qa-judge`. Judge only visible outputs against the prompt.
 8. Store the judge response in `.agent/qa/<run-id>/judgement.md`. Continue only if `status: done`.
 9. Return exactly:

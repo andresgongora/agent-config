@@ -8,7 +8,7 @@ Tells the main thread when to spawn a minion-style subagent versus a general-pur
 
 The Minion family and this workflow were inspired by CaveCrew in [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman).
 
-Six subagents:
+Seven subagents:
 
 | Subagent | Job | Summon when |
 | --- | --- | --- |
@@ -18,6 +18,7 @@ Six subagents:
 | `minion-linter` | Formatting and linting | Supplied targets need tool selection or safe automatic fixes. |
 | `minion-reviewer` | Diff/file review | One-line findings with severity tier |
 | `minion-vestige-hunter` | Post-rework cleanup | Stale comments, ghost steps, superseded wording |
+| `minion-repomaster` | Git and repository operations | Many Git commands or large Git output that would burn main context |
 
 Use a general exploration or review capability when you want prose, architecture commentary, or rationale. Use main thread directly for one-line answers, user decisions, scope discovery, tests, builds, installs, external research, or unclear/risky work; delegate other standalone bounded work by default. Summon `minion-master` after a planning milestone becomes a complete mission package.
 
@@ -53,3 +54,4 @@ Parallel scout: spawn 2-3 `minion-investigator` calls in one message with differ
 - [`agents/minion-linter.md`](../../agents/minion-linter.md)
 - [`agents/minion-reviewer.md`](../../agents/minion-reviewer.md)
 - [`agents/minion-vestige-hunter.md`](../../agents/minion-vestige-hunter.md)
+- [`agents/minion-repomaster.md`](../../agents/minion-repomaster.md)

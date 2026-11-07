@@ -50,13 +50,13 @@ Load FHS environment if: `error while loading shared libraries`, missing interpr
 
 ### Don't know HOST name
 
-- Run: `nix flake show --json 2>/dev/null | jq -r '.nixosConfigurations | keys[]'`.
+- Run: `nix flake show --json | jq -r '.nixosConfigurations | keys[]'`.
 - Alternative: list `<nix-repo>/nixos/hosts/*.nix`, then inspect `config.system.hostName` attribute in each file.
 
 ### Deployment wants unexpected local builds
 
 1. List exact derivations before activation.
-2. Run: `nix build .#nixosConfigurations.HOST.config.system.build.toplevel --dry-run --print-build-logs`
+2. Only when distinguishing candidate fixes (costly; otherwise propose it as a next step): run `nix build .#nixosConfigurations.HOST.config.system.build.toplevel --dry-run --print-build-logs`.
 
 ### Trace one listed derivation to its owner
 

@@ -29,6 +29,9 @@ show how to revise without inventing facts.
 
 - [`ai-writing-detection.md`](./references/ai-writing-detection.md): editing signals, not authorship
   proof. Adapted from the [No AI slop skill][no-ai-slop-source].
+- [`ai-slop-detector.md`](./references/ai-slop-detector.md): 120 slop patterns in 9 categories, for
+  writing or checking drafts. Third-party, from FeedHive's [ai-slop-detector][ai-slop-detector-source]
+  (MIT).
 - [`no-ai-slop.md`](./references/no-ai-slop.md): vague, unsupported, generic, and filler prose, with
   alternatives. Adapted from the [No AI slop skill][no-ai-slop-source].
 - [`patterns-to-minimize.md`](./references/patterns-to-minimize.md): conditional composition
@@ -71,5 +74,6 @@ core idea per paragraph. This structure serves both skimmers and linear readers.
 - [`../../agents/writing.md`](../../agents/writing.md)
 - [`../../agents/writing-reviewer.md`](../../agents/writing-reviewer.md)
 
+[ai-slop-detector-source]: https://github.com/FeedHive/ai-slop-detector/tree/main
 [asd-ste100-source]: https://github.com/woosal1337/blog/tree/main/videos/ep01-the-cure-for-ai-slop/asd-ste100
 [no-ai-slop-source]: https://github.com/realrossmanngroup/no_ai_slop_writing_rules

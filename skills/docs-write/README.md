@@ -102,4 +102,4 @@ managed-doc frontmatter schema / `.agent/` placement rules. Does not load for re
 <!------------------------------------------------------------------------------------------------->
 
 - Doc-discovery discipline — read side, inventory scripts.
-- `../../.agent/notes/design-principles.md` — memory-placement model and ecosystem failure modes.
+- `.agent/notes/design-principles.md` (machine-local; absent on clones) — memory-placement model and ecosystem failure modes.

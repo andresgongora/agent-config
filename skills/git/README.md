@@ -43,8 +43,8 @@ Git action.
 - Keep scanner contract tied to the three supported executables and explicit staged-content
   commands; default single-scanner behavior stays in the script, not here.
 - Keep rare maintenance detail beside its script.
-- Keep submodule recursion and Gitlink staging constraints in `SKILL.md` and `/git-commit`; do not
-  widen `git-stage-group` beyond files.
+- Keep submodule recursion and Gitlink staging constraints in `SKILL.md`; do not widen
+  `git-stage-group` beyond files.
 - Do not encode branch names, remotes, or organization policy.
 
 <!------------------------------------------------------------------------------------------------->

@@ -8,7 +8,7 @@ Provide a tiny preflight for Bash execution without duplicating tool policy.
 
 ## When it triggers
 
-Immediately before any Bash tool call, including development, validation, Git, or environment inspection.
+Once, before the first Bash tool call in a session, including development, validation, Git, or environment inspection.
 
 ## When it does NOT trigger
 
@@ -21,4 +21,3 @@ Keep routing tied to tool invocation, not shell syntax. Add only durable rules a
 ## See also
 
 - `skills/coding-bash/SKILL.md` — persistent Bash-script deliverables.
-- `skills/local-opencode/SKILL.md` — local Bash permission configuration.

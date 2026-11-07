@@ -1,6 +1,6 @@
 ---
 name: artifact-markdown
-description: "Validates Markdown formatting and frontmatter against nearest repository config. Load when creating or editing Markdown files `*.md`, including `README.md`, `SKILL.md`, or `AGENTS.md`."
+description: "Validates Markdown formatting and frontmatter against nearest repository config. Load when creating or editing Markdown files `*.md`, including `README.md`, `SKILL.md`, or `AGENTS.md`. Not for `.agent/**` Markdown; `docs-write` owns that path."
 ---
 
 ## Rules
@@ -8,7 +8,7 @@ description: "Validates Markdown formatting and frontmatter against nearest repo
 - One pass per finished file or batch, not per edit. Do not reload mid-session; run this once work is otherwise done.
 - Preserve nearest repository Markdown config and style convention; never impose this skill's style on a repo that already picked its own.
 - Assume Markdown files are agent-facing unless the nearest repository config explicitly marks them as human-facing. Agent-facing Markdown is optimized for AI-agent consumption, not human reading.
-- Avoid routine or repository-wide markdown linting. For Markdown and agent-facing files, lint only when the user asks or a specific defect requires it; limit checks to touched files and use automatic fixes when requested.
+- Run `scripts/lint.sh` once before finishing a Markdown edit, on touched files only. Check-only; pass `--fix` only when the user asks. Skip `.agent/**`; `docs-write` owns that path.
 
 ## README files
 
@@ -35,8 +35,9 @@ description: "Validates Markdown formatting and frontmatter against nearest repo
 
 ## Linting
 
-- `skills/artifact-markdown/scripts/lint.sh <file>.md`.
-- `skills/artifact-markdown/scripts/lint.sh --recursive <directory>`.
+- `scripts/lint.sh <file>.md` (check-only).
+- `scripts/lint.sh --recursive <directory>` (check-only).
+- `--fix` (any form above) rewrites files via `markdownlint-cli2 --fix` and decorator normalization; use only when the user asks.
 
 ## Boundaries
 

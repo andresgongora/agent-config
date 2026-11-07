@@ -24,13 +24,13 @@ Load when writing or extending a bash script as a deliverable. Not for debugging
 
 ## Templates
 
-`template/script.sh` is the canonical starter. Every `TEMPLATE:` marker is an authoring instruction: remove or replace it, and every example, before validation. It contains exactly one example core function and one placeholder dependency — enough to show the pattern, not enough to clutter.
+`templates/script.sh` is the canonical starter. Every `TEMPLATE:` marker is an authoring instruction: remove or replace it, and every example, before validation. It contains exactly one example core function and one placeholder dependency — enough to show the pattern, not enough to clutter.
 
-`template/snippets.sh` is opt-in. Copy only required blocks: `basename`/`dirname` path helpers, root checks, timestamps, logging. Not standalone. `logVerbose` stays silent and returns success until `VERBOSE=true`.
+`templates/snippets.sh` is opt-in. Copy only required blocks: `basename`/`dirname` path helpers, root checks, timestamps, logging. Not standalone. `logVerbose` stays silent and returns success until `VERBOSE=true`.
 
 ## Linting configs
 
-`template/.shellcheckrc` and `template/.editorconfig` are optional starters for a new dedicated script project. Never replace or merge existing root configuration without explicit scope.
+`templates/.shellcheckrc` and `templates/.editorconfig` are optional starters for a new dedicated script project. Never replace or merge existing root configuration without explicit scope.
 
 `.shellcheckrc` sets `shell=bash` and disables SC1091 (not following sourced files). Does not suppress SC2086 or SC2155 — fix those, don't hide them.
 
@@ -46,7 +46,7 @@ Load when writing or extending a bash script as a deliverable. Not for debugging
 | Decorator layout     | Blank line → separator → header → identical separator → blank line; never trailing |
 | Section header style | `##<TAB><ALL CAPS>`; sub-sections use `##<TAB><TITLE>`                             |
 | Variable naming      | Globals `SNAKE_CASE`; locals `snake_case`                                          |
-| Function naming      | `camelCase` verb-first; contextual: `context_sub_camelCase()`                      |
+| Function naming      | `camelCase` verb-first; contextual: `context_subcontext_verbCamelCase()`           |
 | Dependency guard     | `requireCommand()` inline one-liner in DEPENDENCY CHECKS                           |
 | Destructive file ops | `trash`, never `rm` or `rmdir`                                                     |
 | `main()`             | Short glue; reads arg globals; called bare from SCRIPT ENTRY POINT                 |

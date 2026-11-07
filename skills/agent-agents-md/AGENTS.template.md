@@ -30,7 +30,7 @@ Section picking:
 ## Info
 
 <!--
-Repo orientation facts. Must save a cold session the probe round. Keep to ~5-12 lines. Admit a fact only if high-signal, stable for months, and not self-evident from the path name alone. Update on shape shifts only.
+Repo orientation facts. Must save a cold session the probe round. Keep to ~5-12 lines. Admit a fact only if high-signal, stable for months, and not self-evident from the path name alone. Update only on: init (creating the file), user asks to refresh, or repo shape/entry-points/boundaries just moved. No other trigger re-probes them.
 
 Field guidance (pick what applies, add code-specific rows only if relevant):
 - Purpose — one line, what this project produces or maintains

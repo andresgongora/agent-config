@@ -73,18 +73,18 @@ New scripts follow these conventions. Existing scripts retain established local 
 
 | File | Purpose |
 |---|---|
-| `template/script.sh` | Canonical starter for new persistent Bash scripts. |
-| `template/snippets.sh` | Opt-in helpers. Copy only blocks required by concrete script behavior. |
-| `template/.shellcheckrc` | Optional configuration for a new dedicated script project. |
-| `template/.editorconfig` | Optional editor defaults for a new dedicated script project. |
+| `templates/script.sh` | Canonical starter for new persistent Bash scripts. |
+| `templates/snippets.sh` | Opt-in helpers. Copy only blocks required by concrete script behavior. |
+| `templates/.shellcheckrc` | Optional configuration for a new dedicated script project. |
+| `templates/.editorconfig` | Optional editor defaults for a new dedicated script project. |
 
 `TEMPLATE:` marks authoring instructions — never shipped documentation. Remove or replace every marked line and every example before validation. Do not copy speculative helpers into finished scripts.
 
 ## Workflow
 
-1. New script: copy `template/script.sh`. Existing script: inspect its conventions and edit in place; do not rebuild or restyle it from template.
+1. New script: copy `templates/script.sh`. Existing script: inspect its conventions and edit in place; do not rebuild or restyle it from template.
 2. New script: remove or replace every `TEMPLATE:` line, example dependency/global/function; fill usage text.
-3. Copy only needed blocks from `template/snippets.sh`; classify and guard runtime dependencies.
+3. Copy only needed blocks from `templates/snippets.sh`; classify and guard runtime dependencies.
 4. For a new dedicated script project, offer `.shellcheckrc` and `.editorconfig`; never replace or merge existing root configuration without explicit scope.
 5. Write CORE FUNCTIONS — one function per operation, verbose names, params not globals.
 6. Wire ARGUMENT PARSING and validate required args with `die`.

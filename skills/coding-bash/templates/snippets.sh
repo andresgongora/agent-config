@@ -22,7 +22,9 @@ getDate() { date '+%Y-%m-%d'; }
 createTemporaryDirectory() { mktemp -d "${TMPDIR:-/tmp}/script.XXXXXX"; }
 
 ## cleanupTemporaryDirectory PATH — move a temporary workspace to trash
-cleanupTemporaryDirectory() { trash "$1" >/dev/null 2>&1 || true; }
+cleanupTemporaryDirectory() {
+    trash "$1" >/dev/null || printf 'WARN: could not trash temporary directory: %s\n' "$1" >&2
+}
 
 ## confirmExactText PROMPT EXPECTED — return 0 only for exact confirmation
 confirmExactText() {
@@ -30,7 +32,7 @@ confirmExactText() {
     local expected="$2"
     local answer
 
-    IFS= read -r -p "$prompt" answer
+    IFS= read -r -p "$prompt" answer || return 1 # EOF is a non-match, not an abort under set -e.
     [[ "$answer" == "$expected" ]]
 }
 

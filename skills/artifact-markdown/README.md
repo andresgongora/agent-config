@@ -6,16 +6,16 @@ Finish-time lint gate for Markdown files, plus a README starter template.
 ## Design intent
 <!------------------------------------------------------------------------------------------------->
 
-The skill runs a scoped lint and structural check after a Markdown edit or creation session. It
-checks frontmatter, headings, lists, code fences, links, and referenced paths or commands. It does
-not establish factual accuracy, reachable external links, or prose quality. Missing tools skip their
-checks and are logged once in the final report.
+The skill runs a scoped check-only lint after a Markdown edit or creation session. It runs
+markdownlint and Prettier when installed, then checks frontmatter, heading structure, unclosed code
+fences, local link targets, and decorator spacing. It does not establish factual accuracy, reachable
+external links, or prose quality. Missing tools skip their checks and are logged in the output.
 
 <!------------------------------------------------------------------------------------------------->
 ## When it triggers
 <!------------------------------------------------------------------------------------------------->
 
-Once, at the end of creating or editing Markdown or a README, before calling the work done.
+Once, at the end of creating or editing Markdown or a README, before calling the work done. Check-only; `--fix` only when the user asks. Not for `.agent/**`, which `docs-write` owns.
 
 <!------------------------------------------------------------------------------------------------->
 ## When it does NOT trigger
@@ -32,7 +32,7 @@ Once, at the end of creating or editing Markdown or a README, before calling the
 - Run one completion pass per finished file or batch; do not reload or rerun mid-session.
 - Preserve nearest repository Markdown config and established style; do not impose this skill's
   style on a repository with its own convention.
-- Lint with `markdownlint-cli2 --fix -- "$file"`; fix reported issues, then rerun until clean.
+- Lint check-only with `scripts/lint.sh "$file"`; fix reported issues, then rerun until clean. `--fix` rewrites files and runs only on explicit request.
 - Report one concise success line, or violations only.
 - Missing `markdownlint-cli2`, `prettier`, or `yq` never blocks work; skip its check and log the
   tool once in the final report.

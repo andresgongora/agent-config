@@ -1,6 +1,6 @@
 # nixos
 
-A lookup table of NixOS unblocking commands, plus a map of the flake repo at `~/.nix`.
+A lookup table of NixOS unblocking commands.
 
 <!------------------------------------------------------------------------------------------------->
 ## Design intent
@@ -20,9 +20,7 @@ shell logic out of the entry text, where it would otherwise be copy-pasted per a
 
 The repo section is deliberately thin. `~/.nix/AGENTS.md` already owns placement, style, lint,
 format and deploy rules, and it loads automatically when working there; repeating any of it here
-would only create two sources that drift apart. What the skill contributes instead is navigation:
-which file holds what, and the fact that `doc/` answers most structural questions faster than a glob
-does.
+would only create two sources that drift apart.
 
 Three facts here are specific to this setup and were verified rather than assumed: `fhs` is a
 system-wide command built by `nixos/modules/system/fhs.nix` (always present on this machine), Home
@@ -59,8 +57,8 @@ are conceptual rather than blocking.
   writing them in.
 - A fix needing more than a couple commands, and reusable across apps, belongs in `scripts/`.
   Reference it by relative path; do not inline a growing shell block in the entry.
-- If it grows past a screen or two, push rare debugging material into `.agent/notes/` instead of
-  fattening the skill.
+- If it grows past a screen or two, move rare debugging material out of the skill instead of
+  fattening it.
 
 <!------------------------------------------------------------------------------------------------->
 ## See also
@@ -68,4 +66,3 @@ are conceptual rather than blocking.
 
 - `SKILL.md`
 - `../../AGENTS.md`
-- `../../.agent/frontier.md`

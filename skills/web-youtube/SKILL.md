@@ -3,10 +3,12 @@ name: web-youtube
 description: "Fetches YouTube video or channel metadata, captions, transcripts, and transcript-based summaries. Load when fetching information from YouTube URLs."
 ---
 
+`scripts/...` paths below resolve from this skill's base directory.
+
 ## Core rules
 
 - Use `yt-dlp`; fetch metadata and captions without media download.
-- Require `yt-dlp` on `PATH`; report missing dependency, do not install it.
+- Require `yt-dlp` on `PATH`; `trash` for `transcript`; `jq` for transcript text extraction. Report missing dependency, do not install it.
 - Captions are source material. Summary needs fetched captions; metadata or description alone cannot support a video summary.
 - For metadata or summary, preserve language, caption type, URL, and timestamps when available. Transcript-only output follows its return contract.
 - Do not claim transcript exists when no requested caption track downloads. Audio transcription needs separate explicit tooling.

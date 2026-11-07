@@ -10,7 +10,9 @@ IFS=$'\n\t'
 
 ## TEMPLATE: Keep this section only for runtime external dependencies; else remove it.
 
-requireCommand() { command -v "$1" >/dev/null 2>&1 || { printf "Abort: '%s' not found\n" "$1" >&2; exit 1; }; }
+requireCommand() {
+    command -v "$1" >/dev/null 2>&1 || { printf "Abort: '%s' not found\n" "$1" >&2; exit 1; }
+}
 
 requireCommand dependency_example # TEMPLATE: Replace/remove.
 
@@ -76,7 +78,7 @@ if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
 fi
 
 ## TEMPLATE: Set clear expectations for arguments. Replace/remove examples below.
-## TEMPALTE: Reject if not argument expected `[[ $# -eq 0 ]] || die "no arguments expected"`
+## TEMPLATE: Reject if not argument expected `[[ $# -eq 0 ]] || die "no arguments expected"`
 [[ $# -eq 1 ]] || die "expected one argument; run with --help for usage"
 
 declare -r INPUT_ARGUMENT="$1"

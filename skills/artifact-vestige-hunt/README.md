@@ -70,7 +70,3 @@ separate from general simplification.
   turn it into the pseudo-linter this skill rejects.
 - Do not add bare `loop` triggers or prefilter markers. In code, that word usually means iteration,
   not an outcome-neutral excursion.
-
-<!------------------------------------------------------------------------------------------------->
-## See also
-<!------------------------------------------------------------------------------------------------->

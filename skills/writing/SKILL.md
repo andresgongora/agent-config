@@ -23,7 +23,7 @@ Meaning, factual accuracy, user constraints, and required form outrank these gui
 - Replace buried noun-verbs ("establishment of", "the removal of") with direct verbs; name the actor.
 - No passive voice when the actor is known and relevant.
 - Name the specific entity, date, or figure, not a generic label.
-- Show experience or scale through concrete work or results, not unsupported evaluative adjectives ("experienced, skilled, widespread).
+- Show experience or scale through concrete work or results, not unsupported evaluative adjectives ("experienced, skilled, widespread").
 
 ### Reader relationship and tone
 

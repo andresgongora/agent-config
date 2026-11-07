@@ -8,7 +8,7 @@ lives in the doc-writing discipline.
 <!------------------------------------------------------------------------------------------------->
 
 Guides the agent to consult already-digested repo docs before broad re-exploration. Provides two
-cheap discovery scripts (`inventory`, `frontmatter`) that scan a whole `.agent/` folder in one bash
+cheap discovery scripts (`inventory`, `get-frontmatter`) that scan a whole `.agent/` folder in one bash
 call instead of many file reads.
 
 <!------------------------------------------------------------------------------------------------->
@@ -123,4 +123,4 @@ skills/docs/scripts/get-frontmatter <file.md>
 <!------------------------------------------------------------------------------------------------->
 
 - Doc-writing discipline — write side: admission gate, frontmatter schema, placement, lifecycle.
-- `../../.agent/notes/design-principles.md` — cross-cutting agent philosophy, memory model.
+- `.agent/notes/design-principles.md` — cross-cutting agent philosophy, memory model (machine-local; absent on clones).

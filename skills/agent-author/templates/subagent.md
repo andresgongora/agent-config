@@ -33,7 +33,7 @@ description: "<!-- One physical line. Routing truth: exact task, when to choose 
 
 ## Output contract
 
-<!-- Exact returned shape. Define explicit empty-result behavior; never return silently. Give at least one concrete fenced example of the real payload shape (not just the envelope) — see agents/planning.md for a worked example combining a compressed status line, a file-write result, and a review block as its three return shapes. -->
+<!-- Exact returned shape. Define explicit empty-result behavior; never return silently. Give at least one concrete fenced example of the real payload shape (not just the envelope) — see agents/minion-investigator.md `## Output contract` for a worked example: 1-2 hit and 3+ hit payload shapes, each ending in the status/gap/issue envelope. -->
 
 <!-- Mandatory envelope. Every report ends with these three fields, INSIDE this fenced template as its last three lines — a prose rule above the fence does not bind. Formatting may follow this agent's own style, token strings may not change. Map any refusal/terminal token this agent defines onto a status value; never restate the token's meaning. Fields: `status: <done | partial | blocked | refused | none | failed>`, `gap: <in-scope work not done, or 'none'>`, and `issue: <blocker or 'none'>`. `none` = ran fully, found nothing — distinct from `done`. -->
 
