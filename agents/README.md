@@ -25,8 +25,8 @@ Permission maps resolve last match. Agents place broad `bash: "*": deny` or `ask
 - Can ask the user, because commit grouping, message wording, and discard decisions are genuinely the user's.
 - Refuses push, tag, rebase, merge, remote reconfiguration, history rewriting, and `git clean` at the permission layer as well as in its rules. It edits only `.gitignore`, `.gitattributes`, and explicitly named paths.
 - Its rules deliberately stay short. Git technique lives in the Git safety skill, which the agent must load before its first command; restating that technique here would duplicate it and rot separately. The rules cover only what the skill does not: this agent's scope, edit limits, authority, delegation, and reporting.
-- Bash permissions grant the Git skill's read-only helper scripts, gate its staging and commit scripts behind `ask`, and deny its history-rewrite and housekeeping scripts. Permissions, not prose, are the real enforcement layer.
-- No `model` field is set by hand; it resolves to the shared `MINION` alias. That is a light model, which is the other reason the rules stay few and sharp.
+- Bash permissions grant the Git skill's read-only helper scripts and its staging and commit scripts (`git-stage-group`, `git-commit-group`), and deny its history-rewrite and housekeeping scripts. The commit flow runs only for the caller's exact scope; the skill's gates apply. Permissions, not prose, are the real enforcement layer.
+- Frontmatter sets `model: MINION`, the shared light-model alias. That is the other reason the rules stay few and sharp.
 
 ## Agent Evaluator
 
@@ -138,7 +138,7 @@ Permission maps resolve last match. Agents place broad `bash: "*": deny` or `ask
 
 ## Writing
 
-`writing.md` is a chat-first primary agent for drafting and revising human-directed prose.
+`writing.md` is a chat-first agent for drafting and revising human-directed prose; `mode: all` lets it run as primary or subagent.
 
 - Uses supplied facts, asks for missing material context, and applies writing rules plus references.
 - Does not research, inspect local files, or handle code, configuration, structured data, or AI-directed text.

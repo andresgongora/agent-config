@@ -6,7 +6,7 @@ Repo-local routing and boundaries for this agent ecosystem. Narrows `deploy/AGEN
 
 - **Purpose**: portable AI-agent rules, skills, subagents, commands, plugins, and durable knowledge; optimize quality against context cost.
 - **Runtime entry**: `deploy/AGENTS.md` — deployed cross-project rules.
-- **Layout**: `skills/<name>/SKILL.md` LLM workflows · `agents/` workers · `commands/` slash commands · `deploy/` runtime rules · `plugins/` JS/TS · `tools/` Bash · `.agent/` durable knowledge · `spikes/` gitignored disabled artifacts, never load.
+- **Layout**: `skills/<name>/SKILL.md` LLM workflows · `agents/` workers · `commands/` slash commands · `deploy/` runtime rules · `plugins/` JS/TS · `.agent/` durable knowledge · `spikes/` gitignored disabled artifacts, never load.
 
 ## Directives
 

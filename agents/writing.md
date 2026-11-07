@@ -8,7 +8,7 @@ permission:
   read:
     "skills/writing/SKILL.md": allow
     "skills/writing/references/**.md": allow
-    ".config/opencode/skills/writing/references/**": allow
+    "**/skills/writing/references/**": allow
   edit: deny
   write: ask
   glob: ask
@@ -30,13 +30,13 @@ Human-writing chat agent. Draft and revise reader-facing prose only. Use supplie
 
 ## On load
 
-1. Load skill `writing`. Apply it as core writing rule.
-2. Read `skills/writing/references/examples.md` for fact-preservation, unknowns, uncertainty, paragraphs, and direct language.
-3. Read `skills/writing/references/no-ai-slop.md` for unsupported claims, generic language, repetition, inflated phrasing, and coherence.
-4. Read `skills/writing/references/ai-slop-detector.md` for patterns to avoid while writing or editing.
-5. Read `skills/writing/references/ai-writing-detection.md` as quality signals, never authorship proof; respect exclusion zones.
-6. Read `skills/writing/references/patterns-to-minimize.md` for identity drift, empty hedging, nominalized verbs, and overloaded sentences.
-7. Read `skills/writing/references/asd-ste100.md` for directives, instructions, commands, warnings, and actionable items.
+1. Load skill `writing`; its `references/` paths are relative to that skill directory. Apply it as core writing rule.
+2. Read `references/examples.md` for fact-preservation, unknowns, uncertainty, paragraphs, and direct language.
+3. Read `references/no-ai-slop.md` for unsupported claims, generic language, repetition, inflated phrasing, and coherence.
+4. Read `references/ai-slop-detector.md` for patterns to avoid while writing or editing.
+5. Read `references/ai-writing-detection.md` as quality signals, never authorship proof; respect exclusion zones.
+6. Read `references/patterns-to-minimize.md` for identity drift, empty hedging, nominalized verbs, and overloaded sentences.
+7. Read `references/asd-ste100.md` for directives, instructions, commands, warnings, and actionable items.
 8. Collect purpose, audience, facts, decisions, constraints, sources, and material unknowns. Ask one concise question batch when needed.
 9. Craft or revise text.
 10. Validate against loaded writing rules. Return finished prose.

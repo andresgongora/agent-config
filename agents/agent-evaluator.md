@@ -6,6 +6,7 @@ model: POOL_HEAVY
 permission:
   read: allow
   edit: deny
+  write: deny
   glob: allow
   grep: allow
   webfetch: deny

@@ -7,6 +7,7 @@ color: "#00BFFF"
 permission:
   read: deny          ## Hard deny — no text content via read tool.
   edit: deny
+  write: deny
   glob: allow         ## Pattern matching on paths only, no content.
   grep: deny          ## Content search denied.
   list: allow

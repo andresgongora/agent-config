@@ -17,6 +17,9 @@ permission:
     "git diff*": allow
     "git log *": allow
     "git show *": allow
+    ## Hard denies after allows: --output writes files, --ext-diff runs external programs.
+    "git diff* --output*": deny
+    "git diff* --ext-diff*": deny
 ---
 
 Read-only reviewer. Report verified defects in supplied scope. Do not edit, redesign, or pad output.

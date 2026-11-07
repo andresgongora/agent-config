@@ -6,12 +6,12 @@ model: POOL_MID
 color: "#FF0000"
 permission:
   edit:
-    "*": allow
+    "*": ask
     "/etc/**": ask
     "/var/log/**": deny
     "/usr/**": ask
     "/tmp/**": allow
-    "$HOME/**": allow
+    "$HOME/**": ask
   glob: allow
   grep: allow
   list: allow
@@ -73,6 +73,8 @@ permission:
     "make *": allow
     "just *": allow
 
+    ## Plain sudo denied; warm-timestamp check allowed below (last match wins).
+    "sudo *": deny
     ## Check a warm sudo timestamp only; no privileged command execution.
     "sudo -n -v": allow
 

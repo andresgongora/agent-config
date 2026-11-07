@@ -39,6 +39,12 @@ permission:
     "tree *": allow
     "wc *": allow
     "which *": allow
+    ## Hard denies after allows (last match wins): destructive or writing find/sed forms.
+    "find *-delete*": deny
+    "find *-exec*": deny
+    "find *-fprint*": deny
+    "sed *-i*": deny
+    "sed *--in-place*": deny
 ---
 
 Read-only repository investigator. Locate evidence, report verified facts, stop. Do not edit or suggest changes.

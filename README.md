@@ -24,7 +24,7 @@ Clone this repo, then preview and run installer:
 
 Creates symlinks under `${XDG_CONFIG_HOME:-$HOME/.config}/opencode/` for `AGENTS.md`, agent
 definitions, skill directories, command definitions, and plugin directories. It requires standard
-Unix tools plus `trash`. Restart OpenCode after installation.
+Unix tools; `--uninstall` also requires `trash`. Restart OpenCode after installation.
 
 | Option        | What it does                             |
 |---------------|------------------------------------------|
@@ -50,17 +50,19 @@ Restart OpenCode, then verify installed agents, skills, commands, and plugins lo
 Agent definitions use model aliases and require bundled `opencode-model-alias` plugin. Without it,
 OpenCode receives aliases instead of provider/model IDs.
 
-The plugin reads `~/.config/opencode/model-aliases.json`; create aliases for available models. These
-deliberately fictitious examples show tiered alias naming only; replace every value with a
-provider/model ID from `opencode models`.
+The plugin reads `${XDG_CONFIG_HOME:-$HOME/.config}/opencode/model-aliases.json`. Agent definitions
+reference exactly these six alias names; define all six, spelled as shown. These deliberately
+fictitious examples show the naming only; replace every value with a provider/model ID from
+`opencode models`.
 
 ```json
 {
-  "TEAM_FAST": "provider-alpha/fast-1",
-  "TEAM_LIGHT": "northstar-ai/light-2",
-  "TEAM_MID": "horizon-cloud/mid-3",
-  "TEAM_HEAVY": "nebula-router/heavy-4",
-  "LOCAL_LIGHT": "workbench-lab/compact-5"
+  "POOL_HEAVY": "provider-alpha/heavy-1",
+  "POOL_MID": "northstar-ai/mid-2",
+  "POOL_LIGHT": "horizon-cloud/light-3",
+  "PERSONAL_MID": "nebula-router/mid-4",
+  "PERSONAL_LIGHT": "workbench-lab/light-5",
+  "MINION": "workbench-lab/minion-6"
 }
 ```
 
@@ -115,7 +117,6 @@ automatically — the agent loads them when needed, then follows the workflow in
 | `git`                   | Git guardrails and fast workflows                                                                                             | Branch, commit, merge, rebase, push, undo                                                 |
 | `artifact-markdown`     | Minimal Markdown completion checks                                                                                            | Writing, editing, finishing, or reviewing `.md` files                                     |
 | `artifact-vestige-hunt` | Find vestigial residue: leftover comments, steps, or notes describing removed/superseded behavior                             | Post-rework cleanup, "why is this still here", ghost steps in workflows                   |
-| `local-opencode`        | Locate mapped OpenCode sources; inspect and verify deployed state                                                             | Local OpenCode config work                                                                |
 | `nixos`                 | NixOS / Home Manager workflows and pitfall guide                                                                              | Any NixOS or Home Manager config work                                                     |
 | `obsidian-plugin`       | Creating, editing, testing, and releasing Obsidian plugins — TypeScript, manifest, esbuild, BRAT, community submission        | Obsidian plugin work, manifest.json, BRAT beta, community plugin review                   |
 | `planning`              | Plan-first session workflow: scope, live todos, coarse-to-fine execution                                                      | Multi-step tasks, ambiguous scope, risky forks                                            |
@@ -138,6 +139,7 @@ isolated from main context.
 | `@minion-master`           | Frozen multi-step mission executor; plans packages, directs leaves, integrates, and verifies           | Complete planning milestone too large for one leaf                     |
 | `@minion-builder`          | Surgical 1-2 file edit; hard-refuses 3+ file scope                                                     | Bounded, obvious edits                                                 |
 | `@minion-linter`           | Runs formatters and linters; applies presentation-only automatic fixes                                 | Bounded formatting or linting needs                                    |
+| `@minion-repomaster`       | Repository and Git transactions: commits, reverts, history, preflight; returns a distilled receipt     | Git or repository work that would burn main-thread context             |
 | `@minion-investigator`     | Read-only repository locator; returns compact path-based evidence                                      | Finding definitions, callers, uses, tests, imports, or structure       |
 | `@minion-reviewer`         | Supplied diff/file review; returns verified severity-tagged findings                                   | Reviewing a bounded diff or file                                       |
 | `@minion-vestige-hunter`   | Read-only post-rework vestige hunter; returns removable residue candidates                             | Removing stale steps, comments, or superseded wording                  |
@@ -179,7 +181,6 @@ skills/                 Skills loadable on demand.
 .agent/                 AI working memory: plans, frontier, progress, bugs, notes.
 plugins/                Client-specific plugins (e.g. JS).
 commands/               Slash-commands.
-tools/                  Ad-hoc scripts.
 ```
 
 <!------------------------------------------------------------------------------------------------->
@@ -195,7 +196,6 @@ If you like this project and want to show your support,
 
 Original files in this repo are [MIT licensed](./LICENSE).
 
-Third-party files, clearly indicated in the above tables, retain their upstream licenses. The source
-column in the tables above identifies which skills and subagents came from other repos; check those
-repos for their license terms before redistributing. Some upstream repos have not published a
+Third-party files retain their upstream licenses. Check the upstream repo for license terms before
+redistributing any third-party skill or subagent. Some upstream repos have not published a
 license yet or can not be shared; those files are not redistributed in this repo.

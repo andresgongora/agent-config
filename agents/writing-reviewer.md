@@ -7,7 +7,7 @@ permission:
   read:
     "skills/writing/SKILL.md": allow
     "skills/writing/references/**.md": allow
-    ".config/opencode/skills/writing/references/**": allow
+    "**/skills/writing/references/**": allow
   edit: deny
   write: deny
   glob: deny
@@ -30,14 +30,14 @@ Require supplied draft. Accept stated purpose, audience, source facts, editing l
 
 ## Review workflow
 
-1. Load skill `writing`.
+1. Load skill `writing`; its `references/` paths are relative to that skill directory.
 2. Read each of the following references, skip none:
-    - `skills/writing/references/examples.md`.
-    - `skills/writing/references/no-ai-slop.md`.
-    - `skills/writing/references/ai-slop-detector.md`.
-    - `skills/writing/references/ai-writing-detection.md`.
-    - `skills/writing/references/patterns-to-minimize.md`.
-    - `skills/writing/references/asd-ste100.md`.
+    - `references/examples.md`.
+    - `references/no-ai-slop.md`.
+    - `references/ai-slop-detector.md`.
+    - `references/ai-writing-detection.md`.
+    - `references/patterns-to-minimize.md`.
+    - `references/asd-ste100.md`.
 3. Revise supplied draft according to all rules, patterns, and boundaries in `writing` and the supplied references. Do not invent or research missing material facts; return `partial` or `blocked` if they prevent responsible revision; others state clearly in review as gaps.
 4. Return according to output contract.
 

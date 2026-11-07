@@ -19,10 +19,6 @@ requireCommand mv
 requireCommand readlink
 requireCommand dirname
 requireCommand unlink
-requireCommand cp
-requireCommand cmp
-requireCommand diff
-requireCommand trash
 
 ##==================================================================================================
 ##	GLOBALS
@@ -39,7 +35,6 @@ declare -r MANIFEST_PATH="$CONFIG_ROOT/.agent-config-installed"
 declare DRY_RUN=false
 declare FORCE=false
 declare UNINSTALL=false
-declare COPY=false
 declare ONLY=""
 
 ##==================================================================================================
@@ -115,13 +110,7 @@ destinationMatchesSource() {
     local source="$1"
     local destination="$2"
 
-    if [[ "$COPY" == false ]]; then
-        [[ -L "$destination" && "$(readlink "$destination")" == "$source" ]]
-    elif [[ -d "$source" ]]; then
-        return 1
-    else
-        cmp -s -- "$source" "$destination"
-    fi
+    [[ -L "$destination" && "$(readlink "$destination")" == "$source" ]]
 }
 
 installLink() {
@@ -138,17 +127,8 @@ installLink() {
     fi
 
     runCommand mkdir -p -- "$(dirname -- "$destination")"
-    if [[ "$COPY" == false ]]; then
-        printAction "link" "$destination -> $source"
-        runCommand ln -s -- "$source" "$destination"
-    else
-        printAction "copy" "$destination <- $source"
-        if [[ -d "$source" ]]; then
-            runCommand cp -a -- "$source" "$destination"
-        else
-            runCommand cp -- "$source" "$destination"
-        fi
-    fi
+    printAction "link" "$destination -> $source"
+    runCommand ln -s -- "$source" "$destination"
     recordInstall "$destination" "$source"
 }
 
@@ -198,6 +178,7 @@ uninstallOpenCode() {
     local source
     local removed=false
 
+    requireCommand trash
     [[ -f "$MANIFEST_PATH" ]] || die "no install manifest: $MANIFEST_PATH"
     while IFS=$'\t' read -r destination source; do
         [[ -n "$destination" ]] || continue

@@ -18,7 +18,7 @@ permission:
     ".agent/plans/**/*.md": allow
   edit:
     "*": deny
-    "./agent/**": ask
+    ".agent/**": ask
     ".agent/plans/*.md": allow
     ".agent/plans/**/*.md": allow
   bash:

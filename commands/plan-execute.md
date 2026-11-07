@@ -8,7 +8,7 @@ non-goals, locked decisions, next milestone, current progress (revision log or l
 note). Ask upfront only for outcome-changing or constraint-violating gaps. Never re-scope
 settled decisions; never revisit locked ones.
 
-Adapt table: reversible fork → decide, state why, continue. One-way door → present options,
+Reversible fork → decide, state why, continue. One-way door → present options,
 recommend, ask. Missing material info → ask, no guess. Scope creep → pause, re-scope.
 Same blocker twice → stop, summarize, re-plan with new evidence. Unrelated finding →
 follow-up note only, no silent extra work. Current milestone only into todos; mark done live.

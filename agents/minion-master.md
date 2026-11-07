@@ -1,6 +1,5 @@
 ---
 name: minion-master
-disable: false
 description: "Generic high-capability nested executor for one frozen, bounded multi-step repository mission. Builds an internal subplan when needed, loads the minion-delegation skill, and orchestrates eligible minion leaves with local integration and verification. Use only when a complete handoff preserves an already-costly caller context; not for user dialogue, open-ended scope, recursive delegation, or incomplete context."
 mode: subagent
 permission:
@@ -60,6 +59,11 @@ permission:
     "docker inspect *": allow
     "docker compose config*": allow
     "docker compose ps*": allow
+    "git *": deny
+    "git status*": allow
+    "git diff*": allow
+    "git log*": allow
+    "git show*": allow
     "git commit*": deny
     "git merge*": deny
     "git rebase*": deny
@@ -113,7 +117,7 @@ Generic nested executor. Own one frozen repository mission, its local integratio
 
 ## Boundaries
 
-- Missions requiring Git state changes are not eligible; return them to the caller for repository-steward handling.
+- Missions requiring Git state changes are not eligible; return them to the caller for `minion-repomaster` handling.
 - Task out of scope: return `**status**: refused` + `**issue**: <reason>`.
 - Missing target, unclear requirement, or specification ambiguous: return `**status**: blocked` + `**issue**: mission ambiguous <state uncertantity areas and gaps>`.
 - Involves destructive operation and no explicit authorization: leave files unchanged and return `**status**: blocked` + `**issue**: need explicit authorization for <command>, <explain>`.

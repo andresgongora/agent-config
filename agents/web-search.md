@@ -3,16 +3,6 @@ name: web-search
 description: "Web researcher. Use for one non-trivial online question needing multiple pages, sources, verification, web crawling, or query angles. Skip for trivial one-shot lookups."
 mode: subagent
 model: PERSONAL_MID
-tools:
-  read: true
-  write: false
-  edit: false
-  bash: true
-  glob: false
-  grep: false
-  webfetch: true
-  websearch: true
-  task: true
 permission:
   edit: deny
   read:
