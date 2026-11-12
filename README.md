@@ -81,7 +81,7 @@ fictitious examples show the naming only; replace every value with a provider/mo
 
 ### Agent instructions (`deploy/AGENTS.md`)
 
-The main deployed file. Sets tone, skill-routing rules, planning and delegation boundaries,
+The main deployed file. Sets tone, skill-routing rules, delegation boundaries, asking rules,
 guardrails, and completion expectations. Project-level `AGENTS.md` files narrow or override it.
 
 Key rules it enforces:
@@ -89,11 +89,11 @@ Key rules it enforces:
 | Rule                        | What it does                                                            |
 |-----------------------------|-------------------------------------------------------------------------|
 | Concise output              | Direct, evidence-backed output without filler                           |
-| Skill routing               | Load every matching workflow before acting                              |
+| Skill routing               | Load matching workflows as work progresses; reload after compaction     |
 | Architecture first          | Set boundaries, APIs, and invariants before cross-module implementation |
 | Hard claim needs hard proof | Do not invent support or bridge uncertainty                             |
 | Bounded delegation          | Delegate only isolatable work with checkable evidence                   |
-| Stop and ask                | Ask on material uncertainty; stop after repeated blockers               |
+| Asking                      | Ask only when a wrong guess is costly; otherwise state the assumption   |
 
 ### Skills
 
