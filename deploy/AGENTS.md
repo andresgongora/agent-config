@@ -43,7 +43,7 @@ After completion, with no explicit output contract and a material outcome (chang
   - `🟡` remaining risk or gap.
   - `🔴` error, refusal, or unfeasible step.
   - `❓` unresolved question or open user choice.
-- Optional evidence or explanation: nested bullet list under the point, indented 3 spaces.
+- Optional evidence or explanation: nested bullet list under the point, indented 3 spaces, no nested dashboard points.
 - Passed checks: don't report.
 - End with meaningful ≤3 `➡️` next steps.
 
