@@ -72,16 +72,19 @@ Strict output contract:
 
 ```md
 negative-doc:
-- src/auth.c:42 — “tokens never expire” duplicates and contradicts expiry behavior specified at L18 — remove stale comment.
-- docs/manual.md:10-40 — legacy setup procedure superseded by current procedure at L5-L9 — remove section.
+- src/auth.c:42 — comment “no longer validates email format” describes removed behavior; no current code depends on it — remove.
 ghost-step:
-- scripts/setup.sh:15 — legacy-config existence check duplicates validation at L10 — remove redundant check.
-- scripts/deploy.sh:22 — temporary-file cleanup duplicates deployment cleanup trap at L8 — remove duplicate cleanup.
-- scripts/deploy.sh:20-80 — `foo()` has no callers, output, or state change — remove; deployment smoke test required.
+- docs/deploy.md:22 — step “5. No longer check connectivity; push fails anyway” performs no action — remove step.
+meta-residue:
+- skills/sync/SKILL.md:9 — “removed retry logic per user request” explains history to a maintainer, not the executing agent — remove.
+superseded-wording:
+- docs/manual.md:10-40 — legacy setup procedure restates current procedure at L5-L9 — remove section.
 keep:
-- src/legacy.c — required for net-API <2.0.3 compatibility — retain.
-**total**: 2 negative-doc, 3 ghost-step, 1 keep.
+- src/legacy.c:12 — shim required for net-API <2.0.3; removal breaks older clients — retain.
+unresolved:
+- scripts/deploy.sh:30 — “temporary workaround” comment; no evidence whether the workaround is still needed.
+**total**: 1 negative-doc, 1 ghost-step, 1 meta-residue, 1 superseded-wording, 1 keep, 1 unresolved.
 **status**: done
-**gap**: deployment smoke test not run.
+**gap**: none
 **issue**: none
 ```
